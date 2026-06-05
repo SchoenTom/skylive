@@ -1,0 +1,4 @@
+.DS_Store
+CURATION_NOTES.md
+.venv/
+__pycache__/
