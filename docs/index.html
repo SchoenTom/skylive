@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>SkyDive·Live — 3D</title>
+<meta property="og:title" content="SkyDive·Live — HDZero 1W Live-Stream Sender">
+<meta property="og:description" content="Der Blick des Springers aus 4000 m, live auf den Bildschirm an der Landezone. Interaktives 3D-Konzeptmodell.">
+<meta property="og:image" content="og.png">
+<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<style>
+  :root{ --void:#050810; --ink:#f0f4ff; --dim:#8ba4c8; --teal:#00c6ff; }
+  *{ box-sizing:border-box; margin:0; }
+  body{ min-height:100dvh; background:var(--void); color:var(--ink);
+    font-family:-apple-system,system-ui,sans-serif; overflow:hidden;
+    display:flex; flex-direction:column; }
+  body::before{ content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
+    background:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(13,74,110,.55), transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 0%, rgba(168,85,247,.30), transparent 50%),
+      radial-gradient(ellipse 100% 40% at 50% 100%, rgba(26,10,62,.70), transparent 60%),
+      radial-gradient(ellipse 70% 50% at 10% 80%, rgba(16,217,142,.15), transparent 50%);
+    animation:shift 20s ease-in-out infinite alternate; }
+  @keyframes shift{ 50%{ transform:scale(1.06) translate(10px,-8px);} }
+  header{ position:relative; z-index:2; text-align:center; padding:26px 18px 6px; }
+  .brand{ font-size:22px; font-weight:700; letter-spacing:.3px; }
+  .brand .live{ color:var(--teal); text-shadow:0 0 16px rgba(0,198,255,.7); }
+  .tag{ color:var(--dim); font-size:13.5px; margin-top:6px; }
+  model-viewer{ position:relative; z-index:1; flex:1; width:100%;
+    --poster-color:transparent; background:transparent; }
+  .hint{ position:relative; z-index:2; text-align:center; color:var(--dim); font-size:12px; padding:6px 0 4px; }
+  footer{ position:relative; z-index:2; text-align:center; padding:10px 0 calc(16px + env(safe-area-inset-bottom)); }
+  footer a{ color:var(--teal); text-decoration:none; font-size:14px; font-weight:600;
+    border:1px solid rgba(0,198,255,.3); padding:9px 18px; border-radius:12px;
+    background:rgba(0,198,255,.08); }
+</style>
+</head>
+<body>
+  <header>
+    <div class="brand">SkyDive·<span class="live">Live</span></div>
+    <div class="tag">HDZero 1 W Live-Stream Sender — MK3-Konzept, interaktiv</div>
+  </header>
+
+  <model-viewer
+    src="concept.glb"
+    alt="SkyDive·Live MK3 Sender — 3D"
+    camera-controls auto-rotate auto-rotate-delay="0" rotation-per-second="18deg"
+    shadow-intensity="1" exposure="1.1" environment-image="neutral"
+    camera-orbit="35deg 70deg auto" interaction-prompt="auto"
+    touch-action="pan-y">
+  </model-viewer>
+
+  <div class="hint">↻ ziehen zum Drehen · scrollen zum Zoomen</div>
+  <footer><a href="https://github.com/SchoenTom/skydive-live">→ Projekt, Bauanleitung &amp; die Zahlen</a></footer>
+</body>
+</html>
