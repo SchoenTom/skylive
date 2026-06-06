@@ -35,7 +35,7 @@ Camera (MIPI) → 1 W VTX → U.FL → antenna(s) → ~4 km of air → ground an
 ## What it is, in one picture
 
 <div align="center">
-<img src="renders/gopro_size.png" alt="Action-cam size, 1-watt reach: the SkyDive·Live sender next to a GoPro for scale — same height, same helmet mount, but a real 1 W radio inside." width="100%">
+<img src="renders/gopro_compare.svg" alt="True-to-scale size comparison: the SkyDive·Live sender is the same height as a GoPro and a little narrower" width="100%">
 </div>
 
 ### The signal's journey — helmet to the waiting-room TV
