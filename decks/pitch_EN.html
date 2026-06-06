@@ -275,7 +275,7 @@ h3{font-size:var(--d3);line-height:1.1;font-weight:700;letter-spacing:-.02em}
         <div class="co-hud">
           <span class="live"><b>●</b>&nbsp;LIVE · 14 ms</span>
           <span class="alt" id="coAlt2">4000 m</span>
-          <span class="spd">200 km/h ↓</span>
+          <span class="spd">FREEFALL ↓</span>
           <div class="retic"><i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i></div>
         </div>
       </div>
@@ -450,7 +450,7 @@ h3{font-size:var(--d3);line-height:1.1;font-weight:700;letter-spacing:-.02em}
 <section class="slide center" data-id="kuehl"><div class="wrap">
   <div class="eyebrow v" style="--i:0">Self-thinking cooling</div>
   <h2 class="v" style="--i:1">The fan knows <span class="cy">when</span>.</h2>
-  <p class="body v" style="--i:2;text-align:center;max-width:60ch;margin-top:14px">The sensor reads chip temperature. The fan kicks in <span class="cy">only when it gets hot</span> — in freefall the 200 km/h airflow handles it; on the ground it runs on until everything has cooled.</p>
+  <p class="body v" style="--i:2;text-align:center;max-width:60ch;margin-top:14px">The sensor reads chip temperature. The fan kicks in <span class="cy">only when it gets hot</span> — in freefall the airflow handles it; on the ground it runs on until everything has cooled.</p>
   <div class="v" style="--i:2;display:flex;gap:22px;justify-content:center;margin-top:10px;font-size:var(--small);color:var(--muted)">
     <span><i style="display:inline-block;width:16px;height:3px;background:#ff8a4c;vertical-align:middle;margin-right:7px;border-radius:2px"></i>Chip temperature</span>
     <span><i style="display:inline-block;width:16px;height:10px;background:#23c9ef;opacity:.8;vertical-align:middle;margin-right:7px;border-radius:2px"></i>Fan running</span>
@@ -499,7 +499,7 @@ h3{font-size:var(--d3);line-height:1.1;font-weight:700;letter-spacing:-.02em}
       <div class="feat"><div class="k">2 · Out</div><div class="p">Pull the tray by its tab — the empty one slides out.</div></div>
       <div class="feat"><div class="k">3 · In</div><div class="p">Slide in a charged tray, close the door — it latches positively.</div></div>
     </div>
-    <p class="body v" style="--i:3;max-width:48ch">Like a GoPro battery door — but <span class="cy">freefall-safe</span>: snap latch + jump lock. Door <span class="cy">on the side, out of ram pressure</span> — holds at 200 km/h. Charge several trays in parallel.</p>
+    <p class="body v" style="--i:3;max-width:48ch">Like a GoPro battery door — but <span class="cy">freefall-safe</span>: snap latch + jump lock. Door <span class="cy">on the side, out of ram pressure</span> — holds against the ram pressure. Charge several trays in parallel.</p>
   </div>
 </div></section>
 
@@ -793,7 +793,7 @@ RX sensitivity (HDZero) ≈ −90 dBm   →   margin ≈ <span class="res">+9 dB
   <div class="appx v" style="--i:2">
     <p>Two cooling paths — situational, not on a timer:</p>
     <div class="eq">FREEFALL (primary): NACA flush inlet front → plenum → VTX heatsink → outlet rear
-Ram-air at ~200 km/h: ~99 % pressure recovery, no power needed.</div>
+Ram-air at in freefall: ~99 % pressure recovery, no power needed.</div>
     <div class="eq">GROUND / POST-RUN: 25 mm fan (Sunon, 3.5 CFM) ducted onto the heatsink, ATtiny-controlled
 Inlet and outlet spatially separated   ⇒   no short-circuit, real through-flow.</div>
     <p>Battery decoupled from the VTX zone by the <b>heat wall</b> (LiPo &lt; 45 °C). Vented, not sealed: <b>GORE membrane + drain</b> against condensation (4000 m / temperature swing).</p>

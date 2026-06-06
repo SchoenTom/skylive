@@ -18,6 +18,10 @@
 
 ## What if the whole drop zone could watch — live?
 
+<div align="center">
+<img src="renders/dot_to_live.svg" alt="Left: what the ground sees today — just a dot in the sky, hunted by a reticle. Right: what SkyDive·Live shows — the freefall POV live on a monitor, same moment, 14 ms." width="100%">
+</div>
+
 Today, the ground sees only **a dot in the sky**. Spectators, the waiting area, your own team — they follow the jump with the naked eye, and the footage only arrives *after* landing. The moment itself stays invisible.
 
 **SkyDive·Live** puts the jump on the screen **as it happens**. A helmet-mounted transmitter the size of an action cam sends a digital HDZero picture from ~4 km up to a receiver at the landing zone — straight onto the big TV in the waiting area. Its own radio link, no internet, ~14 ms latency. Not a recording. **The present tense.**
@@ -25,11 +29,6 @@ Today, the ground sees only **a dot in the sky**. Spectators, the waiting area, 
 ```
 Camera (MIPI) → 1 W VTX → U.FL → antenna(s) → ~4 km of air → ground antenna array → diversity RX → HDMI → monitor / public-viewing TV
 ```
-
-| | the jumper sees | the ground sees |
-|---|---|---|
-| **before** | everything | a dot |
-| **with SkyDive·Live** | everything | **everything — live, on the big screen** |
 
 ---
 
@@ -43,11 +42,11 @@ Hundreds of iterations distilled into **two purpose-built designs** — a proven
 
 ### ① Gen 1 — MK2 · *The Foundation*
 
-The complete printed system, and the proof the concept holds together. **Self-thinking cooling**: a sensor reads the chip temperature and the fan runs *only when it's hot* — in freefall the 200 km/h ram-air does the work; on the ground it runs on until everything is cool. GoPro form factor, tool-free battery swap, real off-the-shelf RF parts.
+The complete printed system, and the proof the concept holds together. **Self-thinking cooling**: a sensor reads the chip temperature and the fan runs *only when it's hot* — in freefall the ram-air does the work; on the ground it runs on until everything is cool. GoPro form factor, tool-free battery swap, real off-the-shelf RF parts.
 
 ### ② Gen 2 — v5 · *Never lose the image*
 
-**A body is a shadow.** Belly-down, the antenna points cleanly at the ground. Go **head-down** and the jumper's own body slides between transmitter and ground — a single antenna tears off, right at the most spectacular moment. So Gen 2 carries **two**: a patch that looks down, a dipole up top, and an RF switch that picks the better one in real time. Both sit **flush** in the shell — screwed in, no stuck-on bump, no snag risk.
+**A body is a shadow.** Belly-down, the antenna points cleanly at the ground. Go **head-down** (falling head-first) and the jumper's own body slides between transmitter and ground — a single antenna tears off, right at the most spectacular moment. So Gen 2 carries **two**: a patch that looks down, a dipole up top, and an RF switch that picks the better one in real time. Both sit **flush** in the shell — screwed in, no stuck-on bump, no snag risk.
 
 > 🛰️ **Feel it yourself** — the interactive [dual-antenna demo](https://schoentom.github.io/skydive-live/): rotate the jumper head-down, watch the single antenna drop to *"NO SIGNAL"*, then switch on the second and watch the link hold.
 
@@ -92,7 +91,7 @@ This is not a hobby gamble. Every critical path is calculated, and **honestly sp
 
 <div align="center">
 <img src="renders/exploded.png" alt="Exploded view of the sender" width="46%">
-<img src="renders/assembly.gif" alt="Assembly animation of the sender" width="46%">
+<img src="renders/sender_turn.gif" alt="The finished sender turning — lens to the viewer" width="46%">
 </div>
 
 **① 3D-print** (verified watertight STLs) → **② prep components** → **③ assembly stack** (antenna → VTX flat → camera → cover) → **④ wiring & power** (MOSFET fan control, conformal coating) → **⑤ fit tests A–F**. Full step-by-step in [`BUILD.md`](BUILD.md).
