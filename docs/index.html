@@ -20,7 +20,7 @@
 <meta name="twitter:description" content="Real-time video from freefall — the jumper's POV, live to the drop zone.">
 <meta name="twitter:image" content="og.png">
 
-<script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+<script type="module" src="vendor/model-viewer.min.js"></script>
 
 <style>
 :root{
@@ -327,6 +327,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         min-field-of-view="24deg"
         interaction-prompt="auto"
         ar-status="not-presenting">
+        <img slot="poster" id="mvposter" src="poster_assembled.png" alt="SkyDive·Live sender — interactive 3D model (drag to rotate)" style="width:100%;height:100%;object-fit:contain;display:block">
       </model-viewer>
     </div>
     <p class="cap">drag to rotate · toggle assembled ↔ exploded</p>
@@ -504,6 +505,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   function set(asm){
     mv.setAttribute('src', asm?'sender_assembled.glb':'sender_exploded.glb');
     mv.setAttribute('poster', asm?'poster_assembled.png':'poster_exploded.png');
+    const fb=document.getElementById('mvposter'); if(fb) fb.src = asm?'poster_assembled.png':'poster_exploded.png';
     bAsm.classList.toggle('on',asm); bExp.classList.toggle('on',!asm);
     bAsm.setAttribute('aria-pressed',String(asm)); bExp.setAttribute('aria-pressed',String(!asm));
   }
