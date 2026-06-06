@@ -67,7 +67,7 @@ MIPI camera↔VTX (ESD, slack over the heat‑wall) → U.FL patch→VTX → pow
 | `…_cover.stl` | top lid · GORE vent · 4× M3 | flat, no support |
 | `…_sled.stl` | carries VTX + camera | no support |
 | `…_module.stl` | antenna module (dipole + RF switch) | minimal |
-| `…_antshell.stl` | bottom shell, down‑facing patch | minimal |
+| `…_antshell.stl` | −X side end‑cap · flush RF window, holds the patch (alu body = ground‑plane) | minimal |
 | `…_tray.stl` | 3S LiPo, slide‑in | no support |
 | `…_door.stl` | side, tool‑free battery door | minimal (hinge) |
 
@@ -78,7 +78,7 @@ Same VTX + Micro V3 + 3S LiPo as MK2, **plus** the dual‑antenna kit: TBS 5G8 p
 
 ### B3 · Assemble — the seven steps
 1. **Heat‑sets** into the body bosses (cover M3, sled‑lock).
-2. **Patch** into the **antenna shell**, mount it under the body.
+2. **Patch** into the **−X side antenna end‑cap** (flush RF window; the aluminium body is its ground‑plane).
 3. Load the **battery tray**, slide it into the bottom bay through the side door.
 4. **VTX + camera** onto the **sled**; drop it into the body above the heat‑wall (Pyrogel + 4 mm air gap below); **wire through the heat‑wall feed‑through** (battery → electronics).
 5. **Dipole + RF switch** into the **antenna module** (top).

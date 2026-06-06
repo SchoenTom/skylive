@@ -24,7 +24,7 @@
   <!-- 2 Antenna module -->
   <g class="pt"><polygon points="150,182 350,182 378,168 178,168" fill="#7fcf99"/><rect x="150" y="182" width="200" height="16" fill="#4f9e6a"/>
     <text x="430" y="184" class="sans" font-size="17" font-weight="700" fill="#f4f7fb">Antenna module</text>
-    <text x="430" y="204" class="sans" font-size="13" fill="#9fc4e2">clips in the top · holds the λ/2 dipole + RF switch (Gen 2)</text></g>
+    <text x="430" y="204" class="sans" font-size="13" fill="#9fc4e2">screws onto the top (4× M3) · holds the λ/2 dipole + RF switch (Gen 2)</text></g>
   <!-- 3 Sled -->
   <g class="pt"><polygon points="140,236 360,236 388,222 168,222" fill="#d8c08a"/><rect x="140" y="236" width="220" height="16" fill="#b89a5c"/>
     <text x="430" y="238" class="sans" font-size="17" font-weight="700" fill="#f4f7fb">Electronics sled</text>
@@ -47,8 +47,8 @@
     <text x="430" y="492" class="sans" font-size="13" fill="#9fc4e2">side, tool-free — swap a battery between jumps</text></g>
   <!-- 7 Antenna shell -->
   <g class="pt"><polygon points="140,522 360,522 386,510 166,510" fill="#7fcf99"/><rect x="140" y="522" width="220" height="16" fill="#4f9e6a"/>
-    <text x="430" y="524" class="sans" font-size="17" font-weight="700" fill="#f4f7fb">Antenna shell</text>
-    <text x="430" y="544" class="sans" font-size="13" fill="#9fc4e2">bottom · holds the down-facing patch antenna</text></g>
+    <text x="430" y="524" class="sans" font-size="17" font-weight="700" fill="#f4f7fb">Antenna end-cap (−X side)</text>
+    <text x="430" y="544" class="sans" font-size="13" fill="#9fc4e2">flush RF window · holds the patch · alu body = ground-plane</text></g>
 </g>
 <!-- exploded centre guide -->
 <line x1="250" y1="120" x2="250" y2="538" stroke="#22d3ee" stroke-dasharray="3 7" opacity=".35"/>
@@ -56,6 +56,6 @@
 <!-- bottom band: assembly sequence + print -->
 <line x1="48" y1="578" x2="1032" y2="578" stroke="rgba(255,255,255,.1)"/>
 <text x="48" y="606" class="mono" font-size="12" letter-spacing="2" fill="#67e8f9">ASSEMBLE</text>
-<text x="48" y="628" class="sans" font-size="14" fill="#cfdcea">① heat-sets into the <tspan fill="#fff">body</tspan> → ② patch into the <tspan fill="#fff">shell</tspan>, mount underneath → ③ load <tspan fill="#fff">tray</tspan>, slide in → ④ VTX+camera on the <tspan fill="#fff">sled</tspan>, drop in &amp; wire through the heat-wall</text>
+<text x="48" y="628" class="sans" font-size="14" fill="#cfdcea">① heat-sets into the <tspan fill="#fff">body</tspan> → ② patch into the side <tspan fill="#fff">end-cap</tspan> → ③ load <tspan fill="#fff">tray</tspan>, slide in → ④ VTX+camera on the <tspan fill="#fff">sled</tspan>, drop in &amp; wire through the heat-wall</text>
 <text x="48" y="648" class="sans" font-size="14" fill="#cfdcea">→ ⑤ dipole+switch into the <tspan fill="#fff">module</tspan> → ⑥ <tspan fill="#fff">cover</tspan> on (4× M3) → ⑦ close the <tspan fill="#fff">door</tspan>.  <tspan fill="#7186a0">Material: ASA · +0.8 % shrink · 3.0 mm walls · print open-top-up.</tspan></text>
 </svg>

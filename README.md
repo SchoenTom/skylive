@@ -136,19 +136,19 @@ This is not a hobby gamble. Every critical path is calculated, and **honestly sp
 <img src="renders/print_parts.svg" alt="Exploded view of the seven printed parts — cover, antenna module, electronics sled, body, battery tray, side door, antenna shell — with their roles and the seven-step assembly sequence." width="100%">
 </div>
 
-Seven printed parts (ASA), each **watertight and collision-checked**. Grab the STLs from the **[v1.0 release](../../releases/tag/v1.0)**.
+Seven printed parts (ASA), each **watertight and collision-checked**. **STEP files for SolidWorks** (both builds) + STL + 3MF live in [`cad/`](cad/); printable STLs are also on the **[v1.0 release](../../releases/tag/v1.0)**.
 
 | part | role | print note |
 |---|---|---|
 | **Body** | main shell · integral heat-wall · side battery door · flat GoPro mount (M5×0.8) | open-top-up · tree-support under the 2 GoPro fingers |
 | **Cover** | top lid · GORE pressure-vent · 4× M3 into heat-sets | flat, no supports |
 | **Electronics sled** | carries the VTX + camera, drops in above the heat-wall | no supports |
-| **Antenna module** | clips into the top — holds the λ/2 dipole + RF switch (Gen 2) | minimal |
-| **Antenna shell** | bottom — holds the down-facing patch antenna | minimal |
+| **Antenna module** | screws onto the top (4× M3) — holds the λ/2 dipole + RF switch (Gen 2) | minimal |
+| **Antenna end-cap** (−X side) | flush RF window — holds the patch (the aluminium body is its ground-plane) | minimal |
 | **Battery tray** | 3S LiPo · slide-in, push-detent + lanyard (won't open in freefall) | no supports |
 | **Battery door** | side, tool-free — swap a battery between jumps | minimal (hinge) |
 
-**Assembly:** ① heat-sets into the body → ② patch into the shell, mount underneath → ③ load the tray, slide it in → ④ VTX + camera on the sled, drop in and wire through the heat-wall → ⑤ dipole + RF switch into the module → ⑥ cover on (4× M3) → ⑦ close the door.
+**Assembly:** ① heat-sets into the body → ② patch into the −X side end-cap → ③ load the tray, slide it in → ④ VTX + camera on the sled, drop in and wire through the heat-wall → ⑤ dipole + RF switch into the module → ⑥ cover on (4× M3) → ⑦ close the door.
 
 **Print:** ASA (never PLA — it softens too low) · **+0.8 % isotropic shrink** · 0.2 mm layers · perimeters that fully fill the 3.0 mm wall · enclosure + heated bed. Fasteners: **M2/M3 brass heat-sets** (no self-tappers) + an M5×0.8 GoPro thumbscrew. Full step-by-step in [`BUILD.md`](BUILD.md).
 
