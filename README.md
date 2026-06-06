@@ -124,11 +124,13 @@ This is not a hobby gamble. Every critical path is calculated, and **honestly sp
 <img src="renders/sender_turn.gif" alt="The finished sender turning — lens to the viewer" width="46%">
 </div>
 
-**① 3D-print** (verified watertight STLs) → **② prep components** → **③ assembly stack** (antenna → VTX flat → camera → cover) → **④ wiring & power** (MOSFET fan control, conformal coating) → **⑤ fit tests A–F**. Full step-by-step in [`BUILD.md`](BUILD.md).
+**Two builds, one idea — pick yours:** **Gen 1 · MK2** (simplest & most robust — 3 PETG parts, the proven first build) or **Gen 2 · v5** (dual-antenna, flush — 7 ASA parts, holds the link in any orientation). Each gets its **own chronological step-by-step plan** — print → prep → assemble (in order) → wire & power → fit tests — in **[`BUILD.md`](BUILD.md)**.
 
 ---
 
-## The printed parts & how the housing assembles
+## The printed parts & how the housing assembles — Gen 2 · v5
+
+*(This is the 7-part Gen 2 build. Prefer the simpler **Gen 1 · MK2** — 3 PETG parts? Its own plan is in [`BUILD.md`](BUILD.md).)*
 
 <div align="center">
 <img src="renders/print_parts.svg" alt="Exploded view of the seven printed parts — cover, antenna module, electronics sled, body, battery tray, side door, antenna shell — with their roles and the seven-step assembly sequence." width="100%">

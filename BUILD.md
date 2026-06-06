@@ -1,96 +1,101 @@
-<!-- Teil des SkyDive·Live Showcase — siehe README.md -->
+<!-- Part of the SkyDive·Live showcase — see README.md -->
 
-# 🔧 SkyDive·Live — Schritt-für-Schritt-Bauanleitung (Sender)
+# 🔧 Build SkyDive·Live — two builds, pick yours
 
-*Stand: CAD-Verifikation abgeschlossen (9/9 ✓, 2026-06-01) — Geometrie watertight & kollisionsfrei. Der erste Kalibrierdruck und die Passungstests A–F sind der geplante nächste Schritt.*
+There are **two ways to build the sender.** They share the same idea — the jumper's POV, live to the drop zone — but they're tuned for different flying. Pick the one that fits you, then follow its step‑by‑step plan below.
 
----
+> *Status: CAD verified (watertight, 0 collisions, fastening checked). The first calibration print and the fit tests are the planned next step — calculated vs. to‑be‑measured is called out honestly.*
 
-## 1. 3D-Druck des Gehäuses
+## Which build?
 
-### 1.1 Druckteile
-
-| Datei (`housing_out_mk2/`) | Bounding Box | Volumen | Orientierung |
-|---|---|---|---|
-| `mk2_body.stl` | 78 × 63 × 69 mm | 59,7 cm³ | offener Top nach oben, auf den GoPro-Fingern |
-| `mk2_cover.stl` | 78 × 56 × 3 mm | 12,8 cm³ | flach, Außenseite unten |
-| `mk2_tray.stl` | 34 × 30 × 50 mm | 11,0 cm³ | flach, Türplatte unten |
-
-### 1.2 Druckeinstellungen (PETG, Iteration 1)
-
-| Parameter | Wert | | Parameter | Wert |
-|---|---|---|---|---|
-| Düse | 0,4 mm | | Düsentemp | ~240 °C |
-| Schichthöhe | 0,2 mm | | Betttemp | ~80 °C |
-| Perimeter | 4 | | Lüfter | 30–50 % (1. Schicht 0 %) |
-| Infill | 30–40 % Gyroid | | Speed | 40–50 mm/s · Brim 5 mm |
-
-**Support:** Touching-Buildplate unter Boden + Linsen-Nase (Baum-Support). Standoffs, Hitzewand, Lokatoren drucken senkrecht ohne Stütze. **Warum PETG:** schlagfest, leicht druckbar, ausreichend wärmebeständig (PETG-CF/ASA werden für MK3 evaluiert).
-
-### 1.3 Nacharbeit
-
-1. Support entfernen (Boden + Linsen-Nase).
-2. **Radom-Fläche** (Bodenmitte, 1,2 mm) leicht planschleifen — die 1,2 mm müssen erhalten bleiben (HF-transparent bei 5,8 GHz).
-3. **5× M3-Heat-Set-Inserts** einschmelzen (~200 °C): 4× Cover-Bosse, 1× Tray-Riegel.
-4. Bohrungen/Schlitze entgraten.
-
-> Plane einen **Kalibrierdruck** ein (PETG schrumpft/quillt 0,1–0,3 mm). Finalen Satz erst drucken, wenn Tests A–F sitzen.
-
----
-
-## 2. Bauteile vorbereiten
-
-| Bauteil | Maß | Vorbereitung |
+| | **Gen 1 · MK2 — The Foundation** | **Gen 2 · v5 — Never lose the image** |
 |---|---|---|
-| HDZero Freestyle V2 VTX | 29 × 30 × 14 mm | Stock-Heatsink bleibt drauf |
-| HDZero Micro V3 Kamera | 19 × 19 × 24 mm | M12-Linse + Fokus, Anti-Fog |
-| MIPI-Kabel | 80 mm, 20-Pin FFC | ESD-Erdband |
-| 3S-LiPo + BMS | 24 × 14 × 46 mm | BMS 3,0-V-Cutoff, JST-XH-4P |
-| Patch-Antenne | 35 × 35 × 3 mm | 13 × 6 mm Hinterkante ausschneiden → NanoVNA: S11 < −10 dB @ 5,8 GHz |
-| Sunon-Lüfter | 25 × 25 × 10 mm | Leichtgängigkeit prüfen |
-| AO3401 MOSFET | SOT-23-3 | auf Lochraster, 10 kΩ Pull-up |
+| **Its strength** | **Simplest, most robust, proven.** Fewest parts, forgiving material — the best first build and proof‑of‑concept. | **Holds the link in any orientation.** Dual antenna (patch + dipole + RF switch) keeps the picture even head‑first; flush, compact, all‑day swap. |
+| **Best for** | belly‑fly, learning, a dependable first unit | freefly / competition (sit, head‑down, back), media |
+| **Printed parts** | 3 (body, cover, tray) | 7 (body, cover, sled, antenna module, antenna shell, tray, door) |
+| **Material** | PETG (impact‑tough, easy) | ASA (heat‑stable) · +0.8 % shrink |
+| **Antenna** | single down‑facing patch | patch (down) **+** λ/2 dipole (up), switched |
+| **Envelope** | 78 × 63 × 69 mm | 57 × 38 × 51 mm (−66 % volume) |
+| **Difficulty** | ⭐ easier | ⭐⭐ more involved |
+
+STLs for both are on the **[v1.0 release](../../releases/tag/v1.0)**. Full bill of materials: **[`BOM.md`](BOM.md)**.
 
 ---
 
-## 3. Montagereihenfolge (zwingend — spätere Teile sonst unerreichbar)
+# Build A — Gen 1 · MK2 *"The Foundation"*
 
-<p align="center"><img src="renders/assembly.gif" width="55%" alt="Montage-Sequenz"></p>
+> **Why this one:** the fewest parts, printed in forgiving PETG. It's the dependable first build — get the whole live loop working end‑to‑end before you commit to the compact freefly version.
 
-1. **Patch-Antenne** in die Bodenwanne (`Pos 9,6,−26`), U.FL einrasten + Heißkleber, Pigtail durch Ø-4,4-Kanal nach oben. *Zuerst, weil der VTX-Stack später den Zugang versperrt.*
-2. **VTX flach** auf die 2 hinteren M2-Standoffs (M2×5, self-tapping). Heatsink + Wärmeleitpad. *Flach, weil 29 & 30 mm Board-Maße nur über die 14-mm-Dicke in Z passen (DD-001).*
-3. **Schalter** SS-12D00G in den +X-Schlitz, **MOSFET-Platine** daneben heißkleben.
-4. **Kamera** Push-Fit in 4 Lokator-Rippen, Linse durch Ø-14-Nase. *Schneller Feldtausch, vibrationsfest ohne Schraube.*
-5. **Cover**: Schaumpad auf Lüfter (klemmt VTX-Stack), 2× M2 Lüfter, 4× M3 Cover.
-
----
-
-## 4. Verkabelung & Strom
-
-1. **MIPI** Kamera↔VTX (ESD, Slack über die Hitzewand, Heißkleber an beiden Steckern).
-2. **U.FL-Pigtail** Patch→VTX einrasten + Heißkleber.
-3. **Power** 2× 60 mm AWG-26 V+/V− → AO3401 (Drain), Sternpunkt-Masse.
-4. **Schalter** 50 mm AWG-28 Common→Akku-Knoten, Gate→MOSFET (10 kΩ Pull-up).
-5. **Lüfter** 2× 80 mm AWG-26.
-6. **Conformal Coating** auf alle Lötstellen (Gehäuse ist belüftet, nicht versiegelt — Coating schützt gegen Wolkenfeuchte).
-7. **Akku-Tray** von −X einschieben, Pogo-Pins ~1,5 mm Mid-Stroke, captive M3-Rändelschraube, **Dyneema-Sicherungsleine** zum Helm.
-
-> ⚠️ LiPo **ausschließlich extern** am Balance-Lader laden — nie eingebaut.
-
----
-
-## 5. Verifikation — Passungstest A–F (nächster Schritt nach dem Kalibrierdruck)
-
-| Test | Prüft | Soll |
+### A1 · Print (3 parts, PETG)
+| File (`Gen1_MK2_STL`) | Bounding box | Orientation |
 |---|---|---|
-| **A** Maßhaltigkeit | Außenhülle / Wand / Radom / Hitzewand | 78×56×57 mm · 3,0 mm · 1,2 mm · 2,0 mm |
-| **B** Cover & Schrauben | 4× M3-Heat-Set bündig, kein Spalt, GORE-Loch frei | — |
-| **C** Akku-Tray *(kritischster Test)* | 5× rein/raus ohne Klemmen, Riegel klickt, 3 Pogo-Pins ~1,5 mm, Verpolschutz | — |
-| **D** VTX/Kamera/Antenne | VTX flach auf 4 Säulen, Kamera fest in Rippen, **Kamera-Lüfter-Spalt > 2 mm** (MK1-Engpass, in MK2 +6 mm gelöst), Patch-NanoVNA | — |
-| **E** Kühlung/Schalter/Mount | NACA-Einlass + 3 Auslässe frei, Schalter versenkt, GoPro-Ø-5-Bohrung, Kabelwege | — |
-| **F** Gesamtmontage | alles ohne Würgen, Tray → LED grün → Bild auf Monitor, Gewicht + Schwerpunkt | — |
+| `MK2_body.stl` | 78 × 63 × 69 mm | open‑top up, on the GoPro fingers |
+| `MK2_cover.stl` | 78 × 56 × 3 mm | flat, outside down |
+| `MK2_tray.stl` | 34 × 30 × 50 mm | flat, door plate down |
 
-**Freigaberegel:** Erst wenn **A–F** bestehen, wird der finale Satz gedruckt — bei Fehlschlag nur das betroffene Teil korrigieren.
+**Settings:** 0.4 mm nozzle · 0.2 mm layers · 4 perimeters · 30–40 % gyroid infill · ~240 °C / bed ~80 °C · brim 5 mm. **Support** only under the floor + lens nose (tree). **Why PETG:** impact‑tough, easy to print, warm enough for Iteration 1.
+
+**Post‑print:** remove support → lightly face the **radome area** (floor centre, keep the 1.2 mm — it's RF‑transparent at 5.8 GHz) → melt in **5× M3 heat‑set inserts** (4× cover bosses, 1× tray latch) at ~200 °C → deburr. *Do a calibration print first; print the final set only once tests A–F pass.*
+
+### A2 · Prepare components
+HDZero Freestyle V2 VTX (keep the stock heatsink) · HDZero Micro V3 camera (M12 lens + anti‑fog) · 80 mm MIPI FFC · 3S LiPo + BMS · TBS 5G8 patch (trim rear edge → S11 < −10 dB @ 5.8 GHz) · 25 mm Sunon fan · AO3401 MOSFET on protoboard (10 kΩ pull‑up).
+
+### A3 · Assemble — in this order (later parts are otherwise unreachable)
+1. **Patch antenna** into the floor well, click in U.FL + hot‑glue, route the pigtail up. *First — the VTX stack blocks access later.*
+2. **VTX flat** on the two rear M2 standoffs + heatsink/thermal pad. *Flat because the 29 & 30 mm board only fits via its 14 mm thickness in Z.*
+3. **Switch** into the +X slot; hot‑glue the **MOSFET board** beside it.
+4. **Camera** push‑fit into the 4 locator ribs, lens through the Ø14 nose. *Tool‑free field swap.*
+5. **Cover**: foam pad on the fan (preloads the VTX stack), 2× M2 fan, 4× M3 cover.
+
+### A4 · Wire & power
+MIPI camera↔VTX (ESD, slack over the heat‑wall) → U.FL patch→VTX → power V+/V− through the AO3401 (star ground) → switch to gate (10 kΩ pull‑up) → fan → **conformal‑coat every joint** (vented, not sealed) → slide the **battery tray** in from −X, captive M3 thumbscrew + Dyneema tether. **⚠️ Charge the LiPo externally only.**
+
+### A5 · Fit tests A–F (next step after the calibration print)
+**A** dimensions · **B** cover + 4× M3 flush, GORE hole clear · **C** tray 5× in/out without binding, latch clicks, polarity guard *(most critical)* · **D** VTX flat, camera firm, **camera‑fan gap > 2 mm**, patch S11 · **E** NACA inlet + outlets clear, switch recessed, GoPro Ø5, cable runs · **F** full assembly, tray → green LED → picture on the monitor, weight + CG.
+**Release rule:** print the final set only when A–F pass; on a fail, fix only the affected part.
 
 ---
 
-*Abgenommen im CAD: 3× watertight, 0 Kollisionen, Wandstärke min 0,95 mm, Bauteilmaße gegen reale Werte. Offen (nächster Schritt): Passungstests, Thermik-Messung am VTX, Flugtest.*
+# Build B — Gen 2 · v5 *"Never lose the image"*
+
+> **Why this one:** a body is a shadow — go head‑first and your own body blocks a single antenna. v5 carries **two** (a patch looking down, a dipole up top) and an **RF switch** that picks the better one live. Flush, compact, tool‑free battery swap. This is the freefly / competition build.
+
+### B1 · Print (7 parts, ASA)
+| File (`Gen2_v5_STL`) | Role | Print note |
+|---|---|---|
+| `…_body.stl` | main shell · integral heat‑wall · side door · flat GoPro mount | open‑top up · tree‑support under the 2 GoPro fingers |
+| `…_cover.stl` | top lid · GORE vent · 4× M3 | flat, no support |
+| `…_sled.stl` | carries VTX + camera | no support |
+| `…_module.stl` | antenna module (dipole + RF switch) | minimal |
+| `…_antshell.stl` | bottom shell, down‑facing patch | minimal |
+| `…_tray.stl` | 3S LiPo, slide‑in | no support |
+| `…_door.stl` | side, tool‑free battery door | minimal (hinge) |
+
+**Settings:** ASA · **+0.8 % isotropic shrink** · 0.2 mm layers · perimeters that fully fill the **3.0 mm wall** · enclosure + heated bed + mouse‑ears (ASA warps otherwise). Never PLA (softens < 55 °C). **Heat‑sets:** M2 (VTX, pilot Ø3.2) + M3 (cover, antenna, sled‑lock) — no self‑tappers.
+
+### B2 · Prepare components
+Same VTX + Micro V3 + 3S LiPo as MK2, **plus** the dual‑antenna kit: TBS 5G8 patch (down), a λ/2 **dipole** (up), an **SPDT RF switch** on one U.FL output, a U.FL→RP‑SMA bulkhead pigtail, a **Pyrogel/Polyimide** heat‑shield strip, and a slide switch (SS‑12D00).
+
+### B3 · Assemble — the seven steps
+1. **Heat‑sets** into the body bosses (cover M3, sled‑lock).
+2. **Patch** into the **antenna shell**, mount it under the body.
+3. Load the **battery tray**, slide it into the bottom bay through the side door.
+4. **VTX + camera** onto the **sled**; drop it into the body above the heat‑wall (Pyrogel + 4 mm air gap below); **wire through the heat‑wall feed‑through** (battery → electronics).
+5. **Dipole + RF switch** into the **antenna module** (top).
+6. **Cover** on — 4× M3.
+7. Close the **battery door** (tool‑free).
+
+### B4 · Wire & power
+MIPI camera↔VTX · patch + dipole → **SPDT RF switch → one switched U.FL** into the VTX (no second TX chain, no extra current) · power through the slide switch/MOSFET, star ground · conformal‑coat · GORE vent in the cover · battery pigtail through the heat‑wall feed‑through. **⚠️ Charge LiPos externally; swap a fresh tray between jumps** (thermal + condensation, not capacity).
+
+### B5 · Fit tests
+Same A–F discipline as MK2, **plus**: dipole/RF‑switch continuity, the **flush** antenna module seats with no proud edges, and the **antenna in‑flight position** (the #1 open risk this build addresses) — verify on the test jump.
+
+---
+
+## Shared notes
+
+- **Bill of materials:** [`BOM.md`](BOM.md) (sender, ground station, measurement gear).
+- **Fasteners:** brass heat‑sets (M2/M3), an M5×0.8 GoPro thumbscrew, Loctite 243 (never high‑strength on M2).
+- **Safety / RF:** LiPo charged externally only; conformal coating against cloud moisture; transmit power is regulated — operate under an amateur‑radio Class‑E licence (PMSE short‑term for the championship demo). See [`LICENSE`](LICENSE).
+- **Honest status:** CAD done (watertight, 0 collisions, fastening). Open next: first print, VTX thermal measurement, S11 antenna measurement, test jump. Calculated values are marked as such — no overclaiming.
