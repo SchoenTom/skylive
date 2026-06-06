@@ -54,6 +54,8 @@
 
 ## 3. Montagereihenfolge (zwingend — spätere Teile sonst unerreichbar)
 
+<p align="center"><img src="renders/assembly.gif" width="55%" alt="Montage-Sequenz"></p>
+
 1. **Patch-Antenne** in die Bodenwanne (`Pos 9,6,−26`), U.FL einrasten + Heißkleber, Pigtail durch Ø-4,4-Kanal nach oben. *Zuerst, weil der VTX-Stack später den Zugang versperrt.*
 2. **VTX flach** auf die 2 hinteren M2-Standoffs (M2×5, self-tapping). Heatsink + Wärmeleitpad. *Flach, weil 29 & 30 mm Board-Maße nur über die 14-mm-Dicke in Z passen (DD-001).*
 3. **Schalter** SS-12D00G in den +X-Schlitz, **MOSFET-Platine** daneben heißkleben.

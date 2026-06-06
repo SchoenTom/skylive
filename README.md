@@ -46,6 +46,17 @@ Kamera (MIPI) → VTX 1 W → U.FL → Antenne(n) → ~4 000 m Luft → Boden-An
 
 Die eigentliche Robustheit liegt **am Boden**: der Diversity‑Empfänger wählt automatisch das stärkste von mehreren Antennensignalen — derselbe Ansatz wie professionelle Systeme (Fastrax, Vislink).
 
+### Innenleben
+
+<p align="center">
+  <img src="renders/sender_xray.png" width="46%" alt="Sender — Röntgen-/Innenansicht">
+  <img src="renders/cutaway.png" width="46%" alt="Sender — Querschnitt (XZ)">
+</p>
+
+<p align="center"><sub>Röntgen-Ansicht &amp; bemaßter Querschnitt — jeder Block hat seinen Platz, thermisch und HF-technisch begründet.</sub></p>
+
+> 🧊 **In 3D drehen:** das Modell live im Browser → <a href="https://schoentom.github.io/skydive-live">schoentom.github.io/skydive-live</a> (zusammengebaut ↔ Explosion umschaltbar).
+
 ## Die Zahlen, die zählen → [`ENGINEERING.md`](ENGINEERING.md)
 
 Das hier ist kein Bastel‑Glücksspiel. Jeder kritische Pfad ist durchgerechnet:
@@ -67,11 +78,14 @@ Vollständige Schritt‑für‑Schritt‑Anleitung für den Sender:
 
 **① 3D‑Druck** (PETG, verifizierte STLs) → **② Bauteile vorbereiten** → **③ Montage‑Stack** (Antenne → VTX flach → Kamera → Cover) → **④ Verkabelung & Strom** (MOSFET‑Schaltung, Conformal Coating) → **⑤ Passungstests A–F** (Maß, Tray, Thermik‑Spalt, Gesamtmontage).
 
+<p align="center"><img src="renders/assembly.gif" width="62%" alt="Montage-Animation des Senders"></p>
+<p align="center"><sub>Montage-Sequenz — jeder Schritt einzeln in <a href="BUILD.md"><code>BUILD.md</code></a>.</sub></p>
+
 ## Mehr
 
 - 📋 **[`BOM.md`](BOM.md)** — vollständige Stückliste (Sender, Bodenstation, Messtechnik)
 - 🎞 **Pitch‑Decks** — [DE](decks/pitch_DE.html) · [EN](decks/pitch_EN.html) (self‑contained, mit 3D‑Viewer)
-- 🧊 **[3D‑Konzeptmodell](models/concept.glb)** (GLB) — der MK3‑Stack
+- 🧊 **3D‑Modelle** (GLB): [Sender](models/sender_assembled.glb) · [Explosion](models/sender_exploded.glb) · [Bodenstation](models/groundstation.glb) — oder **[live in 3D drehen](https://schoentom.github.io/skydive-live)**
 
 ## Ehrliche Einordnung
 

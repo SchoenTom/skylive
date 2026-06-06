@@ -5,15 +5,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SkyDive·Live — 3D</title>
 <meta property="og:title" content="SkyDive·Live — HDZero 1W Live-Stream Sender">
-<meta property="og:description" content="Der Blick des Springers aus 4000 m, live auf den Bildschirm an der Landezone. Interaktives 3D-Konzeptmodell.">
+<meta property="og:description" content="Der Blick des Springers aus 4000 m, live auf den Bildschirm an der Landezone. Interaktives 3D-Modell.">
 <meta property="og:image" content="og.png">
 <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
 <style>
   :root{ --void:#050810; --ink:#f0f4ff; --dim:#8ba4c8; --teal:#00c6ff; }
-  *{ box-sizing:border-box; margin:0; }
+  *{ box-sizing:border-box; margin:0; -webkit-tap-highlight-color:transparent; }
   body{ min-height:100dvh; background:var(--void); color:var(--ink);
-    font-family:-apple-system,system-ui,sans-serif; overflow:hidden;
-    display:flex; flex-direction:column; }
+    font-family:-apple-system,system-ui,sans-serif; overflow:hidden; display:flex; flex-direction:column; }
   body::before{ content:""; position:fixed; inset:0; z-index:0; pointer-events:none;
     background:
       radial-gradient(ellipse 80% 60% at 20% 10%, rgba(13,74,110,.55), transparent 60%),
@@ -22,35 +21,47 @@
       radial-gradient(ellipse 70% 50% at 10% 80%, rgba(16,217,142,.15), transparent 50%);
     animation:shift 20s ease-in-out infinite alternate; }
   @keyframes shift{ 50%{ transform:scale(1.06) translate(10px,-8px);} }
-  header{ position:relative; z-index:2; text-align:center; padding:26px 18px 6px; }
+  header{ position:relative; z-index:2; text-align:center; padding:24px 18px 4px; }
   .brand{ font-size:22px; font-weight:700; letter-spacing:.3px; }
   .brand .live{ color:var(--teal); text-shadow:0 0 16px rgba(0,198,255,.7); }
   .tag{ color:var(--dim); font-size:13.5px; margin-top:6px; }
-  model-viewer{ position:relative; z-index:1; flex:1; width:100%;
-    --poster-color:transparent; background:transparent; }
-  .hint{ position:relative; z-index:2; text-align:center; color:var(--dim); font-size:12px; padding:6px 0 4px; }
-  footer{ position:relative; z-index:2; text-align:center; padding:10px 0 calc(16px + env(safe-area-inset-bottom)); }
+  model-viewer{ position:relative; z-index:1; flex:1; width:100%; background:transparent; }
+  .toggle{ position:relative; z-index:2; display:flex; gap:8px; justify-content:center; padding:6px 0 2px; }
+  .toggle button{ border:1px solid rgba(0,198,255,.28); background:rgba(0,198,255,.07); color:var(--dim);
+    font-size:13px; font-weight:600; padding:9px 18px; border-radius:11px; cursor:pointer; transition:.15s; }
+  .toggle button.on{ color:#001018; background:linear-gradient(135deg,#00d4ff,#0090e0); border-color:transparent; }
+  .hint{ position:relative; z-index:2; text-align:center; color:var(--dim); font-size:12px; padding:4px 0; }
+  footer{ position:relative; z-index:2; text-align:center; padding:8px 0 calc(16px + env(safe-area-inset-bottom)); }
   footer a{ color:var(--teal); text-decoration:none; font-size:14px; font-weight:600;
-    border:1px solid rgba(0,198,255,.3); padding:9px 18px; border-radius:12px;
-    background:rgba(0,198,255,.08); }
+    border:1px solid rgba(0,198,255,.3); padding:9px 18px; border-radius:12px; background:rgba(0,198,255,.08); }
 </style>
 </head>
 <body>
   <header>
     <div class="brand">SkyDive·<span class="live">Live</span></div>
-    <div class="tag">HDZero 1 W Live-Stream Sender — MK3-Konzept, interaktiv</div>
+    <div class="tag">HDZero 1 W Live-Stream Sender — MK3, interaktiv in 3D</div>
   </header>
 
-  <model-viewer
-    src="concept.glb"
+  <model-viewer id="mv"
+    src="sender_assembled.glb"
     alt="SkyDive·Live MK3 Sender — 3D"
     camera-controls auto-rotate auto-rotate-delay="0" rotation-per-second="18deg"
-    shadow-intensity="1" exposure="1.1" environment-image="neutral"
-    camera-orbit="35deg 70deg auto" interaction-prompt="auto"
-    touch-action="pan-y">
+    shadow-intensity="1" exposure="1.05" environment-image="neutral"
+    camera-orbit="35deg 70deg auto" touch-action="pan-y">
   </model-viewer>
 
+  <div class="toggle">
+    <button id="b-asm" class="on">Zusammengebaut</button>
+    <button id="b-exp">Explosion</button>
+  </div>
   <div class="hint">↻ ziehen zum Drehen · scrollen zum Zoomen</div>
   <footer><a href="https://github.com/SchoenTom/skydive-live">→ Projekt, Bauanleitung &amp; die Zahlen</a></footer>
+
+<script>
+  const mv=document.getElementById('mv'), bAsm=document.getElementById('b-asm'), bExp=document.getElementById('b-exp');
+  function set(src, on){ mv.setAttribute('src', src); bAsm.classList.toggle('on', on==='asm'); bExp.classList.toggle('on', on==='exp'); }
+  bAsm.onclick=()=>set('sender_assembled.glb','asm');
+  bExp.onclick=()=>set('sender_exploded.glb','exp');
+</script>
 </body>
 </html>
