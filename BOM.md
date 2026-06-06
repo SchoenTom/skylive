@@ -13,7 +13,7 @@
 | **MIPI-Kabel 80 mm** | 20-Pin FFC, 0,5 mm Raster — Bild + Strom Kamera↔VTX |
 | **3S-LiPo ~850 mAh** (Low-Temp) | ~56×30×23 mm, XT30 + JST-XH, −20 °C tauglich |
 | **3S-BMS, 3,0-V-Cutoff** | Zellenschutz (bewusst 3,0 V statt 2,55 V) |
-| **Patch TBS 5G8 RHCP** | 35×35×6 mm, ~8 dBi — Hauptantenne (Belly) |
+| **Patch TBS 5G8 RHCP** | 35×35×6 mm, ~5 dBi · 110° — Hauptantenne (Belly) |
 | **Schiebeschalter SS-12D00G** | schaltet nur das Gate, nie den Laststrom |
 | **MOSFET AO3401A** | P-Channel SOT-23, trägt 1,35 A |
 | **ATtiny412 + NTC 10 kΩ** | Übertemperatur-Cutoff @ 75 °C (Latch-Off) |
@@ -55,6 +55,6 @@
 | Gerät | Zweck |
 |---|---|
 | **LiteVNA-64** (bis 6,3 GHz) | Patch/Dipol S11 @ 5,8 GHz |
-| **tinySA Ultra** | Spektrum + Oberwellen |
+| **tinySA Ultra+ (ZS-406)** (bis 6 GHz) | Spektrum + Oberwellen + EIRP (älterer Ultra endet ~5,4 GHz → unter dem Band) |
 | **Wärmebildkamera / IR** | VTX-Thermik bei 1 W (Gate G1-T) |
 | **Strommesszange** | reale Stromaufnahme |
