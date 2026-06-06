@@ -8,9 +8,9 @@
 [![license](https://img.shields.io/badge/license-CC--BY--4.0-3b82f6?style=for-the-badge)](LICENSE)
 [![CAD](https://img.shields.io/badge/CAD-build123d%20%2F%20Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](#reproduce-the-cad)
 [![live 3D](https://img.shields.io/badge/live-interactive%203D-22d3ee?style=for-the-badge&logo=googlechrome&logoColor=white)](https://schoentom.github.io/skydive-live/)
-[![pitch deck](https://img.shields.io/badge/pitch%20deck-open-ff4081?style=for-the-badge)](decks/pitch_EN.html)
+[![pitch decks](https://img.shields.io/badge/pitch%20decks-tap%20to%20open-ff4081?style=for-the-badge)](https://schoentom.github.io/skydive-live/decks/)
 
-**[▶ Spin it in 3D](https://schoentom.github.io/skydive-live/#model)** · **[Pitch deck](decks/pitch_EN.html)** · **[The numbers](ENGINEERING.md)** · **[Build it](BUILD.md)**
+**[▶ Spin it in 3D](https://schoentom.github.io/skydive-live/#model)** · **[Pitch decks](https://schoentom.github.io/skydive-live/decks/)** · **[The numbers](ENGINEERING.md)** · **[Build it](BUILD.md)**
 
 </div>
 
@@ -175,7 +175,7 @@ Everything is parametric and scriptable:
 - 🧊 **Interactive 3D** — [spin the model in your browser](https://schoentom.github.io/skydive-live/) (assembled ↔ exploded). Source GLBs: [`models/`](models/).
 - 🛠 **Stack** — `build123d` (parametric CAD in Python) · custom build/verify pipeline · RF link-budget · thermal (convection / flat-plate) · regulatory (AFuV / Class E) · DFM for FDM printing.
 - 📋 **[`BOM.md`](BOM.md)** — full bill of materials (sender, ground station, measurement gear).
-- 🎞 **Pitch decks** — [EN](decks/pitch_EN.html) · [DE](decks/pitch_DE.html) (self-contained, with 3D viewer).
+- 🎞 **Pitch decks — tap to open on any device** (phone · tablet · Mac · Windows, nothing to install): **[open the pitches →](https://schoentom.github.io/skydive-live/decks/)**. The flagship is the playable [v5 "never lose the picture"](https://schoentom.github.io/skydive-live/decks/dual_antenna_EN.html) (EN/DE). Each deck also has a **PDF** for offline/email.
 
 ---
 
