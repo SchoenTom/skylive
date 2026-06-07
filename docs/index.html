@@ -585,5 +585,24 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   render(); requestAnimationFrame(tick);
 })();
 </script>
+<script>/* SkyDive·Live model-viewer render-kick fix */
+(function(){
+  function kick(){try{window.dispatchEvent(new Event('resize'));}catch(e){}}
+  function burst(){kick();var n=0,t=setInterval(function(){kick();if(++n>10)clearInterval(t);},220);}
+  function init(){
+    if('IntersectionObserver' in window){
+      var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)burst();});},{threshold:0.04});
+      document.querySelectorAll('model-viewer').forEach(function(mv){io.observe(mv);var s=mv.closest('.slide,section,[data-slide]');if(s)io.observe(s);});
+    }
+    if('MutationObserver' in window){
+      var mo=new MutationObserver(function(m){for(var i=0;i<m.length;i++){var t=m[i].target;if(t.classList&&t.classList.contains('active')&&t.querySelector&&t.querySelector('model-viewer')){burst();break;}}});
+      document.querySelectorAll('.slide,section,[data-slide]').forEach(function(s){mo.observe(s,{attributes:true,attributeFilter:['class']});});
+    }
+    ['keydown','click','touchend','wheel','pointerup'].forEach(function(ev){window.addEventListener(ev,function(){setTimeout(kick,180);setTimeout(kick,500);},{passive:true});});
+    burst();
+  }
+  if(document.readyState==='complete')init();else window.addEventListener('load',init);
+})();
+</script>
 </body>
 </html>
