@@ -56,11 +56,7 @@ Hundreds of iterations distilled into **two purpose-built designs** — a proven
 
 ### ① Gen 1 — MK2 · *The Foundation*
 
-The complete printed system, and the proof the concept holds together. **Self-thinking cooling**: a sensor reads the chip temperature and the fan runs *only when it's hot* — in freefall the ram-air does the work; on the ground it runs on until everything is cool. GoPro form factor, tool-free battery swap, real off-the-shelf RF parts.
-
-<div align="center">
-<img src="renders/cooling.svg" alt="Self-thinking cooling: the fan runs only when the chip is hot; in freefall the ram-air cools it for free, ΔT about 6 K — never on a timer." width="92%">
-</div>
+The complete printed system, and the proof the concept holds together — GoPro form factor, tool-free battery swap, real off-the-shelf RF parts.
 
 ### ② Gen 2 — v5 · *Never lose the image*
 
