@@ -1,17 +1,20 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 520" width="920" height="520" role="img" aria-label="Closing 4 km of sky: link budget from +30 dBm transmit, minus 119.8 dB free-space loss, to a +9 dB margin — with zero-margin reach at 11.6 km.">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 520" width="920" height="520" role="img" aria-label="Closing 4 km of sky: from +30 dBm transmit and +18 dB antenna gain, minus 119.8 dB free-space loss and 5 dB cable plus polarisation, to a +13.2 dB belly margin against a conservative −90 dBm threshold. The signal only strengthens as the jumper descends toward the ground station.">
 <defs>
   <linearGradient id="air" x1="0" y1="0" x2="0" y2="1">
     <stop offset="0" stop-color="#0a1430"/><stop offset=".5" stop-color="#163a5e"/><stop offset=".8" stop-color="#1d6b6f"/><stop offset="1" stop-color="#2f5d36"/></linearGradient>
   <linearGradient id="bgg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0c1320"/><stop offset="1" stop-color="#0a0e16"/></linearGradient>
+  <linearGradient id="beam" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#22d3ee" stop-opacity=".15"/><stop offset="1" stop-color="#22d3ee" stop-opacity=".7"/></linearGradient>
   <style>
     .mono{font-family:ui-monospace,"SF Mono",Menlo,monospace}
     .sans{font-family:-apple-system,"Segoe UI",Roboto,sans-serif}
-    @keyframes fall{0%{transform:translateY(0);opacity:0}8%{opacity:1}92%{opacity:1}100%{transform:translateY(330px);opacity:0}}
-    @keyframes pulse{0%,100%{opacity:.5}50%{opacity:1}}
-    @keyframes grow{0%{width:0}70%{width:206px}100%{width:206px}}
-    #packet{animation:fall 4s ease-in infinite}
+    /* jumper falls 4 km → ground; gravity-ish ease-in */
+    @keyframes fall{0%{transform:translateY(0);opacity:0}6%{opacity:1}90%{opacity:1}100%{transform:translateY(338px);opacity:0}}
+    /* signal strength grows in LOCKSTEP with the fall (same timing) — already closed at 4 km, only climbs */
+    @keyframes strength{0%{width:120px}90%{width:206px}100%{width:206px}}
+    @keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+    #jumper{animation:fall 5s ease-in infinite}
+    #mbar{animation:strength 5s ease-in infinite}
     #gs{animation:pulse 1.6s ease-in-out infinite}
-    #mbar{animation:grow 4s ease-out infinite}
   </style>
 </defs>
 <rect width="920" height="520" fill="url(#bgg)"/>
@@ -19,7 +22,6 @@
 
 <!-- altitude column -->
 <rect x="60" y="80" width="150" height="392" rx="12" fill="url(#air)" stroke="rgba(255,255,255,.1)"/>
-<!-- axis ticks -->
 <g class="mono" font-size="11" fill="rgba(255,255,255,.6)">
   <text x="220" y="96">4000 m</text><line x1="60" y1="92" x2="210" y2="92" stroke="rgba(255,255,255,.15)"/>
   <text x="220" y="190">3000</text><line x1="60" y1="186" x2="210" y2="186" stroke="rgba(255,255,255,.1)"/>
@@ -27,30 +29,36 @@
   <text x="220" y="378">1000</text><line x1="60" y1="374" x2="210" y2="374" stroke="rgba(255,255,255,.1)"/>
   <text x="220" y="470">0 m · DZ</text>
 </g>
-<!-- jumper at top -->
-<circle cx="135" cy="108" r="7" fill="#dfe9f2"/><text x="135" y="128" text-anchor="middle" class="mono" font-size="10" fill="#cfe0ec">JUMPER</text>
-<!-- descending signal packet -->
-<g id="packet"><circle cx="135" cy="120" r="5" fill="#22d3ee"/><circle cx="135" cy="120" r="10" fill="#22d3ee" opacity=".3"/></g>
-<!-- ground station -->
+<!-- persistent link beam: jumper → ground station, always connected -->
+<rect x="132" y="112" width="6" height="338" rx="3" fill="url(#beam)"/>
+<!-- ground station (pulses) -->
 <g id="gs"><path d="M120 452 a15 15 0 0 1 30 0" fill="none" stroke="#67e8f9" stroke-width="2.5"/><path d="M112 452 a23 23 0 0 1 46 0" fill="none" stroke="#67e8f9" stroke-width="2" opacity=".5"/><circle cx="135" cy="452" r="5" fill="#67e8f9"/></g>
-
-<!-- ledger -->
-<text x="430" y="110" class="sans" font-size="26" font-weight="800" fill="#f4f7fb">The link, honestly closed.</text>
-<g class="mono" font-size="15">
-  <text x="430" y="158" fill="#aebdce">Transmit power</text><text x="872" y="158" text-anchor="end" fill="#67e8f9">+30 dBm · 1 W</text>
-  <text x="430" y="192" fill="#aebdce">Antenna gains (TX+RX)</text><text x="872" y="192" text-anchor="end" fill="#67e8f9">+10 dB</text>
-  <text x="430" y="226" fill="#aebdce">Free-space loss @ 4 km</text><text x="872" y="226" text-anchor="end" fill="#ef8a7f">− 119.8 dB</text>
-  <text x="430" y="260" fill="#aebdce">Receiver sensitivity</text><text x="872" y="260" text-anchor="end" fill="#67e8f9">− 90 dBm</text>
-  <line x1="430" y1="280" x2="872" y2="280" stroke="rgba(255,255,255,.18)"/>
+<text x="135" y="490" text-anchor="middle" class="mono" font-size="10" fill="#67e8f9">GROUND RX</text>
+<!-- jumper: descends the whole 4 km, link held all the way -->
+<g id="jumper">
+  <circle cx="135" cy="112" r="11" fill="#22d3ee" opacity=".25"/>
+  <circle cx="135" cy="112" r="6" fill="#eaf6fb"/>
+  <text x="135" y="98" text-anchor="middle" class="mono" font-size="10" fill="#cfe0ec">JUMPER · LIVE</text>
 </g>
-<text x="430" y="324" class="sans" font-size="20" font-weight="800" fill="#f4f7fb">Margin <tspan fill="#22d3ee">+9 dB</tspan></text>
+
+<!-- ledger (honest, from ENGINEERING.md) -->
+<text x="430" y="104" class="sans" font-size="26" font-weight="800" fill="#f4f7fb">The link, honestly closed.</text>
+<g class="mono" font-size="14.5">
+  <text x="430" y="146" fill="#aebdce">Transmit power</text><text x="872" y="146" text-anchor="end" fill="#67e8f9">+30 dBm · 1 W</text>
+  <text x="430" y="176" fill="#aebdce">Antenna gain (TX +5 · RX +13)</text><text x="872" y="176" text-anchor="end" fill="#67e8f9">+18 dB</text>
+  <text x="430" y="206" fill="#aebdce">Free-space loss @ 4 km</text><text x="872" y="206" text-anchor="end" fill="#ef8a7f">− 119.8 dB</text>
+  <text x="430" y="236" fill="#aebdce">Cable + polarisation</text><text x="872" y="236" text-anchor="end" fill="#ef8a7f">− 5 dB</text>
+  <text x="430" y="266" fill="#aebdce">Image threshold (conservative)</text><text x="872" y="266" text-anchor="end" fill="#67e8f9">− 90 dBm</text>
+  <line x1="430" y1="286" x2="872" y2="286" stroke="rgba(255,255,255,.18)"/>
+</g>
+<text x="430" y="324" class="sans" font-size="20" font-weight="800" fill="#f4f7fb">Margin <tspan fill="#22d3ee">+13.2 dB</tspan> <tspan class="mono" font-size="13" font-weight="400" fill="#7186a0">belly @ 4 km</tspan></text>
 <rect x="430" y="338" width="206" height="14" rx="7" fill="rgba(255,255,255,.1)"/>
 <rect id="mbar" x="430" y="338" width="206" height="14" rx="7" fill="#22d3ee"/>
-<text x="650" y="350" class="mono" font-size="13" fill="#9fc4e2">comfortable</text>
-<!-- headroom note -->
+<text x="650" y="350" class="mono" font-size="13" fill="#9fc4e2">stronger as he falls</text>
+<!-- honest head-down note (the real 'never lose the image' story) -->
 <g class="mono" font-size="13" fill="#7186a0">
-  <text x="430" y="400">Zero-margin reach ≈ <tspan fill="#cfe0ec">11.6 km</tspan></text>
-  <text x="430" y="424">— 2.9× higher than we ask of it.</text>
-  <text x="430" y="448" fill="#5a6b82">All values calculated (Friis / worst-case attitude).</text>
+  <text x="430" y="394">Head-down is the hard case → <tspan fill="#ef8a7f">−13.8 dB</tspan>.</text>
+  <text x="430" y="416"><tspan fill="#cfe0ec">Dual antenna + ground diversity</tspan> → <tspan fill="#9fe8b0">+2.0 dB</tspan>. Link holds.</text>
+  <text x="430" y="440" fill="#5a6b82">Calculated in ENGINEERING.md — Friis, −90 dBm threshold.</text>
 </g>
 </svg>

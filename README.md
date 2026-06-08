@@ -96,15 +96,15 @@ Every block has its place — justified thermally and by RF. **Colour = componen
 This is not a hobby gamble. Every critical path is calculated, and **honestly split into *calculated* vs *to-be-measured*.**
 
 <div align="center">
-<img src="renders/closing_4km.svg" alt="Link budget: +30 dBm transmit, +10 dB antenna gains, −119.8 dB free-space loss at 4 km, −90 dBm receiver sensitivity → +9 dB margin. Zero-margin reach ≈ 11.6 km." width="100%">
+<img src="renders/closing_4km.svg" alt="Link budget: +30 dBm transmit, +18 dB antenna gain, −119.8 dB free-space loss at 4 km, −5 dB cable and polarisation, −90 dBm threshold → +13.2 dB belly margin; head-down recovered to +2.0 dB by the dual antenna." width="100%">
 </div>
 
 | | value | |
 |---|---|---|
 | 📡 **Transmit power** | +30 dBm (1 W) — well under the 5 W Class-E limit | compliant |
 | 📡 **Free-space loss @ 4 km** | 119.8 dB (5.8 GHz, Friis) | ✅ derived |
-| 📡 **Link margin @ 4 km** | **+9 dB** (worst-case omni TX, unfavourable attitude) | calculated |
-| 📡 **Zero-margin range** | ≈ 11.6 km — so 4 km is deliberately conservative | calculated |
+| 📡 **Link margin @ 4 km** | **+13.2 dB** belly · **+2.0 dB** head-down with the dual antenna | calculated |
+| 📡 **Zero-margin range** | belly ≈ 18 km — so 4 km is deliberately conservative | calculated |
 | 🌡 **Thermals in freefall** | ΔT **≈ 6 K** — ram-air convection carries the VTX heat | calculated |
 | 🔋 **Runtime** | ~40 min theoretical / ~32 min practical | dimensioned |
 | ⚖️ **Sender mass** | ~200–250 g | dimensioned |
