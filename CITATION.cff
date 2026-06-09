@@ -1,0 +1,19 @@
+cff-version: 1.2.0
+message: "If you build on this work (link budget, thermal model, dual-antenna concept, CAD), please cite it."
+title: "SkyDive·Live — a 1 W HDZero live-stream transmitter for skydiving"
+type: software
+authors:
+  - family-names: "Schoen"
+    given-names: "Tom"
+    alias: "SchoenTom"
+repository-code: "https://github.com/SchoenTom/skydive-live"
+url: "https://schoentom.github.io/skydive-live/"
+license: CC-BY-4.0
+keywords:
+  - skydiving
+  - FPV
+  - HDZero
+  - link-budget
+  - antenna-diversity
+  - open-hardware
+abstract: "Open engineering showcase of a helmet-mounted 1 W digital FPV live-video transmitter (GoPro form factor, dual antenna against head-down body shadowing) and a diversity ground station, targeting live freefall video on the drop-zone screen. Includes the full link budget with calculated-vs-measured separation, thermal model, regulatory path (PMSE), parametric CAD (build123d), and an open validation plan."
