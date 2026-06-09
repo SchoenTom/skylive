@@ -57,9 +57,10 @@
 <text x="650" y="350" class="mono" font-size="13" fill="#9fc4e2">stronger as he falls</text>
 <!-- honest head-down note (the real 'never lose the image' story) -->
 <g class="mono" font-size="13" fill="#7186a0">
-  <text x="430" y="388">Side patch → belly depends on heading. Worst heading: <tspan fill="#9fe8b0">≈ +2 dB</tspan> via the dipole.</text>
-  <text x="430" y="410">Head-down: <tspan fill="#cfe0ec">the dipole rides the threshold</tspan> (<tspan fill="#edab28">≈ −2 dB calc</tspan>) — fluctuating, not dead.</text>
-  <text x="430" y="434" fill="#5a6b82">Recalculated 2026-06 for the v5 side-patch geometry — assumptions in ENGINEERING.md.</text>
-  <text x="430" y="456" fill="#5a6b82">Next gate: turntable pattern of the assembled sender @ 25 mW.</text>
+  <text x="430" y="384">Side patch → belly margin depends on heading.</text>
+  <text x="430" y="406">Worst heading <tspan fill="#9fe8b0">≈ +2 dB</tspan> — <tspan fill="#cfe0ec">the dipole takes over</tspan>.</text>
+  <text x="430" y="428">Head-down rides the threshold (<tspan fill="#edab28">≈ −2 dB calc</tspan>).</text>
+  <text x="430" y="450" fill="#5a6b82">Re-run 2026-06 for the v5 side-patch — ENGINEERING.md.</text>
+  <text x="430" y="470" fill="#5a6b82">Next gate: turntable pattern @ 25 mW.</text>
 </g>
 </svg>
