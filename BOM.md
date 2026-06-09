@@ -1,60 +1,60 @@
-<!-- Teil des SkyDive·Live Showcase — siehe README.md -->
+<!-- Part of the SkyDive·Live showcase — see README.md -->
 
-# 🧩 SkyDive·Live — Stückliste (BOM)
+# 🧩 SkyDive·Live — Bill of materials (BOM)
 
-*Komponentenebene, Konzept-/Prototyp-Stand. Bezugsquellen & Preise bewusst nicht öffentlich.*
+*Component level, concept/prototype state. Vendors & prices deliberately not public.*
 
-## Sender — Elektronik & Funk
+## Sender — electronics & RF
 
-| Komponente | Spec / Rolle |
+| component | spec / role |
 |---|---|
-| **HDZero Freestyle V2 VTX** | 5,8 GHz, 1 W, MIPI-In, U.FL-Out, 7–25 V, 30×29×14 mm — Herzstück |
-| **HDZero Micro V3 Kamera** | 19×19×24 mm, MIPI 20-Pin FFC — wird über MIPI vom VTX gespeist |
-| **MIPI-Kabel 80 mm** | 20-Pin FFC, 0,5 mm Raster — Bild + Strom Kamera↔VTX |
-| **3S-LiPo ~850 mAh** (Low-Temp) | ~56×30×23 mm, XT30 + JST-XH, −20 °C tauglich |
-| **3S-BMS, 3,0-V-Cutoff** | Zellenschutz (bewusst 3,0 V statt 2,55 V) |
-| **Patch TBS 5G8 RHCP** | 35×35×6 mm, ~5 dBi · 110° — Hauptantenne (Belly) |
-| **Schiebeschalter SS-12D00G** | schaltet nur das Gate, nie den Laststrom |
-| **MOSFET AO3401A** | P-Channel SOT-23, trägt 1,35 A |
-| **ATtiny412 + NTC 10 kΩ** | Übertemperatur-Cutoff @ 75 °C (Latch-Off) |
-| **5-V-Buck/BEC** | versorgt ATtiny/Lüfter (3S direkt würde ATtiny zerstören) |
-| **Sunon GM0502PFV1** | 25×25×10 mm, ~3,5 CFM — aktives Kühlkonzept (MK2-Kanal) |
-| **Wärmeleitpad Arctic TP-3** | ~6 W/mK — koppelt VTX an Alu-Außenwand (lüfterlos, v5) |
-| **SPDT-RF-Switch** | DC–6 GHz — schaltet Patch ↔ Dipol (v5-Modul) |
-| **λ/2-Dipol 5,8 GHz** | ~26 mm, U.FL — Zweitantenne Head-down (v5) |
-| **U.FL-Pigtail RG178** | U.FL→RP-SMA-Bulkhead |
+| **HDZero Freestyle V2 VTX** | 5.8 GHz, 1 W, MIPI in, U.FL out, 7–25 V, 30×29×14 mm — the heart |
+| **HDZero Micro V3 camera** | 19×19×24 mm, MIPI 20-pin FFC — powered by the VTX over MIPI |
+| **MIPI cable 80 mm** | 20-pin FFC, 0.5 mm pitch — video + power, camera↔VTX |
+| **3S LiPo ~850 mAh** (low-temp) | ~56×30×23 mm, XT30 + JST-XH, rated to −20 °C |
+| **3S BMS, 3.0 V cutoff** | cell protection (deliberately 3.0 V instead of 2.55 V) |
+| **Patch TBS 5G8 RHCP** | 35×35×6 mm, ~5 dBi · 110° — primary antenna |
+| **Slide switch SS-12D00G** | switches only the gate, never the load current |
+| **MOSFET AO3401A** | P-channel SOT-23, carries the 1.35 A |
+| **ATtiny412 + 10 kΩ NTC** | over-temperature cutoff @ 75 °C (latch-off) |
+| **5 V buck/BEC** | feeds ATtiny/fan (3S directly would kill the ATtiny) |
+| **Sunon GM0502PFV1** | 25×25×10 mm, ~3.5 CFM — active cooling concept (MK2 duct) |
+| **Thermal pad Arctic TP-3** | ~6 W/mK — couples the VTX to the aluminium outer wall (fanless, v5) |
+| **SPDT RF switch** | DC–6 GHz — selects patch ↔ dipole (v5 module) |
+| **λ/2 dipole 5.8 GHz** | ~26 mm, U.FL — secondary antenna for head-down (v5) |
+| **U.FL pigtail RG178** | U.FL → RP-SMA bulkhead |
 
-## Sender — Gehäuse & Mechanik
+## Sender — housing & mechanics
 
-| Komponente | Rolle |
+| component | role |
 |---|---|
-| **ASA/PETG-Druckteile** | Korpus, Cover, Einschub, RF-Fenster |
-| **Alu-Unterkorpus** (MK4-Ziel) | Struktur, GoPro-Mount, Heatsink-Masse, Ground-Plane |
-| **Heat-Set-Inserts M3/M2** | Cover (4×M3), Tray (1×M3), VTX (M2) |
-| **GoPro-M5-Daumenschraube** | Helm-Montage |
-| **GORE-Druckausgleichmembran** | Druckausgleich ohne Feuchteeintritt |
-| **Pyrogel XT / Polyimid** | Heatshield Akku ↔ VTX |
-| **Dyneema-Lanyard** | FOD-Sicherung Tray → Helm |
-| **Conformal Coating** | Schutz gegen Wolkenfeuchte/Kondensat |
+| **ASA/PETG printed parts** | body, cover, sled, RF window |
+| **Aluminium lower body** (MK4 target) | structure, GoPro mount, heatsink mass, antenna ground plane |
+| **M3/M2 brass heat-set inserts** | cover (4× M3), tray (1× M3), VTX (M2) |
+| **GoPro M5 thumbscrew** | helmet mount |
+| **GORE pressure-equalisation vent** | pressure equalisation without moisture ingress |
+| **Pyrogel XT / polyimide** | heat shield, battery ↔ VTX |
+| **Dyneema lanyard** | FOD retention, tray → helmet |
+| **Conformal coating** | protection against cloud moisture / condensation |
 
-## Bodenstation
+## Ground station
 
-| Komponente | Spec / Rolle |
+| component | spec / role |
 |---|---|
-| **HDZero VRX4** | Diversity-Empfänger, 4× SMA, HDMI-Out — Kern |
-| **TrueRC X²-AIR MkII** (2–3×) | High-Gain-Richt-Patch, nach oben — Hauptlink |
-| **Lumenier AXII 2 LR** (1–2×) | Omni — Nahbereich/Abriss-Auffang |
-| **ezcap273A** | HDMI→microSD-Recorder — garantierter Mitschnitt |
-| **Feldmonitor 1080p** | sonnentaugliches Live-Display |
-| **Glasfaser-HDMI 50–70 m** | zum Public-Viewing-Screen |
-| **LiFePO4 ~300 Wh** | autonome Feldstromversorgung |
-| **Stativ + Antennenmast** | Ausrichtung/Höhe |
+| **HDZero VRX4** | diversity receiver, 4× SMA, HDMI out — the core |
+| **TrueRC X²-AIR MkII** (2–3×) | high-gain directional patch, aimed up — main link |
+| **Lumenier AXII 2 LR** (1–2×) | omni — close range / dropout catch |
+| **ezcap273A** | HDMI → microSD recorder — guaranteed recording |
+| **Field monitor 1080p** | daylight-readable live display |
+| **Fibre-optic HDMI 50–70 m** | to the public-viewing screen |
+| **LiFePO4 ~300 Wh** | autonomous field power |
+| **Tripod + antenna mast** | aiming / height |
 
-## Messtechnik (Prototyp-Validierung)
+## Measurement gear (prototype validation)
 
-| Gerät | Zweck |
+| device | purpose |
 |---|---|
-| **LiteVNA-64** (bis 6,3 GHz) | Patch/Dipol S11 @ 5,8 GHz |
-| **tinySA Ultra+ (ZS-406)** (bis 6 GHz) | Spektrum + Oberwellen + EIRP (älterer Ultra endet ~5,4 GHz → unter dem Band) |
-| **Wärmebildkamera / IR** | VTX-Thermik bei 1 W (Gate G1-T) |
-| **Strommesszange** | reale Stromaufnahme |
+| **LiteVNA-64** (to 6.3 GHz) | patch/dipole S11 @ 5.8 GHz |
+| **tinySA Ultra+ (ZS-406)** (to 6 GHz) | spectrum + harmonics + EIRP (the older Ultra tops out ~5.4 GHz — below the band) |
+| **Thermal camera / IR** | VTX thermals at 1 W (gate G1-T) |
+| **Current clamp** | real current draw |
