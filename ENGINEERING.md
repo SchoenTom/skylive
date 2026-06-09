@@ -102,3 +102,63 @@ Earlier revisions of this file quoted **+13.2 dB belly margin**. That figure was
 | cutoff @ 75 °C | dimensioned + code | ⏳ hardware cycle test |
 
 > **The stance:** calculate first, design with margin, then build and measure — and when a calculation changes, publish the change. Nothing here carries a "measured" badge yet; that is exactly what gates G1–G3 exist for. The next step is the built prototype, not another document.
+
+---
+
+## Appendix A · The worked link-budget chains (so you can check the math)
+
+Everything below follows one formula. Sanity check first: the **old** bottom-patch case was boresight at the ground (G_TX = +5 dBi), polarisation 0 (RHCP→RHCP), body −2 dB → `10.2 + 5 − 0 − 2 = +13.2 dB` — reproducing the previous headline exactly. The chain is unchanged; only the angles moved.
+
+```
+base level (isotropic TX, clear path) = +30 − 3 − 119.8 + 13 = −79.8 dBm
+margin = (−79.8) − (−90) + G_TX(angle) − polarisation − body
+       =  10.2 dB + G_TX(angle) − polarisation − body
+```
+
+**Pattern assumptions (apply everywhere, all [ASSUMPTION] until the turntable):**
+- Side patch: ~5 dBi at boresight, ≈ −4…−5 dB at 45° off-boresight, **front-to-side (90°) −10…−15 dB** (−12 used), back lobe ≤ −12 dB (aluminium ground plane behind it). The *installed* pattern (alu plane + ASA window + edge diffraction) is unmeasured — this is assumption #1 by sensitivity.
+- λ/2 dipole: +2.15 dBi toroid maximum, pattern ∝ sin²(θ from the axis) → −3 dB at 45°, axial null −15…−20 dB. Linear → RHCP ground antenna costs a fixed **−3 dB polarisation**.
+- The aluminium body sitting between the top dipole and a path "through the housing" shadows it by −6…−10 dB (−8 used) — plausibility, not measurement (assumption #3).
+- Body shadow head-down: literature 10–18 dB for a body fully in the path at 5.8 GHz; **−8 dB used centrally** because the helmet is the *lowest* point of a head-down flyer, so the body is mostly above, not in, the downward path (assumption #2, ±5 dB).
+
+**Belly, 4 km slant @ 45°, favourable heading (patch happens to face the station, 45° off-boresight):**
+```
++10.2  base
+ +0.5  G_TX   (5 dBi − 4.5 dB @ 45° off)
+ −1.0  polarisation (axial ratio still good at 45°)
+ −2.0  body/helmet edge
+─────
+ +7.7 dB  🟢
+```
+
+**Belly, same geometry, worst heading (patch faces away — side/back lobe):**
+```
++10.2  base
+ −8.5  G_TX   (5 − 13.5, between side and back lobe)
+ −3.0  polarisation (axial ratio degraded)
+ −4.0  body (head partly in the path)
+─────
+ −5.3 dB  🔴  → the dipole must take over:
++10.2 + 0.5 (sin² mean) − 4.0 (housing in the down-slant path) − 3.0 (pol) − 2.0 (body) = +1.7 dB 🟡
+```
+
+**Belly, directly above the DZ (nadir — azimuth-independent worst angle for a side patch):**
+```
+patch:  +10.2 − 7.0 (90° off-boresight) − 3.0 (pol) − 2.0 (body) = −1.8 dB
+dipole: +10.2 + 2.2 (toroid max points down ✓) − 8.0 (housing shadow) − 3.0 − 2.0 = −0.6 dB
+─────  diversity ≈ −1 dB 🟠 — the new weak spot; the old geometry had +13 here.
+```
+
+**Head-down, station @ 45° elevation (dipole axis ~vertical, θ = 45° → sin² = −3 dB):**
+```
+dipole: +10.2 − 0.9 (2.15 − 3.0 off-axis) − 8.0 (body, central) − 3.0 (pol) = −1.7 dB 🟠
+        band: +1.3 (body −5) … −8.7 (body −15)
+patch:  +10.2 − 8.0 (station 90–135° off-boresight) − 3.0 − 5.0 (legs in path) = −5.8 dB 🔴
+─────  diversity ≈ −2 dB — fluctuating around the threshold, ~15 dB more before total loss.
+```
+
+**Head-down near-nadir:** the dipole's axial null (−15…−20 dB) points at the station → `+10.2 − 14 − 8 − 3 ≈ −15 dB` 🔴 — honestly dead until the geometry changes (it changes within seconds in a real jump).
+
+**Sit / back:** patch in its azimuth lottery (G −2…−9), body −4; dipole horizontal but housing-shadowed downward (−8) → **diversity ≈ 0…+4 dB 🟡** — coarse estimate, no claimed precision.
+
+*Free-space-loss check: `FSPL = 20·log₁₀(4000) + 20·log₁₀(5.8·10⁹) − 147.55 = 119.8 dB`. All scenario values are deliberately quoted to one decimal at most — the assumptions carry ±2.5…±5 dB, and pretending otherwise would be false precision.*

@@ -169,7 +169,7 @@ A monitor on a tripod catches the signal over **two antennas** (omni + direction
 Everything is parametric and scriptable:
 
 - 🧊 **Interactive 3D** — [spin the model in your browser](https://schoentom.github.io/skydive-live/) (assembled ↔ exploded). GLBs ship with the **[v1.0 release](../../releases/tag/v1.0)**.
-- 🛠 **Stack** — `build123d` (parametric CAD in Python) · custom build/verify pipeline · RF link-budget · thermal (convection / flat-plate) · regulatory (AFuV / Class E) · DFM for FDM printing.
+- 🛠 **Stack** — `build123d` (parametric CAD in Python) · custom build/verify pipeline · RF link-budget · thermal (convection / flat-plate) · regulatory (PMSE / SRD / AFuV) · DFM for FDM printing.
 - 📋 **[`BOM.md`](BOM.md)** — full bill of materials (sender, ground station, measurement gear).
 - 🎞 **Pitch decks — tap to open on any device** (phone · tablet · Mac · Windows, nothing to install): **[open the pitches →](https://schoentom.github.io/skydive-live/decks/)**. The flagship is the playable [v5 "never lose the picture"](https://schoentom.github.io/skydive-live/decks/dual_antenna_EN.html) (EN/DE).
 
