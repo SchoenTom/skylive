@@ -12,6 +12,10 @@
 
 **[▶ Spin it in 3D](https://schoentom.github.io/skydive-live/#model)** · **[Pitch decks](https://schoentom.github.io/skydive-live/decks/)** · **[The numbers](ENGINEERING.md)** · **[Build it](BUILD.md)**
 
+<a href="https://schoentom.github.io/skydive-live/#play"><img src="renders/headdown_demo.gif" alt="The live demo playing the hard case: belly — image holds; the jumper goes head-down and the single antenna drops to NO SIGNAL, patch blocked by the body; switch on the second antenna and the dipole takes over — LIVE again, and it stays live as he keeps tumbling." width="88%"></a>
+
+*The moment that kills every single-antenna link — played by the [live demo](https://schoentom.github.io/skydive-live/): head-down → **NO SIGNAL** → the dipole takes over. **▶ Drag the jumper yourself.***
+
 </div>
 
 ---
@@ -62,11 +66,7 @@ The complete printed system, and the proof the concept holds together — GoPro 
 
 **A body is a shadow.** Belly-down (face down), the antenna points cleanly at the ground. Go **head-down** (falling head-first) and the jumper's own body slides between transmitter and ground — a single antenna tears off, right at the most spectacular moment. So Gen 2 carries **two**: a patch flush in the side end-cap and a dipole up top, and an RF switch that picks the better one in real time. Both sit **flush** in the shell — screwed in, no stuck-on bump, no snag risk.
 
-<div align="center">
-<img src="renders/headdown_loop.svg" alt="When the jumper turns head-first, one antenna drops to no signal; the second antenna takes over and the picture holds." width="100%">
-</div>
-
-> 🛰️ **Feel it yourself** — the interactive [dual-antenna demo](https://schoentom.github.io/skydive-live/): rotate the jumper head-down (head-first), watch the single antenna drop to *"NO SIGNAL"*, then switch on the second and watch the link hold.
+> 🛰️ **Feel it yourself** — the interactive [dual-antenna demo](https://schoentom.github.io/skydive-live/) (the GIF at the top is this demo, playing itself): rotate the jumper head-down, watch the single antenna drop to *"NO SIGNAL"*, then switch on the second and watch the link hold.
 
 ---
 
