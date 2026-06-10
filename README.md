@@ -12,7 +12,7 @@
 
 **[▶ Spin it in 3D](https://schoentom.github.io/skydive-live/#model)** · **[Pitch decks](https://schoentom.github.io/skydive-live/decks/)** · **[The numbers](ENGINEERING.md)** · **[Build it](BUILD.md)**
 
-<a href="https://schoentom.github.io/skydive-live/#play"><img src="renders/headdown_demo.gif" alt="The live demo playing the hard case: belly — image holds; the jumper goes head-down and the single antenna drops to NO SIGNAL, patch blocked by the body; switch on the second antenna and the dipole takes over — LIVE again, and it stays live as he keeps tumbling." width="88%"></a>
+<a href="https://schoentom.github.io/skydive-live/#antenna"><img src="renders/headdown_demo.gif" alt="The live demo playing the hard case: belly — image holds; the jumper goes head-down and the single antenna drops to NO SIGNAL, patch blocked by the body; switch on the second antenna and the dipole takes over — LIVE again, and it stays live as he keeps tumbling." width="88%"></a>
 
 *The moment that kills every single-antenna link — played by the [live demo](https://schoentom.github.io/skydive-live/): head-down → **NO SIGNAL** → the dipole takes over. **▶ Drag the jumper yourself.***
 
@@ -52,7 +52,7 @@ Camera (MIPI) → 1 W VTX → U.FL → antenna(s) → ~4 km of air → ground an
 
 ## Two generations. One idea.
 
-Eleven housing generations and hundreds of scripted CAD checks, distilled into **two purpose-built designs** — a proven foundation, and a leap that attacks the one moment that breaks every single-antenna link.
+Eleven housing generations and hundreds of scripted CAD checks, distilled into **two purpose-built designs** — a deliberately simple foundation, and a leap that attacks the one moment that breaks every single-antenna link.
 
 <div align="center">
 <img src="renders/two_generations.png" alt="Two generations side by side: Gen 1 MK2 (the foundation) and Gen 2 v5 (never lose the image)" width="100%">
@@ -81,8 +81,8 @@ Every block has its place — justified thermally and by RF. **Colour = componen
 | | part | what it does | real off-the-shelf part |
 |---|---|---|---|
 | 🟠 **Camera** | the eye | HD wide-angle skydive POV; lens flush through the front wall — nothing protrudes to snag | HDZero Micro V3 |
-| 🟦 **VTX** | the radio heart | turns the picture into a 1 W signal, ~14 ms, reaches 4 km with margin | HDZero Freestyle V2 |
-| 🟩 **Antenna** | the link | patch in the flush side end-cap covers the ground link; RHCP; Gen 2 adds the up-facing dipole | TBS 5G8 RHCP patch |
+| 🟦 **VTX** | the radio heart | turns the picture into a 1 W signal, ~14 ms, sized for 4 km (margin is heading-dependent — see [the numbers](ENGINEERING.md)) | HDZero Freestyle V2 |
+| 🟩 **Antenna** | the link | patch flush in the side end-cap + Gen 2's up-facing dipole — the receiver always rides the stronger one | TBS 5G8 RHCP patch |
 | 🟦 **Battery** | the energy | 3S LiPo in a protected, tool-free swap tray; externally charged | 3S LiPo + BMS |
 
 ---
@@ -120,7 +120,7 @@ This is not a hobby gamble. Every critical path is calculated, and **honestly sp
 <img src="renders/sender_turn.gif" alt="The finished sender turning — lens to the viewer" width="46%">
 </div>
 
-**Two builds, one idea — pick yours:** **Gen 1 · MK2** (simplest & most robust — 3 PETG parts, the proven first build) or **Gen 2 · v5** (dual-antenna, flush — 7 ASA parts, holds the link in any orientation). Each gets its **own chronological step-by-step plan** — print → prep → assemble (in order) → wire & power → fit tests — in **[`BUILD.md`](BUILD.md)**.
+**Two builds, one idea — pick yours:** **Gen 1 · MK2** (simplest & most robust — 3 PETG parts, the natural first build) or **Gen 2 · v5** (dual-antenna, flush — 7 ASA parts, holds the link in any orientation). Each gets its **own chronological step-by-step plan** — print → prep → assemble (in order) → wire & power → fit tests — in **[`BUILD.md`](BUILD.md)**.
 
 ---
 
@@ -132,7 +132,7 @@ This is not a hobby gamble. Every critical path is calculated, and **honestly sp
 <img src="renders/print_parts.png" alt="Exploded view of the seven printed parts — cover, antenna module, electronics sled, body, battery tray, side door, antenna shell — with their roles and the seven-step assembly sequence." width="100%">
 </div>
 
-Seven printed parts (ASA), each **watertight and collision-checked**. **STEP files for SolidWorks** (both builds) + STL + 3MF live in [`cad/`](cad/); printable STLs are also on the **[v1.0 release](../../releases/tag/v1.0)**.
+Seven printed parts (ASA), each **watertight and collision-checked**. **STEP files for SolidWorks** (both builds) + STL + 3MF live in [`cad/`](cad/); printable STLs are also on the **[v1.0 release](https://github.com/SchoenTom/skydive-live/releases/tag/v1.0)**.
 
 | part | role | print note |
 |---|---|---|
@@ -168,7 +168,7 @@ A monitor on a tripod catches the signal over **two antennas** (omni + direction
 
 Everything is parametric and scriptable:
 
-- 🧊 **Interactive 3D** — [spin the model in your browser](https://schoentom.github.io/skydive-live/) (assembled ↔ exploded). GLBs ship with the **[v1.0 release](../../releases/tag/v1.0)**.
+- 🧊 **Interactive 3D** — [spin the model in your browser](https://schoentom.github.io/skydive-live/) (assembled ↔ exploded). GLBs ship with the **[v1.0 release](https://github.com/SchoenTom/skydive-live/releases/tag/v1.0)**.
 - 🛠 **Stack** — `build123d` (parametric CAD in Python) · custom build/verify pipeline · RF link-budget · thermal (convection / flat-plate) · regulatory (PMSE / SRD / AFuV) · DFM for FDM printing.
 - 📋 **[`BOM.md`](BOM.md)** — full bill of materials (sender, ground station, measurement gear).
 - 🎞 **Pitch decks — tap to open on any device** (phone · tablet · Mac · Windows, nothing to install): **[open the pitches →](https://schoentom.github.io/skydive-live/decks/)**. The flagship is the playable [v5 "never lose the picture"](https://schoentom.github.io/skydive-live/decks/dual_antenna_EN.html) (EN/DE).
@@ -190,7 +190,7 @@ Ambitious engineering project **in development** — not a finished product, not
 Nothing here carries a *measured* badge yet — that is the point of what happens next: first print, thermal measurement, antenna pattern on a turntable, then the first test jump.
 
 - ⭐ **Watch / star this repo** — releases will carry the first real measurements and, eventually, the first freefall footage from the system itself.
-- 🔧 **Building one, or flying camera and have opinions?** Open an [issue](../../issues) — helmet-setup input from real jumpers shapes the next housing revision.
+- 🔧 **Building one, or flying camera and have opinions?** Open an [issue](https://github.com/SchoenTom/skydive-live/issues) — helmet-setup input from real jumpers shapes the next housing revision.
 - 🪂 **Drop zone, federation or event?** Reach out via the [GitHub profile](https://github.com/SchoenTom).
 
 ---

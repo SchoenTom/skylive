@@ -374,7 +374,7 @@ h3{font-size:var(--d3);line-height:1.1;font-weight:700;letter-spacing:-.02em}
   <div>
     <div class="eyebrow v" style="--i:0">The link</div>
     <h2 class="v" style="--i:1">The <span class="cy">antenna</span>.</h2>
-    <p class="body v" style="--i:2">Flat patch antenna (35×35) in the floor — beams directionally downward to the drop zone, RHCP for clean reception. Final aim = jump test (our #1 check).</p>
+    <p class="body v" style="--i:2">Flat patch antenna (35×35) flush in the side end-cap — the aluminium body is its ground plane, RHCP for clean reception; the top dipole takes over when the body shadows the patch. Final aim = jump test (our #1 check).</p>
     <div class="v" style="--i:3;margin-top:18px;font-size:var(--small);color:var(--faint)">⬡&nbsp; Real off-the-shelf part — <span style="color:var(--muted)">TBS 5G8 RHCP patch</span> · colour = part ID</div>
   </div>
 </div></section>
@@ -513,7 +513,7 @@ h3{font-size:var(--d3);line-height:1.1;font-weight:700;letter-spacing:-.02em}
     <div class="feat"><div class="k">Training &amp; safety</div><div class="h">Front-row seat</div><div class="p">Instructors &amp; examiners follow student jumps live from the ground.</div></div>
     <div class="feat"><div class="k">Show</div><div class="h">Live attraction</div><div class="p">Freefall as a live image on any event stage.</div></div>
   </div>
-  <p class="body v" style="--i:3;text-align:center;max-width:72ch">The transmitter makes it possible: <span class="cy">4&nbsp;km</span> range with margin · ~14&nbsp;ms — virtually lag-free · GoPro mount · all-day on a swappable battery · <span class="cy">ready</span> in seconds · legal via amateur radio Class&nbsp;E.</p>
+  <p class="body v" style="--i:3;text-align:center;max-width:72ch">The transmitter makes it possible: <span class="cy">4&nbsp;km</span> range with margin · ~14&nbsp;ms — virtually lag-free · GoPro mount · all-day on a swappable battery · <span class="cy">ready</span> in seconds · legally clean via a PMSE short-term assignment (event) or 25 mW SRD (testing).</p>
 </div></section>
 
 <!-- 13 TEIL 2 -->
@@ -777,12 +777,12 @@ RX sensitivity (HDZero) ≈ −90 dBm   →   margin ≈ <span class="res">+9 dB
   <div class="eyebrow v" style="--i:0">Appendix B · Thermal</div>
   <h2 class="v" style="--i:1">Why the VTX <span class="cy">stays cool</span>.</h2>
   <div class="appx v" style="--i:2">
-    <p>Dissipation at 1 W RF (~28 % efficiency, analog 5.8 GHz): Q ≈ 2.5 W.</p>
-    <div class="eq">Ground idle (fan): case over heatsink, R_th ≈ 6 K/W
-ΔT_case ≈ Q · R_th ≈ 2.5 · 6 ≈ 15 K   →   at 25 °C ≈  <span class="res">40 °C</span></div>
-    <div class="eq">Freefall: ram-air dynamic pressure q = ½·ρ·v² = ½·1.2·55² ≈ 1.8 kPa
-→ forced convection h ~ 30 W/m²K → case ≈ ambient (−15 °C at 4000 m)</div>
-    <p>Closed-loop: <b>ATtiny on an NTC</b> (ON 45 / OFF 40 °C), <b>post-landing cooling</b> until &lt; 40 °C. Well under the ~80–105 °C limit. Graceful: HDZero has its own thermal shutdown → a fan failure only throttles the image, no damage.</p>
+    <p>Dissipation at 1 W RF: the VTX really draws ~14–15 W (spec) → <b>Q ≈ 13–14 W of heat</b> — energy conservation allows nothing else (1 W leaves as RF).</p>
+    <div class="eq">Ground idle = the DANGER case: ΔT ≈ 13.5 W · (4–6 K/W) ≈ 55–80 K → marginal
+→ doctrine: power up no earlier than 10 min before exit — the sender starts cold.</div>
+    <div class="eq">Freefall = the rescue: ram-air ≥ 55 m/s → forced convection h ≈ 90 W/m²K
+→ R_th ≈ 0.43 K/W → ΔT ≈ 14 · 0.43 ≈ <span class="res">6 K</span> at −15 °C ambient at 4,000 m</div>
+    <p>Backed in hardware: <b>ATtiny + NTC</b> — fan ON 45 °C · warning 65 °C · <b>VTX cutoff 75 °C</b> (latch-off). Honest: all calculated; measuring Q on the real VTX is the open gate G1-T.</p>
     <div class="src">Method: steady-state balance Q = ṁ·c_p·ΔT + dynamic pressure ½ρv² (freefall ~55 m/s).</div>
   </div>
 </div></section>

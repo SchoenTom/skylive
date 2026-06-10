@@ -382,7 +382,7 @@ h3{font-size:var(--d3);line-height:1.1;font-weight:700;letter-spacing:-.02em}
   <div>
     <div class="eyebrow v" style="--i:0">Die Funkstrecke</div>
     <h2 class="v" style="--i:1">Die <span class="cy">Antenne</span>.</h2>
-    <p class="body v" style="--i:2">Flache Patch-Antenne (35×35) im Gehäuseboden — strahlt gerichtet nach unten zur Drop Zone, RHCP für sauberen Empfang. Finale Ausrichtung = Sprung-Test (unser #1-Prüfpunkt).</p>
+    <p class="body v" style="--i:2">Flache Patch-Antenne (35×35) bündig in der Seiten-Endkappe — der Alu-Korpus ist ihre Ground-Plane, RHCP für sauberen Empfang; der Dipol oben übernimmt, wenn der Körper den Patch abschattet. Finale Ausrichtung = Sprung-Test (unser #1-Prüfpunkt).</p>
     <div class="v" style="--i:3;margin-top:18px;font-size:var(--small);color:var(--faint)">⬡&nbsp; Reales Kaufteil — <span style="color:var(--muted)">TBS 5G8 RHCP Patch</span> · Farbe = Bauteil-Kennung</div>
   </div>
 </div></section>
@@ -525,7 +525,7 @@ h3{font-size:var(--d3);line-height:1.1;font-weight:700;letter-spacing:-.02em}
     <div class="feat"><div class="k">Training &amp; Sicherheit</div><div class="h">Aus erster Reihe</div><div class="p">Ausbilder &amp; Prüfer verfolgen Schüler-Sprünge live vom Boden mit.</div></div>
     <div class="feat"><div class="k">Show</div><div class="h">Live-Attraktion</div><div class="p">Der freie Fall als Live-Bild auf jeder Event-Bühne.</div></div>
   </div>
-  <p class="body v" style="--i:3;text-align:center;max-width:70ch">Möglich macht's der Sender: <span class="cy">4&nbsp;km</span> Reichweite mit Reserve · ~14&nbsp;ms — praktisch verzögerungsfrei · GoPro-Mount · ganztags dank Wechsel-Akku · <span class="cy">sofort</span> einsatzbereit · legal über Amateurfunk Klasse&nbsp;E.</p>
+  <p class="body v" style="--i:3;text-align:center;max-width:70ch">Möglich macht's der Sender: <span class="cy">4&nbsp;km</span> Reichweite mit Reserve · ~14&nbsp;ms — praktisch verzögerungsfrei · GoPro-Mount · ganztags dank Wechsel-Akku · <span class="cy">sofort</span> einsatzbereit · rechtlich sauber über PMSE-Kurzzeitzuteilung (Event) bzw. 25 mW SRD (Tests).</p>
 </div></section>
 
 <!-- 12b VERGLEICH -->
@@ -790,12 +790,12 @@ RX-Empfindlichkeit (HDZero) ≈ −90 dBm   →   Marge ≈ <span class="res">+9
   <div class="eyebrow v" style="--i:0">Appendix B · Thermik</div>
   <h2 class="v" style="--i:1">Warum der VTX <span class="cy">kühl bleibt</span>.</h2>
   <div class="appx v" style="--i:2">
-    <p>Verlustleistung bei 1 W HF (~28 % Wirkungsgrad, analog 5,8 GHz): Q ≈ 2,5 W.</p>
-    <div class="eq">Boden-Idle (Lüfter): Case über Heatsink, R_th ≈ 6 K/W
-ΔT_Case ≈ Q · R_th ≈ 2,5 · 6 ≈ 15 K   →   bei 25 °C ≈  <span class="res">40 °C</span></div>
-    <div class="eq">Freifall: Ram-Air-Staudruck q = ½·ρ·v² = ½·1,2·55² ≈ 1,8 kPa
-→ Zwangskonvektion h ~ 30 W/m²K → Case ≈ Umgebung (−15 °C in 4000 m)</div>
-    <p>Geregelt: <b>ATtiny-Closed-Loop am NTC</b> (AN 45 / AUS 40 °C), <b>Post-Landing-Kühlung</b> bis &lt; 40 °C. Klar unter der ~80–105 °C-Grenze. Graceful: HDZero hat eigene Thermal-Shutdown → Lüfterausfall = nur Bild-Drosselung, kein Defekt.</p>
+    <p>Verlustleistung bei 1 W HF: der VTX zieht real ~14–15 W (Spec) → <b>Q ≈ 13–14 W Wärme</b> — die Energiebilanz lässt nichts anderes zu (1 W geht als HF raus).</p>
+    <div class="eq">Boden-Idle = der GEFAHRENFALL: ΔT ≈ 13,5 W · (4–6 K/W) ≈ 55–80 K → grenzwertig
+→ Doktrin: Einschalten erst ≤ 10 min vor dem Exit — der Sender startet kalt.</div>
+    <div class="eq">Freifall = die Rettung: Fahrtwind ≥ 55 m/s → Zwangskonvektion h ≈ 90 W/m²K
+→ R_th ≈ 0,43 K/W → ΔT ≈ 14 · 0,43 ≈ <span class="res">6 K</span> bei −15 °C Umgebung in 4 000 m</div>
+    <p>Abgesichert in Hardware: <b>ATtiny + NTC</b> — Lüfter AN 45 °C · Warnung 65 °C · <b>VTX-Cutoff 75 °C</b> (Latch-Off). Ehrlich: alles gerechnet, Q-Messung am realen VTX ist das offene Gate G1-T.</p>
     <div class="src">Methodik: stationäre Wärmebilanz Q = ṁ·c_p·ΔT + Staudruck ½ρv² (Freifall ~55 m/s).</div>
   </div>
 </div></section>

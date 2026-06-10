@@ -10,7 +10,7 @@ There are **two ways to build the sender.** They share the same idea — the jum
 
 | | **Gen 1 · MK2 — The Foundation** | **Gen 2 · v5 — Never lose the image** |
 |---|---|---|
-| **Its strength** | **Simplest, most robust, proven.** Fewest parts, forgiving material — the best first build and proof‑of‑concept. | **Holds the link in any orientation.** Dual antenna (patch + dipole + RF switch) keeps the picture even head‑first; flush, compact, all‑day swap. |
+| **Its strength** | **Simplest and most robust.** Fewest parts, forgiving material — the best first build and the concept's proof-of-principle (on paper until the first print). | **Holds the link in any orientation.** Dual antenna (patch + dipole + RF switch) keeps the picture even head‑first; flush, compact, all‑day swap. |
 | **Best for** | belly‑fly, learning, a dependable first unit | freefly / competition (sit, head‑down, back), media |
 | **Printed parts** | 3 (body, cover, tray) | 7 (body, cover, sled, antenna module, antenna shell, tray, door) |
 | **Material** | PETG (impact‑tough, easy) | ASA (heat‑stable) · +0.8 % shrink |

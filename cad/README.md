@@ -20,4 +20,4 @@ Load into any slicer. **ASA**, **+0.8 % isotropic shrink**, 3.0 mm walls, print 
 ### `mk2_foundation/` — Gen 1 · the foundation (3 parts)
 `body` · `cover` · `battery_tray`
 
-**Assembly order:** see [`../BUILD.md`](../BUILD.md). Sources: `mk3_v11_flat_v5.py`, `mk2.py` (parametric build123d).
+**Assembly order:** see [`../BUILD.md`](../BUILD.md). The geometry is generated from parametric `build123d` (Python) sources; the scripts themselves aren't published yet — the released STEP/STL/3MF here are their exact, verified output.

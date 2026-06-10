@@ -29,7 +29,7 @@
 | component | role |
 |---|---|
 | **ASA/PETG printed parts** | body, cover, sled, RF window |
-| **Aluminium lower body** (MK4 target) | structure, GoPro mount, heatsink mass, antenna ground plane |
+| **Aluminium lower body** (planned all-metal generation) | structure, GoPro mount, heatsink mass, antenna ground plane |
 | **M3/M2 brass heat-set inserts** | cover (4× M3), tray (1× M3), VTX (M2) |
 | **GoPro M5 thumbscrew** | helmet mount |
 | **GORE pressure-equalisation vent** | pressure equalisation without moisture ingress |

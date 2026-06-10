@@ -43,7 +43,7 @@ Earlier revisions of this file quoted **+13.2 dB belly margin**. That figure was
 
 ---
 
-## 2 · Thermals — solved by the fall itself
+## 2 · Thermals — the fall itself is the heatsink (calculated)
 
 **Dissipation:** at 1 W RF the VTX draws **~14 W** (HDZero spec 6–15 W) → **Q ≈ 13–14 W of heat** (1 W leaves as RF).
 
