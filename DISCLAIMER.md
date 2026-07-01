@@ -1,6 +1,6 @@
 # ⚠️ Disclaimer — RF, safety, status
 
-**SkyDive·Live** · Copyright (c) 2026 Tom Schoen ([@SchoenTom](https://github.com/SchoenTom)) · Licensed [CC BY 4.0](LICENSE)
+**SkyLive** · Copyright (c) 2026 Tom Schoen ([@SchoenTom](https://github.com/SchoenTom)) · Licensed [CC BY 4.0](LICENSE)
 
 ## Radio / regulatory
 

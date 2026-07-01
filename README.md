@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="renders/hero.png" alt="SkyDive·Live — a 1-watt HDZero live-stream transmitter for skydiving, lens facing the viewer, on a dark telemetry-HUD background" width="100%">
+<img src="renders/hero.png" alt="SkyLive — a 1-watt HDZero live-stream transmitter for skydiving, lens facing the viewer, on a dark telemetry-HUD background" width="100%">
 
 ### Real-time video from freefall — the jumper's POV, live on the screen at the drop zone.
 
@@ -23,12 +23,12 @@
 ## What if the whole drop zone could watch — live?
 
 <div align="center">
-<img src="renders/dot_to_live.svg" alt="Left: what the ground sees today — just a dot in the sky, hunted by a reticle. Right: what SkyDive·Live shows — the freefall POV live on a monitor, same moment, 14 ms." width="100%">
+<img src="renders/dot_to_live.svg" alt="Left: what the ground sees today — just a dot in the sky, hunted by a reticle. Right: what SkyLive shows — the freefall POV live on a monitor, same moment, 14 ms." width="100%">
 </div>
 
 Today, the ground sees only **a dot in the sky**. Spectators, the waiting area, your own team — they follow the jump with the naked eye, and the footage only arrives *after* landing. The moment itself stays invisible.
 
-**SkyDive·Live** puts the jump on the screen **as it happens**. A helmet-mounted transmitter the size of an action cam sends a digital HDZero picture from ~4 km up to a receiver at the landing zone — straight onto the big TV in the waiting area. Its own radio link, no internet, ~14 ms latency. Not a recording. **The present tense.**
+**SkyLive** puts the jump on the screen **as it happens**. A helmet-mounted transmitter the size of an action cam sends a digital HDZero picture from ~4 km up to a receiver at the landing zone — straight onto the big TV in the waiting area. Its own radio link, no internet, ~14 ms latency. Not a recording. **The present tense.**
 
 ```
 Camera (MIPI) → 1 W VTX → U.FL → antenna(s) → ~4 km of air → ground antenna array → diversity RX → HDMI → monitor / public-viewing TV
@@ -39,7 +39,7 @@ Camera (MIPI) → 1 W VTX → U.FL → antenna(s) → ~4 km of air → ground an
 ## What it is, in one picture
 
 <div align="center">
-<img src="renders/gopro_compare.svg" alt="True-to-scale size comparison: the SkyDive·Live sender is the same height as a GoPro and a little narrower" width="100%">
+<img src="renders/gopro_compare.svg" alt="True-to-scale size comparison: the SkyLive sender is the same height as a GoPro and a little narrower" width="100%">
 </div>
 
 ### The signal's journey — helmet to the waiting-room TV
@@ -105,12 +105,12 @@ This is not a hobby gamble. Every critical path is calculated, and **honestly sp
 | 🔋 **Runtime** | ~40 min theoretical / ~32 min practical | dimensioned |
 | ⚖️ **Sender mass** | ~200–250 g | dimensioned |
 
-> **The hard case (head-down — falling head-first)** is identified and attacked at the source: dual antenna at the sender **plus** diversity at the ground — the architecture of the only proven precedent (Corliss/Vislink 2016). The recalculated margins are thinner than the first pass and say *fluctuating link, not dead link*; the turntable pattern measurement of the assembled sender decides it. **No overclaiming** — when our own numbers got worse, we published the worse numbers.
+> **The hard case (head-down — falling head-first)** is identified and attacked at the source: dual antenna at the sender **plus** diversity at the ground — the architecture of the only proven professional precedent (a 2016 1 W COFDM + 4-head MRC diversity system). The recalculated margins are thinner than the first pass and say *fluctuating link, not dead link*; the turntable pattern measurement of the assembled sender decides it. **No overclaiming** — when our own numbers got worse, we published the worse numbers.
 
 ---
 
 <div align="center">
-<img src="renders/latency.svg" alt="Latency: SkyDive·Live ~14 ms — before you blink. The old way is footage seen only after landing. Not a recording, the present tense." width="86%">
+<img src="renders/latency.svg" alt="Latency: SkyLive ~14 ms — before you blink. The old way is footage seen only after landing. Not a recording, the present tense." width="86%">
 </div>
 
 ## Build it yourself → [`BUILD.md`](BUILD.md)

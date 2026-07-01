@@ -1,6 +1,6 @@
-<!-- Part of the SkyDive·Live showcase — see README.md -->
+<!-- Part of the SkyLive showcase — see README.md -->
 
-# 🔧 Build SkyDive·Live — two builds, pick yours
+# 🔧 Build SkyLive — two builds, pick yours
 
 There are **two ways to build the sender.** They share the same idea — the jumper's POV, live to the drop zone — but they're tuned for different flying. Pick the one that fits you, then follow its step‑by‑step plan below.
 

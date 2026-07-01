@@ -1,6 +1,6 @@
-<!-- Part of the SkyDive·Live showcase — see README.md -->
+<!-- Part of the SkyLive showcase — see README.md -->
 
-# 📐 SkyDive·Live — The numbers
+# 📐 SkyLive — The numbers
 
 *This is why the project is not a hobby gamble: every critical path is **calculated, with margin** — and honestly split into what is formula/manufacturer spec and what still has to be **measured** (gates G1–G3). When a calculation changes, the change is documented here, not hidden.*
 
@@ -35,9 +35,9 @@ Earlier revisions of this file quoted **+13.2 dB belly margin**. That figure was
 
 **The one measurement that kills the biggest unknowns:** a turntable pattern sweep of the *fully assembled* sender at 25 mW (licence-free SRD), RSSI logged at the HDZero VRX, both antennas, two cut planes. S11 on the VNA (gate G1-R) is the prerequisite; **S11 ≠ pattern** — the turntable is the real answer.
 
-**If the margins stay thin, four levers (in cost order):** tilt the patch 45° down-and-out inside the end-cap (+5…+8 dB on the red belly rows, pure CAD change) · crossed RHCP turnstile instead of the linear dipole (+3 dB polarisation, fills the axial null) · a tracked high-gain ground dish (+5…+11 dB on *every* row) · a second receive site 200–500 m offset, Corliss/Vislink-style (+5…+10 dB against fades).
+**If the margins stay thin, four levers (in cost order):** tilt the patch 45° down-and-out inside the end-cap (+5…+8 dB on the red belly rows, pure CAD change) · crossed RHCP turnstile instead of the linear dipole (+3 dB polarisation, fills the axial null) · a tracked high-gain ground dish (+5…+11 dB on *every* row) · a second receive site 200–500 m offset, spatial-diversity-style (+5…+10 dB against fades).
 
-**Why head-down breaks a single antenna at all:** patch back-lobe −12 dB + body shadow −15 dB + polarisation −2 dB ≈ **−29 dB**. The answer is architectural, not incremental: two antennas at the sender **plus** diversity at the ground — the same recipe the only proven precedent (Corliss/Vislink 2016: 1 W COFDM + 4-head MRC diversity) used.
+**Why head-down breaks a single antenna at all:** patch back-lobe −12 dB + body shadow −15 dB + polarisation −2 dB ≈ **−29 dB**. The answer is architectural, not incremental: two antennas at the sender **plus** diversity at the ground — the same recipe the only proven professional precedent (a 2016 1 W COFDM + 4-head MRC diversity system) used.
 
 **Harmonics compliance:** ≥ 50 dBc required; the HDZero PA delivers 30–45 dBc → **a low-pass filter is mandatory** (Mini-Circuits LFCW-6000+, −1.6 dB, already in the chain above). Proof needs a ≥ 18 GHz analyzer (gate G1-R, open).
 

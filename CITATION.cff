@@ -1,6 +1,6 @@
 cff-version: 1.2.0
 message: "If you build on this work (link budget, thermal model, dual-antenna concept, CAD), please cite it."
-title: "SkyDive·Live — a 1 W HDZero live-stream transmitter for skydiving"
+title: "SkyLive — a 1 W HDZero live-stream transmitter for skydiving"
 type: software
 authors:
   - family-names: "Schoen"

@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SkyDive·Live — The jump. Live.</title>
+<title>SkyLive — The jump. Live.</title>
 <meta name="description" content="Real-time video from freefall — the jumper's POV, live to the drop zone. A 1-watt HDZero FPV live-stream transmitter for professional skydiving.">
 <meta name="theme-color" content="#0b0d12">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
-<meta property="og:title" content="SkyDive·Live — The jump. Live.">
+<meta property="og:title" content="SkyLive — The jump. Live.">
 <meta property="og:description" content="Real-time video from freefall — the jumper's POV, live to the drop zone. Own radio link, ~14 ms latency, dual antenna.">
 <meta property="og:image" content="https://schoentom.github.io/skydive-live/og.png">
 <meta property="og:url" content="https://schoentom.github.io/skydive-live/">
-<meta property="og:site_name" content="SkyDive·Live">
+<meta property="og:site_name" content="SkyLive">
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SkyDive·Live — The jump. Live.">
+<meta name="twitter:title" content="SkyLive — The jump. Live.">
 <meta name="twitter:description" content="Real-time video from freefall — the jumper's POV, live to the drop zone.">
 <meta name="twitter:image" content="https://schoentom.github.io/skydive-live/og.png">
 
@@ -253,7 +253,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   <img class="hero-dev" src="poster_assembled.png" alt="" aria-hidden="true">
   <div class="wrap">
     <span class="live-pill"><i></i>● Live</span>
-    <h1 class="wordmark">SKYDIVE<span class="dotc">·</span>LIVE</h1>
+    <h1 class="wordmark">SKYLIVE</h1>
     <p class="tagline">The jump. <span class="cy">Live.</span></p>
     <p class="lede">Real-time video from freefall — the jumper's POV, streamed live from ~4 km up to a receiver at the drop zone, onto the big TV in the waiting area. Own radio link, no internet, ~14 ms latency, dual antenna.</p>
     <div class="chips" role="list" aria-label="Key telemetry">
@@ -277,9 +277,9 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     <div class="head">
       <div class="eyebrow">The idea in one glance</div>
       <h2>A dot — or the whole jump.</h2>
-      <p>Today the ground sees a speck in the sky. SkyDive·Live puts the jumper's own view on the screen — the same moment, ~14 ms later. No skydiving knowledge required.</p>
+      <p>Today the ground sees a speck in the sky. SkyLive puts the jumper's own view on the screen — the same moment, ~14 ms later. No skydiving knowledge required.</p>
     </div>
-    <img src="dot_to_live.svg" alt="Left: what the ground sees today — a dot in the sky. Right: what SkyDive·Live shows — the freefall POV live on a monitor, same moment." style="width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.08);display:block">
+    <img src="dot_to_live.svg" alt="Left: what the ground sees today — a dot in the sky. Right: what SkyLive shows — the freefall POV live on a monitor, same moment." style="width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.08);display:block">
   </div>
 </section>
 
@@ -313,7 +313,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         id="mv"
         src="sender_assembled.glb"
         poster="poster_assembled.png"
-        alt="3D model of the SkyDive·Live helmet transmitter"
+        alt="3D model of the SkyLive helmet transmitter"
         camera-controls
         auto-rotate
         auto-rotate-delay="0"
@@ -328,7 +328,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         min-field-of-view="24deg"
         interaction-prompt="auto"
         ar-status="not-presenting">
-        <img slot="poster" id="mvposter" src="poster_assembled.png" alt="SkyDive·Live sender — interactive 3D model (drag to rotate)" style="width:100%;height:100%;object-fit:contain;display:block">
+        <img slot="poster" id="mvposter" src="poster_assembled.png" alt="SkyLive sender — interactive 3D model (drag to rotate)" style="width:100%;height:100%;object-fit:contain;display:block">
       </model-viewer>
     </div>
     <p class="cap">drag to rotate · toggle assembled ↔ exploded</p>
@@ -489,7 +489,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
 <!-- ========== 5. FOOTER ========== -->
 <footer>
   <div class="wrap">
-    <p>SkyDive·Live — solo-built, prototype stage. CC-BY-4.0.</p>
+    <p>SkyLive — solo-built, prototype stage. CC-BY-4.0.</p>
     <div class="flinks">
       <a href="https://github.com/SchoenTom/skydive-live">Repository</a>
       <a href="https://github.com/SchoenTom/skydive-live/releases/tag/v1.0">Downloads · STL/STEP/3D</a>
@@ -587,7 +587,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   render(); requestAnimationFrame(tick);
 })();
 </script>
-<script>/* SkyDive·Live model-viewer render-kick fix v2 */
+<script>/* SkyLive model-viewer render-kick fix v2 */
 (function(){
   function kickOne(mv){
     try{
@@ -614,7 +614,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   if(document.readyState==='complete')init();else window.addEventListener('load',init);
 })();
 </script>
-<script>/* SkyDive·Live WebGL fallback — never show an empty 3D box */
+<script>/* SkyLive WebGL fallback — never show an empty 3D box */
 (function(){
   function webglOK(){try{var c=document.createElement('canvas');return !!(window.WebGLRenderingContext&&(c.getContext('webgl2')||c.getContext('webgl')||c.getContext('experimental-webgl')));}catch(e){return false;}}
   function run(){

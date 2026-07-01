@@ -1,6 +1,6 @@
-<!-- Part of the SkyDive·Live showcase — see README.md -->
+<!-- Part of the SkyLive showcase — see README.md -->
 
-# 🧩 SkyDive·Live — Bill of materials (BOM)
+# 🧩 SkyLive — Bill of materials (BOM)
 
 *Component level, concept/prototype state. Vendors & prices deliberately not public.*
 

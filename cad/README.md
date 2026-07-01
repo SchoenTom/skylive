@@ -7,7 +7,7 @@ SolidWorks imports **STEP (AP242)** natively as **editable solid bodies** (not m
 - Individual parts → [`v5_dual_antenna/step/`](v5_dual_antenna/step) · [`mk2_foundation/step/`](mk2_foundation/step)
 - Whole build, pre-positioned → `*/step/<build>_ASSEMBLY.step`
 
-> A native **`.SLDPRT`** can only be written by SolidWorks itself (proprietary format). STEP is the universal solid-exchange standard and opens as real, editable solids — so it's the correct, lossless way to hand the geometry over. Your colleague can feature-recognize it in SolidWorks if he wants a feature tree.
+> A native **`.SLDPRT`** can only be written by SolidWorks itself (proprietary format). STEP is the universal solid-exchange standard and opens as real, editable solids — so it's the correct, lossless way to hand the geometry over. Anyone with SolidWorks can feature-recognize it if a feature tree is wanted.
 
 ## For printing → `stl/` and `3mf/`
 Load into any slicer. **ASA**, **+0.8 % isotropic shrink**, 3.0 mm walls, print open-top-up. (Heat-sets: M2/M3 brass, no self-tappers.)
