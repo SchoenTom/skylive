@@ -41,7 +41,7 @@
   <text x="135" y="98" text-anchor="middle" class="mono" font-size="10" fill="#cfe0ec">JUMPER · LIVE</text>
 </g>
 
-<!-- ledger (honest, from ENGINEERING.md) -->
+<!-- ledger (honest, from build/rf/README.md) -->
 <text x="430" y="104" class="sans" font-size="26" font-weight="800" fill="#f4f7fb">The link, honestly closed.</text>
 <g class="mono" font-size="14.5">
   <text x="430" y="146" fill="#aebdce">Transmit power</text><text x="872" y="146" text-anchor="end" fill="#67e8f9">+30 dBm · 1 W</text>
