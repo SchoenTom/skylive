@@ -46,7 +46,7 @@ That's the entire transmitter: **a radio, a camera, a battery, and a button** �
 
 Power joins are **three Wago 221-412 lever clamps** — strip, flip the lever, clamp, done. Re-openable in seconds, no cold joints, no fumes. The VTX side plugs in via its stock **JST-GH 6-pin harness**. Full step-by-step (with the three hardware-killer rules): **[`build/BUILD_GUIDE.md`](build/BUILD_GUIDE.md)**.
 
-**The shell:** an upright, two-storey GoPro-style case — battery downstairs, radio + camera upstairs — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, passive louver vents, and a GoPro mount underneath. Final outer dimensions: `TBD-CAD-M6` (the CAD rebuild is running its gates now — the parametric scripts are already in [`build/cad/`](build/cad/)).
+**The shell:** an upright, two-storey GoPro-style case — battery downstairs, radio + camera upstairs — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, passive louver vents, and a GoPro mount underneath. Outer dimensions: **63 × 71 × 85 mm** with the antenna variant that carries the omni in a side capsule; the down-firing patch variant is **63 × 71 × 101 mm**. Both build from the parametric scripts in [`build/cad/`](build/cad/) and pass their geometry gates; the numbers firm up once a few hand-measured values replace their datasheet fallbacks.
 
 ---
 
@@ -111,7 +111,7 @@ Everything a re-builder needs is under [`build/`](build/):
 - ✅ Sender electronics bought and specified — four parts, solder-free.
 - ✅ RF doctrine derived and published (donut orientation, capsule, ground diversity) — *calculated*.
 - ✅ Thermal, structural and print-factor derivations published — *calculated*.
-- 🔄 Final case CAD running its gates → new renders, GLBs and outer dimensions land as `TBD-CAD-M6` markers resolve.
+- ✅ Final case CAD builds and passes all geometry gates, both antenna variants (63 × 71 × 85 mm side-capsule omni · 63 × 71 × 101 mm down-patch), watertight, 3 mm wall — *geometry-verified, not yet a physical print*. New beauty renders + on-page 3D model land as the remaining `TBD-CAD-M6` asset markers resolve.
 - 🔜 Then: print → thermal measurement (multimeter protocol is written) → antenna S11 in the capsule → 25 mW range test → test jump.
 
 ⭐ **Star the repo** — releases will carry the first real measurements and, eventually, the first freefall footage from the system itself. Building one, or flying camera and have opinions? Open an [issue](https://github.com/SchoenTom/skydive-live/issues).

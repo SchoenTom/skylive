@@ -1,9 +1,10 @@
 # SkyLive CAD — parametric, gated, honest
 
-> **Status: the v2 case is being finalized right now** (`TBD-CAD-M6`). These scripts are the
-> real, current working state — the geometry builds and passes its gates, but the released
-> print files (STEP/STL/3MF), renders and final outer dimensions land only when the CAD
-> milestone closes. Until then: read, run, tweak — don't jump it.
+> **Status: the v2 case builds and passes all geometry gates** (both antenna variants:
+> WALL = side-capsule omni **63 × 71 × 85 mm**, PATCH = down-firing patch **63 × 71 × 101 mm**;
+> watertight, 3 mm wall, zero interference — independently re-verified). What's still open
+> before a *final* print: a few hand-measured values replace their datasheet fallbacks, and
+> the first print is a fit prototype (fit coupons first). Read, run, tweak.
 
 ## The files
 

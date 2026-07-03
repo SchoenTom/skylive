@@ -2,8 +2,10 @@
 
 *Condensed English edition of the project's German build document (`BAUANLEITUNG`, 2026-06-29,
 specs verified against HDZero documentation). Status: the electronics build below is bought,
-specified and wiring-verified on paper; the printed case is in its final CAD pass —
-outer dimensions and print files: `TBD-CAD-M6`. **Nothing here carries a "measured" badge yet.***
+specified and wiring-verified on paper; the printed case passes its geometry gates at
+**63 × 71 × 85 mm** (side-capsule omni variant; the down-firing patch variant is 63 × 71 × 101 mm).
+The STEP/STL files build from [`../cad/`](../cad/). **Nothing here carries a "measured" badge yet —
+the first print is a fit prototype, and a handful of values are still datasheet fallbacks.***
 
 > ⚠️ Read [`LEGAL_DE.md`](LEGAL_DE.md) before transmitting anything. In Germany, all testing
 > happens at **25 mW** under the licence-free SRD general authorization; 1 W needs a PMSE
