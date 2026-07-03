@@ -4,11 +4,11 @@
 
 ## Radio / regulatory
 
-Radio transmit power is regulated. The plan of record for this project is a **PMSE short-term frequency assignment** (BNetzA, Germany) for event operation and **licence-free SRD at 25 mW EIRP** for all development and testing. An amateur-radio licence covers experimentation, but a public-display demo under amateur rules is a legal grey zone in Germany (§5 AFuG / §16 AFuV) — it is *not* what this project relies on. **Anyone reproducing this work is responsible for their own regulatory compliance in their own jurisdiction.**
+Radio transmit power is regulated. The plan of record for this project is **licence-free SRD at 25 mW EIRP** for all development and testing and a **PMSE short-term frequency assignment** (BNetzA, Germany) for event operation. Operating at 1 W under an amateur-radio licence is a legal grey zone in Germany (§5 AFuG / §16 AFuV, plus a hard bandwidth cap) — it is *not* what this project relies on; the full reasoning is in [`build/LEGAL_DE.md`](build/LEGAL_DE.md). **Anyone reproducing this work is responsible for their own regulatory compliance in their own jurisdiction.**
 
 ## Safety
 
-This device is designed to be worn on a skydiver's helmet next to life-critical equipment. The documentation includes the safety concept (frangible mount, battery protection layers, over-temperature cutoff, AAD manufacturer sign-off as a hard gate) — **none of it is validated yet**. Do not jump any build of this hardware before the documented ground gates pass, a written AAD manufacturer statement exists, and the drop zone / safety officer has approved it.
+This device is designed to be worn on a skydiver's helmet next to life-critical equipment. The documentation includes the safety concept (snag-free shell, captive antenna capsule and battery door, strain relief, thermal operating doctrine, SAR assessment and AAD manufacturer sign-off as hard gates before any jump) — **none of it is validated yet**. Do not jump any build of this hardware before the documented ground gates pass, a written AAD manufacturer statement exists, and the drop zone / safety officer has approved it.
 
 ## Status
 
