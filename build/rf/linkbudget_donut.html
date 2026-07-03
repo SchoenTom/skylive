@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkyLive · Donut Link-Budget HUD</title>
+<style>
+  :root{
+    --bg:#0a1020; --panel:#0f1830; --panel2:#122040; --edge:#1c3060;
+    --cyan:#3ff0ff; --cyan-dim:#1a7f8f; --ink:#cfe8ff; --ink-dim:#7f9ec4;
+    --green:#39e08b; --yellow2:#ffd24d; --red:#ff5c6c;
+    --grid:#12224a;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+    font-family:"SF Mono",ui-monospace,Menlo,Consolas,monospace;font-size:13px}
+  #wrap{display:flex;height:100vh;overflow:hidden}
+  #stage{flex:1 1 auto;position:relative;min-width:0}
+  canvas{display:block;width:100%;height:100%;cursor:grab}
+  canvas.drag{cursor:grabbing}
+  #side{flex:0 0 340px;background:linear-gradient(180deg,var(--panel),var(--bg));
+    border-left:1px solid var(--edge);padding:14px 16px;overflow-y:auto}
+  h1{font-size:15px;letter-spacing:2px;margin:0 0 2px;color:var(--cyan);text-transform:uppercase}
+  .sub{font-size:10.5px;color:var(--ink-dim);margin:0 0 12px;letter-spacing:.5px}
+  .card{background:var(--panel2);border:1px solid var(--edge);border-radius:8px;
+    padding:11px 12px;margin-bottom:11px}
+  .ctl{margin-bottom:11px}
+  .ctl label{display:flex;justify-content:space-between;font-size:11px;
+    color:var(--ink-dim);margin-bottom:4px;letter-spacing:.5px}
+  .ctl label b{color:var(--cyan);font-weight:600}
+  input[type=range]{width:100%;-webkit-appearance:none;height:4px;border-radius:3px;
+    background:var(--edge);outline:none}
+  input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:15px;height:15px;
+    border-radius:50%;background:var(--cyan);cursor:pointer;box-shadow:0 0 8px var(--cyan-dim)}
+  .toggle{display:flex;gap:8px;margin-bottom:6px}
+  .toggle button{flex:1;padding:9px 4px;border:1px solid var(--edge);background:var(--panel);
+    color:var(--ink-dim);border-radius:6px;cursor:pointer;font-family:inherit;font-size:11px;
+    letter-spacing:.5px;transition:.12s}
+  .toggle button.on{background:var(--cyan);color:#04121e;border-color:var(--cyan);
+    box-shadow:0 0 12px var(--cyan-dim);font-weight:700}
+  .poses{display:grid;grid-template-columns:1fr 1fr;gap:6px}
+  .poses button{padding:8px 4px;border:1px solid var(--edge);background:var(--panel);
+    color:var(--ink-dim);border-radius:6px;cursor:pointer;font-family:inherit;font-size:10.5px}
+  .poses button.on{background:var(--panel2);color:var(--cyan);border-color:var(--cyan)}
+  .read{text-align:center;padding:10px 6px 6px}
+  .margin-val{font-size:38px;font-weight:800;line-height:1;letter-spacing:-1px}
+  .margin-lab{font-size:10px;color:var(--ink-dim);letter-spacing:2px;margin-top:3px}
+  .verdict{font-size:14px;font-weight:700;letter-spacing:1px;margin-top:7px;padding:5px}
+  .rows{font-size:11px;line-height:1.7;margin-top:4px}
+  .rows .r{display:flex;justify-content:space-between;border-bottom:1px solid var(--grid);padding:1px 0}
+  .rows .r span:last-child{color:var(--ink);font-variant-numeric:tabular-nums}
+  .delta{background:linear-gradient(90deg,#0d2a2f,#0f1830);border:1px solid var(--cyan-dim);
+    border-radius:8px;padding:9px 11px;margin-bottom:11px}
+  .delta .big{font-size:26px;font-weight:800;color:var(--cyan);letter-spacing:-1px}
+  .delta .lab{font-size:10px;color:var(--ink-dim);letter-spacing:.5px}
+  .note{font-size:9.5px;color:var(--ink-dim);line-height:1.45;margin-top:2px}
+  .band{display:flex;gap:0;height:6px;border-radius:3px;overflow:hidden;margin:8px 0 2px}
+  .band i{flex:1}
+  .foot{font-size:9px;color:var(--ink-dim);margin-top:8px;line-height:1.4;letter-spacing:.3px}
+  a{color:var(--cyan)}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <div id="stage"><canvas id="cv"></canvas></div>
+  <div id="side">
+    <h1>SkyLive · Donut HUD</h1>
+    <p class="sub">5.8 GHz link-budget MODEL — not a measured test. Drag the ground station.</p>
+
+    <div class="card">
+      <div style="font-size:10px;color:var(--ink-dim);letter-spacing:1px;margin-bottom:6px">TX ANTENNA ORIENTATION</div>
+      <div class="toggle">
+        <button id="tUD" class="on">UP/DOWN donut</button>
+        <button id="tHOR">HORIZONTAL donut</button>
+      </div>
+      <div class="note">Same +2.2 dBic peak, same power — the toggle only re-aims it.
+        UP/DOWN puts the peak toward the ground below; HORIZONTAL puts its NULL straight down.</div>
+    </div>
+
+    <div class="card">
+      <div style="font-size:10px;color:var(--ink-dim);letter-spacing:1px;margin-bottom:7px">BODY POSE (sets shadow)</div>
+      <div class="poses">
+        <button data-pose="0" class="on">Head-down</button>
+        <button data-pose="1">Belly-earth</button>
+        <button data-pose="2">Sit / head-up</button>
+        <button data-pose="3">Back-fly</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="ctl"><label>Altitude <b id="vAlt">4000 m</b></label>
+        <input id="sAlt" type="range" min="1000" max="4000" step="50" value="4000"></div>
+      <div class="ctl"><label>Horizontal drift <b id="vDr">500 m</b></label>
+        <input id="sDr" type="range" min="0" max="3000" step="25" value="500"></div>
+      <div class="ctl"><label>TX peak gain <b id="vTx">2.2 dBic</b></label>
+        <input id="sTx" type="range" min="0" max="5" step="0.1" value="2.2"></div>
+      <div class="ctl"><label>RX patch gain <b id="vRx">10 dBic</b></label>
+        <input id="sRx" type="range" min="4" max="13" step="0.5" value="10"></div>
+      <div class="ctl" style="margin-bottom:0"><label>Side-mount offset relief <b id="vOff">on</b></label>
+        <input id="sOff" type="range" min="0" max="1" step="1" value="1"></div>
+    </div>
+
+    <div class="card read">
+      <div class="band"><i style="background:var(--red)"></i><i style="background:var(--yellow2)"></i><i style="background:var(--green)"></i></div>
+      <div id="mVal" class="margin-val" style="color:var(--green)">+8.8</div>
+      <div class="margin-lab">dB MARGIN vs −90 dBm</div>
+      <div id="mVerd" class="verdict" style="color:var(--green)">PICTURE ✓</div>
+      <div class="rows" id="rows"></div>
+    </div>
+
+    <div class="delta">
+      <div class="lab">UP/DOWN advantage over HORIZONTAL here</div>
+      <div><span id="dBig" class="big">+17.9 dB</span></div>
+      <div class="note">Better aiming, not more power. Fixed peak; only the pointing changes.</div>
+    </div>
+
+    <div class="foot">
+      Model: Friis FSPL + half-wave-dipole toroid (null floored −18 dB) + literature
+      body-shadow (torso −10…−18, head −6…−12 dB) + side-offset relief. −90 dBm lock
+      threshold (HDZero degrades gracefully below). See <b>RF_ANALYSIS_DONUT.md</b>.
+      Verify with NanoVNA SWR + a real jump before trusting.
+    </div>
+  </div>
+</div>
+
+<script>
+"use strict";
+// ---------- link-budget model (mirrors RF_ANALYSIS_DONUT.md) ----------
+const RX_SENS = -90;      // dBm locked picture
+const TX_PWR  = 30;       // dBm
+const TX_CABLE= 1.5, RX_CABLE = 1.0;
+const NULL_FLOOR = -18;   // dB, realistic AXII null depth
+// pose: [name, deepShadow dB, offsetRelief dB]
+const POSES = [
+  ["Head-down",   1,  0],
+  ["Belly-earth",14,  4],
+  ["Sit/head-up",17,  5],
+  ["Back-fly",   10,  3],
+];
+const state = {orient:"UD", pose:0, alt:4000, drift:500, txG:2.2, rxG:10, offset:1};
+
+// FSPL at 5800 MHz for slant range in metres
+function fspl(R_m){ return 107.71 + 20*Math.log10(Math.max(R_m,1)/1000); }
+// half-wave dipole gain offset (dB) vs angle alpha (deg) from axis, floored
+function dipoleOffset(alphaDeg){
+  let a = alphaDeg*Math.PI/180;
+  let s = Math.sin(a);
+  if(Math.abs(s) < 1e-4) return NULL_FLOOR;
+  let num = Math.cos((Math.PI/2)*Math.cos(a));
+  let P = (num/s)*(num/s);
+  if(P <= 1e-6) return NULL_FLOOR;
+  return Math.max(10*Math.log10(P), NULL_FLOOR);
+}
+// down-angle theta (deg from horizon; 90 = straight down)
+function theta(){ return Math.atan2(state.alt, Math.max(state.drift,1))*180/Math.PI; }
+function slant(){ return Math.hypot(state.alt, state.drift); }
+function shadow(){ const p=POSES[state.pose]; return -(p[1] - (state.offset? p[2]:0)); }
+
+function gtx(orient){
+  const th = theta();
+  const alpha = (orient==="UD") ? th : (90-th);   // UD: alpha=theta ; HOR: alpha=90-theta
+  return state.txG + dipoleOffset(alpha);
+}
+function prx(orient){
+  return TX_PWR - TX_CABLE + gtx(orient) - fspl(slant()) + shadow() + state.rxG - RX_CABLE;
+}
+function margin(orient){ return prx(orient) - RX_SENS; }
+function bandColor(m){ return m>=6? "var(--green)" : m>=0? "var(--yellow2)" : "var(--red)"; }
+function verdict(m){ return m>=6? ["PICTURE ✓","var(--green)"] : m>=0? ["MARGINAL ⚠️","var(--yellow2)"] : ["NO LINK ✗","var(--red)"]; }
+
+// ---------- UI wiring ----------
+const $=id=>document.getElementById(id);
+function setOrient(o){ state.orient=o;
+  $("tUD").classList.toggle("on",o==="UD"); $("tHOR").classList.toggle("on",o==="HOR"); update(); }
+$("tUD").onclick=()=>setOrient("UD"); $("tHOR").onclick=()=>setOrient("HOR");
+document.querySelectorAll(".poses button").forEach(b=>b.onclick=()=>{
+  state.pose=+b.dataset.pose;
+  document.querySelectorAll(".poses button").forEach(x=>x.classList.remove("on"));
+  b.classList.add("on"); update(); });
+function bind(id,key,fmt,scale){ const el=$(id); el.oninput=()=>{ state[key]=+el.value; update(); }; }
+bind("sAlt","alt"); bind("sDr","drift"); bind("sTx","txG"); bind("sRx","rxG"); bind("sOff","offset");
+
+function update(){
+  $("vAlt").textContent=state.alt+" m";
+  $("vDr").textContent=state.drift+" m";
+  $("vTx").textContent=state.txG.toFixed(1)+" dBic";
+  $("vRx").textContent=state.rxG.toFixed(1)+" dBic";
+  $("vOff").textContent=state.offset? "on":"off";
+  const m=margin(state.orient);
+  $("mVal").textContent=(m>=0?"+":"")+m.toFixed(1);
+  $("mVal").style.color=bandColor(m);
+  const [vt,vc]=verdict(m); $("mVerd").textContent=vt; $("mVerd").style.color=vc;
+  const th=theta(), R=slant();
+  const dg = gtx("UD")-gtx("HOR");
+  $("dBig").textContent="+"+dg.toFixed(1)+" dB";
+  $("rows").innerHTML =
+    row("Down-angle θ", th.toFixed(0)+"°")+
+    row("Slant range", (R/1000).toFixed(2)+" km")+
+    row("FSPL", "−"+fspl(R).toFixed(1)+" dB")+
+    row("TX ant (this)", (gtx(state.orient)>=0?"+":"")+gtx(state.orient).toFixed(1)+" dB")+
+    row("Body shadow", shadow().toFixed(1)+" dB")+
+    row("Rx power", prx(state.orient).toFixed(1)+" dBm");
+  draw();
+}
+function row(a,b){ return `<div class="r"><span>${a}</span><span>${b}</span></div>`; }
+
+// ---------- canvas visualization ----------
+const cv=$("cv"), ctx=cv.getContext("2d");
+let W=0,H=0,DPR=Math.max(1,window.devicePixelRatio||1);
+function resize(){ const r=cv.parentElement.getBoundingClientRect();
+  W=r.width;H=r.height;cv.width=W*DPR;cv.height=H*DPR;ctx.setTransform(DPR,0,0,DPR,0,0);draw(); }
+window.addEventListener("resize",resize);
+
+// scene mapping: flyer near top-center, ground at bottom. Pixels-per-metre from altitude.
+function scene(){
+  const flyer={x:W*0.34, y:H*0.16};
+  const groundY=H*0.90;
+  const ppm=(groundY-flyer.y)/state.alt;          // vertical scale
+  const gs={x:flyer.x + state.drift*ppm, y:groundY};
+  return {flyer,gs,ppm,groundY};
+}
+
+// donut lobe as filled polar shape around flyer; orient decides axis
+function drawDonut(cx,cy,orient){
+  const Rmax=64;
+  ctx.save(); ctx.translate(cx,cy);
+  const grad=ctx.createRadialGradient(0,0,4,0,0,Rmax);
+  grad.addColorStop(0,"rgba(63,240,255,0.32)");
+  grad.addColorStop(1,"rgba(63,240,255,0.02)");
+  ctx.fillStyle=grad; ctx.strokeStyle="rgba(63,240,255,0.75)"; ctx.lineWidth=1.4;
+  ctx.beginPath();
+  for(let d=0; d<=360; d+=3){
+    // screen angle d: 0=right,90=down. Convert to "alpha from axis".
+    // UP/DOWN donut: axis horizontal → peak up/down (screen 90 & 270)
+    // HORIZONTAL donut: axis vertical → peak left/right (screen 0 & 180)
+    let ang=d*Math.PI/180;
+    // screen: 0=right, 90=down. horizontal component h=cos, vertical (down) v=sin
+    let hcomp=Math.cos(ang), vcomp=Math.sin(ang);
+    let gain;
+    if(orient==="UD"){ // axis horizontal: alpha = angle from horizontal axis => big alpha near vertical
+      let alpha = Math.acos(Math.min(1,Math.abs(hcomp)))*180/Math.PI; // 90 at vertical,0 at horiz
+      gain=dipoleOffset(alpha);
+    } else { // axis vertical: alpha = angle from vertical => big alpha near horizon
+      let alpha = Math.acos(Math.min(1,Math.abs(vcomp)))*180/Math.PI; // 0 at vertical,90 at horiz
+      gain=dipoleOffset(alpha);
+    }
+    let lin=Math.pow(10,(gain)/20);               // amplitude scale for shape
+    let rr=6 + Rmax*lin;
+    let px=Math.cos(ang)*rr, py=Math.sin(ang)*rr;
+    if(d===0) ctx.moveTo(px,py); else ctx.lineTo(px,py);
+  }
+  ctx.closePath(); ctx.fill(); ctx.stroke();
+  ctx.restore();
+}
+
+function draw(){
+  if(!W) return;
+  ctx.clearRect(0,0,W,H);
+  // bg grid
+  ctx.fillStyle="#0a1020"; ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle="#12224a"; ctx.lineWidth=1;
+  for(let x=0;x<W;x+=48){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+  for(let y=0;y<H;y+=48){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+  const S=scene();
+  // ground
+  ctx.fillStyle="#0d1a12"; ctx.fillRect(0,S.groundY,W,H-S.groundY);
+  ctx.strokeStyle="#1f5a3a"; ctx.lineWidth=2; ctx.beginPath();
+  ctx.moveTo(0,S.groundY);ctx.lineTo(W,S.groundY);ctx.stroke();
+  // altitude ticks
+  ctx.fillStyle="#7f9ec4"; ctx.font="10px monospace"; ctx.textAlign="left";
+  for(let a=1000;a<=4000;a+=1000){ let y=S.groundY - a*S.ppm;
+    if(y>10){ ctx.strokeStyle="#16305a"; ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();
+      ctx.fillText(a+" m",6,y-3);} }
+
+  // body shadow cone (downward, opacity ~ shadow depth)
+  const shDb=-shadow(); const shAlpha=Math.min(0.5, shDb/32);
+  ctx.save();
+  ctx.beginPath();
+  ctx.moveTo(S.flyer.x,S.flyer.y);
+  ctx.lineTo(S.flyer.x-42, S.groundY);
+  ctx.lineTo(S.flyer.x+42, S.groundY);
+  ctx.closePath();
+  ctx.fillStyle=`rgba(255,92,108,${shAlpha})`; ctx.fill();
+  ctx.restore();
+  if(state.pose!==0){
+    ctx.fillStyle="rgba(255,92,108,0.85)"; ctx.font="10px monospace"; ctx.textAlign="center";
+    ctx.fillText("body shadow "+shadow().toFixed(0)+" dB", S.flyer.x, S.groundY-8);
+  }
+
+  // donut for current orientation
+  drawDonut(S.flyer.x,S.flyer.y,state.orient);
+
+  // helmet + sender
+  ctx.save(); ctx.translate(S.flyer.x,S.flyer.y);
+  ctx.fillStyle="#1a2a48"; ctx.strokeStyle="#3ff0ff"; ctx.lineWidth=1.6;
+  ctx.beginPath(); ctx.arc(0,8,13,Math.PI,0); ctx.lineTo(13,8); ctx.lineTo(-13,8); ctx.fill(); ctx.stroke();
+  ctx.fillStyle="#3ff0ff"; ctx.fillRect(-6,-4,12,7); // sender box
+  ctx.strokeStyle="#3ff0ff"; ctx.beginPath();ctx.moveTo(0,-4);ctx.lineTo(0,-14);ctx.stroke(); // stub
+  ctx.restore();
+  ctx.fillStyle="#cfe8ff"; ctx.font="10px monospace"; ctx.textAlign="center";
+  ctx.fillText("SENDER +"+state.txG.toFixed(1)+" dBic", S.flyer.x, S.flyer.y-30);
+
+  // slant path
+  const m=margin(state.orient); const col=bandColor(m).replace("var(--green)","#39e08b").replace("var(--yellow2)","#ffd24d").replace("var(--red)","#ff5c6c");
+  ctx.strokeStyle=col; ctx.lineWidth=2; ctx.setLineDash([7,5]);
+  ctx.beginPath(); ctx.moveTo(S.flyer.x,S.flyer.y); ctx.lineTo(S.gs.x,S.gs.y); ctx.stroke();
+  ctx.setLineDash([]);
+  // range label mid-path
+  ctx.fillStyle=col; ctx.font="11px monospace";
+  ctx.fillText((slant()/1000).toFixed(2)+" km  θ"+theta().toFixed(0)+"°",
+    (S.flyer.x+S.gs.x)/2, (S.flyer.y+S.gs.y)/2 - 6);
+
+  // ground station
+  ctx.save(); ctx.translate(S.gs.x,S.gs.y);
+  ctx.fillStyle="#122040"; ctx.strokeStyle=col; ctx.lineWidth=2;
+  ctx.beginPath(); ctx.arc(0,-6,11,0,Math.PI*2); ctx.fill(); ctx.stroke();
+  // little patch dish pointing at flyer
+  let ang=Math.atan2(S.flyer.y-S.gs.y, S.flyer.x-S.gs.x);
+  ctx.rotate(ang); ctx.strokeStyle=col;
+  ctx.beginPath(); ctx.moveTo(0,-6); ctx.lineTo(20,-6); ctx.stroke();
+  ctx.restore();
+  ctx.fillStyle=col; ctx.textAlign="center";
+  ctx.fillText("BoxPro +"+state.rxG.toFixed(1)+" dBic", S.gs.x, S.gs.y+16);
+  ctx.fillStyle="#7f9ec4"; ctx.fillText("drag me", S.gs.x, S.gs.y+28);
+
+  // corner legend
+  ctx.textAlign="left"; ctx.font="10px monospace"; ctx.fillStyle="#7f9ec4";
+  ctx.fillText((state.orient==="UD"?"UP/DOWN donut — peak points DOWN at GS":"HORIZONTAL donut — NULL points DOWN at GS"),12,H-14);
+}
+
+// dragging the ground station
+let dragging=false;
+cv.addEventListener("pointerdown",e=>{ const S=scene();
+  if(Math.hypot(e.offsetX-S.gs.x, e.offsetY-S.gs.y)<40){ dragging=true; cv.classList.add("drag"); } });
+window.addEventListener("pointerup",()=>{ dragging=false; cv.classList.remove("drag"); });
+cv.addEventListener("pointermove",e=>{ if(!dragging) return;
+  const S=scene();
+  let dx=Math.max(0,(e.offsetX-S.flyer.x)/S.ppm);
+  state.drift=Math.round(Math.min(3000,dx)/25)*25;
+  // vertical drag adjusts altitude
+  let alt=Math.max(1000,Math.min(4000,(S.groundY-Math.min(e.offsetY,S.groundY))/S.ppm));
+  // keep altitude from slider unless dragged far vertically — here we only map horizontal for clarity
+  $("sDr").value=state.drift;
+  update();
+});
+
+resize(); update();
+</script>
+</body>
+</html>
