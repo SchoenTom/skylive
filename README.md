@@ -1,20 +1,17 @@
 <div align="center">
 
-<img src="renders/hero.png" alt="SkyLive — a 1-watt HDZero live-stream transmitter for skydiving, lens facing the viewer, on a dark telemetry-HUD background" width="100%">
+<!-- TBD-CAD-M6: hero render of the rebuilt sender (lens forward, donut-omni nose on the side) lands here as renders/hero.png -->
 
-### Real-time video from freefall — the jumper's POV, live on the screen at the drop zone.
+# SkyLive
 
-[![status](https://img.shields.io/badge/status-prototype-orange?style=for-the-badge)](#status--roadmap)
+### The jump. Live. — the whole drop zone watches, as it happens.
+
+[![status](https://img.shields.io/badge/status-rebuild%20in%20progress-orange?style=for-the-badge)](#status)
 [![license](https://img.shields.io/badge/license-CC--BY--4.0-3b82f6?style=for-the-badge)](LICENSE)
-[![CAD](https://img.shields.io/badge/CAD-build123d%20%2F%20Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](#reproduce-the-cad)
-[![live 3D](https://img.shields.io/badge/live-interactive%203D-22d3ee?style=for-the-badge&logo=googlechrome&logoColor=white)](https://schoentom.github.io/skydive-live/)
-[![pitch decks](https://img.shields.io/badge/pitch%20decks-tap%20to%20open-ff4081?style=for-the-badge)](https://schoentom.github.io/skydive-live/decks/)
+[![CAD](https://img.shields.io/badge/CAD-build123d%20%2F%20Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](build/cad/)
+[![live 3D](https://img.shields.io/badge/live-interactive%20demo-22d3ee?style=for-the-badge&logo=googlechrome&logoColor=white)](https://schoentom.github.io/skydive-live/)
 
-**[▶ Spin it in 3D](https://schoentom.github.io/skydive-live/#model)** · **[Pitch decks](https://schoentom.github.io/skydive-live/decks/)** · **[The numbers](ENGINEERING.md)** · **[Build it](BUILD.md)**
-
-<a href="https://schoentom.github.io/skydive-live/#antenna"><img src="renders/headdown_demo.gif" alt="The live demo playing the hard case: belly — image holds; the jumper goes head-down and the single antenna drops to NO SIGNAL, patch blocked by the body; switch on the second antenna and the dipole takes over — LIVE again, and it stays live as he keeps tumbling." width="88%"></a>
-
-*The moment that kills every single-antenna link — played by the [live demo](https://schoentom.github.io/skydive-live/): head-down → **NO SIGNAL** → the dipole takes over. **▶ Drag the jumper yourself.***
+**[▶ Play the jump](https://schoentom.github.io/skydive-live/#antenna)** · **[Build it](build/BUILD_GUIDE.md)** · **[The numbers](build/rf/README.md)** · **[Legal (DE)](build/LEGAL_DE.md)**
 
 </div>
 
@@ -23,180 +20,106 @@
 ## What if the whole drop zone could watch — live?
 
 <div align="center">
-<img src="renders/dot_to_live.svg" alt="Left: what the ground sees today — just a dot in the sky, hunted by a reticle. Right: what SkyLive shows — the freefall POV live on a monitor, same moment, 14 ms." width="100%">
+<img src="docs/dot_to_live.svg" alt="Left: what the ground sees today — just a dot in the sky. Right: what SkyLive shows — the freefall POV live on a monitor, same moment, ~14 ms." width="100%">
 </div>
 
-Today, the ground sees only **a dot in the sky**. Spectators, the waiting area, your own team — they follow the jump with the naked eye, and the footage only arrives *after* landing. The moment itself stays invisible.
+Today the ground sees **a dot in the sky**. Spectators, the waiting area, your own team — they follow the jump with the naked eye, and the footage arrives only *after* landing. The moment itself stays invisible.
 
-**SkyLive** puts the jump on the screen **as it happens**. A helmet-mounted transmitter the size of an action cam sends a digital HDZero picture from ~4 km up to a receiver at the landing zone — straight onto the big TV in the waiting area. Its own radio link, no internet, ~14 ms latency. Not a recording. **The present tense.**
-
-```
-Camera (MIPI) → 1 W VTX → U.FL → antenna(s) → ~4 km of air → ground antenna array → diversity RX → HDMI → monitor / public-viewing TV
-```
-
----
-
-## What it is, in one picture
+**SkyLive** puts the jump on the screen **as it happens**. A helmet-mounted transmitter the size of an action cam sends a digital HDZero picture from ~4 km up, down its own 5.8 GHz radio link — no internet, ~14 ms — straight onto the big TV in the waiting area. Not a recording. **The present tense.**
 
 <div align="center">
-<img src="renders/gopro_compare.svg" alt="True-to-scale size comparison: the SkyLive sender is the same height as a GoPro and a little narrower" width="100%">
-</div>
-
-### The signal's journey — helmet to the waiting-room TV
-
-<div align="center">
-<img src="renders/signal_flow.svg" alt="The signal travels: camera → 1 W radio → antenna → ~4 km of air → ground antennas → receiver → HDMI → the big TV in the waiting area, in about 14 ms." width="100%">
+<img src="docs/signal_flow.svg" alt="The signal's journey: camera → 1 W radio → antenna → ~4 km of air → ground antennas → receiver → HDMI → the big TV in the waiting area, in about 14 ms." width="100%">
 </div>
 
 ---
 
-## Two generations. One idea.
+## Four parts. Zero solder joints.
 
-Eleven housing generations and hundreds of scripted CAD checks, distilled into **two purpose-built designs** — a deliberately simple foundation, and a leap that attacks the one moment that breaks every single-antenna link.
+That's the entire transmitter: **a radio, a camera, a battery, and a button** — joined without a soldering iron. The simplicity *is* the design.
 
-<div align="center">
-<img src="renders/two_generations.png" alt="Two generations side by side: Gen 1 MK2 (the foundation) and Gen 2 v5 (never lose the image)" width="100%">
-</div>
-
-### ① Gen 1 — MK2 · *The Foundation*
-
-The complete printed system, and the proof the concept holds together — GoPro form factor, tool-free battery swap, real off-the-shelf RF parts.
-
-### ② Gen 2 — v5 · *Never lose the image*
-
-**A body is a shadow.** Belly-down (face down), the antenna points cleanly at the ground. Go **head-down** (falling head-first) and the jumper's own body slides between transmitter and ground — a single antenna tears off, right at the most spectacular moment. So Gen 2 carries **two**: a patch flush in the side end-cap and a dipole up top, and an RF switch that picks the better one in real time. Both sit **flush** in the shell — screwed in, no stuck-on bump, no snag risk.
-
-> 🛰️ **Feel it yourself** — the interactive [dual-antenna demo](https://schoentom.github.io/skydive-live/) (the GIF at the top is this demo, playing itself): rotate the jumper head-down, watch the single antenna drop to *"NO SIGNAL"*, then switch on the second and watch the link hold.
-
----
-
-## Inside the sender
-
-<div align="center">
-<img src="renders/sender_internals.png" alt="Cutaway of the sender showing camera, VTX, heat-wall and battery, lens facing the viewer" width="62%">
-</div>
-
-Every block has its place — justified thermally and by RF. **Colour = component identity**, the same key used throughout the pitch deck:
-
-| | part | what it does | real off-the-shelf part |
+| | part | what it does | the real part |
 |---|---|---|---|
-| 🟠 **Camera** | the eye | HD wide-angle skydive POV; lens flush through the front wall — nothing protrudes to snag | HDZero Micro V3 |
-| 🟦 **VTX** | the radio heart | turns the picture into a 1 W signal, ~14 ms, sized for 4 km (margin is heading-dependent — see [the numbers](ENGINEERING.md)) | HDZero Freestyle V2 |
-| 🟩 **Antenna** | the link | patch flush in the side end-cap + Gen 2's up-facing dipole — the receiver always rides the stronger one | TBS 5G8 RHCP patch |
-| 🟦 **Battery** | the energy | 3S LiPo in a protected, tool-free swap tray; externally charged | 3S LiPo + BMS |
+| 📡 | **Radio (VTX)** | turns the picture into a 1 W digital signal, ~14 ms | HDZero Freestyle V2 (30 × 29 × 14 mm, runs directly on 3S — no flight controller, no BEC) |
+| 👁 | **Camera** | HD skydive POV, 162° | HDZero Nano90 (ships in the VTX kit, powered over its MIPI cable) |
+| 🔋 | **Battery** | ~40 min at 1 W (calculated: 850 mAh / ~1.3 A) | Tattu R-Line 3S 850 mAh (XT30) |
+| 🔘 | **Switch** | on/off — breaks the battery + line directly | 12 mm latching push-button, panel-mount |
+
+Power joins are **three Wago 221-412 lever clamps** — strip, flip the lever, clamp, done. Re-openable in seconds, no cold joints, no fumes. The VTX side plugs in via its stock **JST-GH 6-pin harness**. Full step-by-step (with the three hardware-killer rules): **[`build/BUILD_GUIDE.md`](build/BUILD_GUIDE.md)**.
+
+**The shell:** an upright, two-storey GoPro-style case — battery downstairs, radio + camera upstairs — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, passive louver vents, and a GoPro mount underneath. Final outer dimensions: `TBD-CAD-M6` (the CAD rebuild is running its gates now — the parametric scripts are already in [`build/cad/`](build/cad/)).
 
 ---
 
-## The numbers that matter → [`ENGINEERING.md`](ENGINEERING.md)
+## One socket. Two antennas. No silicon in between.
 
-This is not a hobby gamble. Every critical path is calculated, and **honestly split into *calculated* vs *to-be-measured*.**
+There is **no electronic antenna switch** on the sender — you pick the antenna for the jump by hand, and the clever part lives where it belongs: on the ground.
 
-<div align="center">
-<img src="renders/closing_4km.svg" alt="Link budget: +30 dBm transmit, −119.8 dB free-space loss at 4 km, −90 dBm conservative threshold → about +8 dB belly margin at a favourable heading; the dipole and ground diversity floor the worst heading at about +2 dB, and head-down rides the threshold — which is why the next step is a turntable measurement." width="100%">
-</div>
-
-| | value | |
+| | **A — the donut omni** (primary) | **B — the down patch** (variant) |
 |---|---|---|
-| 📡 **Transmit power** | +30 dBm (1 W) — PMSE short-term assignment for the event, 25 mW SRD for all tests | planned path |
-| 📡 **Free-space loss @ 4 km** | 119.8 dB (5.8 GHz, Friis) | ✅ derived |
-| 📡 **Link margin @ 4 km** | **≈ +8 dB** belly (favourable heading) · **≈ +2 dB** worst heading via the dipole · head-down rides the threshold | calculated, v5 geometry |
-| 📡 **The honest twist** | the side-mounted patch makes belly margin *heading-dependent* — re-run 2026-06, assumptions & sensitivity in [ENGINEERING.md](ENGINEERING.md) | self-corrected |
-| 🌡 **Thermals in freefall** | ΔT **≈ 6 K** — ram-air convection carries the VTX heat | calculated |
-| 🔋 **Runtime** | ~40 min theoretical / ~32 min practical | dimensioned |
-| ⚖️ **Sender mass** | ~200–250 g | dimensioned |
+| **What** | Lumenier AXII 2 RHCP omni, **fully encapsulated** in a printed nose in the side wall | TBS 5G8 RHCP patch inside the bottom shell, radiating down through a 1.5 mm radome |
+| **How it radiates** | lying with its axis **across the body** — the donut pattern fires **down + up**, nulls point out to the sides | a ~110° cone aimed at the ground |
+| **Why** | the ground station is *below* you; aiming the donut down instead of at the horizon is worth **~15–18 dB** at 4 km — better aiming, not more power *(calculated)* | belly-fly with the DZ below/ahead |
+| **Honest caveat** | body shadow, not the antenna, is the limiter in belly/sit poses | swings off-target the moment you go head-down |
 
-> **The hard case (head-down — falling head-first)** is identified and attacked at the source: dual antenna at the sender **plus** diversity at the ground — the architecture of the only proven professional precedent (a 2016 1 W COFDM + 4-head MRC diversity system). The recalculated margins are thinner than the first pass and say *fluctuating link, not dead link*; the turntable pattern measurement of the assembled sender decides it. **No overclaiming** — when our own numbers got worse, we published the worse numbers.
+Encapsulating the omni costs almost nothing in RF (PETG radome, the antenna's own 900 MHz bandwidth is the reserve — *NanoVNA verification is mandatory before believing this*) and removes wind load, fatigue and line-snag risk entirely. Full derivation: [`build/ENGINEERING/antenna_capsule.md`](build/ENGINEERING/antenna_capsule.md).
 
----
-
-<div align="center">
-<img src="renders/latency.svg" alt="Latency: SkyLive ~14 ms — before you blink. The old way is footage seen only after landing. Not a recording, the present tense." width="86%">
-</div>
-
-## Build it yourself → [`BUILD.md`](BUILD.md)
-
-<div align="center">
-<img src="renders/exploded.png" alt="Exploded view of the sender" width="46%">
-<img src="renders/sender_turn.gif" alt="The finished sender turning — lens to the viewer" width="46%">
-</div>
-
-**Two builds, one idea — pick yours:** **Gen 1 · MK2** (simplest & most robust — 3 PETG parts, the natural first build) or **Gen 2 · v5** (dual-antenna, flush — 7 ASA parts, holds the link in any orientation). Each gets its **own chronological step-by-step plan** — print → prep → assemble (in order) → wire & power → fit tests — in **[`BUILD.md`](BUILD.md)**.
+**The gain lives on the ground.** You're tumbling; the ground isn't. A bigger helmet antenna buys ~2–3 dB; *aiming* the ground antenna buys 10–14 dB. So the ground station is an **HDZero BoxPro** (4-way diversity, HDMI out to the TV) with an aimed **TrueRC X²-AIR patch** (nominal 13 dBic — honestly, expect ~10), a **Double AXII 2 LR** horizon omni and a **Matchstick** overhead omni. The receiver rides the best branch, frame by frame.
 
 ---
 
-## The printed parts & how the housing assembles — Gen 2 · v5
-
-*(This is the 7-part Gen 2 build. Prefer the simpler **Gen 1 · MK2** — 3 PETG parts? Its own plan is in [`BUILD.md`](BUILD.md).)*
+## The numbers — calculated, labelled, and published even when they got worse
 
 <div align="center">
-<img src="renders/print_parts.png" alt="Exploded view of the seven printed parts — cover, antenna module, electronics sled, body, battery tray, side door, antenna shell — with their roles and the seven-step assembly sequence." width="100%">
+<img src="docs/closing_4km.svg" alt="Link budget at 4 km: +30 dBm transmit, −119.8 dB free-space loss, honest RX gain, −90 dBm threshold — head-down closes with margin, belly rides the threshold; a model, not a measurement." width="100%">
 </div>
 
-Seven printed parts (ASA), each **watertight and collision-checked**. **STEP files for SolidWorks** (both builds) + STL + 3MF live in [`cad/`](cad/); printable STLs are also on the **[v1.0 release](https://github.com/SchoenTom/skydive-live/releases/tag/v1.0)**.
-
-| part | role | print note |
+| | value | status |
 |---|---|---|
-| **Body** | main shell · integral heat-wall · side battery door · flat GoPro mount (M5×0.8) | open-top-up · tree-support under the 2 GoPro fingers |
-| **Cover** | top lid · GORE pressure-vent · 4× M3 into heat-sets | flat, no supports |
-| **Electronics sled** | carries the VTX + camera, drops in above the heat-wall | no supports |
-| **Antenna module** | screws onto the top (4× M3) — holds the λ/2 dipole + RF switch (Gen 2) | minimal |
-| **Antenna end-cap** (−X side) | flush RF window — holds the patch (the aluminium body is its ground-plane) | minimal |
-| **Battery tray** | 3S LiPo · slide-in, push-detent + lanyard (won't open in freefall) | no supports |
-| **Battery door** | side, tool-free — swap a battery between jumps | minimal (hinge) |
+| 📡 Transmit power | +30 dBm (1 W) — 25 mW SRD for all tests, PMSE assignment for the event | planned path |
+| 📡 Free-space loss @ 4 km | 119.8 dB (5.8 GHz, Friis) | derived |
+| 📡 Link margin @ 4 km | **head-down ≈ +9 dB** · back ≈ +3 dB · **belly rides the threshold** (−0.2 dB) · sit ≈ −2 dB — margins improve 2–3 dB per km of descent | **calculated, not measured** |
+| 🧍 Body shadow | −7…−12 dB with the side-mount offset (literature midpoints) — the single biggest uncertainty | assumption, to be jumped |
+| 🌡 Heat at 1 W | **~13 W of waste heat.** On the ground, in still air, no passive case can hold that — so the doctrine is 25 mW on the ground, **1 W only at door-open**; in freefall the 200 km/h wind is the heatsink (4–8× surplus) | calculated |
+| ⏱ Latency | ~14 ms | manufacturer figure |
 
-**Assembly:** ① heat-sets into the body → ② patch into the −X side end-cap → ③ load the tray, slide it in → ④ VTX + camera on the sled, drop in and wire through the heat-wall → ⑤ dipole + RF switch into the module → ⑥ cover on (4× M3) → ⑦ close the door.
+The full model — pattern math, pose-by-pose margin tables, every assumption and its direction of error — is in [`build/rf/`](build/rf/), including an **interactive link-budget explorer** you can open in any browser. The thermal, structural and print derivations live in [`build/ENGINEERING/`](build/ENGINEERING/).
 
-**Print:** ASA (never PLA — it softens too low) · **+0.8 % isotropic shrink** · 0.2 mm layers · perimeters that fully fill the 3.0 mm wall · enclosure + heated bed. Fasteners: **M2/M3 brass heat-sets** (no self-tappers) + an M5×0.8 GoPro thumbscrew. Full step-by-step in [`BUILD.md`](BUILD.md).
+> **No overclaiming.** A CAD boolean check is not a test. Nothing in this repo carries a *measured* badge yet — and when the 2026 recalculations made numbers worse, the worse numbers were published.
 
 ---
 
-## The other half — the ground station
+## Build one yourself
+
+Everything a re-builder needs is under [`build/`](build/):
+
+- 📋 **[`BUILD_GUIDE.md`](build/BUILD_GUIDE.md)** — the solder-free assembly, the wiring map, the three hardware-killer rules, and the power/thermal operating doctrine.
+- 🛒 **[`BOM.md`](build/BOM.md)** — every part with real EU prices (as of 2026-07).
+- 📐 **[`MEASURE.md`](build/MEASURE.md)** — the dimensions you must caliper yourself (nothing in this project is guessed).
+- ⚖️ **[`LEGAL_DE.md`](build/LEGAL_DE.md)** — the German regulatory situation, honestly: what is legal today (25 mW SRD), what the event path is (PMSE), and why 1 W under an amateur licence is locked pending clarification.
+- 🧊 **[`cad/`](build/cad/)** — the parametric build123d scripts (`spec.py` is the single source of truth for every dimension).
 
 <div align="center">
-<img src="renders/groundstation.png" alt="Ground-station receiver: monitor, sun-hood, antenna mast" width="30%">
-</div>
-
-A monitor on a tripod catches the signal over **two antennas** (omni + directional patch) and always shows the stronger one — true **diversity**, the same approach professional systems use. Daylight-readable with a sun-hood; an external recorder grabs an instant-playback copy; HDMI runs the same picture onto the big public-viewing TV. **Two safeguards against the same dropout — the picture gets through.**
-
-<div align="center">
-<img src="renders/diversity.svg" alt="The ground station listens on a wide omni and an aimed patch antenna and always uses the stronger one — lose one, the picture still gets through." width="72%">
+<img src="docs/latency.svg" alt="Latency: ~14 ms — before you blink. The old way is footage seen only after landing." width="86%">
 </div>
 
 ---
 
-## Reproduce the CAD
+## Status
 
-Everything is parametric and scriptable:
+**Full redesign in progress** (2026-07). The concept, the electronics, the RF doctrine and the engineering derivations are done and published here; the printed case is in its final CAD pass.
 
-- 🧊 **Interactive 3D** — [spin the model in your browser](https://schoentom.github.io/skydive-live/) (assembled ↔ exploded). GLBs ship with the **[v1.0 release](https://github.com/SchoenTom/skydive-live/releases/tag/v1.0)**.
-- 🛠 **Stack** — `build123d` (parametric CAD in Python) · custom build/verify pipeline · RF link-budget · thermal (convection / flat-plate) · regulatory (PMSE / SRD / AFuV) · DFM for FDM printing.
-- 📋 **[`BOM.md`](BOM.md)** — full bill of materials (sender, ground station, measurement gear).
-- 🎞 **Pitch decks — tap to open on any device** (phone · tablet · Mac · Windows, nothing to install): **[open the pitches →](https://schoentom.github.io/skydive-live/decks/)**. The flagship is the playable [v5 "never lose the picture"](https://schoentom.github.io/skydive-live/decks/dual_antenna_EN.html) (EN/DE).
+- ✅ Sender electronics bought and specified — four parts, solder-free.
+- ✅ RF doctrine derived and published (donut orientation, capsule, ground diversity) — *calculated*.
+- ✅ Thermal, structural and print-factor derivations published — *calculated*.
+- 🔄 Final case CAD running its gates → new renders, GLBs and outer dimensions land as `TBD-CAD-M6` markers resolve.
+- 🔜 Then: print → thermal measurement (multimeter protocol is written) → antenna S11 in the capsule → 25 mW range test → test jump.
 
----
-
-## Status & roadmap
-
-Ambitious engineering project **in development** — not a finished product, not a closed validation.
-
-- ✅ **Done:** CAD (watertight, 0 collisions, fastening verified), electrical compatibility on paper, every budget calculated, both generations designed and collision-checked.
-- 🔜 **Next:** first print → VTX thermal measurement → S11 (antenna) measurement → test jump.
-- 🎯 **Target:** first official tests, **summer 2026.**
-
----
-
-## Follow the first jump
-
-Nothing here carries a *measured* badge yet — that is the point of what happens next: first print, thermal measurement, antenna pattern on a turntable, then the first test jump.
-
-- ⭐ **Watch / star this repo** — releases will carry the first real measurements and, eventually, the first freefall footage from the system itself.
-- 🔧 **Building one, or flying camera and have opinions?** Open an [issue](https://github.com/SchoenTom/skydive-live/issues) — helmet-setup input from real jumpers shapes the next housing revision.
-- 🪂 **Drop zone, federation or event?** Reach out via the [GitHub profile](https://github.com/SchoenTom).
+⭐ **Star the repo** — releases will carry the first real measurements and, eventually, the first freefall footage from the system itself. Building one, or flying camera and have opinions? Open an [issue](https://github.com/SchoenTom/skydive-live/issues).
 
 ---
 
 ## Honest note
 
-A solo-built, prototype-stage project shared in full. Renders are from the project's own CAD; calculated values are marked as such and separated from what still has to be measured — and when a recalculation makes a number worse, the worse number gets published (see the 2026-06 link-budget revision in [ENGINEERING.md](ENGINEERING.md)). Transmit power is regulated: the plan of record is a **PMSE short-term frequency assignment** for event operation and licence-free **25 mW SRD** for all development tests. See [`DISCLAIMER.md`](DISCLAIMER.md).
+A solo-built, prototype-stage project shared in full. Calculated values are marked as such and separated from what still has to be measured. Transmit power is regulated: the plan of record is licence-free **25 mW SRD** for all development tests and a **PMSE short-term frequency assignment** for event operation — see [`DISCLAIMER.md`](DISCLAIMER.md) and [`build/LEGAL_DE.md`](build/LEGAL_DE.md).
 
-<sub>License: <a href="LICENSE">CC-BY-4.0</a> · Renders &amp; 3D: own CAD (build123d) · Made by <a href="https://github.com/SchoenTom">@SchoenTom</a></sub>
+<sub>License: <a href="LICENSE">CC-BY-4.0</a> · CAD: build123d (Python) · Made by <a href="https://github.com/SchoenTom">@SchoenTom</a></sub>
