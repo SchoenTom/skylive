@@ -10,7 +10,8 @@
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="SkyLive — The jump. Live.">
-<meta property="og:description" content="Real-time video from freefall — the jumper's POV, live to the drop zone. Own radio link, ~14 ms latency, dual antenna.">
+<meta property="og:description" content="Real-time video from freefall — the jumper's POV, live to the drop zone. Own radio link, ~14 ms latency, four parts, zero solder joints.">
+<!-- TBD-CAD-M6: og.png still shows the previous-generation shell — replace after the CAD milestone -->
 <meta property="og:image" content="https://schoentom.github.io/skydive-live/og.png">
 <meta property="og:url" content="https://schoentom.github.io/skydive-live/">
 <meta property="og:site_name" content="SkyLive">
@@ -255,18 +256,18 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     <span class="live-pill"><i></i>● Live</span>
     <h1 class="wordmark">SKYLIVE</h1>
     <p class="tagline">The jump. <span class="cy">Live.</span></p>
-    <p class="lede">Real-time video from freefall — the jumper's POV, streamed live from ~4 km up to a receiver at the drop zone, onto the big TV in the waiting area. Own radio link, no internet, ~14 ms latency, dual antenna.</p>
+    <p class="lede">Real-time video from freefall — the jumper's POV, streamed live from ~4 km up to a receiver at the drop zone, onto the big TV in the waiting area. Own radio link, no internet, ~14 ms latency. Inside: four honest parts, joined without a soldering iron.</p>
     <div class="chips" role="list" aria-label="Key telemetry">
       <span class="chip" role="listitem"><b>4000 m</b></span>
       <span class="chip" role="listitem"><b>14 ms</b></span>
       <span class="chip" role="listitem"><b>4 km</b></span>
       <span class="chip" role="listitem"><b>1 W</b></span>
-      <span class="chip" role="listitem"><b>2 antennas</b></span>
+      <span class="chip" role="listitem"><b>4 parts · 0 solder</b></span>
     </div>
     <div class="btns">
       <a class="btn btn-primary" href="#model">Explore the build ↓</a>
       <a class="btn btn-ghost" href="https://github.com/SchoenTom/skydive-live">Source on GitHub</a>
-      <a class="btn btn-ghost" href="decks/">Pitch decks</a>
+      <!-- TBD-CAD-M6: pitch decks (self-contained, offline) return here once the new model exists -->
     </div>
   </div>
 </header>
@@ -288,10 +289,10 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   <div class="wrap">
     <div class="head">
       <div class="eyebrow">What it is</div>
-      <h2>Action-cam size. 1-watt reach.</h2>
-      <p>Same height as a GoPro, same helmet mount — but inside is a real 1 W radio that closes 4 km. And here's the whole path the picture takes, helmet to the waiting-room TV.</p>
+      <h2>Action-cam class. 1-watt reach.</h2>
+      <p>A GoPro-style helmet case — battery downstairs, radio and camera upstairs — with a real 1 W radio inside that closes 4 km. Here's the whole path the picture takes, helmet to the waiting-room TV.</p>
     </div>
-    <img src="gopro_compare.svg" alt="True-to-scale size comparison: sender vs a GoPro, same height" style="width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.08);display:block;margin-bottom:22px">
+    <!-- TBD-CAD-M6: true-to-scale size-compare figure (final outer dimensions) lands here -->
     <img src="signal_flow.svg" alt="The signal's journey: camera, 1 W radio, antenna, 4 km of air, ground antennas, receiver, HDMI, to the big TV — about 14 ms." style="width:100%;display:block">
   </div>
 </section>
@@ -302,7 +303,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     <div class="head">
       <div class="eyebrow">The hardware</div>
       <h2>The sender, in your hands.</h2>
-      <p>A GoPro-form-factor transmitter that rides on the helmet. Drag to inspect it, or pull it apart to see what's inside.</p>
+      <p>A GoPro-form-factor transmitter that rides on the helmet. Drag to inspect it, or pull it apart to see what's inside. <b>Shown: the previous prototype shell</b> — the redesigned case (side antenna capsule, two-storey layout) is in its final CAD pass and its model will replace this one. <!-- TBD-CAD-M6: swap sender_assembled.glb / sender_exploded.glb + posters --></p>
     </div>
     <div class="mv-shell">
       <div class="mv-toggle" role="group" aria-label="Model view">
@@ -341,7 +342,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     <div class="head">
       <div class="eyebrow">Play the jump</div>
       <h2>A body is a shadow.</h2>
-      <p>Spin the jumper head-down (head-first) and his own body blocks the antenna. Watch one antenna drop. Switch on the second — the image holds.</p>
+      <p>Radio doesn't go through a person well (−10…−15 dB). Spin the jumper and watch each antenna's coverage move with the pose: the <b>down patch</b> aims a cone at the ground — until the body swings it away. The <b>donut omni</b> fires down + up past the body. You screw on one per jump; the aimed, 4-way-diversity ground array holds the rest.</p>
     </div>
 
     <div class="demo">
@@ -349,7 +350,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       <div class="stage" id="stage">
         <div class="poselabel" id="poseLabel">BELLY</div>
         <div class="windtag">4000 m · FREEFALL</div>
-        <svg viewBox="0 0 400 400" id="svg" aria-label="Skydiver with two antennas streaming to a ground station">
+        <svg viewBox="0 0 400 400" id="svg" aria-label="Skydiver streaming to a ground station — compare the down patch and the donut omni">
           <defs>
             <radialGradient id="grnd" cx="50%" cy="100%" r="60%"><stop offset="0" stop-color="rgba(34,211,238,.18)"/><stop offset="1" stop-color="transparent"/></radialGradient>
             <linearGradient id="suit" x1="0" y1="0" x2="1" y2="1">
@@ -372,9 +373,8 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
           <g id="gstation"><circle cx="200" cy="350" r="6" fill="#67e8f9"/>
             <path d="M188 350 a12 12 0 0 1 24 0" fill="none" stroke="#67e8f9" stroke-width="2" opacity=".7"/>
             <path d="M181 350 a19 19 0 0 1 38 0" fill="none" stroke="#67e8f9" stroke-width="2" opacity=".4"/></g>
-          <!-- beams emanate from the body core (200,172) to the ground station (200,350) -->
-          <path id="beamPatch"  class="beam" d="M196 178 Q150 282 200 348" fill="none" stroke="#22d3ee" stroke-width="6"/>
-          <path id="beamDipole" class="beam" d="M204 168 Q252 282 200 348" fill="none" stroke="#4ec3ec" stroke-width="6" opacity="0"/>
+          <!-- one active beam from the body core (200,172) to the ground station (200,350) -->
+          <path id="beamAnt" class="beam" d="M196 178 Q150 282 200 348" fill="none" stroke="#22d3ee" stroke-width="6"/>
           <!-- realistic jumper: boxman/arch silhouette, filled with gradient + rim-light -->
           <g id="diver" transform="rotate(0 200 170)">
             <!-- realistic belly-fly (box position): arms bent up, knees bent (boots up/out), arched torso -->
@@ -406,9 +406,9 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
               <path d="M115,104 L120,174" stroke="#22d3ee" stroke-width="2.4" fill="none" opacity=".5"/>
               <path d="M145,104 L140,174" stroke="#22d3ee" stroke-width="2.4" fill="none" opacity=".5"/>
             </g>
-            <!-- antenna nubs on the sender: patch (belly side) / dipole (sky side) -->
-            <circle id="nubPatch"  class="nub live" cx="196" cy="110" r="6" fill="#22d3ee"/>
-            <circle id="nubDipole" class="nub" cx="205" cy="99" r="5" fill="#2a6f88"/>
+            <!-- antenna nubs on the sender: down patch (bottom shell) / donut omni (side capsule) -->
+            <circle id="nubPatch" class="nub live" cx="196" cy="110" r="6" fill="#22d3ee"/>
+            <circle id="nubOmni"  class="nub" cx="205" cy="99" r="5" fill="#2a6f88"/>
           </g>
         </svg>
       </div>
@@ -430,11 +430,11 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
             <button class="pose" data-t="270">Back</button>
           </div>
           <div class="atoggle" id="atoggle">
-            <button data-a="1" class="on">1 antenna<small>patch only</small></button>
-            <button data-a="2">2 antennas<small>patch + dipole</small></button>
+            <button data-a="patch" class="on">Down patch<small>bottom shell · cone at the ground</small></button>
+            <button data-a="omni">Donut omni<small>side capsule · fires down + up</small></button>
           </div>
-          <div class="poslegend">Belly = face down · Sit = feet down · Head-down = head first · Back = face up</div>
-          <div class="draghint">↻ <b>Drag the jumper</b> · or pick a pose · then switch on <b>2 antennas</b></div>
+          <div class="poslegend">One antenna per jump, swapped by hand — no electronic switch on the sender.<br>The 4-way-diversity ground array (aimed patch + omnis) rides the best branch.</div>
+          <div class="draghint">↻ <b>Drag the jumper</b> · or pick a pose · then try the <b>donut omni</b></div>
         </div>
       </div>
     </div>
@@ -448,15 +448,15 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       <div class="eyebrow">The numbers</div>
       <h2>Closing 4 km of sky.</h2>
     </div>
-    <img src="closing_4km.svg" alt="Link budget closing 4 km: +30 dBm transmit, −119.8 dB free-space loss, −5 dB cable and polarisation, −90 dBm conservative threshold → about +8 dB belly margin at a favourable heading; the dipole floors the worst heading at about +2 dB, and head-down rides the threshold. Recalculated 2026-06 for the v5 side-patch geometry." style="width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.08);display:block;margin-bottom:24px">
+    <img src="closing_4km.svg" alt="Link budget closing 4 km: +30 dBm transmit, −119.8 dB free-space loss, honest RX gain, −90 dBm conservative threshold — head-down closes with about +9 dB, belly rides the threshold; a model, not a measurement." style="width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.08);display:block;margin-bottom:24px">
     <div class="numbers">
       <div class="num"><div class="v">119.8 dB</div><div class="k">FSPL @ 4 km</div></div>
-      <div class="num"><div class="v">≈ +8 dB</div><div class="k">belly margin · calc</div></div>
-      <div class="num"><div class="v">≈ 6 K</div><div class="k">ΔT freefall</div></div>
+      <div class="num"><div class="v">≈ +9 dB</div><div class="k">head-down margin · calc</div></div>
+      <div class="num"><div class="v">~13 W</div><div class="k">waste heat @ 1 W</div></div>
       <div class="num"><div class="v">~14 ms</div><div class="k">latency</div></div>
       <div class="num"><div class="v">1 W</div><div class="k">TX power</div></div>
     </div>
-    <p style="text-align:left;font:500 .96rem/1.5 var(--sans);color:var(--muted)">Calculated, not yet measured — and re-run 2026-06 for the real v5 side-patch geometry, which made the numbers <em>smaller</em> and got published anyway. Full budget, assumptions &amp; sensitivity in <a href="https://github.com/SchoenTom/skydive-live/blob/main/ENGINEERING.md" style="color:var(--cyan);font-weight:700;text-decoration:none">ENGINEERING.md →</a></p>
+    <p style="text-align:left;font:500 .96rem/1.5 var(--sans);color:var(--muted)">Calculated, not yet measured — and re-derived 2026-07 for the real donut-omni geometry: head-down closes with margin, belly rides the threshold at 4 km and improves 2–3 dB per km of descent, sit is the corner a test jump must prove. When the numbers got worse, the worse numbers got published. Full model, pose tables &amp; every assumption in <a href="https://github.com/SchoenTom/skydive-live/blob/main/build/rf/README.md" style="color:var(--cyan);font-weight:700;text-decoration:none">build/rf →</a></p>
   </div>
 </section>
 
@@ -465,10 +465,10 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   <div class="wrap">
     <div class="head">
       <div class="eyebrow">Build it yourself</div>
-      <h2>Seven printed parts. One robust shell.</h2>
-      <p>Two builds, one idea — <b>MK2</b> (simplest, 3 PETG parts) or <b>v5</b> (dual-antenna, 7 ASA parts, shown below). Each has its own chronological plan in the <a href="https://github.com/SchoenTom/skydive-live/blob/main/BUILD.md" style="color:var(--cyan);font-weight:700;text-decoration:none">build guide</a>; STLs are on the <a href="https://github.com/SchoenTom/skydive-live/releases/tag/v1.0" style="color:var(--cyan);font-weight:700;text-decoration:none">v1.0 release</a>.</p>
+      <h2>Four parts. Zero solder joints.</h2>
+      <p>A radio, a camera, a battery, and a button — joined by three Wago lever clamps and the radio's own plug-in harness. No soldering iron, no extra electronics. The chronological, solder-free plan (with the three hardware-killer rules and the power/thermal doctrine) is in the <a href="https://github.com/SchoenTom/skydive-live/blob/main/build/BUILD_GUIDE.md" style="color:var(--cyan);font-weight:700;text-decoration:none">build guide</a>; the parametric CAD scripts are in <a href="https://github.com/SchoenTom/skydive-live/tree/main/build/cad" style="color:var(--cyan);font-weight:700;text-decoration:none">build/cad</a>.</p>
     </div>
-    <img src="print_parts.png" alt="Exploded view of the seven printed parts with roles and the seven-step assembly sequence." style="width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.08);display:block">
+    <!-- TBD-CAD-M6: printed-parts figure of the final case (body, cover, battery door, bottom shell) lands here -->
   </div>
 </section>
 
@@ -478,9 +478,9 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     <div class="head">
       <div class="eyebrow">How it stays alive</div>
       <h2>Engineered, not hoped.</h2>
-      <p>Passive thermal with no moving parts, two antennas at the ground station, and a picture that's there before you blink.</p>
+      <p>Purely passive thermal — vents, a thermal pad, the 200 km/h wind, and an operating doctrine instead of a fan. Diversity at the ground station. And a picture that's there before you blink.</p>
     </div>
-    <img src="cooling.svg" alt="Passive thermal: no fan, no moving parts — the freefall ram-air carries the heat away, delta-T about 6 K." style="width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.08);display:block;margin-bottom:20px">
+    <img src="cooling.svg" alt="Passive thermal with an operating doctrine: 25 mW on the ground, 1 W only at door-open — in freefall the ram-air carries the 13 W of heat; off within 60 s after landing." style="width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.08);display:block;margin-bottom:20px">
     <img src="diversity.svg" alt="Ground-station diversity: wide omni plus aimed patch, the receiver takes the stronger one." style="width:100%;max-width:680px;border-radius:14px;border:1px solid rgba(255,255,255,.08);display:block;margin:0 auto 20px">
     <img src="latency.svg" alt="Latency: ~14 ms, before you blink; the old way is footage after landing." style="width:100%;max-width:760px;border-radius:14px;border:1px solid rgba(255,255,255,.08);display:block;margin:0 auto">
   </div>
@@ -492,7 +492,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     <p>SkyLive — solo-built, prototype stage. CC-BY-4.0.</p>
     <div class="flinks">
       <a href="https://github.com/SchoenTom/skydive-live">Repository</a>
-      <a href="https://github.com/SchoenTom/skydive-live/releases/tag/v1.0">Downloads · STL/STEP/3D</a>
+      <a href="https://github.com/SchoenTom/skydive-live/blob/main/build/BUILD_GUIDE.md">Build guide</a>
       <a href="https://github.com/SchoenTom">@SchoenTom</a>
     </div>
   </div>
@@ -515,45 +515,42 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   bExp.addEventListener('click',()=>set(false));
 })();
 
-/* ---------- ANTENNA DEMO (signature, harvested) ---------- */
+/* ---------- ANTENNA DEMO (signature): down patch vs donut omni, one at a time ---------- */
 (function(){
   const stage=document.getElementById('stage'); if(!stage) return;
-  const diver=document.getElementById('diver'), bP=document.getElementById('beamPatch'), bD=document.getElementById('beamDipole');
-  const nP=document.getElementById('nubPatch'), nD=document.getElementById('nubDipole');
+  const diver=document.getElementById('diver'), beam=document.getElementById('beamAnt');
+  const nP=document.getElementById('nubPatch'), nO=document.getElementById('nubOmni');
   const fill=document.getElementById('linkFill'), pct=document.getElementById('linkPct'), stat=document.getElementById('statTxt');
   const screen=document.getElementById('screen'), lostWhy=document.getElementById('lostWhy'), scrnTag=document.getElementById('scrnTag'), poseLabel=document.getElementById('poseLabel'), tc=document.getElementById('tc');
   const poses=document.getElementById('poses'), atoggle=document.getElementById('atoggle');
-  let theta=0, target=0, ants=1, dragging=false, lastX=0, idle=0, tcSec=12*60+4;
+  let theta=0, target=0, ant='patch', dragging=false, lastX=0, idle=0, tcSec=12*60+4;
   const POSE=[['BELLY · FACE DOWN','BELLY · FACE DOWN',0],['SIT · FEET DOWN','SIT · FEET DOWN',90],['HEAD-DOWN · HEAD FIRST','HEAD-DOWN · HEAD FIRST',180],['BACK · FACE UP','BACK · FACE UP',270]];
   const rad=d=>d*Math.PI/180;
-  function cov(th){ // returns [patch,dipole] 0..1
-    const c=Math.cos(rad(th));
-    let p=0.5+0.5*c, d=0.5-0.5*c;
-    // subtle realism: shallow nulls near the sides
-    p*=0.93+0.07*Math.cos(rad(th*2)); d*=0.93+0.07*Math.cos(rad(th*2+180));
-    return [Math.max(0,p),Math.max(0,d)];
+  // Coverage anchors at belly/sit/head-down/back, smoothed between poses. Shaped after the
+  // project link-budget model (RF_ANALYSIS_DONUT): patch = cone at the ground, dies off-pose;
+  // omni donut fires down+up past the body, body shadow is its limiter (belly/sit thin).
+  const ANCH={patch:[0.95,0.10,0.03,0.07], omni:[0.36,0.30,0.90,0.74]};
+  function cov(th,which){
+    const a=ANCH[which], seg=(((th%360)+360)%360)/90, i0=Math.floor(seg)%4, i1=(i0+1)%4;
+    const t=(1-Math.cos(Math.PI*(seg-Math.floor(seg))))/2;
+    return a[i0]*(1-t)+a[i1]*t;
   }
   function lerpAngle(a,b,t){let d=((b-a+540)%360)-180;return a+d*t;}
   function poseName(th){ // nearest pose label
     let best=0,bd=999; for(let i=0;i<POSE.length;i++){let d=Math.abs(((POSE[i][2]-th+540)%360)-180);if(d<bd){bd=d;best=i;}}return POSE[best];
   }
   function render(){
-    const [p,d]=cov(theta);
-    const carry = (ants===2)? Math.max(p,d) : p;
-    const usingDipole = (ants===2 && d>p);
+    const p=cov(theta,'patch'), o=cov(theta,'omni');
+    const carry=(ant==='omni')?o:p;
     diver.setAttribute('transform',`rotate(${theta} 200 170)`);
-    // patch beam color by its own coverage
     const col=v=> v>0.45?'#22d3ee': v>0.25?'#edab28':'#ef5a4f';
-    bP.setAttribute('stroke', (ants===2 && usingDipole)? '#2f5a3f' : col(p));
-    bP.setAttribute('opacity', (0.25+0.75*p).toFixed(2));
-    bP.setAttribute('stroke-width',(3+5*p).toFixed(1));
-    bD.setAttribute('opacity', ants===2? (0.18+0.8*d).toFixed(2):'0');
-    bD.setAttribute('stroke', usingDipole? '#4ec3ec':'#2a6f88');
-    bD.setAttribute('stroke-width',(3+5*d).toFixed(1));
-    nP.classList.toggle('live', !usingDipole && carry>0.25);
-    nD.classList.toggle('live', usingDipole && carry>0.25);
-    nP.setAttribute('fill', usingDipole? '#2f5a3f' : col(p));   // patch nub follows its own coverage
-    nD.setAttribute('fill', ants===2? (usingDipole?'#4ec3ec':'#2a6f88') : '#244');
+    beam.setAttribute('stroke', col(carry));
+    beam.setAttribute('opacity', (0.22+0.78*carry).toFixed(2));
+    beam.setAttribute('stroke-width',(3+5*carry).toFixed(1));
+    // active antenna nub glows with its coverage; the spare stays dim (it's in the kit bag)
+    const act=(ant==='patch')?nP:nO, spare=(ant==='patch')?nO:nP;
+    act.classList.toggle('live', carry>0.25); spare.classList.remove('live');
+    act.setAttribute('fill', col(carry)); spare.setAttribute('fill','#24424e');
     // link
     const v=Math.round(carry*100);
     fill.style.width=v+'%';
@@ -561,9 +558,14 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     pct.textContent=v+'%'; pct.style.color=fill.style.background;
     const live=carry>=0.25;
     screen.classList.toggle('lost',!live);
-    if(live){stat.textContent= usingDipole?'● LIVE — dipole takes over':'● LIVE — image holds'; stat.style.color='#67e8f9';}
+    if(live){
+      stat.textContent = carry>0.45 ? '● LIVE — image holds' : '● LIVE — thin margin · ground diversity holding';
+      stat.style.color = carry>0.45 ? '#67e8f9' : '#edab28';
+    }
     else{stat.textContent='✕ SIGNAL LOST'; stat.style.color='#ef5a4f';}
-    lostWhy.textContent = ants===1? 'patch blocked by body — 2nd antenna missing' : 'both antennas shadowed';
+    lostWhy.textContent = ant==='patch'
+      ? 'patch cone swung off the ground station — this is the donut omni’s case'
+      : 'deep body shadow — the corner a real test jump must prove';
     const pn=poseName(theta); poseLabel.textContent=pn[0]; scrnTag.textContent=pn[1];
     [...poses.children].forEach(b=>b.classList.toggle('on',+b.dataset.t===pn[2]));  // nearest pose, not rounded theta
   }
@@ -581,8 +583,8 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   stage.addEventListener('pointercancel',()=>{dragging=false;});
   // poses
   poses.addEventListener('click',e=>{const b=e.target.closest('.pose');if(!b)return;target=+b.dataset.t;idle=0;});
-  // antenna toggle
-  atoggle.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ants=+b.dataset.a;
+  // antenna toggle (manual swap — one antenna at a time, like the real SMA socket)
+  atoggle.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ant=b.dataset.a;
     [...atoggle.children].forEach(x=>x.classList.toggle('on',x===b));idle=0;render();});
   render(); requestAnimationFrame(tick);
 })();
