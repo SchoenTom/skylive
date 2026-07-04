@@ -40,6 +40,7 @@ you click. Items marked “—” were already owned or not in the logged order.
 | M3 heat-set inserts (Ruthex RX-M3x5.7 class) + M3 screws | ~10 | 2× nylon M3 preferred at the antenna capsule |
 | TPU filament (capsule tip pad + root ring, orange) | ~15 | the orange tip pad doubles as the antenna witness indicator |
 | Heat-shrink, RTV/hot glue, zip ties | ~5 | Wago securing + strain relief |
+| Soft foam padding, ~2 mm (EVA/PE) | ~3 | **mandatory** battery preload — the pack must never fly free in the bay (a loose 80 g pack hits ~590 N on a hard stop; the foam cuts that to ~250 N) |
 | 50 Ω SMA dummy load | ~8 | safe bench power-up without an antenna |
 
 ## 4 · Ground station
