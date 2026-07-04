@@ -61,7 +61,7 @@ There is **no electronic antenna switch** on the sender — you pick the antenna
 | **Why** | the ground station is *below* you; aiming the donut down instead of at the horizon is worth **~15–18 dB** at 4 km — better aiming, not more power *(calculated)* | belly-fly with the DZ below/ahead |
 | **Honest caveat** | body shadow, not the antenna, is the limiter in belly/sit poses | swings off-target the moment you go head-down |
 
-Encapsulating the omni costs almost nothing in RF (PETG radome, the antenna's own 900 MHz bandwidth is the reserve — *NanoVNA verification is mandatory before believing this*) and removes wind load, fatigue and line-snag risk entirely. Full derivation: [`build/ENGINEERING/antenna_capsule.md`](build/ENGINEERING/antenna_capsule.md).
+Encapsulating the omni costs almost nothing in RF — a 1.5 mm PETG radome at 5.8 GHz works out to **≈ 0.15 dB one-way** (a thin dielectric slab, ~λ/20, whose two surface reflections nearly cancel; ~3 % of the power, versus 7–15 dB for body-shadow). The real encapsulation risk is *detuning*, not loss, so the antenna's own 900 MHz bandwidth is the reserve — *NanoVNA verification is mandatory before believing this*. Capturing the puck also removes wind load, fatigue and line-snag entirely. Full derivation: [`build/ENGINEERING/antenna_capsule.md`](build/ENGINEERING/antenna_capsule.md).
 
 **The gain lives on the ground.** You're tumbling; the ground isn't. A bigger helmet antenna buys ~2–3 dB; *aiming* the ground antenna buys 10–14 dB. So the ground station is an **HDZero BoxPro** (4-way diversity, HDMI out to the TV) with an aimed **TrueRC X²-AIR patch** (nominal 13 dBic — honestly, expect ~10), a **Double AXII 2 LR** horizon omni and a **Matchstick** overhead omni. The receiver rides the best branch, frame by frame.
 
@@ -95,6 +95,7 @@ Everything a re-builder needs is under [`build/`](build/):
 - 📋 **[`BUILD_GUIDE.md`](build/BUILD_GUIDE.md)** — the solder-free assembly, the wiring map, the three hardware-killer rules, and the power/thermal operating doctrine.
 - 🛒 **[`BOM.md`](build/BOM.md)** — every part with real EU prices (as of 2026-07).
 - 📐 **[`MEASURE.md`](build/MEASURE.md)** — the dimensions you must caliper yourself (nothing in this project is guessed).
+- ✅ **[`VERIFICATION.md`](build/VERIFICATION.md)** — how a CAD model is turned into a *trustworthy* printable part: a seven-layer defense-in-depth, the honest limits of gates vs. physical tests, and the release checklist.
 - ⚖️ **[`LEGAL_DE.md`](build/LEGAL_DE.md)** — the German regulatory situation, honestly: what is legal today (25 mW SRD), what the event path is (PMSE), and why 1 W under an amateur licence is locked pending clarification.
 - 🧊 **[`cad/`](build/cad/)** — the parametric build123d scripts (`spec.py` is the single source of truth for every dimension).
 
