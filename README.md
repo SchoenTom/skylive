@@ -46,22 +46,33 @@ That's the entire transmitter: **a radio, a camera, a battery, and a button** �
 
 Power joins are **three Wago 221-412 lever clamps** — strip, flip the lever, clamp, done. Re-openable in seconds, no cold joints, no fumes. The VTX side plugs in via its stock **JST-GH 6-pin harness**. Full step-by-step (with the three hardware-killer rules): **[`build/BUILD_GUIDE.md`](build/BUILD_GUIDE.md)**.
 
-**The shell:** an upright, two-storey GoPro-style case — battery downstairs, radio + camera upstairs — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, passive louver vents, and a GoPro mount underneath. Outer dimensions: **63 × 71 × 85 mm** with the antenna variant that carries the omni in a side capsule; the down-firing patch variant is **63 × 71 × 101 mm**. Both build from the parametric scripts in [`build/cad/`](build/cad/) and pass their geometry gates; the numbers firm up once a few hand-measured values replace their datasheet fallbacks.
+**The shell:** an upright, two-storey GoPro-style case — battery downstairs behind its own tab-locked door, radio + camera upstairs under a screwed roof lid — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, long passive louver vents, and a GoPro mount underneath. Outer dimensions: **71 × 39.5 × 56 mm** — genuinely action-cam-sized. Both short sides carry an identical **T-slot strain-relief interface** at the top edge, so the antenna can anchor left or right; the unused side closes with a blind T-piece. It builds from the parametric script in [`build/cad/`](build/cad/) and passes every geometry gate on each rebuild; this exact file set is what went to the printer.
 
 ---
 
-## One socket. Two antennas. No silicon in between.
+## One antenna, anchored like a tool — not like an afterthought.
 
-There is **no electronic antenna switch** on the sender — you pick the antenna for the jump by hand, and the clever part lives where it belongs: on the ground.
+There is **no electronic antenna switch** on the sender — the omni rides outside on its
+semi-rigid coax, and the clever part lives where it belongs: on the ground.
 
-| | **A — the donut omni** (primary) | **B — the down patch** (variant) |
-|---|---|---|
-| **What** | Lumenier AXII 2 RHCP omni, **fully encapsulated** in a printed nose in the side wall | TBS 5G8 RHCP patch inside the bottom shell, radiating down through a 1.5 mm radome |
-| **How it radiates** | lying with its axis **across the body** — the donut pattern fires **down + up**, nulls point out to the sides | a ~110° cone aimed at the ground |
-| **Why** | the ground station is *below* you; aiming the donut down instead of at the horizon is worth **~15–18 dB** at 4 km — better aiming, not more power *(calculated)* | belly-fly with the DZ below/ahead |
-| **Honest caveat** | body shadow, not the antenna, is the limiter in belly/sit poses | swings off-target the moment you go head-down |
+The mount is the oldest trick in the book, done properly: a **2.9 mm press-fit slot** in the top
+edge of the case wall grips the **Ø 3.1 mm** semi-rigid with −0.2 mm of interference — a yank on
+the antenna loads the printed wall, never the connector. A flat **T-piece** covers the slot and
+locks with two vertical M2 cap screws; the cable rises through its notch and the
+**RHCP omni stands above the case**, clear of the helmet. Both short sides carry the identical
+interface, so the anchor moves left or right to suit the helmet setup — the unused side closes
+with a **blind T-piece** and the case is fully sealed even with no antenna fitted.
 
-Encapsulating the omni costs almost nothing in RF — a 1.5 mm PETG radome at 5.8 GHz works out to **≈ 0.15 dB one-way** (a thin dielectric slab, ~λ/20, whose two surface reflections nearly cancel; ~3 % of the power, versus 7–15 dB for body-shadow). The real encapsulation risk is *detuning*, not loss, so the antenna's own 900 MHz bandwidth is the reserve — *NanoVNA verification is mandatory before believing this*. Capturing the puck also removes wind load, fatigue and line-snag entirely. Full derivation: [`build/ENGINEERING/antenna_capsule.md`](build/ENGINEERING/antenna_capsule.md).
+| honest caveat | status |
+|---|---|
+| Body shadow, not the antenna, is the limiter in belly/sit poses (−7…−12 dB literature midpoints) | assumption, to be jumped |
+| Press-fit holding force and S11 with the coax clamped | `MEASURE_ME` — fit-print + NanoVNA |
+
+Two earlier antenna integrations — the fully **encapsulated side-capsule omni** and the
+**down-firing patch shell** — are preserved as engineering studies with their full RF derivations
+in [`build/ENGINEERING/antenna_capsule.md`](build/ENGINEERING/antenna_capsule.md); the external
+anchored omni won on serviceability (swap an antenna in seconds, nothing to detune, one part to
+reprint).
 
 **The gain lives on the ground.** You're tumbling; the ground isn't. A bigger helmet antenna buys ~2–3 dB; *aiming* the ground antenna buys 10–14 dB. So the ground station is an **HDZero BoxPro** (4-way diversity, HDMI out to the TV) with an aimed **TrueRC X²-AIR patch** (nominal 13 dBic — honestly, expect ~10), a **Double AXII 2 LR** horizon omni and a **Matchstick** overhead omni. The receiver rides the best branch, frame by frame.
 
@@ -107,13 +118,13 @@ Everything a re-builder needs is under [`build/`](build/):
 
 ## Status
 
-**Full redesign in progress** (2026-07). The concept, the electronics, the RF doctrine and the engineering derivations are done and published here; the printed case is in its final CAD pass.
+**Print released** (2026-07). The concept, the electronics, the RF doctrine and the engineering derivations are done and published here; the case design is frozen and the first fit-print is in the lab.
 
 - ✅ Sender electronics bought and specified — four parts, solder-free.
-- ✅ RF doctrine derived and published (donut orientation, capsule, ground diversity) — *calculated*.
+- ✅ RF doctrine derived and published (donut orientation, ground diversity, capsule study) — *calculated*.
 - ✅ Thermal, structural and print-factor derivations published — *calculated*.
-- ✅ Final case CAD builds and passes all geometry gates, both antenna variants (63 × 71 × 85 mm side-capsule omni · 63 × 71 × 101 mm down-patch), watertight, 3 mm wall — *geometry-verified, not yet a physical print*. New beauty renders + on-page 3D model land as the remaining `TBD-CAD-M6` asset markers resolve.
-- 🔜 Then: print → thermal measurement (multimeter protocol is written) → antenna S11 in the capsule → 25 mW range test → test jump.
+- ✅ Final case CAD (**71 × 39.5 × 56 mm**) builds watertight and passes every geometry gate — roof lid on 3 corner inserts, tab-locked battery door, twin T-slot antenna anchors, 3 mm wall. **Print files released; the first fit-print is on the printer.** *Geometry-verified, not yet a physical test.*
+- 🔜 Then: fit-print feedback → thermal measurement (multimeter protocol is written) → antenna S11 with the coax clamped → 25 mW range test → test jump.
 
 ⭐ **Star the repo** — releases will carry the first real measurements and, eventually, the first freefall footage from the system itself. Building one, or flying camera and have opinions? Open an [issue](https://github.com/SchoenTom/skydive-live/issues).
 
