@@ -1,6 +1,8 @@
 <div align="center">
 
 <!-- TBD-CAD-M6: hero render of the rebuilt sender (lens forward, donut-omni nose on the side) lands here as renders/hero.png -->
+<!-- HERO CLAIM (set the line under the hero image once the render lands; not placed yet — final layout TBD-ASSET):
+     "Live from 4 km above the drop zone — 14 ms behind reality." -->
 
 # SkyLive
 
