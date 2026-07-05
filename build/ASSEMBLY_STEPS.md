@@ -33,9 +33,9 @@ wrench for the SMA, hot glue/RTV, a caliper.
 
 ---
 
-## Step 1 · Melt the M3 brass inserts into the lid bosses
+## Step 1 · Melt the M3 brass inserts into the roof-lid posts
 
-**Do.** The shell prints with **Ø 4.6 mm insert holes** in **Ø 10 mm bosses** at the lid corners,
+**Do.** The shell prints with **Ø 4.6 mm insert holes** in **Ø 8 mm corner posts** under the roof opening (3 posts — the camera owns the fourth corner),
 each with a small **Ø 5.2 × 0.5 mm lead-in chamfer** on top. Set the soldering iron to
 **250–270 °C** (rule: print temperature **+10…20 °C** — hot enough to melt PETG, not scorch it).
 Sit a brass insert (**Ø 5.0 mm OD × 6.0 mm long**, measured on the reference part) on the chamfer,
@@ -294,7 +294,7 @@ geometry confirms with the CAD pass.
 - **Strain reliefs** (antenna clamp + both XT30 saddles) hold against a firm cable pull — the pull
   lands in the printed block, not on a joint.
 - **Battery door** clicked and screwed; **foam preload** present.
-- **Lid** seated on all four inserts, screws snug (not crushing the boss).
+- **Roof lid** seated on its rebate (lip dips into the opening, flush on top), 3× M3 snug from above (not crushing the posts); the 12 mm switch pokes through its lid hole.
 
 Then — and only then — go to the empirical protocol: **[`MEASURE.md`](MEASURE.md)** (VNA S11 of the
 encapsulated antenna, the thermal A/B test, the caliper list). This assembly is
