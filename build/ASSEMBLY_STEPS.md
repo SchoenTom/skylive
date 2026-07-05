@@ -68,31 +68,34 @@ prototype shares). The battery bay keeps its own door on the end face.
 
 ---
 
-## Step 2 · Fit the antenna coax into its edge clamp (the 2.9 mm principle)
+## Step 2 · Press the antenna coax into its T-slot (the 2.9 mm principle)
 
 *(Donut-omni variant. Skip to Step 3 if you build the down-patch variant — its patch bolts into the
 bottom shell instead; see [`ENGINEERING/antenna_capsule.md` § 5](ENGINEERING/antenna_capsule.md).)*
 
-**Do.** The semi-rigid antenna coax runs into an **open-edge clamp** cast onto the wall: you **lay
-the cable into the channel from the side** (never thread it through a closed hole), then close the
-mating cap. Fully closed, the clamp leaves a **2.9 mm gap** onto the **Ø 3.1 mm coax** — i.e. a
-**−0.2 mm interference**. The cap pulls down with **cap screws into printed cores** (the
-strain-relief block on the reference part is **4× M2**, body ~17.9 × 13.05 × 5.8 mm). Snug the
-screws evenly, corner to corner, until the cap face meets the block face.
+**Do.** Both short sides carry the same interface at the very top of the wall: a **2.9 mm
+press-fit slot** open to the top edge, ending in a round seat, with a shallow **T-recess** on the
+outside. **Lay the Ø 3.1 mm semi-rigid coax in from above** (never thread a connector through a
+closed hole) and press it down until it rests on the round seat — the 2.9 mm slot grips the
+jacket with **−0.2 mm interference**. Slide the flat **T-piece** into the recess so it covers the
+slot (the cable rises through the T-piece's open notch), then lock it with **2× M2×8 cap screws,
+vertical, heads up**, into the printed cores in the wall's top edge. The unused side gets the
+**blind T-piece** — the case is fully closed even with no antenna fitted. Pick either side; the
+interfaces are identical.
 
-**Why.** −0.2 mm is a **clamp, not a crush**: enough to hold the cable against a pull so the load
-lands in the printed wall, not enough to deform the coax and detune the antenna. Laying the cable in
-(vs. threading) means the connector never has to pass a closed hole — the whole strain-relief
-family in this project works that way. **If your coax measures thicker than Ø 3.1, open the channel
-to suit — do not widen the 2.9 clamp gap; keep the −0.2 grip and give the extra to the channel.**
+**Why.** −0.2 mm is a **clamp, not a crush**: the slot itself grips the cable so a yank loads the
+printed wall, not the solder or the connector; the T-piece only keeps the cable from popping out
+of the slot and closes the shell. Laying the cable in from above means the SMA end never has to
+pass through anything. **If your coax measures thicker than Ø 3.1, do not open the 2.9 slot — keep
+the −0.2 grip and relieve the round seat instead.**
 
 **Watch out.**
-- **Coax jacket bulges / oval, or S11 shifts** → over-clamped (channel too tight for *your* cable).
-  Relieve the channel, preserve the −0.2 gap.
-- **Cable pulls free / slides under load** → cap screws not evenly seated, or the gap ended up
-  *over* 2.9 (cap not bottomed). It should not move by hand.
-- **Cap won't close square** → a screw core stripped or the cable is pinched proud of the channel;
-  re-seat the cable fully before the cap, don't force the cap onto it.
+- **Coax jacket bulges / oval, or S11 shifts** → over-pressed (slot too tight for *your* cable).
+  Measure the jacket; relieve the seat, preserve the −0.2 grip.
+- **Cable pulls free / slides under load** → it never reached the round seat, or the slot printed
+  over-size. It should not move by hand *before* the T-piece is even fitted.
+- **T-piece won't sit flush** → cable not fully seated (it's pinched proud of the slot), or the
+  vertical screws are catching — re-seat the cable first, never force the T-piece down onto it.
 
 Then form the coax's **single 90° bend (R ≥ 8 mm)** once, by hand on the printed jig, and mate the
 **SMA** to the internal jack (8 mm wrench, firm — not gorilla-tight). The fragile **U.FL is touched
@@ -263,20 +266,23 @@ means one swapped Wago at 12 V ends the VTX; the multimeter is a hard gate.
 ## Step 9 · Close the battery door (the TV-remote move)
 
 **Do.** With the battery in its bay (and its **foam preload** in place so it can't fly free), fit
-the door: **slide it in along the bay**, then a **gentle end-tilt (≤ 4°)** until the retaining noses
-catch, and press home — you'll feel **two side clicks**. Finally drive the **single M2 DIN 912
-screw** to lock it. It works exactly **like a TV-remote battery door**: slide, tip, click, then
-the screw is just the safety.
+the door: **slide it in along the bay**, then a **gentle end-tilt (≤ 4°)** until the two retaining
+noses at the foot drop into their floor pockets, and press the plate flush. Then drive the
+**single M2 DIN 912 screw through the top tab** — the small tab that sits proud on the wall above
+the opening — into its printed core. It works like a TV-remote battery door: slide, tip, seat,
+one screw. The tab is also your grip for opening.
 
 **Why.** The slide-then-tilt lets the noses engage without forcing the door square onto them; the
-clicks are the snap features seating; the screw is a positive lock, not the primary retention. The
-**foam preload is mandatory** — a loose 80 g pack hits ~590 N on a hard stop, the foam cuts that to
-~250 N ([CALC], [`ENGINEERING/divider.md`](ENGINEERING/divider.md)).
+tab screw is the positive lock and threads into the **wall + shelf ledge, never into the bay** —
+the battery volume stays completely unclaimed (an earlier interior boss design would have collided
+with the swollen pack by up to 2 mm; a permanent geometry gate now proves the bay empty on every
+rebuild). The **foam preload is mandatory** — a loose 80 g pack hits ~590 N on a hard stop, the
+foam cuts that to ~250 N ([CALC], [`ENGINEERING/divider.md`](ENGINEERING/divider.md)).
 
 **Watch out.**
 - **Tilting more than a few degrees / forcing it flat** → you'll shear or miss the noses. Small
   tilt, let them catch, then press.
-- **No click, or the door springs back** → a nose isn't engaged or a cable is pinched behind the
+- **Door springs back before the screw** → a nose isn't engaged or a cable is pinched behind the
   door; back out, clear the cable, retry. Don't drive the screw to pull a mis-seated door closed.
 - **Door rattles after the screw** → foam preload missing or too thin; the pack must be captured,
   not free.
