@@ -4,22 +4,22 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SkyLive — The jump. Live.</title>
-<meta name="description" content="Real-time video from freefall — the jumper's POV, live to the drop zone. A 1-watt HDZero FPV live-stream transmitter for professional skydiving.">
+<meta name="description" content="Live from 4 km above the drop zone — 14 ms behind reality. A 1-watt HDZero FPV live-stream transmitter for professional skydiving: four honest parts, zero solder on the sender.">
 <meta name="theme-color" content="#0b0d12">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="SkyLive — The jump. Live.">
-<meta property="og:description" content="Real-time video from freefall — the jumper's POV, live to the drop zone. Own radio link, ~14 ms latency, four parts, zero solder joints.">
-<!-- TBD-CAD-M6: og.png still shows the previous-generation shell — replace after the CAD milestone -->
-<meta property="og:image" content="https://schoentom.github.io/skydive-live/og.png">
+<meta property="og:description" content="Live from 4 km above the drop zone — 14 ms behind reality. Own radio link, four parts, zero solder joints on the sender.">
+<!-- TBD-ASSET: assets/og.png — hero render H1 (dropped by the asset pass) -->
+<meta property="og:image" content="https://schoentom.github.io/skydive-live/assets/og.png">
 <meta property="og:url" content="https://schoentom.github.io/skydive-live/">
 <meta property="og:site_name" content="SkyLive">
 <!-- Twitter -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="SkyLive — The jump. Live.">
-<meta name="twitter:description" content="Real-time video from freefall — the jumper's POV, live to the drop zone.">
-<meta name="twitter:image" content="https://schoentom.github.io/skydive-live/og.png">
+<meta name="twitter:description" content="Live from 4 km above the drop zone — 14 ms behind reality.">
+<meta name="twitter:image" content="https://schoentom.github.io/skydive-live/assets/og.png">
 
 <script type="module" src="vendor/model-viewer.min.js"></script>
 
@@ -34,7 +34,7 @@
   --sans:-apple-system,"SF Pro Display","SF Pro Text",system-ui,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
   --mono:"SF Mono",ui-monospace,"JetBrains Mono",Menlo,monospace;
   --pad:clamp(22px,5vw,80px);
-  --d1:clamp(2.6rem,11vw,7rem);
+  --d1:clamp(2.1rem,6vw,4.6rem);
   --d2:clamp(1.7rem,5vw,3.4rem);
   --body:clamp(1rem,1.4vw,1.2rem);
   --small:clamp(.7rem,1vw,.86rem);
@@ -70,38 +70,44 @@ section{padding-block:clamp(56px,9vw,120px)}
 .cy{color:var(--cyan)}
 .dim{color:var(--muted)}
 
-/* ---------- HERO ---------- */
-.hero{min-height:100svh; display:flex; flex-direction:column; justify-content:center; position:relative; padding-block:clamp(64px,12vh,140px)}
+/* ---------- HERO — "the moment" (full viewport, image-first, one CTA) ---------- */
+.hero{position:relative; min-height:100svh; display:flex; flex-direction:column; justify-content:flex-end;
+  padding-block:clamp(64px,12vh,140px); overflow:hidden}
+.hero-img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;
+  opacity:.96}
+/* legibility scrim over the hero image (and its fallback sky) */
+.hero:after{content:""; position:absolute; inset:0; z-index:1; pointer-events:none;
+  background:linear-gradient(180deg, rgba(11,13,18,.35) 0%, rgba(11,13,18,.05) 34%, rgba(11,13,18,.55) 74%, rgba(11,13,18,.92) 100%)}
+.hero .wrap{position:relative; z-index:2}
 .live-pill{display:inline-flex; align-items:center; gap:8px; align-self:flex-start;
   font:700 .72rem/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; color:var(--ink);
-  background:rgba(239,90,79,.12); border:1px solid rgba(239,90,79,.4); padding:7px 12px 7px 11px; border-radius:999px; margin-bottom:26px}
+  background:rgba(239,90,79,.12); border:1px solid rgba(239,90,79,.4); padding:7px 12px 7px 11px; border-radius:999px; margin-bottom:22px}
 .live-pill i{width:8px; height:8px; border-radius:50%; background:var(--red); box-shadow:0 0 10px var(--red);
   animation:blink 1.5s steps(1) infinite}
 @keyframes blink{0%,55%{opacity:1}56%,100%{opacity:.25}}
-.wordmark{font:800 var(--d1)/.92 var(--sans); letter-spacing:-.02em; margin:0 0 6px}
-.wordmark .dotc{color:var(--cyan)}
-.tagline{font:700 var(--d2)/1 var(--sans); letter-spacing:-.01em; color:var(--ink); margin:14px 0 18px}
-.lede{font:400 var(--body)/1.5 var(--sans); color:var(--muted); max-width:54ch; margin-bottom:30px}
-
-.chips{display:flex; flex-wrap:wrap; gap:9px; margin-bottom:34px}
-.chip{font:600 .76rem/1 var(--mono); letter-spacing:.08em; color:var(--muted);
-  background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); padding:9px 13px; border-radius:9px;
-  white-space:nowrap}
-.chip b{color:var(--cyan); font-weight:700}
-
+.hero-claim{font:800 var(--d1)/1.04 var(--sans); letter-spacing:-.015em; margin:0 0 26px; max-width:20ch;
+  text-shadow:0 2px 26px rgba(0,0,0,.5)}
 .btns{display:flex; flex-wrap:wrap; gap:12px}
 .btn{display:inline-flex; align-items:center; gap:8px; font:700 .92rem/1 var(--sans); letter-spacing:.01em;
   padding:14px 22px; border-radius:12px; text-decoration:none; transition:.2s var(--ease); cursor:pointer; border:1px solid transparent}
 .btn-primary{background:var(--cyan); color:#04222a; box-shadow:0 8px 30px rgba(34,211,238,.25)}
 .btn-primary:hover{background:var(--cyan2); transform:translateY(-2px)}
-.btn-ghost{background:rgba(255,255,255,.04); border-color:rgba(255,255,255,.14); color:var(--ink)}
+.btn-ghost{background:rgba(255,255,255,.06); border-color:rgba(255,255,255,.16); color:var(--ink); backdrop-filter:blur(6px)}
 .btn-ghost:hover{border-color:var(--cyan); color:var(--cyan)}
 .btn:focus-visible{outline:2px solid var(--cyan); outline-offset:3px}
 
 /* ---------- section headings ---------- */
 .head{margin-bottom:34px}
-.head h2{font:800 clamp(1.6rem,4.4vw,2.8rem)/1.04 var(--sans); letter-spacing:-.01em; margin-bottom:10px}
-.head p{font:400 var(--body)/1.5 var(--sans); color:var(--muted); max-width:58ch}
+.head h2{font:800 clamp(1.6rem,4.4vw,2.8rem)/1.08 var(--sans); letter-spacing:-.01em; margin-bottom:10px}
+.head p{font:400 var(--body)/1.5 var(--sans); color:var(--muted); max-width:60ch}
+
+/* ---------- image slot with clean fallback (reveal render, etc.) ---------- */
+.slot{position:relative; width:100%; border-radius:20px; overflow:hidden; border:1px solid rgba(255,255,255,.08);
+  background:radial-gradient(ellipse 80% 60% at 50% 8%, rgba(34,211,238,.10), transparent 60%), linear-gradient(180deg,#0c1422,#0a0e16);
+  min-height:clamp(240px,42vw,520px); display:flex; align-items:center; justify-content:center}
+.slot img{position:relative; z-index:2; display:block; width:100%; height:auto; margin:0}
+.slot-fallback{position:absolute; inset:0; z-index:1; display:flex; align-items:center; justify-content:center; text-align:center; padding:24px}
+.slot-fallback span{font:600 var(--small)/1.5 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--faint)}
 
 /* ---------- 3D model-viewer ---------- */
 .mv-shell{position:relative; border-radius:20px; overflow:hidden;
@@ -116,6 +122,41 @@ model-viewer{width:100%; height:70vh; min-height:380px; background-color:transpa
 .mv-toggle button.on{background:var(--cyan); color:#04222a}
 .mv-toggle button:focus-visible{outline:2px solid var(--cyan); outline-offset:-2px}
 .cap{font:600 var(--small)/1.4 var(--mono); color:var(--faint); letter-spacing:.04em; text-align:center; margin-top:14px}
+
+/* ---------- physics nuggets (5 cards: big number + 3 sentences) ---------- */
+.nuggets{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+@media(max-width:900px){.nuggets{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.nuggets{grid-template-columns:1fr}}
+.nug{background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:24px 22px;
+  display:flex; flex-direction:column; gap:10px}
+.nug .v{font:800 clamp(2rem,4vw,2.9rem)/1 var(--sans); color:var(--cyan); letter-spacing:-.02em}
+.nug .t{font:700 1.02rem/1.3 var(--sans); color:var(--ink)}
+.nug .d{font:400 .95rem/1.55 var(--sans); color:var(--muted)}
+
+/* ---------- depth: link cards ("show above, build below") ---------- */
+.depth-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:16px}
+@media(max-width:900px){.depth-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.depth-grid{grid-template-columns:1fr}}
+.dcard{display:flex; flex-direction:column; gap:8px; text-decoration:none;
+  background:rgba(255,255,255,.035); border:1px solid rgba(255,255,255,.09); border-radius:16px; padding:22px 20px;
+  transition:.2s var(--ease)}
+.dcard:hover{border-color:var(--cyan); transform:translateY(-2px); background:rgba(34,211,238,.06)}
+.dcard .kk{font:700 .68rem/1 var(--mono); letter-spacing:.2em; text-transform:uppercase; color:var(--cyan)}
+.dcard h3{font:800 1.15rem/1.2 var(--sans); color:var(--ink); display:flex; align-items:center; gap:8px}
+.dcard h3 .arw{color:var(--cyan); transition:transform .2s var(--ease)}
+.dcard:hover h3 .arw{transform:translateX(4px)}
+.dcard p{font:400 .92rem/1.5 var(--sans); color:var(--muted)}
+.dcard:focus-visible{outline:2px solid var(--cyan); outline-offset:3px}
+
+/* ---------- "more demos" figure blocks ---------- */
+.morehead{margin:clamp(48px,7vw,86px) 0 26px; padding-top:clamp(40px,6vw,72px); border-top:1px solid rgba(255,255,255,.07)}
+.morehead .eyebrow{margin-bottom:12px}
+.morehead h3{font:800 clamp(1.3rem,3vw,1.9rem)/1.1 var(--sans); letter-spacing:-.01em; margin-bottom:8px}
+.morehead p{font:400 var(--body)/1.5 var(--sans); color:var(--muted); max-width:58ch}
+.fig{margin:0 0 30px}
+.fig img{width:100%; display:block; border-radius:16px; border:1px solid rgba(255,255,255,.08)}
+.fig figcaption{font:500 .92rem/1.5 var(--sans); color:var(--muted); margin-top:12px}
+.fig figcaption a{color:var(--cyan); font-weight:700; text-decoration:none}
 
 /* ===================== SIGNATURE INTERACTIVE: Antenna demo (harvested) ===================== */
 .demo{display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(18px,3vw,44px); align-items:center; margin-top:8px}
@@ -192,8 +233,8 @@ model-viewer{width:100%; height:70vh; min-height:380px; background-color:transpa
 .draghint{font:600 var(--small)/1.4 var(--mono); color:var(--faint); letter-spacing:.06em; text-align:center}
 .draghint b{color:var(--sky)}
 
-/* ---------- numbers strip ---------- */
-.numbers{display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:24px}
+/* ---------- numbers strip (link-budget, in "more demos") ---------- */
+.numbers{display:grid; grid-template-columns:repeat(5,1fr); gap:14px; margin-bottom:16px}
 @media(max-width:760px){.numbers{grid-template-columns:repeat(2,1fr)}}
 .num{background:rgba(255,255,255,.04); border:1px solid rgba(255,255,255,.09); border-radius:14px; padding:20px 16px}
 .num .v{font:800 clamp(1.3rem,3vw,2rem)/1 var(--sans); color:var(--cyan); letter-spacing:-.01em; margin-bottom:7px}
@@ -205,11 +246,11 @@ footer .wrap{display:flex; flex-wrap:wrap; gap:14px 28px; align-items:center; ju
 footer p{font:500 .9rem/1.5 var(--sans); color:var(--muted)}
 footer a{color:var(--cyan); text-decoration:none; font-weight:600}
 footer a:hover{text-decoration:underline}
-.flinks{display:flex; gap:22px; font:600 .9rem/1 var(--sans)}
+.flinks{display:flex; gap:22px; font:600 .9rem/1 var(--sans); flex-wrap:wrap}
 
-/* ---- kinetic sky + floating device (hero) ---- */
-.hero .wrap{position:relative; z-index:2}
-.sky{position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none}
+/* ---- kinetic sky (hero fallback backdrop, behind hero image) ---- */
+.sky{position:absolute; inset:0; z-index:0; overflow:hidden; pointer-events:none;
+  background:linear-gradient(180deg,#0c1830 0%,#0e2444 45%,#0a0f18 100%)}
 .cloud{position:absolute; border-radius:50%; filter:blur(46px); mix-blend-mode:screen}
 .cloud.c1{width:48vw;height:30vh;left:-12vw;top:10vh;background:radial-gradient(closest-side,rgba(120,170,220,.45),transparent);animation:drift1 52s ease-in-out infinite}
 .cloud.c2{width:40vw;height:26vh;right:-10vw;top:30vh;background:radial-gradient(closest-side,rgba(70,120,180,.4),transparent);animation:drift2 68s ease-in-out infinite}
@@ -220,11 +261,7 @@ footer a:hover{text-decoration:underline}
 .streak{position:absolute; top:0; width:2px; height:20vh; border-radius:2px;
   background:linear-gradient(transparent,rgba(180,210,240,.55),transparent); animation-name:fall; animation-timing-function:linear; animation-iteration-count:infinite}
 @keyframes fall{0%{transform:translateY(-26vh);opacity:0}12%{opacity:.7}88%{opacity:.7}100%{transform:translateY(128vh);opacity:0}}
-.hero-dev{position:absolute; z-index:1; bottom:7vh; width:min(40vw,440px);
-  right:max(2vw,calc((100vw - 1180px)/2 + 4px));
-  filter:drop-shadow(0 26px 54px rgba(0,0,0,.6)); opacity:.97; pointer-events:none; animation:floaty 7s ease-in-out infinite}
-@keyframes floaty{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
-@media(max-width:1040px){.hero-dev{display:none}}
+
 /* section rhythm */
 section + section{border-top:1px solid rgba(255,255,255,.055)}
 
@@ -238,8 +275,9 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
 <body>
 <div class="bg" aria-hidden="true"></div>
 
-<!-- ========== 1. HERO ========== -->
-<header class="hero">
+<!-- ========== 1. THE MOMENT (hero, full viewport) ========== -->
+<header class="hero" id="top">
+  <!-- fallback backdrop: shows through if the hero render is not present yet -->
   <div class="sky" aria-hidden="true">
     <div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
     <div class="streaks">
@@ -251,70 +289,52 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       <span class="streak" style="left:90%;animation-duration:3.0s;animation-delay:1.3s"></span>
     </div>
   </div>
-  <img class="hero-dev" src="poster_assembled.png" alt="" aria-hidden="true">
+  <!-- TBD-ASSET: assets/hero.png — cinematic Anton 2.0 in flight attitude (H1). Falls back to the sky above. -->
+  <img class="hero-img" src="assets/hero.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
   <div class="wrap">
-    <span class="live-pill"><i></i>● Live</span>
-    <h1 class="wordmark">SKYLIVE</h1>
-    <p class="tagline">The jump. <span class="cy">Live.</span></p>
-    <p class="lede">Real-time video from freefall — the jumper's POV, streamed live from ~4 km up to a receiver at the drop zone, onto the big TV in the waiting area. Own radio link, no internet, ~14 ms latency. Inside: four honest parts, joined without a soldering iron.</p>
-    <div class="chips" role="list" aria-label="Key telemetry">
-      <span class="chip" role="listitem"><b>4000 m</b></span>
-      <span class="chip" role="listitem"><b>14 ms</b></span>
-      <span class="chip" role="listitem"><b>4 km</b></span>
-      <span class="chip" role="listitem"><b>1 W</b></span>
-      <span class="chip" role="listitem"><b>4 parts · 0 solder</b></span>
-    </div>
+    <span class="live-pill"><i></i>● Live · SkyLive</span>
+    <h1 class="hero-claim">Live from 4 km above the drop zone — <span class="cy">14 ms behind reality.</span></h1>
     <div class="btns">
-      <a class="btn btn-primary" href="#model">Explore the build ↓</a>
-      <a class="btn btn-ghost" href="https://github.com/SchoenTom/skydive-live">Source on GitHub</a>
-      <!-- TBD-CAD-M6: pitch decks (self-contained, offline) return here once the new model exists -->
+      <a class="btn btn-primary" href="#reveal">See how it's built ↓</a>
     </div>
   </div>
 </header>
 
-<!-- ========== 1b. THE IDEA IN ONE GLANCE ========== -->
-<section id="idea">
+<!-- ========== 2. THE REVEAL (exploded render + the honest line) ========== -->
+<section id="reveal">
   <div class="wrap">
     <div class="head">
-      <div class="eyebrow">The idea in one glance</div>
-      <h2>A dot — or the whole jump.</h2>
-      <p>Today the ground sees a speck in the sky. SkyLive puts the jumper's own view on the screen — the same moment, ~14 ms later. No skydiving knowledge required.</p>
+      <div class="eyebrow">The reveal</div>
+      <h2>No flight controller. No BEC. No solder on the sender. <span class="cy">Four parts.</span></h2>
+      <p>Every FPV builder expects a flight controller, a voltage regulator, a rat's nest of solder. There is none of it here — a radio, a camera, a battery, and a button, joined by three lever clamps. The restraint <em>is</em> the engineering.</p>
     </div>
-    <img src="dot_to_live.svg" alt="Left: what the ground sees today — a dot in the sky. Right: what SkyLive shows — the freefall POV live on a monitor, same moment." style="width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.08);display:block">
+    <!-- TBD-ASSET: assets/exploded.png — top-down studio explosion (the four parts + Wagos + screws) -->
+    <div class="slot">
+      <div class="slot-fallback" aria-hidden="true"><span>Exploded render — assets/exploded.png</span></div>
+      <img src="assets/exploded.png" alt="The SkyLive sender exploded into its four parts — radio, camera, battery, button — plus Wago lever clamps and screws." onerror="this.style.display='none'">
+    </div>
   </div>
 </section>
 
-<!-- ========== 1c. ONE PICTURE + JOURNEY ========== -->
-<section id="picture">
-  <div class="wrap">
-    <div class="head">
-      <div class="eyebrow">What it is</div>
-      <h2>Action-cam class. 1-watt reach.</h2>
-      <p>A GoPro-style helmet case — battery downstairs, radio and camera upstairs — with a real 1 W radio inside that closes 4 km. Here's the whole path the picture takes, helmet to the waiting-room TV.</p>
-    </div>
-    <!-- TBD-CAD-M6: true-to-scale size-compare figure (final outer dimensions) lands here -->
-    <img src="signal_flow.svg" alt="The signal's journey: camera, 1 W radio, antenna, 4 km of air, ground antennas, receiver, HDMI, to the big TV — about 14 ms." style="width:100%;display:block">
-  </div>
-</section>
-
-<!-- ========== 2. INTERACTIVE 3D ========== -->
+<!-- ========== 3. INTERACTIVE 3D ========== -->
 <section id="model">
   <div class="wrap">
     <div class="head">
       <div class="eyebrow">The hardware</div>
       <h2>The sender, in your hands.</h2>
-      <p>A GoPro-form-factor transmitter that rides on the helmet. Drag to inspect it, or pull it apart to see what's inside. <b>Shown: the previous prototype shell</b> — the redesigned case (side antenna capsule, two-storey layout) is in its final CAD pass and its model will replace this one. <!-- TBD-CAD-M6: swap sender_assembled.glb / sender_exploded.glb + posters --></p>
+      <p>A GoPro-form-factor transmitter that rides on the helmet. Drag to inspect it, or pull it apart to see what's inside.</p>
     </div>
     <div class="mv-shell">
       <div class="mv-toggle" role="group" aria-label="Model view">
         <button id="mvAsm" class="on" aria-pressed="true">Assembled</button>
         <button id="mvExp" aria-pressed="false">Exploded</button>
       </div>
+      <!-- TBD-ASSET: models/anton20_assembled.glb + models/anton20_exploded.glb (poster fallback below) -->
       <model-viewer
         id="mv"
-        src="sender_assembled.glb"
+        src="models/anton20_assembled.glb"
         poster="poster_assembled.png"
-        alt="3D model of the SkyLive helmet transmitter"
+        alt="3D model of the SkyLive helmet transmitter (Anton 2.0)"
         camera-controls
         auto-rotate
         auto-rotate-delay="0"
@@ -336,13 +356,90 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   </div>
 </section>
 
-<!-- ========== 3. SIGNATURE INTERACTIVE: Antenna demo (harvested) ========== -->
-<section id="antenna">
+<!-- ========== 4. THE PHYSICS NUGGETS (five numbers) ========== -->
+<section id="nuggets">
   <div class="wrap">
     <div class="head">
-      <div class="eyebrow">Play the jump</div>
-      <h2>A body is a shadow.</h2>
-      <p>Radio doesn't go through a person well (−10…−15 dB). Spin the jumper and watch each antenna's coverage move with the pose: the <b>down patch</b> aims a cone at the ground — until the body swings it away. The <b>donut omni</b> fires down + up past the body. You screw on one per jump; the aimed, 4-way-diversity ground array holds the rest.</p>
+      <div class="eyebrow">The physics</div>
+      <h2>Five numbers the whole design hangs on.</h2>
+      <p>One exact figure each — the small, deliberate numbers a build quietly depends on. Sourced where sourced, modelled where marked, honest either way.</p>
+    </div>
+    <div class="nuggets">
+      <div class="nug">
+        <div class="v">2.9 mm</div>
+        <div class="t">The clamp gap that grips without crushing.</div>
+        <div class="d">When the antenna's strain-relief cap closes all the way, it doesn't touch the wall — it leaves exactly 2.9 mm around a 3.1 mm coax. That last fraction of a millimetre is the whole trick: enough to hold the cable against a hard pull, not enough to deform it and detune the antenna. A pull on the lead lands in the printed block; the connector never feels it.</div>
+      </div>
+      <div class="nug">
+        <div class="v">−0.2 mm</div>
+        <div class="t">The squeeze standard.</div>
+        <div class="d">Every clamp in this build is under-sized by the same tiny, deliberate amount: 0.2 mm less than the thing it holds. It's the line between gripping and crushing — 0.2 too little and the cable slips, 0.2 too much and you flatten a conductor or pinch a coax. One number, reused at the antenna clamp and both battery-lead saddles, so every strain relief behaves the same way.</div>
+      </div>
+      <div class="nug">
+        <div class="v">0.15 dB</div>
+        <div class="t">The radome that costs almost nothing.</div>
+        <div class="d">The omni antenna is sealed completely inside a 1.5 mm printed wall — and at 5.8 GHz that wall costs about 0.15 dB, roughly 3 % of the signal (calc). It's a slab about one-twentieth of a wavelength thick, so its two surface reflections nearly cancel and the wave passes as if the plastic weren't there. For that near-nothing you delete wind load, fatigue and snag risk entirely — the real risk left is detuning, which is why a VNA check is mandatory, not optional.</div>
+      </div>
+      <div class="nug">
+        <div class="v">14 ms</div>
+        <div class="t">Glass-to-glass latency.</div>
+        <div class="d">From the lens in freefall to the picture on the ground TV is about 14 milliseconds — faster than a blink, faster than you can perceive as delay (manufacturer figure). It's not the internet and it's not a stream; it's a private digital radio link with nothing in the middle to buffer. The jump you watch on the screen is the jump happening in the sky, in the present tense.</div>
+      </div>
+      <div class="nug">
+        <div class="v">4 parts</div>
+        <div class="t">No flight controller. No BEC. No solder on the sender.</div>
+        <div class="d">The entire transmitter is four things — a radio, a camera, a battery, and a button — joined with three lever clamps and not one soldering-iron joint on the power side. Every FPV builder expects a flight controller, a voltage regulator, a rat's nest of solder; there is none of it here. The restraint is the engineering: fewer parts, fewer failure points, re-openable in seconds.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 5. THE DEPTH (show above, build below) ========== -->
+<section id="build">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">The depth</div>
+      <h2>Show above, build below.</h2>
+      <p>Everything above is the pitch. Everything below is the whole build — the chronological plan, the step-by-step assembly, the full bill of materials with dimensioned alternatives, the RF link-budget model, and the German-law reality. All install-free, all in the open.</p>
+    </div>
+    <div class="depth-grid">
+      <a class="dcard" href="https://github.com/SchoenTom/skydive-live/blob/main/build/BUILD_GUIDE.md">
+        <span class="kk">Build guide</span>
+        <h3>The solder-free plan <span class="arw">→</span></h3>
+        <p>Chronological, solder-free assembly with the three hardware-killer rules and the passive power/thermal doctrine.</p>
+      </a>
+      <a class="dcard" href="https://github.com/SchoenTom/skydive-live/blob/main/build/ASSEMBLY_STEPS.md">
+        <span class="kk">Assembly steps</span>
+        <h3>Step by step <span class="arw">→</span></h3>
+        <p>Each step: the handgrip, the reason, and the failure picture — Anton 2.0 as a fixed, printed-in shelf.</p>
+      </a>
+      <a class="dcard" href="https://github.com/SchoenTom/skydive-live/blob/main/build/BOM.md">
+        <span class="kk">Bill of materials</span>
+        <h3>BOM + alternatives <span class="arw">→</span></h3>
+        <p>Every part with a link, plus §6 — dimensioned alternative components (VTX, camera, battery, antenna, switch) so you can substitute honestly.</p>
+      </a>
+      <a class="dcard" href="https://github.com/SchoenTom/skydive-live/blob/main/build/rf/README.md">
+        <span class="kk">RF</span>
+        <h3>Link budget <span class="arw">→</span></h3>
+        <p>The donut-omni link-budget model closing 4 km — a calculation, not a measured test, with every assumption on the table.</p>
+      </a>
+      <a class="dcard" href="https://github.com/SchoenTom/skydive-live/blob/main/build/LEGAL_DE.md">
+        <span class="kk">Legal · DE</span>
+        <h3>The German reality <span class="arw">→</span></h3>
+        <p>Frequency, power and the licensing reality for flying a 1 W 5.8 GHz link in Germany — read before you transmit.</p>
+      </a>
+      <a class="dcard" href="https://github.com/SchoenTom/skydive-live/tree/main/build/cad">
+        <span class="kk">CAD</span>
+        <h3>Parametric scripts <span class="arw">→</span></h3>
+        <p>The build123d model that generates the case from a single spec file, with watertight and wall-thickness gates.</p>
+      </a>
+    </div>
+
+    <!-- ---- More demos: the interactive antenna model + explainer figures (kept, not deleted) ---- -->
+    <div class="morehead" id="antenna">
+      <div class="eyebrow">More demos</div>
+      <h3>Play the jump — a body is a shadow.</h3>
+      <p>Radio doesn't go through a person well (−10…−15 dB). Spin the jumper and watch each antenna's coverage move with the pose: the <b>down patch</b> aims a cone at the ground until the body swings it away; the <b>donut omni</b> fires down + up past the body. You screw on one per jump; the aimed, 4-way-diversity ground array holds the rest.</p>
     </div>
 
     <div class="demo">
@@ -438,17 +535,29 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         </div>
       </div>
     </div>
-  </div>
-</section>
 
-<!-- ========== 4. THE NUMBERS ========== -->
-<section id="numbers">
-  <div class="wrap">
-    <div class="head">
-      <div class="eyebrow">The numbers</div>
-      <h2>Closing 4 km of sky.</h2>
+    <!-- explainer figures -->
+    <div class="morehead">
+      <div class="eyebrow">Explainers</div>
+      <h3>The idea, the journey, the budget, the heat.</h3>
+      <p>The supporting figures — from "a dot in the sky" to the full 4 km link budget and the passive-thermal doctrine.</p>
     </div>
-    <img src="closing_4km.svg" alt="Link budget closing 4 km: +30 dBm transmit, −119.8 dB free-space loss, honest RX gain, −90 dBm conservative threshold — head-down closes with about +9 dB, belly rides the threshold; a model, not a measurement." style="width:100%;border-radius:16px;border:1px solid rgba(255,255,255,.08);display:block;margin-bottom:24px">
+
+    <figure class="fig">
+      <img src="dot_to_live.svg" alt="Left: what the ground sees today — a dot in the sky. Right: what SkyLive shows — the freefall POV live on a monitor, same moment.">
+      <figcaption>A dot — or the whole jump. Today the ground sees a speck; SkyLive puts the jumper's own view on the screen ~14 ms later.</figcaption>
+    </figure>
+
+    <figure class="fig">
+      <img src="signal_flow.svg" alt="The signal's journey: camera, 1 W radio, antenna, 4 km of air, ground antennas, receiver, HDMI, to the big TV — about 14 ms.">
+      <figcaption>The whole path the picture takes — helmet to the waiting-room TV, about 14 ms end to end.</figcaption>
+    </figure>
+
+    <figure class="fig">
+      <img src="closing_4km.svg" alt="Link budget closing 4 km: +30 dBm transmit, −119.8 dB free-space loss, honest RX gain, −90 dBm conservative threshold — head-down closes with about +9 dB, belly rides the threshold; a model, not a measurement.">
+      <figcaption>Closing 4 km of sky — a link-budget <b>model</b>, not a measurement. When the numbers got worse, the worse numbers got published. Full model, pose tables &amp; every assumption in <a href="https://github.com/SchoenTom/skydive-live/blob/main/build/rf/README.md">build/rf →</a></figcaption>
+    </figure>
+
     <div class="numbers">
       <div class="num"><div class="v">119.8 dB</div><div class="k">FSPL @ 4 km</div></div>
       <div class="num"><div class="v">≈ +9 dB</div><div class="k">head-down margin · calc</div></div>
@@ -456,37 +565,25 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       <div class="num"><div class="v">~14 ms</div><div class="k">latency</div></div>
       <div class="num"><div class="v">1 W</div><div class="k">TX power</div></div>
     </div>
-    <p style="text-align:left;font:500 .96rem/1.5 var(--sans);color:var(--muted)">Calculated, not yet measured — and re-derived 2026-07 for the real donut-omni geometry: head-down closes with margin, belly rides the threshold at 4 km and improves 2–3 dB per km of descent, sit is the corner a test jump must prove. When the numbers got worse, the worse numbers got published. Full model, pose tables &amp; every assumption in <a href="https://github.com/SchoenTom/skydive-live/blob/main/build/rf/README.md" style="color:var(--cyan);font-weight:700;text-decoration:none">build/rf →</a></p>
+
+    <figure class="fig">
+      <img src="cooling.svg" alt="Passive thermal with an operating doctrine: 25 mW on the ground, 1 W only at door-open — in freefall the ram-air carries the 13 W of heat; off within 60 s after landing.">
+      <figcaption>Passive thermal with an operating doctrine — vents, a thermal pad, the 200 km/h wind, instead of a fan.</figcaption>
+    </figure>
+
+    <figure class="fig">
+      <img src="diversity.svg" alt="Ground-station diversity: wide omni plus aimed patch, the receiver takes the stronger one." style="max-width:680px;margin-inline:auto">
+      <figcaption>Ground-station diversity — a wide omni plus an aimed patch; the receiver takes the stronger branch.</figcaption>
+    </figure>
+
+    <figure class="fig">
+      <img src="latency.svg" alt="Latency: ~14 ms, before you blink; the old way is footage after landing." style="max-width:760px;margin-inline:auto">
+      <figcaption>~14 ms — before you blink. The old way is footage after landing.</figcaption>
+    </figure>
   </div>
 </section>
 
-<!-- ========== 4a. BUILD / PRINTED PARTS ========== -->
-<section id="build">
-  <div class="wrap">
-    <div class="head">
-      <div class="eyebrow">Build it yourself</div>
-      <h2>Four parts. Zero solder joints.</h2>
-      <p>A radio, a camera, a battery, and a button — joined by three Wago lever clamps and the radio's own plug-in harness. No soldering iron, no extra electronics. The chronological, solder-free plan (with the three hardware-killer rules and the power/thermal doctrine) is in the <a href="https://github.com/SchoenTom/skydive-live/blob/main/build/BUILD_GUIDE.md" style="color:var(--cyan);font-weight:700;text-decoration:none">build guide</a>; the parametric CAD scripts are in <a href="https://github.com/SchoenTom/skydive-live/tree/main/build/cad" style="color:var(--cyan);font-weight:700;text-decoration:none">build/cad</a>.</p>
-    </div>
-    <!-- TBD-CAD-M6: printed-parts figure of the final case (body, cover, battery door, bottom shell) lands here -->
-  </div>
-</section>
-
-<!-- ========== 4b. ENGINEERED ========== -->
-<section id="engineering">
-  <div class="wrap">
-    <div class="head">
-      <div class="eyebrow">How it stays alive</div>
-      <h2>Engineered, not hoped.</h2>
-      <p>Purely passive thermal — vents, a thermal pad, the 200 km/h wind, and an operating doctrine instead of a fan. Diversity at the ground station. And a picture that's there before you blink.</p>
-    </div>
-    <img src="cooling.svg" alt="Passive thermal with an operating doctrine: 25 mW on the ground, 1 W only at door-open — in freefall the ram-air carries the 13 W of heat; off within 60 s after landing." style="width:100%;border-radius:14px;border:1px solid rgba(255,255,255,.08);display:block;margin-bottom:20px">
-    <img src="diversity.svg" alt="Ground-station diversity: wide omni plus aimed patch, the receiver takes the stronger one." style="width:100%;max-width:680px;border-radius:14px;border:1px solid rgba(255,255,255,.08);display:block;margin:0 auto 20px">
-    <img src="latency.svg" alt="Latency: ~14 ms, before you blink; the old way is footage after landing." style="width:100%;max-width:760px;border-radius:14px;border:1px solid rgba(255,255,255,.08);display:block;margin:0 auto">
-  </div>
-</section>
-
-<!-- ========== 5. FOOTER ========== -->
+<!-- ========== FOOTER ========== -->
 <footer>
   <div class="wrap">
     <p>SkyLive — solo-built, prototype stage. CC-BY-4.0.</p>
@@ -505,7 +602,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   const bAsm=document.getElementById('mvAsm'), bExp=document.getElementById('mvExp');
   if(!mv) return;
   function set(asm){
-    mv.setAttribute('src', asm?'sender_assembled.glb':'sender_exploded.glb');
+    mv.setAttribute('src', asm?'models/anton20_assembled.glb':'models/anton20_exploded.glb');
     mv.setAttribute('poster', asm?'poster_assembled.png':'poster_exploded.png');
     const fb=document.getElementById('mvposter'); if(fb) fb.src = asm?'poster_assembled.png':'poster_exploded.png';
     bAsm.classList.toggle('on',asm); bExp.classList.toggle('on',!asm);
@@ -628,7 +725,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       mv.setAttribute('reveal','manual');
       if(!mv.querySelector('.mv-noweb')){
         var h=document.createElement('div'); h.className='mv-noweb';
-        h.textContent='Statische Ansicht · drehbares 3D in Safari, oder in Chrome unter Einstellungen → System → Grafikbeschleunigung aktivieren';
+        h.textContent='Static view · rotatable 3D in Safari, or in Chrome under Settings → System → enable graphics acceleration';
         h.style.cssText='position:absolute;left:8px;right:8px;bottom:8px;z-index:5;text-align:center;'+
           'font:11px/1.45 -apple-system,system-ui,sans-serif;color:#9fc;opacity:.72;pointer-events:none;'+
           'text-shadow:0 1px 4px rgba(0,0,0,.6)';
