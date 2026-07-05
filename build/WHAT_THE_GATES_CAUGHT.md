@@ -56,6 +56,21 @@ material hanging over the corner posts. Invisible in any render; a real obstruct
 hex key. The posts now carry a Ø4 clearance bore through the shoulder — which the M3 shaft needed
 anyway.
 
+## The door boss that would have blocked the battery — **caught by a question**
+
+The battery door was held by an M2 screw driven into an interior boss — a 7 × 7 mm block
+reaching from the rear wall into the battery bay. It passed every *existing* gate, because no
+gate ever placed the **battery's nominal envelope** against it: the 60 mm pack plus 1 mm of
+swell ends at X 28.5, and the boss began at X 26.5 — **up to 2 mm of guaranteed interference**,
+invisible in renders, waiting for the first real battery. The catch came from asking the
+audit question out loud ("does the pack even fit past that thread?") and then encoding it:
+the boss is gone, the door now closes with a flat top tab screwed into the wall + shelf ledge
+(zero interior claim), and a new `[akku-frei]` gate asserts the ex-boss zone intersects
+**0.00 mm³** of body on every rebuild — so this class of bug can't come back quietly.
+
+> Lesson: a gate only protects what it measures. Every envelope that shares space with a
+> printed feature needs its own nominal-collision assert — "nobody complained yet" is not one.
+
 ---
 
 ## Why this matters
