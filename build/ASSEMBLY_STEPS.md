@@ -46,8 +46,8 @@ straight up; a wet fingertip or a flat cold tool can true the top while the plas
 
 **Why.** A cold-pressed insert splits the boss; a heat-set one melts the plastic into its knurl and
 locks in. The **Ø 4.6 hole is a deliberate ~0.4 mm undersize** vs the 5.0 insert — the displaced
-melt is what grips the knurl. The **Ø 10 boss** keeps ≥ 50 % of an insert-diameter of wall around
-it so it doesn't bulge the outside. Sub-flush by 0.3 keeps the sealing face clean.
+melt is what grips the knurl. Each **Ø 8 post is welded into its case corner**, so the corner walls
+carry the load with it. Sub-flush by 0.3 keeps the sealing face clean.
 (All geometry [CALC] from standard heat-set guidance + the measured insert; **fit is
 bench-verified pending** the first real melt.)
 
@@ -61,9 +61,10 @@ bench-verified pending** the first real melt.)
 - **Insert spins in the hole afterwards** → over-heated, the melt reflowed too loose. That boss is
   compromised; the honest fix is to plug and reprint, not to glue.
 
-There are **4× M3 inserts** in the lid corners (the lid opens **only floor 2** — the battery bay
-keeps its solid wall and is reached through the door). `TBD-ASSET` — final insert count/positions
-confirm with the closing CAD pass; macro photo → renders/steps/01_insert.png.
+There are **3× M3 inserts** under the roof opening — three corners carry the lid; the fourth
+corner belongs to the camera, where the rebate lip holds instead (an asymmetry the reference
+prototype shares). The battery bay keeps its own door on the end face.
+`TBD-ASSET` — macro photo → renders/steps/01_insert.png.
 
 ---
 
