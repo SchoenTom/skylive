@@ -215,21 +215,24 @@ seconds for service. The switch **breaks the battery + line directly** (~1.3 A, 
 
 ---
 
-## Step 7 · Drop in the divider tray, dress the cables
+## Step 7 · Dress the cables through the fixed shelf
 
-**Do.** The **flat-printed divider tray** drops onto its **3 mm wall ledges**, keys around the
-corner posts, and is held by **2 diagonal M3 screws**. Lay each cable **into** its feed-through
-notch (XT30 window, balance window, pigtail edge-notch, switch grommet) — again, laid in, never
-threaded. Add a zip-tie at each printed anchor for strain relief and a small service loop.
+**Do.** The divider shelf is **printed into the body** — there is nothing to install. Route the
+battery leads **up through the shelf cut-outs** (two large windows at the ±X ends; the +X one is
+the XT30/airflow window), lay each cable **into** its opening — laid in, never threaded through a
+closed hole. Park the mated XT30 and the Wago bank in the **left-hand zone** of floor 2 (the open
+volume beside the camera module).
 
-**Why.** The tray is a **bulkhead/frame**: only its perimeter is structural, so cables cross at the
-edge notches, not through the load-bearing centre. Laying in means no connector passes a closed
-hole. Derivation: [`ENGINEERING/divider.md`](ENGINEERING/divider.md).
+**Why.** A printed-in shelf removes one part, one alignment step and two screws versus a drop-in
+tray, and the interlayer joint is replaced by solid walls. The cut-outs double as the chimney
+airflow path. Derivation: [`ENGINEERING/divider.md`](ENGINEERING/divider.md) *(the tray analysis
+there documents the earlier drop-in design — superseded by the printed-in shelf).*
 
 **Watch out.**
-- **Cable pinched under the tray** → it won't seat flat and the lid won't close; route into the
-  notches *before* pressing the tray down.
-- **Forcing the tray past the corner keys** → check orientation; it drops in one way.
+- **Cable pinched between battery and shelf** → the battery won't slide fully home; route leads
+  into the +X window *before* seating the battery.
+- **Wagos drifting over the VTX** → keep them in the left-hand zone; the VTX needs its full
+  clearance under the lid.
 
 `TBD-ASSET` — tray drop-in render → renders/steps/06_divider.png.
 
