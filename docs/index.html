@@ -504,8 +504,8 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
               <path d="M145,104 L140,174" stroke="#22d3ee" stroke-width="2.4" fill="none" opacity=".5"/>
             </g>
             <!-- antenna nubs on the sender: down patch (bottom shell) / donut omni (side capsule) -->
-            <circle id="nubPatch" class="nub live" cx="196" cy="110" r="6" fill="#22d3ee"/>
-            <circle id="nubOmni"  class="nub" cx="205" cy="99" r="5" fill="#2a6f88"/>
+            <circle id="nubPatch" class="nub" cx="196" cy="110" r="6" fill="#2a6f88"/>
+            <circle id="nubOmni"  class="nub live" cx="205" cy="99" r="5" fill="#22d3ee"/>
           </g>
         </svg>
       </div>
@@ -527,11 +527,11 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
             <button class="pose" data-t="270">Back</button>
           </div>
           <div class="atoggle" id="atoggle">
-            <button data-a="patch" class="on">Down patch<small>bottom shell · cone at the ground</small></button>
-            <button data-a="omni">Donut omni<small>side capsule · fires down + up</small></button>
+            <button data-a="patch">Down patch<small>engineering study · cone at the ground</small></button>
+            <button data-a="omni" class="on">Donut omni<small>T-anchored above the case · fires down + up</small></button>
           </div>
           <div class="poslegend">One antenna per jump, swapped by hand — no electronic switch on the sender.<br>The 4-way-diversity ground array (aimed patch + omnis) rides the best branch.</div>
-          <div class="draghint">↻ <b>Drag the jumper</b> · or pick a pose · then try the <b>donut omni</b></div>
+          <div class="draghint">↻ <b>Drag the jumper</b> · or pick a pose · then try the <b>down patch</b></div>
         </div>
       </div>
     </div>
@@ -620,7 +620,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   const fill=document.getElementById('linkFill'), pct=document.getElementById('linkPct'), stat=document.getElementById('statTxt');
   const screen=document.getElementById('screen'), lostWhy=document.getElementById('lostWhy'), scrnTag=document.getElementById('scrnTag'), poseLabel=document.getElementById('poseLabel'), tc=document.getElementById('tc');
   const poses=document.getElementById('poses'), atoggle=document.getElementById('atoggle');
-  let theta=0, target=0, ant='patch', dragging=false, lastX=0, idle=0, tcSec=12*60+4;
+  let theta=0, target=0, ant='omni', dragging=false, lastX=0, idle=0, tcSec=12*60+4;
   const POSE=[['BELLY · FACE DOWN','BELLY · FACE DOWN',0],['SIT · FEET DOWN','SIT · FEET DOWN',90],['HEAD-DOWN · HEAD FIRST','HEAD-DOWN · HEAD FIRST',180],['BACK · FACE UP','BACK · FACE UP',270]];
   const rad=d=>d*Math.PI/180;
   // Coverage anchors at belly/sit/head-down/back, smoothed between poses. Shaped after the
