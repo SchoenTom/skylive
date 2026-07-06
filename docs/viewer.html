@@ -25,6 +25,7 @@
   <button data-m="850x">Sender 850 · exploded</button>
   <button data-m="mini">Mini 300</button>
   <button data-m="cmp">⚖ vs GoPro Hero 13</button>
+  <button data-m="fly">▶ Fly-in · loaded</button>
 </div>
 <model-viewer id="mv" src="./models/sender850.glb" camera-controls auto-rotate auto-rotate-delay="4000"
   shadow-intensity="1" exposure="1.05" environment-image="neutral" camera-orbit="-30deg 74deg 128%">
@@ -45,6 +46,9 @@ const HS = {
     ["0.048 0.006 0",        "door: plate + tab, feet hidden"],
     ["-0.042 0.03 0",        "same blind T-piece, printed twice"]
   ],
+  "fly": [
+    ["0 0.045 0", "watch the parts fly home — radio, camera, battery, switch, Wagos, antenna <small>(components stylised to their measured envelopes)</small>"]
+  ],
   "cmp": [
     ["-0.062 0.031 0", "SkyLive 850 · 71 × 39.5 × 56"],
     ["0 0.024 0",      "GoPro Hero 13 Black · 71.8 × 50.8 × 33.6 <small>(manufacturer envelope, drawn for scale)</small>"],
@@ -56,11 +60,13 @@ const HS = {
     ["0.0298 -0.01 0",       "door 19 × 16 · same latch principle"],
     ["0 -0.03 0",            "same GoPro mount, centred"]
   ]};
-const SRC = {"850":"./models/sender850.glb","850x":"./models/sender850_exploded.glb","mini":"./models/mini300.glb","cmp":"./models/compare.glb"};
+const SRC = {"850":"./models/sender850.glb","850x":"./models/sender850_exploded.glb","mini":"./models/mini300.glb","cmp":"./models/compare.glb","fly":"./models/flyin850.glb"};
 const mv = document.getElementById("mv");
 function setModel(k){
   mv.querySelectorAll("[slot]").forEach(e=>e.remove());
   mv.src = SRC[k];
+  if (k === "fly"){ mv.setAttribute("autoplay",""); mv.setAttribute("animation-crossfade-duration","0"); }
+  else { mv.removeAttribute("autoplay"); }
   HS[k].forEach((h,i)=>{
     const b=document.createElement("button");
     b.slot="hotspot-"+i; b.className="dim"; b.dataset.position=h[0]; b.innerHTML=h[1];
