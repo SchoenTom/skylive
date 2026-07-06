@@ -289,7 +289,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       <span class="streak" style="left:90%;animation-duration:3.0s;animation-delay:1.3s"></span>
     </div>
   </div>
-  <!-- TBD-ASSET: assets/hero.png — cinematic Anton 2.0 in flight attitude (H1). Falls back to the sky above. -->
+  <!-- TBD-ASSET: assets/hero.png — cinematic Sender 850 in flight attitude (H1). Falls back to the sky above. -->
   <img class="hero-img" src="assets/hero.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
   <div class="wrap">
     <span class="live-pill"><i></i>● Live · SkyLive</span>
@@ -329,12 +329,12 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         <button id="mvAsm" class="on" aria-pressed="true">Assembled</button>
         <button id="mvExp" aria-pressed="false">Exploded</button>
       </div>
-      <!-- TBD-ASSET: models/anton20_assembled.glb + models/anton20_exploded.glb (poster fallback below) -->
+      <!-- TBD-ASSET: models/sender850.glb + models/sender850_exploded.glb (poster fallback below) -->
       <model-viewer
         id="mv"
-        src="models/anton20_assembled.glb"
+        src="models/sender850.glb"
         poster="poster_assembled.png"
-        alt="3D model of the SkyLive helmet transmitter (Anton 2.0)"
+        alt="3D model of the SkyLive helmet transmitter (Sender 850)"
         camera-controls
         auto-rotate
         auto-rotate-delay="0"
@@ -411,7 +411,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       <a class="dcard" href="https://github.com/SchoenTom/skydive-live/blob/main/build/ASSEMBLY_STEPS.md">
         <span class="kk">Assembly steps</span>
         <h3>Step by step <span class="arw">→</span></h3>
-        <p>Each step: the handgrip, the reason, and the failure picture — Anton 2.0 as a fixed, printed-in shelf.</p>
+        <p>Each step: the handgrip, the reason, and the failure picture — Sender 850 as a fixed, printed-in shelf.</p>
       </a>
       <a class="dcard" href="https://github.com/SchoenTom/skydive-live/blob/main/build/BOM.md">
         <span class="kk">Bill of materials</span>
@@ -602,7 +602,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   const bAsm=document.getElementById('mvAsm'), bExp=document.getElementById('mvExp');
   if(!mv) return;
   function set(asm){
-    mv.setAttribute('src', asm?'models/anton20_assembled.glb':'models/anton20_exploded.glb');
+    mv.setAttribute('src', asm?'models/sender850.glb':'models/sender850_exploded.glb');
     mv.setAttribute('poster', asm?'poster_assembled.png':'poster_exploded.png');
     const fb=document.getElementById('mvposter'); if(fb) fb.src = asm?'poster_assembled.png':'poster_exploded.png';
     bAsm.classList.toggle('on',asm); bExp.classList.toggle('on',!asm);

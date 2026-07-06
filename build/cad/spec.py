@@ -121,21 +121,21 @@ CAM_WINDOW = (13.5, 13.5)        # W(X) x H(Z) through-opening = lens Ø12 + 2×
                                  #   board 14×18 overhangs it (X 0.25 / Z 2.25 shoulder) → cannot exit −Y
 CAM_WINDOW_R = 2.5               # window corner radius (soft, ~matches the round lens)
 CAM_WINDOW_CHAMFER = 1.2         # 45° exterior rim chamfer — snag-free "weich verrundet" lead-in
-# ── ANTON-STYLE camera collar ("Wölbung") — GRAFTED 1:1 from Anton's OWN extracted STEP (2026-07-04).
+# ── REFERENZ-STYLE camera collar ("Wölbung") — GRAFTED 1:1 from Referenz-Prototyp's OWN extracted STEP (2026-07-04).
 #    The parametric rebuild below (CAM_BULGE*) is SUPERSEDED: instead of re-modelling the collar we
-#    IMPORT Anton's real extracted bulge solid and boolean-UNION it onto the −Y wall (nothing rebuilt,
+#    IMPORT Referenz-Prototyp's real extracted bulge solid and boolean-UNION it onto the −Y wall (nothing rebuilt,
 #    nothing invented). Measured facts of the STEP (build123d import + solid-classifier survey):
 #    wall/attach plane Y=24.9, tip Y=31.4 → 6.5 mm proud; solid footprint 22 (X) × 14 (Z); rounded
 #    corner/dome tori R≈4.2; the camera bolts to 4 Ø3 (R1.5) axis-Y frame holes whose centroid =
 #    (26.25, 12.5) = the lens axis; aperture open at the wall plane. The Nano90 lens (Ø12) looks out
 #    through a 13.5 window cut through the 3.0 wall BEHIND the grafted collar (collar geometry untouched).
-CAM_BULGE_STEP = "references/Anton_camera_bulge.step"  # Anton's REAL extracted collar — grafted, not rebuilt
+CAM_BULGE_STEP = "references/reference_camera_bulge.step"  # Referenz-Prototyp's REAL extracted collar — grafted, not rebuilt
 # legacy parametric collar params — kept only as reference data (no longer built into the wall):
-CAM_BULGE = (21.5, 22.0)         # W(X) x H(Z) outer collar contour — Anton 1:1 (height clamped in CAD
+CAM_BULGE = (21.5, 22.0)         # W(X) x H(Z) outer collar contour — Referenz-Prototyp 1:1 (height clamped in CAD
                                  #   so the collar stays under the top cover; width+proud+rim exact)
-CAM_BULGE_PROUD = 6.4            # OUTWARD protrusion beyond the −Y wall face (Anton: tip 31.4 − wall 25.0)
-CAM_BULGE_R = 4.0                # rounded-rect corner radius (Anton corner tori Rmaj≈4.0)
-CAM_BULGE_RIM = 2.5             # front-rim roll radius = the soft "Wölbung" lip (Anton rim tori Rmin≈2.0–2.2)
+CAM_BULGE_PROUD = 6.4            # OUTWARD protrusion beyond the −Y wall face (Referenz-Prototyp: tip 31.4 − wall 25.0)
+CAM_BULGE_R = 4.0                # rounded-rect corner radius (Referenz-Prototyp corner tori Rmaj≈4.0)
+CAM_BULGE_RIM = 2.5             # front-rim roll radius = the soft "Wölbung" lip (Referenz-Prototyp rim tori Rmin≈2.0–2.2)
 CAM_CRADLE_WALL = 1.6            # printed side-rail thickness that locates the board in X (slide fit)
 CAM_CRADLE_LIP = 0.8             # rear snap-lip inward projection (board flexes past on insert → +Y stop)
 
@@ -407,7 +407,7 @@ GATE_MIN_CLEARANCE = 0.5     # min gap between any two interior parts (mm); <0 =
 GATE_WATERTIGHT = True       # every printed part must be a single watertight solid
 GATE_WALL_MIN = WALL         # no wall < 3.0 except the listed RF windows + bulkhead recess
 GATE_ALLOWED_PROTRUSIONS = ["camera_lens", "switch_button", "omni_capsule", "lens_bezel", "gopro_fingers",
-                            "camera_bulge"]  # Anton-style OUTWARD camera collar (6.4 mm proud, −Y wall)
+                            "camera_bulge"]  # Referenz-style OUTWARD camera collar (6.4 mm proud, −Y wall)
                              # omni_capsule REPLACES omni_puck + sma_bulkhead (T1: jack moved inside)
 GATE_VENT_AREAS = True       # assert VENT_INLET/OUTLET/DIVIDER area minimums are met
 GATE_OMNI_CAPSULE_FIT = True # AXII envelope + form bend R8 + air gap inside capsule; cap removable

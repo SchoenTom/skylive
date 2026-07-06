@@ -1,4 +1,4 @@
-# SkyLive Anton 2.0 — Druckanleitung (Labor-fertig)
+# SkyLive Sender 850 — Druckanleitung (Labor-fertig)
 
 *Stand 2026-07-06 FINAL (T-Zugentlastung kurze Seiten · Klappe glatt mit Lasche/M2-Insert/
 Mini-Vents · GoPro-Zähne 3,0 · 1 langer Bay-Schlitz Kamera-Seite), alle STLs frisch aus dem

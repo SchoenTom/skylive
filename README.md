@@ -11,7 +11,7 @@
 [![CAD](https://img.shields.io/badge/CAD-build123d%20%2F%20Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](build/cad/)
 [![live 3D](https://img.shields.io/badge/live-interactive%20demo-22d3ee?style=for-the-badge&logo=googlechrome&logoColor=white)](https://schoentom.github.io/skydive-live/)
 
-**[▶ Play the jump](https://schoentom.github.io/skydive-live/)** · **[Build it](build/BUILD_GUIDE.md)** · **[What the gates caught](build/WHAT_THE_GATES_CAUGHT.md)** · **[The numbers](build/rf/README.md)** · **[Legal (DE)](build/LEGAL_DE.md)**
+**[▶ Play the jump](https://schoentom.github.io/skydive-live/)** · **[Build it — one page](build/QUICKSTART.md)** · **[What the gates caught](build/WHAT_THE_GATES_CAUGHT.md)** · **[The numbers](build/rf/README.md)** · **[Legal (DE)](build/LEGAL_DE.md)**
 
 </div>
 
@@ -47,6 +47,23 @@ That's the entire transmitter: **a radio, a camera, a battery, and a button** �
 Power joins are **three Wago 221-412 lever clamps** — strip, flip the lever, clamp, done. Re-openable in seconds, no cold joints, no fumes. The VTX side plugs in via its stock **JST-GH 6-pin harness**. Full step-by-step (with the three hardware-killer rules): **[`build/BUILD_GUIDE.md`](build/BUILD_GUIDE.md)**.
 
 **The shell:** an upright, two-storey GoPro-style case — battery downstairs behind its own tab-locked door, radio + camera upstairs under a screwed roof lid — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, long passive louver vents, and a GoPro mount underneath. Outer dimensions: **71 × 39.5 × 56 mm** — genuinely action-cam-sized. Both short sides carry an identical **T-slot strain-relief interface** at the top edge, so the antenna can anchor left or right; the unused side closes with a blind T-piece. It builds from the parametric script in [`build/cad/`](build/cad/) and passes every geometry gate on each rebuild; this exact file set is what went to the printer.
+
+| The **850** — flight unit | The **Mini 300** — test unit |
+|:---:|:---:|
+| <img src="docs/assets/hero.png" width="100%"> | <img src="docs/assets/mini.png" width="100%"> |
+
+**Two sizes, one architecture.** The **850** (71 × 39.5 × 56 mm) is the flight unit; the
+**Mini 300** (59.5 × 39.5 × 48 mm, −28 % volume) is the same design wrapped around a 300 mAh pack —
+same T-slot antenna anchors (literally the same printed T-piece), same tab door, same camera corner.
+The width stays 39.5 on both because the radio and camera set it, not the battery.
+
+<div align="center">
+<img src="docs/assets/blueprint.svg" alt="Dimensional sheet with a true millimetre scale: front and side views of both senders, every key number measured from the executed CAD." width="100%">
+</div>
+
+<div align="center">
+<img src="docs/assets/section.png" alt="Section cut through the 850 at its centre plane: two storeys, the fixed shelf, the roof lid rebate and the T-slot anchor — the architecture, not a sketch." width="100%">
+</div>
 
 ---
 
