@@ -124,6 +124,7 @@ Everything a re-builder needs is under [`build/`](build/):
 - ✅ RF doctrine derived and published (donut orientation, ground diversity, capsule study) — *calculated*.
 - ✅ Thermal, structural and print-factor derivations published — *calculated*.
 - ✅ Final case CAD (**71 × 39.5 × 56 mm**) builds watertight and passes every geometry gate — roof lid on 3 corner inserts, tab-locked battery door, twin T-slot antenna anchors, 3 mm wall. **Print files released; the first fit-print is on the printer.** *Geometry-verified, not yet a physical test.*
+- ✅ **Mini-300 variant** (59.5 × 39.5 × 48 mm, Tattu 300 3S HV): full architecture port of the final build — same T-slot anchors (the T-pieces are literally the same printed part), same tab door, no power switch (the electronics storey has no room for one; power = plug the battery). [`build/cad/mini_300.py`](build/cad/mini_300.py), *geometry-verified, not yet printed.*
 - 🔜 Then: fit-print feedback → thermal measurement (multimeter protocol is written) → antenna S11 with the coax clamped → 25 mW range test → test jump.
 
 ⭐ **Star the repo** — releases will carry the first real measurements and, eventually, the first freefall footage from the system itself. Building one, or flying camera and have opinions? Open an [issue](https://github.com/SchoenTom/skydive-live/issues).
