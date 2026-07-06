@@ -9,9 +9,9 @@
 [![status](https://img.shields.io/badge/status-print%20released-2ea44f?style=for-the-badge)](#status)
 [![license](https://img.shields.io/badge/license-CC--BY--4.0-3b82f6?style=for-the-badge)](LICENSE)
 [![CAD](https://img.shields.io/badge/CAD-build123d%20%2F%20Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](build/cad/)
-[![live 3D](https://img.shields.io/badge/live-interactive%20demo-22d3ee?style=for-the-badge&logo=googlechrome&logoColor=white)](https://schoentom.github.io/skydive-live/)
+[![live 3D](https://img.shields.io/badge/live-interactive%20demo-22d3ee?style=for-the-badge&logo=googlechrome&logoColor=white)](https://schoentom.github.io/skylive/)
 
-**[▶ Play the jump](https://schoentom.github.io/skydive-live/)** · **[Build it — one page](build/QUICKSTART.md)** · **[What the gates caught](build/WHAT_THE_GATES_CAUGHT.md)** · **[The numbers](build/rf/README.md)** · **[Legal (DE)](build/LEGAL_DE.md)**
+**[▶ Play the jump](https://schoentom.github.io/skylive/)** · **[Build it — one page](build/QUICKSTART.md)** · **[What the gates caught](build/WHAT_THE_GATES_CAUGHT.md)** · **[The numbers](build/rf/README.md)** · **[Legal (DE)](build/LEGAL_DE.md)**
 
 </div>
 
@@ -144,7 +144,7 @@ Everything a re-builder needs is under [`build/`](build/):
 - ✅ **Mini-300 variant** (59.5 × 39.5 × 48 mm, Tattu 300 3S HV): full architecture port of the final build — same T-slot anchors (the T-pieces are literally the same printed part), same tab door, no power switch (the electronics storey has no room for one; power = plug the battery). [`build/cad/mini_300.py`](build/cad/mini_300.py), *geometry-verified, not yet printed.*
 - 🔜 Then: fit-print feedback → thermal measurement (multimeter protocol is written) → antenna S11 with the coax clamped → 25 mW range test → test jump.
 
-⭐ **Star the repo** — releases will carry the first real measurements and, eventually, the first freefall footage from the system itself. Building one, or flying camera and have opinions? Open an [issue](https://github.com/SchoenTom/skydive-live/issues).
+⭐ **Star the repo** — releases will carry the first real measurements and, eventually, the first freefall footage from the system itself. Building one, or flying camera and have opinions? Open an [issue](https://github.com/SchoenTom/skylive/issues).
 
 ---
 
