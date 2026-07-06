@@ -6,6 +6,10 @@
 
 **Live from 4 km — 14 ms behind reality.**
 
+<img src="docs/assets/turntable.gif" alt="The Sender 850 spinning: battery door with tab latch, T-slot antenna anchors on both short sides, roof lid, louvres, GoPro mount." width="62%">
+
+<sub>the actual gate-verified CAD, spinning — poke it yourself in the [3D Lab](https://schoentom.github.io/skylive/viewer.html)</sub>
+
 [![status](https://img.shields.io/badge/status-print%20released-2ea44f?style=for-the-badge)](#status)
 [![license](https://img.shields.io/badge/license-CC--BY--4.0-3b82f6?style=for-the-badge)](LICENSE)
 [![CAD](https://img.shields.io/badge/CAD-build123d%20%2F%20Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](build/cad/)
