@@ -1,0 +1,70 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SkyLive · 3D Lab — spin it, read the millimetres</title>
+<script type="module" src="./vendor/model-viewer.min.js"></script>
+<style>
+  :root{--bg:#0b1f33;--ink:#e2f3ff;--cy:#7dd3fc;--mut:#5b7f9c}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,system-ui,sans-serif}
+  header{display:flex;align-items:baseline;gap:14px;padding:14px 20px;border-bottom:1px solid #16324a;flex-wrap:wrap}
+  header b{font-size:19px}
+  header .hint{color:var(--mut);font-size:13px}
+  header a{color:var(--cy);text-decoration:none;font-size:13px;margin-left:auto}
+  .tabs{display:flex;gap:8px;padding:10px 20px 0}
+  .tabs button{background:#10293f;border:1px solid #1d4763;color:var(--ink);padding:8px 14px;border-radius:9px;cursor:pointer;font-size:13px}
+  .tabs button.on{background:#123c5c;border-color:var(--cy);color:var(--cy)}
+  model-viewer{width:100vw;height:calc(100vh - 118px);background:radial-gradient(circle at 50% 38%,#123048,#0b1f33)}
+  .dim{background:#0d2a42ee;border:1px solid var(--cy);color:var(--cy);border-radius:7px;
+       padding:3px 8px;font:12px ui-monospace,Menlo,monospace;white-space:nowrap;pointer-events:none}
+  .dim small{color:var(--ink)}
+</style></head>
+<body>
+<header><b>3D Lab</b><span class="hint">🖱 drag = orbit · scroll = zoom · the tags are real millimetres from the executed CAD</span>
+<a href="./index.html">← back to the jump</a></header>
+<div class="tabs" id="tabs">
+  <button data-m="850" class="on">Sender 850 · assembled</button>
+  <button data-m="850x">Sender 850 · exploded</button>
+  <button data-m="mini">Mini 300</button>
+</div>
+<model-viewer id="mv" src="./models/sender850.glb" camera-controls auto-rotate auto-rotate-delay="4000"
+  shadow-intensity="1" exposure="1.05" environment-image="neutral" camera-orbit="-30deg 74deg 128%">
+</model-viewer>
+<script>
+const HS = {
+  "850": [
+    ["0 0 28.5",  "71 × 39.5 × <small>overall</small> 56"],
+    ["-35.6 0 24","T-slot clamp · 2.9 on Ø3.1 coax"],
+    ["35.6 0 -12","door 31.5 × 24 · tab + M2 in brass"],
+    ["0 -19.85 14","camera corner · lens flush"],
+    ["0 3 -35",   "GoPro teeth 3.0 · gap 3.3"],
+    ["0 19.85 12","louvres 1.1 wide · 45° self-supporting"]
+  ],
+  "850x": [
+    ["0 0 40",    "roof lid · 3× M3 into brass inserts"],
+    ["48 0 6",    "door: plate + tab, feet hidden"],
+    ["-42 0 30",  "same blind T-piece, printed twice"]
+  ],
+  "mini": [
+    ["0 0 24.5",  "59.5 × 39.5 × 48 · −28 % volume"],
+    ["-29.8 0 20","same T-slot · same T-piece part"],
+    ["29.8 0 -10","door 19 × 16 · same latch principle"],
+    ["0 0 -30",   "same GoPro mount, centred"]
+  ]};
+const SRC = {"850":"./models/sender850.glb","850x":"./models/sender850_exploded.glb","mini":"./models/mini300.glb"};
+const mv = document.getElementById("mv");
+function setModel(k){
+  mv.querySelectorAll("[slot]").forEach(e=>e.remove());
+  mv.src = SRC[k];
+  HS[k].forEach((h,i)=>{
+    const b=document.createElement("button");
+    b.slot="hotspot-"+i; b.className="dim"; b.dataset.position=h[0]; b.innerHTML=h[1];
+    mv.appendChild(b);
+  });
+}
+setModel("850");
+document.getElementById("tabs").addEventListener("click",e=>{
+  const b=e.target.closest("button"); if(!b) return;
+  document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));
+  setModel(b.dataset.m);
+});
+</script>
+</body></html>
