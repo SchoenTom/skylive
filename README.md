@@ -55,8 +55,6 @@ The VTX side plugs in via its stock **JST-GH 6-pin harness** either way. Full st
 
 **The shell:** an upright, two-storey GoPro-style case — battery downstairs behind its own tab-locked door, radio + camera upstairs under a screwed roof lid — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, long passive louver vents, and a GoPro mount underneath. Outer dimensions: **71 × 39.5 × 56 mm** — genuinely action-cam-sized. Both short sides carry an identical **T-slot strain-relief interface** at the top edge, so the antenna can anchor left or right; the unused side closes with a blind T-piece. It builds from the parametric script in [`build/cad/`](build/cad/) and passes every geometry gate on each rebuild; this exact file set is what went to the printer.
 
-<img src="docs/assets/trio.gif" alt="Size comparison, all three spinning: the SkyLive 850, a GoPro Hero 13 envelope (manufacturer dimensions), and the Mini 300." width="72%">
-
 **Two sizes, one architecture.** Don't take a photo's word for it — **[spin both in the 3D Lab](https://schoentom.github.io/skylive/viewer.html)**, where every dimension tag is a real millimetre from the executed CAD. The **850** (71 × 39.5 × 56 mm) is the flight unit; the
 **Mini 300** (59.5 × 39.5 × 48 mm, −28 % volume) is the same design wrapped around a 300 mAh pack —
 same T-slot antenna anchors (literally the same printed T-piece), same tab door, same camera corner.
