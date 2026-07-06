@@ -289,8 +289,11 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       <span class="streak" style="left:90%;animation-duration:3.0s;animation-delay:1.3s"></span>
     </div>
   </div>
-  <!-- TBD-ASSET: assets/hero.png — cinematic Sender 850 in flight attitude (H1). Falls back to the sky above. -->
-  <img class="hero-img" src="assets/hero.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+  <model-viewer class="hero-mv" src="models/sender850.glb" alt="The Sender 850, slowly spinning"
+    auto-rotate auto-rotate-delay="0" rotation-per-second="18deg" disable-zoom disable-pan
+    interaction-prompt="none" environment-image="neutral" exposure="1.15" tone-mapping="neutral"
+    shadow-intensity="1.2" camera-orbit="-25deg 78deg auto" loading="eager"
+    style="height:46vh;min-height:300px;pointer-events:none;background:transparent"></model-viewer>
   <div class="wrap">
     <span class="live-pill"><i></i>● Live · SkyLive</span>
     <h1 class="hero-claim">Live from 4 km above the drop zone — <span class="cy">14 ms behind reality.</span></h1>
@@ -328,6 +331,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       <div class="mv-toggle" role="group" aria-label="Model view">
         <button id="mvAsm" class="on" aria-pressed="true">Assembled</button>
         <button id="mvExp" aria-pressed="false">Exploded</button>
+        <button id="mvFly" aria-pressed="false">▶ Fly-in</button>
       </div>
       <!-- TBD-ASSET: models/sender850.glb + models/sender850_exploded.glb (poster fallback below) -->
       <model-viewer
@@ -624,17 +628,22 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
 /* ---------- 3D model toggle ---------- */
 (function(){
   const mv=document.getElementById('mv');
-  const bAsm=document.getElementById('mvAsm'), bExp=document.getElementById('mvExp');
+  const bAsm=document.getElementById('mvAsm'), bExp=document.getElementById('mvExp'),
+        bFly=document.getElementById('mvFly');
   if(!mv) return;
-  function set(asm){
-    mv.setAttribute('src', asm?'models/sender850.glb':'models/sender850_exploded.glb');
-    mv.setAttribute('poster', asm?'poster_assembled.png':'poster_exploded.png');
-    const fb=document.getElementById('mvposter'); if(fb) fb.src = asm?'poster_assembled.png':'poster_exploded.png';
-    bAsm.classList.toggle('on',asm); bExp.classList.toggle('on',!asm);
-    bAsm.setAttribute('aria-pressed',String(asm)); bExp.setAttribute('aria-pressed',String(!asm));
+  const SRC={asm:'models/sender850.glb', exp:'models/sender850_exploded.glb', fly:'models/flyin850.glb'};
+  function set(mode){
+    mv.setAttribute('src', SRC[mode]);
+    if(mode==='fly'){ mv.setAttribute('autoplay',''); } else { mv.removeAttribute('autoplay'); }
+    const po = mode==='exp' ? 'poster_exploded.png' : 'poster_assembled.png';
+    mv.setAttribute('poster', po);
+    const fb=document.getElementById('mvposter'); if(fb) fb.src=po;
+    [[bAsm,'asm'],[bExp,'exp'],[bFly,'fly']].forEach(([b,m])=>{
+      b.classList.toggle('on',mode===m); b.setAttribute('aria-pressed',String(mode===m));});
   }
-  bAsm.addEventListener('click',()=>set(true));
-  bExp.addEventListener('click',()=>set(false));
+  bAsm.addEventListener('click',()=>set('asm'));
+  bExp.addEventListener('click',()=>set('exp'));
+  bFly.addEventListener('click',()=>set('fly'));
 })();
 
 /* ---------- ANTENNA DEMO (signature): down patch vs donut omni, one at a time ---------- */
