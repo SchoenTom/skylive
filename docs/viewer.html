@@ -29,25 +29,26 @@
   shadow-intensity="1" exposure="1.05" environment-image="neutral" camera-orbit="-30deg 74deg 128%">
 </model-viewer>
 <script>
+// Szene ist Y-up + Meter (glTF): CAD (x,y,z)mm -> Welt (x, z, -y)*0.001
 const HS = {
   "850": [
-    ["0 0 28.5",  "71 × 39.5 × <small>overall</small> 56"],
-    ["-35.6 0 24","T-slot clamp · 2.9 on Ø3.1 coax"],
-    ["35.6 0 -12","door 31.5 × 24 · tab + M2 in brass"],
-    ["0 -19.85 14","camera corner · lens flush"],
-    ["0 3 -35",   "GoPro teeth 3.0 · gap 3.3"],
-    ["0 19.85 12","louvres 1.1 wide · 45° self-supporting"]
+    ["0 0.0285 0",           "71 × 39.5 × <small>overall</small> 56"],
+    ["-0.0356 0.024 0",      "T-slot clamp · 2.9 on Ø3.1 coax"],
+    ["0.0356 -0.012 0",      "door 31.5 × 24 · tab + M2 in brass"],
+    ["-0.02175 0.014 0.01985","camera corner · lens flush"],
+    ["0 -0.035 -0.003",      "GoPro teeth 3.0 · gap 3.3"],
+    ["0 0.012 -0.01985",     "louvres 1.1 wide · 45° self-supporting"]
   ],
   "850x": [
-    ["0 0 40",    "roof lid · 3× M3 into brass inserts"],
-    ["48 0 6",    "door: plate + tab, feet hidden"],
-    ["-42 0 30",  "same blind T-piece, printed twice"]
+    ["0 0.04 0",             "roof lid · 3× M3 into brass inserts"],
+    ["0.048 0.006 0",        "door: plate + tab, feet hidden"],
+    ["-0.042 0.03 0",        "same blind T-piece, printed twice"]
   ],
   "mini": [
-    ["0 0 24.5",  "59.5 × 39.5 × 48 · −28 % volume"],
-    ["-29.8 0 20","same T-slot · same T-piece part"],
-    ["29.8 0 -10","door 19 × 16 · same latch principle"],
-    ["0 0 -30",   "same GoPro mount, centred"]
+    ["0 0.0245 0",           "59.5 × 39.5 × 48 · −28 % volume"],
+    ["-0.0298 0.02 0",       "same T-slot · same T-piece part"],
+    ["0.0298 -0.01 0",       "door 19 × 16 · same latch principle"],
+    ["0 -0.03 0",            "same GoPro mount, centred"]
   ]};
 const SRC = {"850":"./models/sender850.glb","850x":"./models/sender850_exploded.glb","mini":"./models/mini300.glb"};
 const mv = document.getElementById("mv");
