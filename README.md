@@ -15,7 +15,7 @@
 [![CAD](https://img.shields.io/badge/CAD-build123d%20%2F%20Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](build/cad/)
 [![live 3D](https://img.shields.io/badge/live-interactive%20demo-22d3ee?style=for-the-badge&logo=googlechrome&logoColor=white)](https://schoentom.github.io/skylive/)
 
-**[▶ Play the jump](https://schoentom.github.io/skylive/)** · **[🧊 3D Lab](https://schoentom.github.io/skylive/viewer.html)** · **[🚧 Gate Simulator — try to break the CAD](https://schoentom.github.io/skylive/gates.html)** · **[🎛 Antenna decks](https://schoentom.github.io/skylive/decks/)** · **[Build it — one page](build/QUICKSTART.md)** · **[What the gates caught](build/WHAT_THE_GATES_CAUGHT.md)** · **[The numbers](build/rf/README.md)** · **[Legal (DE)](build/LEGAL_DE.md)**
+**[▶ Play the jump](https://schoentom.github.io/skylive/)** · **[🧊 3D Lab](https://schoentom.github.io/skylive/viewer.html)** · **[🪂 Freefall Simulator](https://schoentom.github.io/skylive/freefall.html)** · **[🚧 Gate Simulator](https://schoentom.github.io/skylive/gates.html)** · **[⚖ vs GoPro](https://schoentom.github.io/skylive/viewer.html)** · **[🎛 Antenna decks](https://schoentom.github.io/skylive/decks/)** · **[Build it — one page](build/QUICKSTART.md)** · **[What the gates caught](build/WHAT_THE_GATES_CAUGHT.md)** · **[The numbers](build/rf/README.md)** · **[Legal (DE)](build/LEGAL_DE.md)**
 
 </div>
 
