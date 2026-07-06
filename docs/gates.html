@@ -1,0 +1,189 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SkyLive · Gate Simulator — try to break the CAD</title>
+<style>
+:root{--bg:#0b1f33;--panel:#10293f;--line:#1d4763;--ink:#e2f3ff;--cy:#7dd3fc;--mut:#5b7f9c;
+      --ok:#4ade80;--bad:#f87171;--warn:#fbbf24}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,system-ui,sans-serif}
+header{padding:16px 22px;border-bottom:1px solid var(--line)}
+header b{font-size:20px} header .s{color:var(--mut);font-size:13px;margin-left:10px}
+header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-top:4px}
+.wrap{display:grid;grid-template-columns:minmax(340px,1.4fr) minmax(300px,1fr);gap:16px;padding:16px 22px;max-width:1280px;margin:0 auto}
+@media(max-width:860px){.wrap{grid-template-columns:1fr}}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
+.card h3{margin:0 0 6px;font-size:14px;color:var(--cy);text-transform:uppercase;letter-spacing:.06em}
+svg{width:100%;height:auto;display:block;border-radius:10px;background:#0d2337;touch-action:none}
+.legend{font-size:12px;color:var(--mut);margin-top:8px}
+.gates{font:12.5px ui-monospace,Menlo,monospace;display:flex;flex-direction:column;gap:6px;margin-top:8px}
+.g{padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:#0d2337}
+.g.ok{border-color:#1d5c3f;color:var(--ok)} .g.bad{border-color:#7a2e2e;color:var(--bad)}
+.verdict{margin-top:12px;padding:14px;border-radius:10px;font-weight:800;text-align:center;font-size:17px;letter-spacing:.03em}
+.verdict.ok{background:#0e3b26;color:var(--ok);border:1px solid #1d5c3f}
+.verdict.bad{background:#3d1414;color:var(--bad);border:1px solid #7a2e2e;animation:sh .35s}
+@keyframes sh{25%{transform:translateX(-5px)}75%{transform:translateX(5px)}}
+.ctl{margin-top:10px;font-size:13px}
+.ctl label{display:flex;align-items:center;gap:10px;margin:6px 0}
+.ctl input[type=range]{flex:1;accent-color:var(--cy)}
+.ctl output{font:12px ui-monospace,monospace;color:var(--cy);min-width:64px;text-align:right}
+.story{display:grid;gap:8px;margin-top:8px}
+.story button{text-align:left;background:#0d2337;border:1px solid var(--line);color:var(--ink);
+  padding:10px 12px;border-radius:9px;cursor:pointer;font-size:13px}
+.story button:hover{border-color:var(--cy)} .story b{color:var(--warn)}
+.reset{margin-top:10px;width:100%;background:#123c5c;border:1px solid var(--cy);color:var(--cy);
+  padding:9px;border-radius:9px;cursor:pointer;font-weight:700}
+.note{font-size:12px;color:var(--mut);margin-top:10px;line-height:1.55}
+</style></head>
+<body>
+<header><b>Gate Simulator</b><span class="s">this CAD refuses to lie — try to make it</span>
+<a href="./index.html">← back</a></header>
+
+<div class="wrap">
+  <div class="card">
+    <h3>Floor 2 · top view — drag the parts</h3>
+    <svg id="scene" viewBox="0 0 780 480"></svg>
+    <div class="legend">Real interior of the 850 (65 × 33.5 mm inside, 1 mm = 10 px). The camera is
+    welded to its corner — everything else is yours to ruin. Every number below is the same
+    arithmetic the real build gates run before an STL is allowed to exist.</div>
+    <div class="ctl">
+      <label>wall thickness <input id="wall" type="range" min="1.5" max="4" step="0.1" value="3">
+        <output id="wallv">3.0 mm</output></label>
+    </div>
+  </div>
+
+  <div>
+    <div class="card">
+      <h3>Gate console</h3>
+      <div class="gates" id="gates"></div>
+      <div class="verdict ok" id="verdict">…</div>
+      <button class="reset" id="reset">↺ reset to the shipped design</button>
+      <div class="note"><b>Honest note:</b> this is the 2-D floor-plan slice of the real gate suite
+      (overlaps shown as mm², the build checks mm³ against nominal envelopes). The point isn't the
+      pixels — it's that <i>an assertion, not an eyeball,</i> decides whether a part may exist.</div>
+    </div>
+    <div class="card" style="margin-top:14px">
+      <h3>Replay the real saves</h3>
+      <div class="story">
+        <button data-s="boss"><b>The 687 mm³ lid boss</b> — the first lid design buried its screw
+          bosses deep inside the radio. Nominal-envelope check caught it; the lid moved to the roof.</button>
+        <button data-s="vent"><b>The 24.65 mm³ vent</b> — when the camera moved outboard, a vent
+          opened straight into its back. The vents were deleted, not nudged.</button>
+        <button data-s="wall"><b>The sacrosanct wall</b> — 3.0 mm is law. Watch every layout gate
+          pass while the wall gate alone vetoes the whole export.</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── ECHTE ZAHLEN aus dem ausgeführten CAD (mm) ────────────────────────────────
+const IN_X=65, IN_Y=33.5, S=10, PAD=65;                 // 1 mm = 10 px
+const CAM = {x:-32.5, y:-16.75, w:21.5, h:22.0, label:"camera (welded)"};   // Ecke, fix
+const D0 = {
+  vtx:  {x:  2.25, y:-15.0, w:29.2, h:30.0, label:"VTX 29.2×30", c:"#7dd3fc"},
+  sw:   {x: -17.0, y: -8.0, w:14.0, h:14.0, label:"switch Ø14",  c:"#f0a6e8", round:true},
+  park: {x: -28.05,y:  5.45,w:13.3, h:11.3, label:"XT30 park",   c:"#8fe3a8"}
+};
+let D = JSON.parse(JSON.stringify(D0)), WALL = 3.0;
+
+const svg = document.getElementById("scene");
+const X = mm => PAD + (mm + IN_X/2) * S, Y = mm => PAD + (mm + IN_Y/2) * S;
+
+function overlap(a, b){                                  // Schnittfläche mm²
+  const w = Math.min(a.x+a.w, b.x+b.w) - Math.max(a.x, b.x);
+  const h = Math.min(a.y+a.h, b.y+b.h) - Math.max(a.y, b.y);
+  return (w > 0 && h > 0) ? w * h : 0;
+}
+function inside(a){
+  return a.x >= -IN_X/2 && a.y >= -IN_Y/2 && a.x+a.w <= IN_X/2 && a.y+a.h <= IN_Y/2;
+}
+
+function runGates(){
+  const g = [];
+  const oc = overlap(D.vtx, CAM);
+  g.push(["[vtx_fit]  VTX ∩ camera = " + oc.toFixed(1) + " mm²  (gate: 0)", oc === 0]);
+  g.push(["[interior] VTX inside the 3 mm shell: " + (inside(D.vtx) ? "yes" : "NO — through the wall"), inside(D.vtx)]);
+  const os = Math.max(overlap(D.sw, CAM), overlap(D.sw, D.vtx));
+  g.push(["[switch]   Ø14 envelope ∩ (camera|VTX) = " + os.toFixed(1) + " mm²  (gate: 0)", os === 0 && inside(D.sw)]);
+  const op = Math.max(overlap(D.park, CAM), overlap(D.park, D.vtx), overlap(D.park, D.sw));
+  g.push(["[park]     XT30 ∩ neighbours = " + op.toFixed(1) + " mm²  (gate: 0)", op === 0 && inside(D.park)]);
+  g.push(["[wall]     " + WALL.toFixed(1) + " mm  (gate: ≥ 3.0 — sacrosanct, no exceptions)", WALL >= 2.999]);
+  const box = document.getElementById("gates");
+  box.innerHTML = g.map(([t, ok]) =>
+    `<div class="g ${ok ? "ok" : "bad"}">${ok ? "✓" : "✗"} ${t}</div>`).join("");
+  const all = g.every(x => x[1]);
+  const v = document.getElementById("verdict");
+  v.className = "verdict " + (all ? "ok" : "bad");
+  v.textContent = all ? "GATES GREEN — STL EXPORT PERMITTED"
+                      : "EXPORT VERWEIGERT — fix the red gates";
+  return all;
+}
+
+function draw(){
+  const W = PAD*2 + IN_X*S, H = PAD*2 + IN_Y*S;
+  svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+  let s = "";
+  const wp = WALL * S;
+  s += `<rect x="${PAD-wp}" y="${PAD-wp}" width="${IN_X*S+2*wp}" height="${IN_Y*S+2*wp}" rx="26"
+        fill="none" stroke="#38617f" stroke-width="${wp}" opacity=".85"/>`;
+  s += `<rect x="${PAD}" y="${PAD}" width="${IN_X*S}" height="${IN_Y*S}" rx="12" fill="#0b2135" stroke="#274d68"/>`;
+  s += `<rect x="${X(CAM.x)}" y="${Y(CAM.y)}" width="${CAM.w*S}" height="${CAM.h*S}" rx="8"
+        fill="#233d52" stroke="#4a6a84"/><text x="${X(CAM.x)+8}" y="${Y(CAM.y)+20}" fill="#8aa7bd"
+        font-size="13" font-family="ui-monospace">${CAM.label}</text>`;
+  for (const k of ["vtx","park","sw"]){
+    const e = D[k], r = e.round ? (e.w*S)/2 : 10;
+    s += `<g class="drag" data-k="${k}" style="cursor:grab">
+      <rect x="${X(e.x)}" y="${Y(e.y)}" width="${e.w*S}" height="${e.h*S}" rx="${r}"
+        fill="${e.c}22" stroke="${e.c}" stroke-width="2.4"/>
+      <text x="${X(e.x)+e.w*S/2}" y="${Y(e.y)+e.h*S/2+4}" fill="${e.c}" font-size="13"
+        text-anchor="middle" font-family="ui-monospace">${e.label}</text></g>`;
+  }
+  svg.innerHTML = s;
+  runGates();
+}
+
+let grab = null;
+svg.addEventListener("pointerdown", ev => {
+  const t = ev.target.closest(".drag"); if (!t) return;
+  const k = t.dataset.k, pt = pos(ev);
+  grab = {k, dx: pt.x - D[k].x, dy: pt.y - D[k].y};
+  svg.setPointerCapture(ev.pointerId);
+});
+svg.addEventListener("pointermove", ev => {
+  if (!grab) return;
+  const pt = pos(ev);
+  D[grab.k].x = Math.round((pt.x - grab.dx) * 4) / 4;
+  D[grab.k].y = Math.round((pt.y - grab.dy) * 4) / 4;
+  draw();
+});
+svg.addEventListener("pointerup", () => grab = null);
+function pos(ev){
+  const r = svg.getBoundingClientRect(), W = PAD*2 + IN_X*S;
+  const sc = W / r.width;
+  return {x: ((ev.clientX - r.left) * sc - PAD) / S - IN_X/2,
+          y: ((ev.clientY - r.top)  * sc - PAD) / S - IN_Y/2};
+}
+
+document.getElementById("wall").addEventListener("input", e => {
+  WALL = parseFloat(e.target.value);
+  document.getElementById("wallv").textContent = WALL.toFixed(1) + " mm";
+  draw();
+});
+document.getElementById("reset").addEventListener("click", () => {
+  D = JSON.parse(JSON.stringify(D0)); WALL = 3.0;
+  document.getElementById("wall").value = 3;
+  document.getElementById("wallv").textContent = "3.0 mm";
+  draw();
+});
+document.querySelector(".story").addEventListener("click", e => {
+  const b = e.target.closest("button"); if (!b) return;
+  D = JSON.parse(JSON.stringify(D0)); WALL = 3.0; document.getElementById("wall").value = 3;
+  if (b.dataset.s === "boss"){ D.sw.x = 12; D.sw.y = -6; }         // Boss/Schalter tief im VTX
+  if (b.dataset.s === "vent"){ D.park.x = -32.5; D.park.y = -14; } // ins Kamera-Feld geschoben
+  if (b.dataset.s === "wall"){ WALL = 2.8; document.getElementById("wall").value = 2.8;
+    document.getElementById("wallv").textContent = "2.8 mm"; }
+  draw();
+});
+draw();
+</script>
+</body></html>

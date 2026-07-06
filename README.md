@@ -2,14 +2,16 @@
 
 # SkyLive
 
-### Live from 4 km above the drop zone — 14 ms behind reality.
+### A skydiver exits at 4 000 m. Before the canopy opens, the drop zone is already watching through their eyes.
+
+**Live from 4 km — 14 ms behind reality.**
 
 [![status](https://img.shields.io/badge/status-print%20released-2ea44f?style=for-the-badge)](#status)
 [![license](https://img.shields.io/badge/license-CC--BY--4.0-3b82f6?style=for-the-badge)](LICENSE)
 [![CAD](https://img.shields.io/badge/CAD-build123d%20%2F%20Python-3776AB?style=for-the-badge&logo=python&logoColor=white)](build/cad/)
 [![live 3D](https://img.shields.io/badge/live-interactive%20demo-22d3ee?style=for-the-badge&logo=googlechrome&logoColor=white)](https://schoentom.github.io/skylive/)
 
-**[▶ Play the jump](https://schoentom.github.io/skylive/)** · **[🧊 3D Lab — spin it, read the mm](https://schoentom.github.io/skylive/viewer.html)** · **[🎛 Antenna decks](https://schoentom.github.io/skylive/decks/)** · **[Build it — one page](build/QUICKSTART.md)** · **[What the gates caught](build/WHAT_THE_GATES_CAUGHT.md)** · **[The numbers](build/rf/README.md)** · **[Legal (DE)](build/LEGAL_DE.md)**
+**[▶ Play the jump](https://schoentom.github.io/skylive/)** · **[🧊 3D Lab](https://schoentom.github.io/skylive/viewer.html)** · **[🚧 Gate Simulator — try to break the CAD](https://schoentom.github.io/skylive/gates.html)** · **[🎛 Antenna decks](https://schoentom.github.io/skylive/decks/)** · **[Build it — one page](build/QUICKSTART.md)** · **[What the gates caught](build/WHAT_THE_GATES_CAUGHT.md)** · **[The numbers](build/rf/README.md)** · **[Legal (DE)](build/LEGAL_DE.md)**
 
 </div>
 
@@ -137,6 +139,35 @@ Everything a re-builder needs is under [`build/`](build/):
 ⭐ **Star the repo** — releases will carry the first real measurements and, eventually, the first freefall footage from the system itself. Building one, or flying camera and have opinions? Open an [issue](https://github.com/SchoenTom/skylive/issues).
 
 ---
+
+## The jump, as a number line
+
+```
+4000 m ─┤ ██ EXIT      link margin: head-down +9 dB · belly −0.2 dB   [CALC]
+3000 m ─┤ ██ freefall  ~200 km/h — the airstream IS the heatsink      [CALC]
+1500 m ─┤ ██ canopy    margins improve 2–3 dB per km of descent       [CALC]
+ 300 m ─┤ ██ pattern   ground diversity rides the best of 4 antennas
+   0 m ─┴─▓▓─ beer     footage was live the whole way down            [PLAN]
+```
+
+## Truth ledger — what is measured, what is math
+
+The whole repo runs on a two-word doctrine: **a CAD boolean is not a test.** Current state of
+every load-bearing number:
+
+| number | value | status |
+|---|---|---|
+| case dimensions, both senders | 71×39.5×56 · 59.5×39.5×48 | 🟢 executed CAD, gate-checked |
+| battery | 58×30×22 (850) · 45×17.5×15.3 (Mini) | 🟢 measured with calipers |
+| brass inserts | M3 Ø5×6 · M2 Ø3.2×3 | 🟢 measured |
+| XT30 wire, coax jacket | Ø2.8 · Ø3.1 | 🟢 measured |
+| GoPro teeth 3.0 / gap 3.3 | first fit-print in progress | 🟡 printing now |
+| clamp holding force (2.9 slot) | −0.2 mm interference | 🔴 MEASURE_ME — pull test pending |
+| antenna S11, insert strength, snap cycles | — | 🔴 MEASURE_ME |
+| link budget @ 4 km, thermal model | full derivations in build/rf | 🟡 CALC — to be jumped |
+
+🟢 measured · 🟡 calculated/derived and labelled · 🔴 open, honestly. When the 2026 recalculations
+made numbers worse, the worse numbers were published — that policy stands.
 
 ## Honest note
 

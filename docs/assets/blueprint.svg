@@ -1,4 +1,11 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1640 980" font-family="ui-monospace,SFMono-Regular,Menlo,monospace">
+<style>
+  rect,line,path{stroke-dasharray:1400;stroke-dashoffset:1400;animation:bpdraw 2.4s ease-out forwards}
+  text{opacity:0;animation:bpfade .9s ease forwards 1.7s}
+  @keyframes bpdraw{to{stroke-dashoffset:0}}
+  @keyframes bpfade{to{opacity:1}}
+</style>
+
   <!-- SkyLive dimensional drawing · scale 4 px = 1 mm · all numbers from the executed CAD -->
   <defs>
     <marker id="a1" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
