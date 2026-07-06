@@ -162,10 +162,15 @@ RLID_REB_D = 1.5                                # Falz-Tiefe = halbe Wand       
 RLID_Z_OUT = EX_Z/2                             # 28 · Dach-Außenfläche (Deckel bündig)              [Geometrie]
 RLID_Z_IN  = EX_Z/2 - WALL                      # 25 · Innendecke                                    [Geometrie]
 RLID_Z_MID = (RLID_Z_IN + RLID_Z_OUT)/2        # 26,5 · Falz-Schulter-Ebene                         [Geometrie]
-# M3-Deckel-Durchgang (Spec §8): Durchgang Ø3,4 · CB Ø6,1 × 3,4 (Kopf Ø5,5×h3,0 + Spiel).
+# M3-Deckel-Durchgang: Durchgang Ø3,4 · SPOTFACE Ø6,1 × 0,4 — KEINE Senkung! Toms Fund
+# 07-06: die alte Spec-§8-Tiefe 3,4 ging durch den 3,0er-Deckel KOMPLETT durch (Kopf fiel
+# durch, Deckel wäre nie geklemmt worden). Und tiefer senken geht nicht: die Eck-Schrauben
+# liegen über dem Falz, wo der Deckel nur 1,5 (26,5..28) dick ist — jede Senkung ≥1,1
+# durchbricht dort den Boden einseitig. Spotface 0,4 → voller Ring, min. 1,1 trägt überall;
+# Kopf (h3,0) steht 2,6 über dem Dach (DIN-912-Familie wie die ZE-T-M2-Köpfe).
 LID_THRU_D = 3.4                               # M3-Schaft-Durchgang                            [Spec §8]
-LID_CB_D   = 6.1                               # CB-Ø (Kopf Ø5,5 + 0,6 Spiel)                   [Spec §8]
-LID_CB_DP  = 3.4                               # CB-Tiefe (Kopf h3,0 + 0,4)                     [Spec §8]
+LID_CB_D   = 6.1                               # Spotface-Ø (Kopf Ø5,5 + 0,6 Spiel)             [Spec §8]
+LID_CB_DP  = 0.4                               # Spotface-Tiefe (Sitz, keine Senkung)           [Tom 07-06]
 LID_BOSS_CHAM_D = 5.2                           # Insert-Einführfase-Ø                           [Spec §4]
 LID_BOSS_CHAM_H = 0.5                           # Fase-Höhe                                      [Spec §4]
 # 4 ECK-BOSSE (Body, vertikal, mit Innenecken/Wänden verschmolzen — die Ecke trägt mit): @(±29,±13),
@@ -1154,6 +1159,23 @@ if __name__ == "__main__":
     assert cover_valid, "BRepCheck: Deckel ungültig"
     assert cover_solids == 1, f"Deckel: erwartet 1 Solid, ist {cover_solids}"
     assert cover_over <= 1e-3, f"Deckel ragt über das Dach hinaus: {cover_over:.4f} > 0 (Tom: bündig!)"
+    # KOPF-AUFLAGE-GATE (Toms Fund 07-06: CB 3,4 ging durch den 3,0er-Deckel — Kopf fiel
+    # durch, Deckel wäre nie geklemmt worden). Ecklage-Realität: außen endet der Flansch in
+    # der Eckrundung (nur Sliver möglich) — die Klemmkraft trägt die INNEN-Halbschale
+    # (voller 3,0er-Querschnitt), und unter dem Flansch sitzt die Body-Falz-Schulter.
+    # Gate: Innen-Ring in X- UND Y-Richtung muss unter jedem Kopf tragen.
+    assert LID_CB_DP <= 1.0, f"Deckel-Spotface {LID_CB_DP} zu tief (Falz-Seite nur 1,5 dick)"
+    _rr = (LID_THRU_D/2 + LID_CB_D/2)/2                 # Ring-Mittenradius 2,375
+    for _px, _py in RLID_SCREW:
+        _sx, _sy = (1 if _px > 0 else -1), (1 if _py > 0 else -1)
+        for _dx, _dy in ((-_sx*_rr, 0), (0, -_sy*_rr)):
+            _ring = ((Pos(_px + _dx, _py + _dy, RLID_Z_OUT - LID_CB_DP - 0.35) *
+                      Box(0.5, 0.5, 0.5)) & cov).volume
+            assert _ring > 0.1, \
+                f"Deckel-M3 @({_px},{_py}) Richtung ({_dx:+.1f},{_dy:+.1f}): keine Kopf-Auflage"
+    print(f"[deckel-kopf] {len(RLID_SCREW)}× M3-Kopf-Auflage (Innen-Halbschale X+Y): Spotface "
+          f"Ø{LID_CB_D}×{LID_CB_DP} · Kopf steht {3.0 - LID_CB_DP:.1f} über Dach · "
+          f"Ecklage: außen Sliver (Flansch-Eckrundung), Flansch liegt dort auf der Body-Schulter ✔")
 
     lat_p = build_xt30_latch(+1)                      # XT30-Riegel +Y (eingesetzt)
     lat_m = build_xt30_latch(-1)                      # XT30-Riegel −Y (eingesetzt)
@@ -1184,4 +1206,6 @@ if __name__ == "__main__":
                          #   notch=True bleibt NUR als Geometrie-Wissen + Gate (7).
         _stl = f"{OUTDIR}/skylive_V3_min_{_name}.stl"
         export_stl(_part, _stl, tolerance=0.005, angular_tolerance=0.05)   # [Audit P7] feiner → offene Kanten 0
+        from build123d import export_step                                  # STEP immer mit —
+        export_step(_part, _stl[:-4] + ".step")                            # STL/STEP driften nie
         print(f"[stl] {_stl}  (Riegel: 2× drucken)" if _name == "xt30_latch" else f"[stl] {_stl}")

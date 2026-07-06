@@ -91,6 +91,28 @@ the cable — and the assert runs on every rebuild of both senders.
 
 ---
 
+## The counterbore that swallowed the screw head — **caught by looking at the part**
+
+The roof lid is 3.0 mm thick. Its three M3 counterbores were speced at Ø 6.1 × **3.4 deep** —
+head height 3.0 plus 0.4 to sit sub-flush. Nobody ever held that 3.4 against the 3.0 the lid
+actually has: the counterbore went **clean through**, turning each screw hole into a Ø 6.1
+through-bore. The Ø 5.5 cap head would have dropped straight through the lid and clamped
+nothing — a lid held by friction and hope. Every existing gate passed, because every existing
+gate checked shape validity and collisions, not *function*. The catch came from looking at the
+printed-parts preview and asking the obvious question: "does that head actually bear on
+anything?"
+
+The fix went deeper than the number: the corner screws sit over the lid's rebate flange, which
+is only 1.5 mm thick — so **any** real counterbore is geometrically impossible there. The lid
+now has a **0.4 mm spotface** (a seat, not a sink); the heads deliberately stand 2.6 mm proud,
+in the same family as the T-piece M2 heads. A new `[deckel-kopf]` gate probes for actual
+bearing material under every head, inboard in both axes, on every rebuild of both senders.
+
+> Lesson: the drawing convention ("head height + 0.4") is not a design check. Every
+> counterbore depth needs to be asserted against the *local* thickness it lives in.
+
+---
+
 ## Why this matters
 
 None of these were visible in a render. All of them would have cost a print, an evening, and a

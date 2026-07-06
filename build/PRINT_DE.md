@@ -1,7 +1,8 @@
 # SkyLive Sender 850 — Druckanleitung (Labor-fertig)
 
 Mini-Vents · GoPro-Zähne 3,0 · 1 langer Bay-Schlitz Kamera-Seite), alle STLs frisch aus dem
-verifizierten CAD (alle Gates grün, Export 08:23). 6 Dateien, Riegel 2× drucken → **7 Teile
+verifizierten CAD (alle Gates grün; Export 08:23, **02_deckel NEU 07-06 nachmittags** —
+Kopf-Auflage-Fix nach Toms Fund, s. unten). 5 Dateien, Riegel + T-Stück 2× drucken → **7 Teile
 gesamt**. Ehrlich: CAD-verifiziert, ERSTER Fit-Druck — Passungen (Tür, Deckel, Inserts, GoPro,
 ZE-Presssitz) am Teil prüfen, Werte rückmelden.*
 
@@ -52,9 +53,15 @@ vertikal (druckt supportfrei), Dach-Öffnung zeigt zur Seite.
   Nasen der Tür in der starken Richtung. Aufrecht wäre supportärmer, aber Zähne = Layer-gestapelt
   = Sollbruchstelle. **Zähne gewinnen.**
 
-### 02_deckel.stl — **flach, Außenseite nach UNTEN**
-Perfekt planar, kein Support. Die 3 Schrauben-Senkungen + das Schalterloch zeigen nach oben
-(saubere Bohrungsränder), die Lippe wächst nach oben. Glatte Bett-Oberfläche = Sichtseite.
+### 02_deckel.stl — **flach, Außenseite nach UNTEN** ⚠ GEÄNDERT 07-06 nachmittags (Builder-Fund!)
+Perfekt planar, kein Support. Die 3 flachen Spotfaces + das Schalterloch zeigen nach oben,
+die Lippe wächst nach oben. Glatte Bett-Oberfläche = Sichtseite.
+**Der Fund:** die alte Datei hatte 3,4-tiefe Senkungen im 3,0er-Deckel — die Ø6,1-Senkung
+ging KOMPLETT durch, der M3-Kopf wäre durchgefallen, der Deckel nie geklemmt worden. Und
+tiefer senken geht prinzipiell nicht: die Eck-Schrauben liegen über dem Falz (nur 1,5 Rest).
+Jetzt: **Spotface 0,4** als Kopfsitz — die 3 Zylinderköpfe stehen bewusst **2,6 mm über dem
+Dach** (gleiche Familie wie die M2-Köpfe der T-Stücke). Falls du den Deckel schon mit der
+alten Datei gedruckt hast: **wegwerfen, neu drucken** — nur diese Datei hier gilt.
 
 ### 03_akkuklappe.stl — **flach, Außenseite nach UNTEN**
 Kein Support. Die Nasen liegen horizontal → Layer längs = stabil beim Einhängen/Kippen.
