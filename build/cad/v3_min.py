@@ -771,7 +771,7 @@ def build_roof_lid():
     lid = flange + lip
     # Schalterloch Ø12,3 IM DECKEL (Tom/des Referenz-Prototyps Druck: Schalter sitzt oben im Deckel)
     lid = lid - Pos(SW_CX, SW_CY, (RLID_Z_IN + RLID_Z_OUT)/2) * Cylinder(radius=12.3/2, height=WALL + 2)
-    # 3× M3: Durchgang Ø3,4 + Zylinderkopf-CB Ø6,1×3,4 von OBEN (sichtbare Schrauben, des Referenz-Prototyps Look)
+    # 3× M3: Durchgang Ø3,4 + Spotface Ø6,1×0,4 von OBEN (Köpfe bewusst proud — s. LID_CB_DP-Doku)
     for (px, py) in RLID_SCREW:
         lid = lid - Pos(px, py, (RLID_Z_IN + RLID_Z_OUT)/2) * Cylinder(radius=LID_THRU_D/2, height=WALL + 2)
         lid = lid - Pos(px, py, RLID_Z_OUT - LID_CB_DP/2) * Cylinder(radius=LID_CB_D/2, height=LID_CB_DP)

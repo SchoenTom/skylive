@@ -780,7 +780,7 @@ def build_roof_lid():
     #   einhaengen, vorne 2x M3 (ersetzt die nicht platzierbaren +X-Bosse)
     for ty in (-8.0, 8.0):
         lid = lid + Pos(RLID_HX - 0.75, ty, RLID_Z_IN + 0.7) * Box(6.5, 6.0, 1.4)  # tief in die Lippe eingebunden
-    # 2× M3 VORNE: Durchgang Ø3,4 + Zylinderkopf-CB Ø6,1×3,4 von OBEN (sichtbare Schrauben)
+    # 2× M3 VORNE: Durchgang Ø3,4 + Spotface Ø6,1×0,4 von OBEN (Köpfe bewusst proud — s. LID_CB_DP-Doku)
     for (px, py) in RLID_SCREW:
         lid = lid - Pos(px, py, (RLID_Z_IN + RLID_Z_OUT)/2) * Cylinder(radius=LID_THRU_D/2, height=WALL + 2)
         lid = lid - Pos(px, py, RLID_Z_OUT - LID_CB_DP/2) * Cylinder(radius=LID_CB_D/2, height=LID_CB_DP)
