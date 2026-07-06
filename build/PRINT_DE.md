@@ -67,12 +67,15 @@ von oben eingedrückt und „hebt". Falls das T-Stück nicht satt einfährt: Ma�
 
 ## Nach dem Druck (Reihenfolge!)
 
-1. **M3-Messing-Inserts (Ø5×6) ZUERST einschmelzen** — 3× Dach-Bosse (von oben), solange das
-   Gehäuse leer ist: Lötkolben 250–270 °C, senkrecht ansetzen, langsam sinken lassen, 0,3 mm
-   unter bündig stoppen. Fehlerbild: schiefer Insert/Blob = zu heiß oder zu schnell.
+1. **Messing-Inserts ZUERST einschmelzen**, solange das Gehäuse leer ist (Lötkolben 250–270 °C,
+   senkrecht ansetzen, langsam sinken lassen, 0,3 mm unter bündig stoppen. Fehlerbild: schiefer
+   Insert/Blob = zu heiß oder zu schnell):
+   - **3× M3 (Ø5×6)** in die Dach-Bosse, von oben
+   - **1× M2 (Ø3,2×3 — deine Messung)** in die Ø2,8-Bohrung ÜBER der Akku-Öffnung (Achse
+     horizontal, von außen — die Lasche deckt den Insert-Mund später ab). Tür-Schraube = M2×6.
 2. Fit-Checks: Tür einschieben (unten Nasen einhaken → ankippen → M2) · Deckel auflegen (Lippe
-   taucht ein, 3× M3) · GoPro-Mate auf die Zähne (2,8 gedruckt ≈ 3,0 — falls stramm: NICHT feilen,
-   Wert melden, wir gehen auf 2,7) · Kamera einsetzen (linke Schraube von außen durch die
+   taucht ein, 3× M3) · GoPro-Mate auf die Zähne (**3,0 — Toms Vorgabe 07-06**; falls stramm:
+   NICHT feilen, Wert melden) · Kamera einsetzen (linke Schraube von außen durch die
    Wand-Einsenkung!) · XT30-Adern (Ø2,8) in die Sattel-Rinnen legen, Riegel schrauben ·
    **ZE (T-Prinzip, kurze Seiten):** Koax von oben in den 2,9er-Schlitz eindrücken bis es
    auf dem Rundsitz liegt → T-Stück in die Vertiefung einfahren (deckt den Schlitz, Kabel
@@ -82,5 +85,5 @@ von oben eingedrückt und „hebt". Falls das T-Stück nicht satt einfährt: Ma�
 
 **Teile-Übersicht:** Body ~71×39,5×56 · Deckel (dunkel im Viewer) · Klappe (blau, mit Lasche)
 · 2 Riegel (grün) · 2 ZE-T-Stücke (magenta: 05a Kerbe + 05b blind).
-**Schrauben-Einkauf-Delta: +4× M2×8 DIN 912** (ZE vertikal; Klappen-Lasche nutzt weiter 1× M2).
+**Schrauben-Einkauf: 3× M3×8 (Deckel) · 4× M2×8 (ZE) · 1× M2×6 (Lasche→M2-Insert) · 4× M2×8 (Riegel) · 2× M2 (Kamera) · Inserts 3× M3 + 1× M2.**
 Viel Erfolg im Labor! 🛠️

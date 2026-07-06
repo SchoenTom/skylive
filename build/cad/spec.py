@@ -84,12 +84,60 @@ VTX_UFL_STUB_LEN = 11.4          # coax stub already in the STEP (bbox Y reaches
 # ─────────────────────────────────────────────────────────────────────────────
 CAM_STEP = "references/HDZero_Nano90.stp"              # official; ships in the Freestyle V2 Kit
 CAM_FRAME_STEP = "references/HDZero_Nano90_Frame_14to19.stp"  # 19x19 adapter frame (optional; +19.6 tall)
-CAM_BODY = (14.0, 18.5, 18.0)    # W x depth(incl lens) x H (measured from STEP)
+CAM_BODY = (14.0, 18.5, 19.0)    # W x depth(incl lens) x H; H=19.0 Tom gemessen 2026-07-04 (rechteckig 14x19, nicht quadratisch)
 CAM_LENS_D = 12.0                # lens barrel Ø (STEP); exact thread NOT published
 CAM_LENS_PROTRUDE = 13.3         # front face -> lens tip
 CAM_MASS_G = 5.2
-CAM_MOUNT = "14mm nano push-through"
+CAM_MOUNT = ("INVERTED mount (Tom 2026-07-04): collar protrudes INWARD, exterior flat, 4x M2 flat-head "
+             "COUNTERSUNK from outside in the real native Nano90 13.5x17.5 pattern (corner holes).")
+CAM_MOUNT_PITCH = 15.5           # DEPRECATED (old outward 2-hole scheme; 15.5 was a knife-edge vs the
+                                 # window). Kept only so the paused flat variant still imports. Hochkant
+                                 # now uses CAM_MOUNT_PATTERN below.
+CAM_MOUNT_PATTERN = (13.5, 17.5) # real native Nano90 front holes (X x Z), verified from the official STEP;
+                                 # placed as 4 CORNER holes (±6.75 X, ±8.75 Z) → clears the Ø13.5 window ≥1 mm
+CAM_MOUNT_HOLE_D = 2.0           # M2 clearance shaft
+CAM_MOUNT_CS_D = 3.8             # M2 flat-head Ø (DIN 965) → 90° countersink on the flat exterior (flush)
+CAM_MOUNT_PILOT = 1.7            # M2 self-tap / heat-set pilot in the printed mount bosses
+CAM_MOUNT_LENS_OFF = 4.0         # holes sit 4 mm behind the lens face (toward the lens datum)
+# ── OFFICIAL Nano-90 mount frame, ALL values MEASURED from HDZero_Nano90_Frame_14to19.stp
+#    (bounding box + cylindrical-face survey, build123d import_step). Reproduced as printed
+#    housing geometry (the frame becomes part of the −Y side wall). Y = view/lens axis (thin).
+CAM_FRAME_OUT = (19.0, 19.6)     # outer footprint W(X) x H(Z)   [bbox X 19.0, Z 19.6]
+CAM_FRAME_DEPTH = 7.3            # depth along the lens/view axis (Y)   [bbox Y 7.3]
+CAM_FRAME_WINDOW = (14.8, 14.8)  # central through-opening W(X) x H(Z) (lens/board window)
+CAM_FRAME_CORNER_R = 2.5         # external corner fillet radius (r=2.5 corner cylinders)
+CAM_FRAME_MOUNT_D = 3.0          # corner through-holes Ø3.0 (r=1.5 cyl, axis Y)
+CAM_FRAME_MOUNT_X = 8.0          # corner-hole centre offset in X (±8.0)
+CAM_FRAME_MOUNT_Z = 8.3          # corner-hole centre offset in Z (±8.3)
+CAM_FRAME_SIDE_D = 2.1           # side M2 mount holes Ø2.1 (r=1.05 cyl, axis X, ±X faces)
+CAM_FRAME_SIDE_Y = 2.3           # side-hole centre, +Y behind the lens-exit (front) face
 # Camera sits at the FRONT; lens through the front wall. VTX U.FL faces the REAR (opposite).
+# ── FLUSH recessed camera window (2026-07-04) — REPLACES the proud 19×19.6 mount-frame block
+#    (CAM_FRAME_* above, no longer built into the wall; kept only as reference data). The −Y outer
+#    wall stays smooth; a clean rounded-rect opening lets the lens (Ø12) see out while the board
+#    (14×18) is trapped BEHIND the window shoulder. Design choices derived from the MEASURED lens Ø
+#    (12) + a 0.75 mm/side clearance and the MEASURED board 14×18 — no invented part dimensions.
+CAM_WINDOW = (13.5, 13.5)        # W(X) x H(Z) through-opening = lens Ø12 + 2×0.75 clearance; the
+                                 #   board 14×18 overhangs it (X 0.25 / Z 2.25 shoulder) → cannot exit −Y
+CAM_WINDOW_R = 2.5               # window corner radius (soft, ~matches the round lens)
+CAM_WINDOW_CHAMFER = 1.2         # 45° exterior rim chamfer — snag-free "weich verrundet" lead-in
+# ── ANTON-STYLE camera collar ("Wölbung") — GRAFTED 1:1 from Anton's OWN extracted STEP (2026-07-04).
+#    The parametric rebuild below (CAM_BULGE*) is SUPERSEDED: instead of re-modelling the collar we
+#    IMPORT Anton's real extracted bulge solid and boolean-UNION it onto the −Y wall (nothing rebuilt,
+#    nothing invented). Measured facts of the STEP (build123d import + solid-classifier survey):
+#    wall/attach plane Y=24.9, tip Y=31.4 → 6.5 mm proud; solid footprint 22 (X) × 14 (Z); rounded
+#    corner/dome tori R≈4.2; the camera bolts to 4 Ø3 (R1.5) axis-Y frame holes whose centroid =
+#    (26.25, 12.5) = the lens axis; aperture open at the wall plane. The Nano90 lens (Ø12) looks out
+#    through a 13.5 window cut through the 3.0 wall BEHIND the grafted collar (collar geometry untouched).
+CAM_BULGE_STEP = "references/Anton_camera_bulge.step"  # Anton's REAL extracted collar — grafted, not rebuilt
+# legacy parametric collar params — kept only as reference data (no longer built into the wall):
+CAM_BULGE = (21.5, 22.0)         # W(X) x H(Z) outer collar contour — Anton 1:1 (height clamped in CAD
+                                 #   so the collar stays under the top cover; width+proud+rim exact)
+CAM_BULGE_PROUD = 6.4            # OUTWARD protrusion beyond the −Y wall face (Anton: tip 31.4 − wall 25.0)
+CAM_BULGE_R = 4.0                # rounded-rect corner radius (Anton corner tori Rmaj≈4.0)
+CAM_BULGE_RIM = 2.5             # front-rim roll radius = the soft "Wölbung" lip (Anton rim tori Rmin≈2.0–2.2)
+CAM_CRADLE_WALL = 1.6            # printed side-rail thickness that locates the board in X (slide fit)
+CAM_CRADLE_LIP = 0.8             # rear snap-lip inward projection (board flexes past on insert → +Y stop)
 
 # ─────────────────────────────────────────────────────────────────────────────
 # 3 · BATTERY — Tattu 3S 850 mAh 75C, XT30  (TOM'S DECISION 2026-07-02: "vorerst bleiben
@@ -99,14 +147,22 @@ CAM_MOUNT = "14mm nano push-through"
 #   every other doc. 3S 850 = generous headroom + whole-session runtime at our ~1.5–2 A.
 # ─────────────────────────────────────────────────────────────────────────────
 BATT_CELL = (60.0, 30.0, 23.0)   # Tattu 3S 850 — 60 × 30 × 23 mm, 80 g (genstattu.com product page)
+BATT_MEASURED = (58.0, 30.0, 22.0)  # Tom GEMESSEN 2026-07-06 — real kleiner als Datenblatt.
+                                 #   Envelope/Guides bleiben bewusst auf Datenblatt+Swell (konservativ).
 BATT_MASS_G = 80.0               # vendor page; Tom owns the pack — caliper check optional
+# M2-Messing-Insert — Tom GEMESSEN 2026-07-06: außen Ø3,2 × L3,0.
+# Bohrung −0,4 Untermaß (wie Toms M3-Praxis Ø5→4,6), Tiefe = Insert + 2 Verdrängungsraum (wie 6→8).
+INSERT_M2 = (3.2, 3.0)
+INSERT_M2_HOLE_D = 2.8; INSERT_M2_HOLE_DEPTH = 5.0; INSERT_M2_CHAMFER = 0.4
 BATT_LEADS_LEN = 45.0            # to XT30 (vendor page)
 BATT_MAIN_CONN = "XT30"
 BATT_BAL_CONN = "JST-XH-4"
-# BAY ENVELOPE (TOM-SPECIFIED 2026-07-02, authoritative): battery dims PLUS cable buffer.
-#   Supersedes the old swell+front-pocket chain (60+2+15). The +5 L / +10 W / +2 H margins
-#   are Tom's stated allowance for leads, XT30 and swell — do not re-derive.
-BATT_BAY_ENVELOPE = (65.0, 40.0, 25.0)   # internal clear volume of Floor 1 (L x W x H)
+# BAY ENVELOPE. 2026-07-04: Tom's directive "minimise size, keep a small buffer" supersedes the
+#   earlier generous 40 W. Width tightened 40->34 (cell 30 + ~2/side; leads route UP through the
+#   divider feed-throughs to the floor-2 Wagos, NOT sideways — so Y carried no cable buffer). Length
+#   65 (cell 60 + 5 for XT30/slack at the door) and height 25 (cell 23 + 2 swell) kept — both justified.
+#   NB: tightening W does NOT shrink the case — outer width is VTX+switch-governed (IN_Y_ELEC>IN_Y_BAY).
+BATT_BAY_ENVELOPE = (65.0, 34.0, 25.0)   # internal clear volume of Floor 1 (L x W x H)
 BATT_SWELL = (1.0, 1.0, 2.0)     # informational; already contained within BATT_BAY_ENVELOPE
 # DOOR MECHANISM (Tom's original mechanism, unchanged): door at the CABLE end, battery slides
 #   in BODY-FIRST (flat, lying), XT30 + slack live in the envelope's buffer zone at the door.
@@ -135,7 +191,7 @@ XT30_MALE = (13.0, 11.0, 6.0)     # + 2 gold pins ~Ø3.5 x 5 proud (vendor-measu
 JST_XH4 = (12.3, 5.7, 7.5)        # official JST eXH.pdf, 2.5 pitch
 UFL_PLUG_D = 2.0                  # Hirose U.FL, mated height 2.4, 1.13 coax, ~30 cycles
 VTX_HARNESS = "JST-GH 1.25mm 6-pin: Black=GND Red=+ Yellow=RX White=TX Blue=SA (1 free)"
-MIPI_LEN = 120.0                  # kit MIPI cable
+MIPI_LEN = 80.0                   # kit MIPI cable — KORRIGIERT 2026-07-05: real bestellt/geliefert 80 mm [ordering-log]; 120 war stale
 
 # SMA bulkhead (Würth WR-UMRF 636208110200 mechanicals; RP-SMA identical shell)
 BULKHEAD_HEX_AF = 8.0
@@ -230,11 +286,16 @@ PATCH_SHELL_CAVITY = 15.0         # Tom (2026-07): the bottom shell is a HOLLOW 
 # ─────────────────────────────────────────────────────────────────────────────
 # 7 · MOUNTS — GoPro standard (sourced) + chin mount
 # ─────────────────────────────────────────────────────────────────────────────
-GOPRO_FINGER_T = 3.0             # caliper 3.02 (old CAD's 14mm gap was WRONG)
-GOPRO_GAP = 3.0                  # caliper 3.12
+GOPRO_FINGER_T = 3.0             # Tom 2026-07-06 FINAL: „mach die GoPro-Zähne 3 mm" (Fit-Print: 2,8 zu dünn/locker);
+                                 # a 3.2 prong is too thick. 2.7 nominal prints ≈2.9 → fits the 3.1 slot
+                                 # snug, not jamming. Confirm on the physical mate (→2.8 if it rattles).
+GOPRO_GAP = 3.3                  # Tom 2026-07-04: the gap between OUR prongs = the GoPro cavity (3.3) that
+                                 # GoPro's own ~3.2 mating prong fills as the counterpart. (was 3.0.)
 GOPRO_HOLE_D = 5.0               # caliper 5.09 (NOT 4mm)
-GOPRO_2PRONG = (15.0, 15.5, 18.0)   # female/socket footprint
+GOPRO_2PRONG = (15.0, 15.5, 18.0)   # female/socket footprint (bbox ref; prong LENGTH now GOPRO_PRONG_LEN)
 GOPRO_3PRONG = (26.0, 15.0, 18.0)   # male/plug footprint
+GOPRO_PIVOT_FROM_BASE = 10.0        # Tom 2026-07-04: pivot-hole centre 9-11 mm above the sender base (->10)
+GOPRO_PRONG_LEN = 14.5              # Tom 2026-07-04: GoPro-standard finger length (tip 4.5 mm below the pivot hole)
 GOPRO_SCREW = "M5x0.8, 18-20mm"
 MOUNT1 = "UNDERSIDE — carries the patch module + primary GoPro interface (Version B, patch down)"
 MOUNT2 = "REAR — optional Cookie-G3-style chin mount, FORWARD-facing (sight line)"
@@ -345,7 +406,8 @@ LIGHTPIPE_D = 3.2                 # VTX status LED — position from the VTX STE
 GATE_MIN_CLEARANCE = 0.5     # min gap between any two interior parts (mm); <0 = interference = FAIL
 GATE_WATERTIGHT = True       # every printed part must be a single watertight solid
 GATE_WALL_MIN = WALL         # no wall < 3.0 except the listed RF windows + bulkhead recess
-GATE_ALLOWED_PROTRUSIONS = ["camera_lens", "switch_button", "omni_capsule", "lens_bezel", "gopro_fingers"]
+GATE_ALLOWED_PROTRUSIONS = ["camera_lens", "switch_button", "omni_capsule", "lens_bezel", "gopro_fingers",
+                            "camera_bulge"]  # Anton-style OUTWARD camera collar (6.4 mm proud, −Y wall)
                              # omni_capsule REPLACES omni_puck + sma_bulkhead (T1: jack moved inside)
 GATE_VENT_AREAS = True       # assert VENT_INLET/OUTLET/DIVIDER area minimums are met
 GATE_OMNI_CAPSULE_FIT = True # AXII envelope + form bend R8 + air gap inside capsule; cap removable

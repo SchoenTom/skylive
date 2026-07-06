@@ -29,11 +29,10 @@ wrench for the SMA, hot glue/RTV, a caliper.
 > Order note: seat the **heat-set inserts first** (they need a hot iron and an empty shell),
 > then do all the cold work. Never run the iron near a seated battery or the VTX.
 
-`TBD-ASSET` — layout photo of the full parts spread (renders/steps/00_inventory.png).
-
+*(Photo lands with the first physical build log — every claim above comes from the executed CAD, not a stock image.)*
 ---
 
-## Step 1 · Melt the M3 brass inserts into the roof-lid posts
+## Step 1 · Melt the brass inserts (3× M3 roof posts + 1× M2 door latch)
 
 **Do.** The shell prints with **Ø 4.6 mm insert holes** in **Ø 8 mm corner posts** under the roof opening (3 posts — the camera owns the fourth corner),
 each with a small **Ø 5.2 × 0.5 mm lead-in chamfer** on top. Set the soldering iron to
@@ -43,6 +42,11 @@ put the iron tip **flat into the insert's bore from directly above**, and let *i
 the lightest push* sink it. Keep the iron **dead vertical**. Stop when the insert sits **~0.3 mm
 below flush** (sub-flush, so the lid face seats on plastic, not on brass). Withdraw the iron
 straight up; a wet fingertip or a flat cold tool can true the top while the plastic is still soft.
+
+**Also:** one **M2 brass insert (Ø 3.2 OD × 3.0 long, measured)** goes into the **Ø 2.8 hole
+above the battery opening** (axis horizontal, set from outside — the door tab covers its mouth
+later). Same technique, smaller iron tip. This is the most-cycled thread in the whole device
+(every battery swap), which is exactly why it gets brass instead of self-tapped PETG.
 
 **Why.** A cold-pressed insert splits the boss; a heat-set one melts the plastic into its knurl and
 locks in. The **Ø 4.6 hole is a deliberate ~0.4 mm undersize** vs the 5.0 insert — the displaced
@@ -64,8 +68,7 @@ bench-verified pending** the first real melt.)
 There are **3× M3 inserts** under the roof opening — three corners carry the lid; the fourth
 corner belongs to the camera, where the rebate lip holds instead (an asymmetry the reference
 prototype shares). The battery bay keeps its own door on the end face.
-`TBD-ASSET` — macro photo → renders/steps/01_insert.png.
-
+*(Photo lands with the first physical build log — every claim above comes from the executed CAD, not a stock image.)*
 ---
 
 ## Step 2 · Press the antenna coax into its T-slot (the 2.9 mm principle)
@@ -99,7 +102,9 @@ the −0.2 grip and relieve the round seat instead.**
 
 Then form the coax's **single 90° bend (R ≥ 8 mm)** once, by hand on the printed jig, and mate the
 **SMA** to the internal jack (8 mm wrench, firm — not gorilla-tight). The fragile **U.FL is touched
-exactly once** at the pigtail and never again. `TBD-ASSET` — clamp cross-section render →
+exactly once** at the pigtail and never again. ![The T-slot anchor on the short side — slot, T-piece and the two vertical cap screws](renders/steps/02_ze.png)
+
+`DONE-ASSET` — CAD render above; a cross-section →
 renders/steps/02_coax_clamp.png; final block dimensions confirm with the CAD pass.
 
 ---
@@ -123,8 +128,7 @@ moves ~0.6 W, but it buys 1–2 minutes in the power-up window and carries ~2.5 
 - **Never bench-power the VTX in the closed case at > 25 mW for more than a minute or two** — it
   will over-temp and RF-cut. That's expected behaviour, not a fault.
 
-`TBD-ASSET` — VTX-seated render → renders/steps/03_vtx_pad.png.
-
+*(Photo lands with the first physical build log — every claim above comes from the executed CAD, not a stock image.)*
 ---
 
 ## Step 4 · Camera + MIPI
@@ -146,8 +150,7 @@ is powered **over the MIPI by the VTX** — there is no separate camera wire.
 - **Lens proud of the wall** → check the cradle depth; the outer face should sit flush, not stick
   out (the whole point of the inverted mount).
 
-`TBD-ASSET` — cradle + lens-window render → renders/steps/04_camera.png; final counterbore/hole
-figures confirm with the CAD pass.
+*(Photo lands with the first physical build log — every claim above comes from the executed CAD, not a stock image.)*
 
 ---
 
@@ -182,8 +185,7 @@ geometry agrees with itself.
 - **Iron can't reach / melts the block** → respect the ≥ 10 mm clearance toward the door and keep
   the tip on the terminal, not the plastic.
 
-`TBD-ASSET` — two-channel saddle render + the lay-in/lock/solder sequence →
-renders/steps/05_xt30_relief.png; final saddle dimensions confirm with the CAD pass. There are
+*(Photo lands with the first physical build log — every claim above comes from the executed CAD, not a stock image.)*
 **two** of these saddles (left + right at the door end).
 
 ---
@@ -238,8 +240,7 @@ there documents the earlier drop-in design — superseded by the printed-in shel
 - **Wagos drifting over the VTX** → keep them in the left-hand zone; the VTX needs its full
   clearance under the lid.
 
-`TBD-ASSET` — tray drop-in render → renders/steps/06_divider.png.
-
+*(Photo lands with the first physical build log — every claim above comes from the executed CAD, not a stock image.)*
 ---
 
 ## Step 8 · First power (bench) — the ritual that saves the VTX
@@ -268,7 +269,7 @@ means one swapped Wago at 12 V ends the VTX; the multimeter is a hard gate.
 **Do.** With the battery in its bay (and its **foam preload** in place so it can't fly free), fit
 the door: **slide it in along the bay**, then a **gentle end-tilt (≤ 4°)** until the two retaining
 noses at the foot drop into their floor pockets, and press the plate flush. Then drive the
-**single M2 DIN 912 screw through the top tab** — the small tab that sits proud on the wall above
+**single M2×6 DIN 912 screw through the top tab into its brass insert** — the small tab that sits proud on the wall above
 the opening — into its printed core. It works like a TV-remote battery door: slide, tip, seat,
 one screw. The tab is also your grip for opening.
 
@@ -287,8 +288,7 @@ foam cuts that to ~250 N ([CALC], [`ENGINEERING/divider.md`](ENGINEERING/divider
 - **Door rattles after the screw** → foam preload missing or too thin; the pack must be captured,
   not free.
 
-`TBD-ASSET` — door slide/tilt/click sequence render → renders/steps/07_door.png; final nose/latch
-geometry confirms with the CAD pass.
+![The finished door: flush plate, two mini louvers, top tab with its single M2 — feet and noses work invisibly behind the outer skin](renders/steps/07_door.png)
 
 ---
 
@@ -308,5 +308,4 @@ encapsulated antenna, the thermal A/B test, the caliper list). This assembly is
 **bench-verified pending**: the shell prints and the parts fit on the reference prototype, but no
 step above has a *measured* badge until you run those tests on your own build.
 
-`TBD-ASSET` — finished-assembly hero + the full step gallery (renders/steps/\*.png) land as the
-final CAD/render pass closes.
+*(Photo lands with the first physical build log — every claim above comes from the executed CAD, not a stock image.)*

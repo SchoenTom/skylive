@@ -96,7 +96,7 @@ DOOR_SCREW_Z  = Z_BAY_MID + OPEN_Z/2 - 2.0  # Schraube oben an der Klick-Kante  
 #   oben auf LAP_RELIEF_Z auslaufend; ±Z-Kanten LAP-FREI (plane Stoßkante) → Schwenk um Y frei.
 #   2 Nasen bei Y±6 greifen UNTER die Akku-Ebene (Z<RAIL_TOP=−23,5) in Boden-Taschen; Haken 1,0.
 #   Der Akku-Kanal (GUIDE_CLEAR 30,75×23,75) bleibt HEILIG — Gate. Alle „Gates" = CAD/Boolean, kein Test.
-LAP_RELIEF_Z = 5.0        # ±Y-Lap läuft im oberen 5-mm-Band auf 0 aus (obere Ecken frei beim Einschwenken) [berechnet]
+# LAP_RELIEF_Z entfernt (Tom 07-06): Profil einheitlich, Freigang = Flansch-Innenfase
 LEAD_IN      = 0.5        # 0,5×45°-Lead-in an den lap-freien ±Z-Stoßkanten                                 [Design-Wahl]
 TONGUE_LEAD  = 1.5        # 1,5×45°-Lead-Chamfer an der Zungen-Oberkante (inboard) für den Einschwenk-Bogen [CEO 2026-07-05]
 # S4 (2026-07-05): die Klick-Cantilever/Snaps an der Tür-Oberkante sind ENTFERNT (Tom: unverständlich;
@@ -118,6 +118,8 @@ POCKET_X0 = FIN_XIN - 1.0               # Boden-Tasche −X-Ende = 25,5
 LIP_TOP  = (Z_BAY_MID - OPEN_Z/2) - 0.1  # Haken-Lippe Oberkante = −23,6 (0,1 unter Akku RAIL_TOP — MEASURE_ME: knapp)
 # M2-ZYLINDERKOPF DIN912 (Projektstandard) durch die Zunge in einen Schalen-Boss, CB im verdickten Pad:
 # SCHLICHT-Verschluss (Tom 07-06): Innen-Boss/Pad/CB/Mulde ENTFERNT → Lasche + 1 M2 (s. build)
+DOOR_VENT_Z = (-15.0, -11.5)  # Klappen-Mini-Vents (Tom 07-06: „schmale horizontale Striche auf der
+DOOR_VENT_L = 10.0            #   Akku-Vorderseite, nur mini") — 2× 45°-Louver, 10 lang, mittig
 DOOR_TAB_W   = 10.0       # Laschen-Breite (Y)                                                    [Tom 07-06]
 DOOR_TAB_T   = 2.5        # Laschen-Dicke (proud auf der +X-Wand — klassischer Batteriedeckel)
 DOOR_TAB_SZ  = 1.5        # Schraub-Achse Z (ÜBER der Öffnung −0,5, in Wand + Shelf-Leiste 29,5..32,5)
@@ -217,6 +219,9 @@ VENT_HECK_YC = 0.0
 #  KAMERA-SEITE (−Y, feste Wand) — Tom 07-05: „auch bei der Kamera", lange Seiten = LANGE Schlitze.
 VENT_CAM_L  = 26.0                              # X 3..29 ⊂ Flachzone ±30 (FIL_O 5,5), rechts der
 VENT_CAM_XC = 16.0                              #   Kamera-Flanken (enden +1,75) → kollisionsfrei
+VENT_CAM_BAY_Z = (-11.5,)                       # Tom 07-06: EIN langer Schlitz unterm Kameraloch,
+VENT_CAM_BAY_L = 24.0                           #   Akku-Stockwerk, wie die Rückseite (2×24) nur einzeln
+                                                #   → Luft staut nicht vorn, Querstrom durch die Bay
 VENT_CAM_Z  = (12.5, 15.5)                      # Stockwerk 2, neben dem Linsenfenster (X −15,75..−2,25)
 #  FRONT UNTEN (−X, Stockwerk 1/Akku) — Tom 07-05: „auf der Vorderseite auf Stockwerk [1]".
 VENT_FRONT_LO_L = 12.0
@@ -255,6 +260,8 @@ def cut_vents_body(body):
     yw_neg = (-IN_Y/2 + -EX_Y/2)/2           # −Y-Wand-Mittelebene = −18,25 (Kamera-Seite)
     for zc in VENT_CAM_Z:                    # Tom 07-05: lange Schlitze auch auf der Kamera-Seite
         body = body - _louver_Xaxis(VENT_CAM_XC, zc, VENT_CAM_L, yw_neg, sgn=-1); n += 1
+    for zc in VENT_CAM_BAY_Z:                # Tom 07-06: 1 langer Bay-Schlitz unterm Kameraloch
+        body = body - _louver_Xaxis(0.0, zc, VENT_CAM_BAY_L, yw_neg, sgn=-1); n += 1
     for zc in VENT_FRONT_LO_Z:               # Tom 07-05: Front auch Stockwerk 1 (Akku)
         body = body - _louver_Yaxis(VENT_FRONT_YC, zc, VENT_FRONT_LO_L, xw_neg, +1); n += 1
     return body, n
@@ -282,7 +289,7 @@ def build_shelf(body):
 
 # ── M-A4 · GOPRO-2-ZINKEN-GABEL unten (−Z) — Vorlage skylive_sender_v2.py/spec.py ─────
 import spec                       # GOPRO_*-Konstanten = Toms Messungen (Single Source of Truth)
-FINGER_T = 2.8      # Zinken-Dicke: Tom 2026-07-05 FINAL: Antons 3,0 −0…0,2 → 2,8 [MEASURE_ME Fit-Print].
+FINGER_T = 3.0      # Zinken-Dicke: Tom 2026-07-06 FINAL: „mach die GoPro-Zähne 3 mm" (= Antons 3,0).
                     #   Separation/Gap bleibt 3,3 exakt (spec.GOPRO_GAP). (spec 2,7 = ältere Basis, nicht genutzt.)
 GOPRO_CX = 0.0                # Tom 2026-07-05 FINAL: „mach's einfach KOMPLETT mittig" (das frühere
                               #   „+20% nach hinten" war ein Missverständnis der Achse — aufgehoben).
@@ -344,14 +351,13 @@ from build123d import Rectangle   # 2D für das Hybrid-Falz-Profil (±Y-Lap unte
 
 
 def _door_yz(dy, dz):
-    """YZ-Profil (Plane.YZ) der Falz-Zone: unten CB_Y breit (±Y-Lap), im oberen LAP_RELIEF_Z auf OPEN_Y
-    schmaler (Lap läuft auf 0 aus). ±Z ohne Lap (Höhe = OPEN_Z). dy/dz = Inset je Seite (0=Senkung,
-    TOL_SLIDE=Flansch). Beide teilen dieses Profil → kein Drift, definiert Schulter (nur ±Y) + Flush (±Z)."""
-    Hf = OPEN_Z - 2*dz
-    main_h = Hf - LAP_RELIEF_Z
-    main = Pos(0, -Hf/2 + main_h/2) * RectangleRounded(CB_Y - 2*dy, main_h, min(DOOR_R, main_h/2 - 0.01))
-    relief = Pos(0, Hf/2 - LAP_RELIEF_Z/2) * Rectangle(OPEN_Y - 2*dy, LAP_RELIEF_Z)
-    return Plane.YZ * (main + relief)
+    """YZ-Profil (Plane.YZ) der Falz-Zone — VEREINHEITLICHT (Tom 07-06 „gute Klappe"): EIN
+    durchgehend gerundetes Rechteck über die volle Höhe. Der alte LAP_RELIEF-Auslauf (oben
+    schmaler) erzeugte die sichtbaren Treppenstufen an der Klappen-Außenkontur — weg. Den
+    Kipp-Freigang der breiten Top-Ecken übernimmt jetzt eine INNEN-Fase am Flansch-Top
+    (build_door, außen unsichtbar). ±Y-Lap-Schulter läuft damit VOLL umlaufend (mehr Auflage).
+    dy/dz = Inset je Seite (0=Senkung, TOL_SLIDE=Flansch); beide teilen das Profil → kein Drift."""
+    return Plane.YZ * RectangleRounded(CB_Y - 2*dy, OPEN_Z - 2*dz, DOOR_R)
 
 
 def cut_roof_opening(body):
@@ -405,14 +411,15 @@ def build_shell():
     body = body - Pos(x_in, 0, Z_BAY_MID) * extrude(
         Plane.YZ * RectangleRounded(OPEN_Y, OPEN_Z, DOOR_R - REBATE_LAP), REBATE_D/2 + 0.1, both=True)
     # (b) äußere Senkung (Flansch-Sitz): HYBRID-Falz — ±Y-Lap (Schulter bei 34,0), ±Z LAP-FREI (flush),
-    #     ±Y-Lap läuft im oberen LAP_RELIEF_Z aus. Profil aus _door_yz (Senkung: dy=dz=0).
+    #     Profil EINHEITLICH gerundet (Tom 07-06, s. _door_yz). Senkung: dy=dz=0.
     x_cb = (X_SHOULDER + DOOR_FACE_X) / 2
     body = body - Pos(x_cb, 0, Z_BAY_MID) * extrude(_door_yz(0.0, 0.0), REBATE_D/2 + 1.0, both=True)
-    # (c) NASEN-FUSS-NOTCHES: 2 kleine Schlitze unter der Öffnung (Y±6) → der Tür-Fuß taucht unter die
-    #     Akku-Ebene ab. Durch BEIDE Wandhälften (Fuß = Plug, füllt bündig). Boden-Taschen: build_bay_catches.
+    # (c) NASEN-FUSS-NOTCHES: 2 kleine Schlitze unter der Öffnung (Y±6) → der Tür-Fuß taucht unter
+    #     die Akku-Ebene ab. BLIND (Tom 07-06 „gute Klappe"): nur innere Wandhälfte bis zur
+    #     Schulter 34,0 — die äußere 1,5er-Haut bleibt zu → die zwei „Zähne" sind außen unsichtbar.
     for ny in NASE_Y:
-        body = body - Pos((X_WALL_IN + DOOR_FACE_X)/2, ny, (NOTCH_BOT + (Z_BAY_MID - OPEN_Z/2))/2) * \
-            Box(DOOR_FACE_X - X_WALL_IN + 2.0, NASE_W + 2*TOL_SLIDE, (Z_BAY_MID - OPEN_Z/2) - NOTCH_BOT)
+        body = body - Pos((X_WALL_IN - 1.0 + X_SHOULDER)/2, ny, (NOTCH_BOT + (Z_BAY_MID - OPEN_Z/2))/2) * \
+            Box(X_SHOULDER - X_WALL_IN + 1.0, NASE_W + 2*TOL_SLIDE, (Z_BAY_MID - OPEN_Z/2) - NOTCH_BOT)
     # (c2) S4: die Snap-Einschwenk-Kanäle sind ENTFERNT (Tür-Snaps entfallen) — die +X-Wand über der
     #     Öffnung bleibt geschlossen. Kein Snap → keine Wandtaschen/Restwand-Aufdickung mehr nötig.
     # (d) SCHLICHT-Verschluss (Tom 07-06: „geht das schlichter? passt der Akku beim vorstehenden
@@ -421,8 +428,16 @@ def build_shell():
     #     KOMPLETT ENTFERNT. Stattdessen klassische LASCHE oben mittig an der Klappe (proud), M2
     #     ÜBER der Öffnung durch die Wand in die Shelf-Rand-Leiste (X 29,5..32,5) — Pilot Ø1,6×7,
     #     NULL Innenraum-Anspruch, Akku-Zone bleibt komplett frei.
-    body = body - Pos(EX_X/2 - 3.5, 0, DOOR_TAB_SZ) * Rot(0, 90, 0) * \
-        Cylinder(radius=DOOR_PILOT_R, height=7.0)   # M2-Pilot Ø1,6 (Wand+Shelf-Leiste) [MEASURE_ME Gewinde]
+    #     UPGRADE (Tom 07-06 Schrauben-Audit): die Tür-M2 ist die MEISTGELÖSTE Schraube (jeder
+    #     Akkuwechsel) → M2-MESSING-INSERT statt selbstschneidendem PETG. Toms Insert GEMESSEN
+    #     Ø3,2×3,0 → Bohrung Ø2,8×5,0 (−0,4 Untermaß + 2 Verdrängung, M3-Praxis) + Fase.
+    #     Achse X, durch die Wand in die Shelf-Leiste; Mund außen, von der Lasche verdeckt.
+    #     Schraube: M2×6 DIN 912 (Lasche 2,5 + Insert 3,0).
+    body = body - Pos(EX_X/2 - spec.INSERT_M2_HOLE_DEPTH/2 + 0.01, 0, DOOR_TAB_SZ) * Rot(0, 90, 0) * \
+        Cylinder(radius=spec.INSERT_M2_HOLE_D/2, height=spec.INSERT_M2_HOLE_DEPTH)
+    body = body - Pos(EX_X/2 - spec.INSERT_M2_CHAMFER/2 + 0.01, 0, DOOR_TAB_SZ) * Rot(0, 90, 0) * \
+        Cone(bottom_radius=spec.INSERT_M2_HOLE_D/2, top_radius=spec.INSERT_M2_HOLE_D/2 + 0.3,
+             height=spec.INSERT_M2_CHAMFER)
     # (e) Boden-Taschen + Kopf-Kammern für die Tür-Nasen (Weg A)
     body = build_bay_catches(body)
     # (f) MB1-NEU · DECKEL = DACH: Dach (+Z) öffnen (bündiger Falz). Eck-Bosse folgen in build_corner_bosses.
@@ -480,10 +495,12 @@ def _add_door_nasen(door):
     Kopf-Kammer gegen Herausziehen. Montage: Nasen einschieben → kippen → oben klick+schrauben."""
     z_open_bot = Z_BAY_MID - OPEN_Z/2
     for ny in NASE_Y:
-        # Fuß: füllt die Breach-Notch (Plug, −Gleitspiel), überlappt 2 mm in die Zunge (→ 1 Solid)
-        door = door + Pos((X_WALL_IN + TOL_SLIDE + DOOR_FACE_X)/2, ny,
+        # Fuß: füllt die BLINDE Breach-Notch (nur innere Wandhälfte bis Schulter −0,1 — die
+        # äußere 1,5er-Haut bleibt zu, Tom 07-06), überlappt 2 mm in die Zunge (→ 1 Solid)
+        door = door + Pos((X_WALL_IN + TOL_SLIDE + X_SHOULDER - 0.1)/2, ny,
                           (NOTCH_BOT + TOL_SLIDE + z_open_bot + 2.0)/2) * \
-            Box(DOOR_FACE_X - X_WALL_IN - TOL_SLIDE, NASE_W, (z_open_bot + 2.0) - (NOTCH_BOT + TOL_SLIDE))
+            Box((X_SHOULDER - 0.1) - (X_WALL_IN + TOL_SLIDE), NASE_W,
+                (z_open_bot + 2.0) - (NOTCH_BOT + TOL_SLIDE))
         # Finger nach −X (unter Akku-Ebene)
         door = door + Pos((FIN_XIN + HOOK + X_WALL_IN + TOL_SLIDE + 0.1)/2, ny,
                           (FIN_BOT + NASE_TOP)/2) * \
@@ -503,6 +520,11 @@ def build_door():
     region = Pos((X_SHOULDER + DOOR_FACE_X)/2 + 2.0, 0, Z_BAY_MID) * \
         extrude(_door_yz(TOL_SLIDE, TOL_SLIDE), (DOOR_FACE_X - X_SHOULDER)/2 + 2.0, both=True)
     flange = outer & region                                  # Plug: +X-Fläche = Schalenkontur → bündig
+    # KIPP-INNENFASE am Flansch-Top (Tom 07-06): das einheitliche Profil hat den Lap-Auslauf
+    #   ersetzt — den Einschwenk-Freigang der breiten Top-Ecken gibt jetzt eine 45°-Fase an der
+    #   INNEN-Oberkante des Flanschs (1,2×1,2, volle Breite, von außen unsichtbar).
+    flange = flange - Pos(X_SHOULDER, 0, Z_BAY_MID + OPEN_Z/2 - TOL_SLIDE) * Rot(0, 45, 0) * \
+        Box(1.2*1.42, CB_Y + 2.0, 1.2*1.42)
     # Zunge füllt inneren Durchbruch (OPEN minus Gleitspiel), innere Wandhälfte 32.5..34.0
     tY, tZ = OPEN_Y - 2*TOL_SLIDE, OPEN_Z - 2*TOL_SLIDE
     tongue = Pos((X_WALL_IN + TOL_SLIDE + X_SHOULDER)/2, 0, Z_BAY_MID) * \
@@ -524,6 +546,11 @@ def build_door():
         Box(DOOR_TAB_T, DOOR_TAB_W, (DOOR_TAB_SZ + 3.0) - (z_ot - 1.5))
     door = door - Pos(DOOR_FACE_X + DOOR_TAB_T/2, 0, DOOR_TAB_SZ) * Rot(0, 90, 0) * \
         Cylinder(radius=DOOR_THRU_R, height=DOOR_TAB_T + 1)   # Durchgang Ø2,4 (Kopf liegt proud auf)
+    # MINI-VENTS in der Klappe (Tom 07-06: „schmale horizontale Striche auf der Akku-Vorderseite,
+    #   nur mini"): 2× 45°-Louver 10 lang, mittig — Zuluft direkt am Akku, GoPro-Deckel-Optik.
+    #   Klappen-Dicke dort = Flansch 1,5 + Zunge 1,5 ≈ Wand → Louver-Cutter wie am Heck (sgn −1).
+    for zc in DOOR_VENT_Z:
+        door = door - _louver_Yaxis(0.0, zc, DOOR_VENT_L, (X_WALL_IN + TOL_SLIDE + DOOR_FACE_X)/2, -1)
     return door
 
 
