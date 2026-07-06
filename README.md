@@ -37,9 +37,12 @@ Today the ground sees **a dot in the sky**. Spectators, the waiting area, your o
 
 ---
 
-## Four parts. Zero solder joints.
+## Four parts. Two ways to wire them.
 
-That's the entire transmitter: **a radio, a camera, a battery, and a button** — joined without a soldering iron. The simplicity *is* the design.
+That's the entire transmitter: **a radio, a camera, a battery, and a button.** The simplicity *is* the design — and you pick your wiring path:
+
+- **Soldered (recommended for the flight unit):** every lead cut to its true run length — shorter cables, less weight, nothing to rattle, the most robust joints a jump can ask for.
+- **Wago quick-build (great first build):** three 221-412 lever clamps, zero solder, re-openable in seconds — perfect while you're still iterating.
 
 | | part | what it does | the real part |
 |---|---|---|---|
@@ -48,7 +51,7 @@ That's the entire transmitter: **a radio, a camera, a battery, and a button** �
 | 🔋 | **Battery** | ~40 min at 1 W (calculated: 850 mAh / ~1.3 A) | Tattu R-Line 3S 850 mAh (XT30) |
 | 🔘 | **Switch** | on/off — breaks the battery + line directly | 12 mm latching push-button, panel-mount |
 
-Power joins are **three Wago 221-412 lever clamps** — strip, flip the lever, clamp, done. Re-openable in seconds, no cold joints, no fumes. The VTX side plugs in via its stock **JST-GH 6-pin harness**. Full step-by-step (with the three hardware-killer rules): **[`build/BUILD_GUIDE.md`](build/BUILD_GUIDE.md)**.
+The VTX side plugs in via its stock **JST-GH 6-pin harness** either way. Full step-by-step (with the three hardware-killer rules): **[`build/BUILD_GUIDE.md`](build/BUILD_GUIDE.md)**.
 
 **The shell:** an upright, two-storey GoPro-style case — battery downstairs behind its own tab-locked door, radio + camera upstairs under a screwed roof lid — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, long passive louver vents, and a GoPro mount underneath. Outer dimensions: **71 × 39.5 × 56 mm** — genuinely action-cam-sized. Both short sides carry an identical **T-slot strain-relief interface** at the top edge, so the antenna can anchor left or right; the unused side closes with a blind T-piece. It builds from the parametric script in [`build/cad/`](build/cad/) and passes every geometry gate on each rebuild; this exact file set is what went to the printer.
 

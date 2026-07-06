@@ -1,5 +1,11 @@
 # SkyLive — Build Guide (solder-free)
 
+> **Wiring doctrine (updated):** the **soldered build is the recommended flight configuration** —
+> every lead cut to its actual run length (shorter cables = less weight, less rattle, fewer
+> failure points). The Wago 221-412 path below stays as the excellent **zero-solder quick-build**
+> for a first assembly and for iterating. Everything else on this page applies to both.
+
+
 *Condensed English edition of the project's German build document (`BAUANLEITUNG`, 2026-06-29,
 specs verified against HDZero documentation). Status: the electronics build below is bought,
 specified and wiring-verified on paper; the printed case passes its geometry gates at

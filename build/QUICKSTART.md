@@ -1,7 +1,9 @@
 # Build a SkyLive sender — the whole thing on one page
 
 *Every number below comes from the executed CAD or a caliper. Deep dives are linked at each step —
-this page alone is enough to build one. Solder-free by design (the iron touches only brass inserts).*
+this page alone is enough to build one. **Wiring: soldered is the recommended flight build**
+(cut every lead to its real run length — lighter, tighter, tougher); the Wago path below is the
+zero-solder quick-build for your first assembly.*
 
 ## 1 · Buy (≈ €160 for the sender, EU prices 2026-07)
 
@@ -38,11 +40,14 @@ seat — the slot itself grips it (−0.2 mm). Open the small cable notch in ONE
 slit, axis 1.5 mm from the face), slide both T-pieces in, 2× M2×8 each, heads up. The blind side
 is fully sealed. [Step 2 →](ASSEMBLY_STEPS.md)
 
-## 5 · Electronics (zero solder)
+## 5 · Electronics — solder it (recommended) or Wago it (quick)
+
+![Every component mid-flight into its bay — radio, camera, battery, switch, Wagos, XT30, antenna (stylised to their measured envelopes). Watch it animated in the 3D Lab.](renders/steps/05_loaded.png)
+*Where everything lives — [watch them fly in, animated](https://schoentom.github.io/skylive/viewer.html) (▶ Fly-in tab).*
 
 VTX flat on its thermal pad against the wall · camera into its corner cradle (2× M2, the left one
 comes through the outer wall) · battery leads into the saddle grooves, latch them (2× M2 each),
-**then** plug XT30 · switch into the lid (850) · all power joins = 3 Wago 221-412.
+**then** plug XT30 · switch into the lid (850) · power joins: **solder + heat-shrink, leads trimmed to their true run** (recommended) — or 3× Wago 221-412 for the solder-free first build.
 Wiring map + the three hardware killers (never power without antenna/dummy · multimeter polarity
 check · U.FL seats once): [`BUILD_GUIDE.md`](BUILD_GUIDE.md)
 
