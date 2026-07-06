@@ -80,8 +80,14 @@ bottom shell instead; see [`ENGINEERING/antenna_capsule.md` § 5](ENGINEERING/an
 press-fit slot** open to the top edge, ending in a round seat, with a shallow **T-recess** on the
 outside. **Lay the Ø 3.1 mm semi-rigid coax in from above** (never thread a connector through a
 closed hole) and press it down until it rests on the round seat — the 2.9 mm slot grips the
-jacket with **−0.2 mm interference**. Slide the flat **T-piece** into the recess so it covers the
-slot (the cable rises through the T-piece's open notch; the omni then hangs **rotated 90°, bell at the case edge, axis across the body** — so its donut fires down/up instead of aiming a pattern null at the ground), — both sides use the **same blind T-piece** (one part, printed twice; you open the small cable notch yourself on the antenna side: Ø3.2 hole + slit to the outer edge, axis 1.5 mm in from the face). Lock it with **2× M2×8 cap screws,
+jacket with **−0.2 mm interference**. The cable now runs **horizontally through the wall** — it
+never turns upward. Drop the flat **T-piece** into the recess so it covers the slot and pinches
+the horizontal cable like a clamp nose — that's the entire trick. Outside, the **omni sits
+directly against the wall, axis horizontal, pointing straight through it** — so its donut fires
+down/up/all around instead of aiming a pattern null at the ground. Both sides use the **same
+blind T-piece** (one part, printed twice; on the antenna side you open the cable passage
+yourself: Ø 3.2 hole + slit, drilled **horizontally, in line with the round seat**, axis 1.5 mm
+in from the outer face). Lock it with **2× M2×8 cap screws,
 vertical, heads up**, into the printed cores in the wall's top edge. The unused side keeps its T-piece unmodified — the case is fully closed even with no antenna fitted. Pick either side; the
 interfaces are identical.
 

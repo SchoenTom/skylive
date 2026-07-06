@@ -380,9 +380,9 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         <div class="d">Every clamp in this build is under-sized by the same tiny, deliberate amount: 0.2 mm less than the thing it holds. It's the line between gripping and crushing — 0.2 too little and the cable slips, 0.2 too much and you flatten a conductor or pinch a coax. One number, reused at the antenna clamp and both battery-lead saddles, so every strain relief behaves the same way.</div>
       </div>
       <div class="nug">
-        <div class="v">0.15 dB</div>
-        <div class="t">The radome that costs almost nothing.</div>
-        <div class="d">The omni antenna is sealed completely inside a 1.5 mm printed wall — and at 5.8 GHz that wall costs about 0.15 dB, roughly 3 % of the signal (calc). It's a slab about one-twentieth of a wavelength thick, so its two surface reflections nearly cancel and the wave passes as if the plastic weren't there. For that near-nothing you delete wind load, fatigue and snag risk entirely — the real risk left is detuning, which is why a VNA check is mandatory, not optional.</div>
+        <div class="v">90°</div>
+        <div class="t">The turn that dodges the null.</div>
+        <div class="d">The omni doesn't stand upright like on an FPV quad — its coax runs horizontally through the case wall and the bell sits directly against it, axis pointing straight through the wall. An upright omni's donut pattern has nulls straight up and down: in head-up or head-down freefall that aims a blind spot exactly at the receiver. Laid sideways, the donut fires down, up and all around — signal toward the ground in every jump attitude. And the strain relief becomes trivially simple: the cable never turns, so the T-clamp just drops onto it and screws shut.</div>
       </div>
       <div class="nug">
         <div class="v">14 ms</div>
@@ -532,7 +532,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
           </div>
           <div class="atoggle" id="atoggle">
             <button data-a="patch">Down patch<small>engineering study · cone at the ground</small></button>
-            <button data-a="omni" class="on">Donut omni<small>T-anchored above the case · fires down + up</small></button>
+            <button data-a="omni" class="on">Donut omni<small>T-clamped through the side wall · fires down + up</small></button>
           </div>
           <div class="poslegend">One antenna per jump, swapped by hand — no electronic switch on the sender.<br>The 4-way-diversity ground array (aimed patch + omnis) rides the best branch.</div>
           <div class="draghint">↻ <b>Drag the jumper</b> · or pick a pose · then try the <b>down patch</b></div>

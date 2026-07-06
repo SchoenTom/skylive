@@ -22,7 +22,7 @@ FSPL (Friis): **119.8 dB at 4 km**.
 
 An omni's peak gain is **fixed** at +2.2 dBic no matter how you orient it. Turning the antenna
 does not add power — it only re-points where the peak and the null go. Laying the puck
-horizontal (axis across the body) doesn't "transmit more downward"; it **aims** the same donut
+horizontal (axis pointing through the case wall) doesn't "transmit more downward"; it **aims** the same donut
 at the ground station instead of wasting it on a horizontal ring. In freefall over the DZ the
 ground station sits at down-angles of 63–83° — deep in the down hemisphere — so:
 
