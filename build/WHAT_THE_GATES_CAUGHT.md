@@ -73,21 +73,28 @@ the boss is gone, the door now closes with a flat top tab screwed into the wall 
 
 ---
 
-## The flange that grazed the antenna cable — **0.025 mm³, caught on the gate's first run**
+## The strain relief we read backwards — **overturned by a neutral review**
 
-The shipped T-pieces are blind — you cut the cable notch yourself on whichever side you pick.
-But the notch *geometry* lives in the script as the reference for that cut (Ø 3.2, horizontal,
-at seat height, open toward the stem's bottom edge), and a gate was written alongside it: lay a
-nominal Ø 3.1 coax in the round seat and assert the mounted, notched T-piece intersects it by
-**zero**. The very first run failed — **0.025 mm³**. The notch cleared the stem fine, but the
-cable's top edge (Z 25.55) reached 0.05 mm past the flange's underside (Z 25.5), a graze no
-render would ever show. The reference relief now runs the full depth of the part, flange
-included — so when you cut your own notch, carry it through the flange's underside too. The
-doctrine stays clean — the 2.9 mm wall slot does all the clamping, the T-piece never touches
-the cable — and the assert runs on every rebuild of both senders.
+For days this design carried a confident claim: the antenna coax is held by a **2.9 mm
+press-fit slot** ("−0.2 mm interference, the slot grips the jacket") and the T-piece is merely
+a lid. It sounded right, it gate-checked green — and it was a misreading of the reference
+build. When the builder pushed back ("the cable should go all the way down and be *fully*
+clamped — pressed by the two screws"), the claim was handed to a **neutral reviewing agent**
+with photographs and the reference STEP files, with instructions to explain the mechanism from
+scratch. The measurements said the opposite of the claim: the reference seat is **Ø 3.2 with
+clearance** on a Ø 3.1 cable, and the T-piece's stem ends in a **convex nose of R 1.55 —
+exactly the cable radius**. The slot guides; the seat supports; **the two vertical M2 screws
+create the clamping force** by pulling the nose 0.4 mm onto the cable.
 
-> Lesson: write the gate *with* the feature, not after it. This one paid for itself before
-> the geometry was an hour old.
+Both senders were rebuilt to the real mechanism, and the old gate ("T-piece must never touch
+the cable") was replaced by its inverse: a **clamp gate** that lays a nominal Ø 3.1 coax in the
+seat and asserts the seated T-piece interferes with it by a *defined* amount — 1.15 mm³, the
+0.4 mm press — on every rebuild.
+
+> Lesson: a gate can only defend the design intent you encoded. If the intent itself is a
+> misreading, green gates just make the mistake reproducible. When the person holding the
+> physical part says "that's not how this works" — measure again, from scratch, without your
+> own assumptions in the prompt.
 
 ---
 
@@ -102,11 +109,13 @@ gate checked shape validity and collisions, not *function*. The catch came from 
 printed-parts preview and asking the obvious question: "does that head actually bear on
 anything?"
 
-The fix went deeper than the number: the corner screws sit over the lid's rebate flange, which
-is only 1.5 mm thick — so **any** real counterbore is geometrically impossible there. The lid
-now has a **0.4 mm spotface** (a seat, not a sink); the heads deliberately stand 2.6 mm proud,
-in the same family as the T-piece M2 heads. A new `[deckel-kopf]` gate probes for actual
-bearing material under every head, inboard in both axes, on every rebuild of both senders.
+The final fix came from the reference build's own lid: its STEP file measures **4.5 mm thick**
+with a **Ø 6.5 × 3.4 counterbore** — a 1.1 mm floor, head sunk 0.4 sub-flush. This lid gets
+there with **local Ø 10 × 1.5 pads on its underside** (4.5 mm exactly where the screws live,
+3.0 everywhere else), the bosses shortened to make room, and the screws moved 1 mm diagonally
+inboard so the sunken head sits entirely inside the rebate's corner radius — each constraint
+found and enforced by the rebuilt `[deckel-kopf]` gate (floor bears, head is sub-flush, head
+touches no body material).
 
 > Lesson: the drawing convention ("head height + 0.4") is not a design check. Every
 > counterbore depth needs to be asserted against the *local* thickness it lives in.

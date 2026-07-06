@@ -71,40 +71,39 @@ prototype shares). The battery bay keeps its own door on the end face.
 *(Photo lands with the first physical build log — every claim above comes from the executed CAD, not a stock image.)*
 ---
 
-## Step 2 · Press the antenna coax into its T-slot (the 2.9 mm principle)
+## Step 2 · Clamp the antenna coax under the T-piece nose (the screws are the clamp)
 
 *(Donut-omni variant. Skip to Step 3 if you build the down-patch variant — its patch bolts into the
 bottom shell instead; see [`ENGINEERING/antenna_capsule.md` § 5](ENGINEERING/antenna_capsule.md).)*
 
-**Do.** Both short sides carry the same interface at the very top of the wall: a **2.9 mm
-press-fit slot** open to the top edge, ending in a round seat, with a shallow **T-recess** on the
-outside. **Lay the Ø 3.1 mm semi-rigid coax in from above** (never thread a connector through a
-closed hole) and press it down until it rests on the round seat — the 2.9 mm slot grips the
-jacket with **−0.2 mm interference**. The cable now runs **horizontally through the wall** — it
-never turns upward. Drop the flat **T-piece** into the recess so it covers the slot and pinches
-the horizontal cable like a clamp nose — that's the entire trick. Outside, the **omni sits
-directly against the wall, axis horizontal, pointing straight through it** — so its donut fires
-down/up/all around instead of aiming a pattern null at the ground. Both sides use the **same
-blind T-piece** (one part, printed twice, **fully sealing** — pick your antenna side at the
-printed part, then open the cable passage in that one yourself: Ø 3.2 hole **horizontally
-through the stem, in line with the round seat**, plus a slit to the stem's bottom edge so the
-T drops over the lying cable). Lock it with **2× M2×8 cap screws,
-vertical, heads up**, into the printed cores in the wall's top edge. The unused side keeps its T-piece unmodified — the case is fully closed even with no antenna fitted. Pick either side; the
-interfaces are identical.
+**Do.** Both short sides carry the same interface, measured 1:1 off a working reference build:
+from the top edge, a **mouth** (18 × 2.5 — the T's crossbar seat), a **3.3 mm guide slot**, and
+at the bottom a **round Ø 3.2 seat** passing horizontally through the wall. **Lay the Ø 3.1 mm
+semi-rigid coax in from above** (never thread a connector through a closed hole) and let it drop
+**all the way down** into the seat — it goes in easily; the seat has clearance *by design*. The
+cable now runs horizontally through the wall and out; outside, the **omni sits directly against
+the wall, axis horizontal, pointing straight through it** — donut fires down/up/all around
+instead of aiming a pattern null at the ground. Now slide the **T-piece** down the slot: its stem
+ends in a **convex R 1.55 nose** (exactly the cable radius) that lands on top of the cable.
+Drive the **2× M2×8 cap screws, vertical, heads up** — they pull the nose **0.4 mm down onto the
+cable**: *that* is the clamp. One T-piece design, printed twice, both sides identical — nothing
+to drill or notch, pick either side. On the unused side the T seals the mouth and slot; two
+small crescent openings of the empty seat remain under the nose (vent-sized, stated honestly).
 
-**Why.** −0.2 mm is a **clamp, not a crush**: the slot itself grips the cable so a yank loads the
-printed wall, not the solder or the connector; the T-piece only keeps the cable from popping out
-of the slot and closes the shell. Laying the cable in from above means the SMA end never has to
-pass through anything. **If your coax measures thicker than Ø 3.1, do not open the 2.9 slot — keep
-the −0.2 grip and relieve the round seat instead.**
+**Why.** A screw-driven nose clamp holds by bolt tension, not by print tolerance: the seat's
+clearance means the cable never fights its way in (no jacket damage, no detuning on insertion),
+and the clamping force is whatever the two M2s deliver — repeatable, serviceable, releasable.
+A yank on the antenna loads the printed wall and the bolted nose, never the solder or the
+connector. The CAD asserts a 0.4 mm nose engagement (1.15 mm³ interference) on every rebuild —
+that's a geometry check; the actual holding force is your pull test.
 
 **Watch out.**
-- **Coax jacket bulges / oval, or S11 shifts** → over-pressed (slot too tight for *your* cable).
-  Measure the jacket; relieve the seat, preserve the −0.2 grip.
-- **Cable pulls free / slides under load** → it never reached the round seat, or the slot printed
-  over-size. It should not move by hand *before* the T-piece is even fitted.
-- **T-piece won't sit flush** → cable not fully seated (it's pinched proud of the slot), or the
-  vertical screws are catching — re-seat the cable first, never force the T-piece down onto it.
+- **Cable slides under firm pull** → screws not torqued, or the nose isn't reaching (cable not
+  fully down in the seat). Back the T out, re-seat the cable to the bottom, re-drive.
+- **T-piece stops proud of the roof edge** → the nose met the cable early (cable riding high) or
+  grit in the slot — never force it; the crossbar must land flush in the mouth.
+- **Coax jacket visibly crushed at the nose** → over-torqued. The M2s need firm hands, not
+  gorilla torque; the nose is shaped to cradle, not to cut.
 
 Then form the coax's **single 90° bend (R ≥ 8 mm)** once, by hand on the printed jig, and mate the
 **SMA** to the internal jack (8 mm wrench, firm — not gorilla-tight). The fragile **U.FL is touched

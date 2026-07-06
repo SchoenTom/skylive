@@ -6,7 +6,7 @@
 
 **Live from 4 km — 14 ms behind reality.**
 
-<img src="docs/assets/turntable.gif" alt="The Sender 850 spinning: battery door with tab latch, T-slot antenna anchors on both short sides, roof lid, louvres, GoPro mount." width="58%">
+<img src="docs/assets/turntable.gif" alt="The Sender 850 spinning: battery door with tab latch, T-clamp antenna anchors on both short sides, roof lid, louvres, GoPro mount." width="58%">
 
 <img src="docs/assets/flyin.gif" alt="Every component — radio, camera, battery, switch, Wagos, XT30, antenna — flying into the open case." width="58%">
 
@@ -55,11 +55,11 @@ That's the entire transmitter: **a radio, a camera, a battery, and a button.** T
 
 The VTX side plugs in via its stock **JST-GH 6-pin harness** either way. Full step-by-step (with the three hardware-killer rules): **[`build/BUILD_GUIDE.md`](build/BUILD_GUIDE.md)**.
 
-**The shell:** an upright, two-storey GoPro-style case — battery downstairs behind its own tab-locked door, radio + camera upstairs under a screwed roof lid — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, long passive louver vents, and a GoPro mount underneath. Outer dimensions: **71 × 39.5 × 56 mm** — genuinely action-cam-sized. Both short sides carry an identical **T-slot strain-relief interface** at the top edge, so the antenna can anchor left or right; the unused side closes with a blind T-piece. It builds from the parametric script in [`build/cad/`](build/cad/) and passes every geometry gate on each rebuild; this exact file set is what went to the printer.
+**The shell:** an upright, two-storey GoPro-style case — battery downstairs behind its own tab-locked door, radio + camera upstairs under a screwed roof lid — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, long passive louver vents, and a GoPro mount underneath. Outer dimensions: **71 × 39.5 × 56 mm** — genuinely action-cam-sized. Both short sides carry an identical **T-clamp strain-relief interface** at the top edge — guide slot, round seat, and a screw-driven nose clamp — so the antenna can anchor left or right; the unused side is closed by the same T-piece. It builds from the parametric script in [`build/cad/`](build/cad/) and passes every geometry gate on each rebuild; this exact file set is what went to the printer.
 
 **Two sizes, one architecture.** Don't take a photo's word for it — **[spin both in the 3D Lab](https://schoentom.github.io/skylive/viewer.html)**, where every dimension tag is a real millimetre from the executed CAD. The **850** (71 × 39.5 × 56 mm) is the flight unit; the
 **Mini 300** (59.5 × 39.5 × 48 mm, −28 % volume) is the same design wrapped around a 300 mAh pack —
-same T-slot antenna anchors (literally the same printed T-piece), same tab door, same camera corner.
+same T-clamp antenna anchors (literally the same printed T-piece), same tab door, same camera corner.
 The width stays 39.5 on both because the radio and camera set it, not the battery.
 
 <div align="center">
@@ -73,22 +73,25 @@ The width stays 39.5 on both because the radio and camera set it, not the batter
 There is **no electronic antenna switch** on the sender — the omni rides outside on its
 semi-rigid coax, and the clever part lives where it belongs: on the ground.
 
-The mount is the oldest trick in the book, done properly: the **Ø 3.1 mm** semi-rigid coax runs
-**horizontally** through a round seat in the top edge of the case wall, and a **2.9 mm press-fit
-slot** grips it with −0.2 mm of interference — a yank on the antenna loads the printed wall,
-never the connector. A flat **T-piece** simply drops onto the horizontal cable like a clamp nose
-and locks with two vertical M2 cap screws — that's the whole assembly. Outside, the **RHCP omni
-sits directly against the wall, its axis horizontal, pointing straight through it**. That 90°
-turn is the whole point: an upright omni's donut pattern has its nulls pointing up and down,
-which in head-up *and* head-down would aim a null exactly at the receiver. Lying sideways, the
-donut fires **down and up and all around** — signal toward the ground in every jump attitude. Both short sides carry the identical
-interface, so the anchor moves left or right to suit the helmet setup — the unused side closes
-with a **blind T-piece** and the case is fully sealed even with no antenna fitted.
+The mount is a proper screw clamp, measured off a working reference build's STEP files: the
+**Ø 3.1 mm** semi-rigid coax drops from above through a guide slot **all the way down** into a
+round Ø 3.2 seat that passes horizontally through the case wall — the seat has clearance, on
+purpose. The clamping is the **T-piece's job**: its stem ends in a **convex nose of R 1.55 mm —
+exactly the cable's radius** — and two vertical M2 cap screws pull that nose 0.4 mm down onto
+the cable, pinching it into the seat. The screws *are* the clamp; a yank on the antenna loads
+the printed wall and the bolted nose, never the connector. Outside, the **RHCP omni sits
+directly against the wall, its axis horizontal, pointing straight through it**. That 90° turn
+is the whole point: an upright omni's donut pattern has its nulls pointing up and down, which
+in head-up *and* head-down would aim a null exactly at the receiver. Lying sideways, the donut
+fires **down and up and all around** — signal toward the ground in every jump attitude. Both
+short sides carry the identical interface, so the anchor moves left or right to suit the helmet
+setup — one T-piece design, printed twice, no drilling, no notching.
 
 | honest caveat | status |
 |---|---|
 | Body shadow, not the antenna, is the limiter in belly/sit poses (−7…−12 dB literature midpoints) | assumption, to be jumped |
-| Press-fit holding force and S11 with the coax clamped | `MEASURE_ME` — fit-print + NanoVNA |
+| Nose clamp holding force and S11 with the coax clamped | `MEASURE_ME` — fit-print pull test + NanoVNA |
+| CAD asserts a 0.4 mm nose-to-cable engagement (1.15 mm³) on every rebuild | calc, not a torque test |
 
 Two earlier antenna integrations — the fully **encapsulated side-capsule omni** and the
 **down-firing patch shell** — are preserved as engineering studies with their full RF derivations
@@ -175,7 +178,7 @@ every load-bearing number:
 | brass inserts | M3 Ø5×6 · M2 Ø3.2×3 | 🟢 measured |
 | XT30 wire, coax jacket | Ø2.8 · Ø3.1 | 🟢 measured |
 | GoPro teeth 3.0 / gap 3.3 | first fit-print in progress | 🟡 printing now |
-| clamp holding force (2.9 slot) | −0.2 mm interference | 🔴 MEASURE_ME — pull test pending |
+| antenna clamp holding force | screw-driven nose, 0.4 mm engagement (calc) | 🔴 MEASURE_ME — pull test pending |
 | antenna S11, insert strength, snap cycles | — | 🔴 MEASURE_ME |
 | link budget @ 4 km, thermal model | full derivations in build/rf | 🟡 CALC — to be jumped |
 

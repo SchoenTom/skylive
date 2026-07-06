@@ -162,23 +162,28 @@ RLID_REB_D = 1.5                                # Falz-Tiefe = halbe Wand       
 RLID_Z_OUT = EX_Z/2                             # 28 · Dach-Außenfläche (Deckel bündig)              [Geometrie]
 RLID_Z_IN  = EX_Z/2 - WALL                      # 25 · Innendecke                                    [Geometrie]
 RLID_Z_MID = (RLID_Z_IN + RLID_Z_OUT)/2        # 26,5 · Falz-Schulter-Ebene                         [Geometrie]
-# M3-Deckel-Durchgang: Durchgang Ø3,4 · SPOTFACE Ø6,1 × 0,4 — KEINE Senkung! Toms Fund
-# 07-06: die alte Spec-§8-Tiefe 3,4 ging durch den 3,0er-Deckel KOMPLETT durch (Kopf fiel
-# durch, Deckel wäre nie geklemmt worden). Und tiefer senken geht nicht: die Eck-Schrauben
-# liegen über dem Falz, wo der Deckel nur 1,5 (26,5..28) dick ist — jede Senkung ≥1,1
-# durchbricht dort den Boden einseitig. Spotface 0,4 → voller Ring, min. 1,1 trägt überall;
-# Kopf (h3,0) steht 2,6 über dem Dach (DIN-912-Familie wie die ZE-T-M2-Köpfe).
-LID_THRU_D = 3.4                               # M3-Schaft-Durchgang                            [Spec §8]
-LID_CB_D   = 6.1                               # Spotface-Ø (Kopf Ø5,5 + 0,6 Spiel)             [Spec §8]
-LID_CB_DP  = 0.4                               # Spotface-Tiefe (Sitz, keine Senkung)           [Tom 07-06]
+# M3-Deckel-Senkung = REFERENZ DECKEL 1:1 (Deckel.STEP vermessen, Tom 07-06 „ÜBERNIMM DAS VON
+# REFERENZ"): CB Ø6,5 × 3,4 + Durchgang Ø3,4 → Kopf (h3,0) versenkt 0,4 UNTER bündig, Boden 1,1
+# trägt. des Referenz-Prototyps Deckel ist 4,5 dick — unser 3,0er-Deckel holt die Dicke über lokale PADS
+# Ø10×1,5 an der Unterseite (nur im Lippen-Bereich; Bosse dafür 1,5 gekürzt). Wo der CB-Kreis
+# an den Ecken über die Lippe hinausragt, bekommt die Body-Falz-Schulter eine Ø7-Entlastung
+# (Kopf-Freigang); der Kopf trägt auf dem pad-gestützten Innen-Ring (1,1 — des Referenz-Prototyps Boden).
+LID_THRU_D = 3.4                               # M3-Schaft-Durchgang                       [Referenz-Prototyp STEP]
+LID_CB_D   = 6.5                               # CB-Ø (Kopf Ø5,5 + 1,0 Spiel)              [Referenz-Prototyp STEP]
+LID_CB_DP  = 3.4                               # CB-Tiefe → Kopf 0,4 sub-bündig            [Referenz-Prototyp STEP]
+LID_PAD_D, LID_PAD_DP = 10.0, 1.5              # Unterseiten-Pad je Schraube (lokal 4,5 dick)
+LID_REL_D  = 7.0                               # Schulter-Entlastung Ø (Kopf-Freigang an der Ecke)
 LID_BOSS_CHAM_D = 5.2                           # Insert-Einführfase-Ø                           [Spec §4]
 LID_BOSS_CHAM_H = 0.5                           # Fase-Höhe                                      [Spec §4]
 # 4 ECK-BOSSE (Body, vertikal, mit Innenecken/Wänden verschmolzen — die Ecke trägt mit): @(±29,±13),
 #   Z 14..25, Ø8, Insert Ø4,6×8 von OBEN + Fase Ø5,2×0,5. Top (25) liegt in der Dach-Öffnung → Insert
 #   von oben zugänglich; der Deckel-M3 @(±29,±13) fällt vertikal hinein.
-RBOSS_X, RBOSS_Y = 29.0, 13.0                   # Boss-/Schrauben-Zentren (in der Öffnung X±29,5/Y±13,75)
+RBOSS_X, RBOSS_Y = 28.0, 12.0                   # Boss-/Schrauben-Zentren — 1 mm diagonal einwärts
+                                                #   (Referenz-Senkung 07-06: Kopf Ø5,5+0,3 muss komplett
+                                                #   im Flansch-Eckradius R5 liegen: dist 1,95+2,75<5 ✓)
 RBOSS_D  = 8.0                                  # Boss-Außen-Ø
-RBOSS_Z1 = EX_Z/2 - WALL                        # 25 · Boss-Top = Innendecke = Insert-Mündung
+RBOSS_Z1 = EX_Z/2 - WALL - 1.5                  # 23,5 · Boss-Top = Insert-Mündung (1,5 gekürzt:
+                                                #   Platz fürs Deckel-Pad — Referenz-Senkung 07-06)
 RBOSS_Z0 = RBOSS_Z1 - 11.0                      # 14 · Boss-Boden (11 lang)
 RBOSS_INS_D, RBOSS_INS_DP = 4.6, 8.0            # Insert-Bohrung Ø4,6 × 8 (ACHSE Z, von oben)    [Spec §4]
 RLID_SCREW = [(-RBOSS_X, RBOSS_Y), (RBOSS_X, RBOSS_Y), (RBOSS_X, -RBOSS_Y)]   # 3 M3 — vorne-links
@@ -381,21 +386,29 @@ def cut_roof_opening(body):
 
 
 def build_corner_bosses(body):
-    """S3-NEU: 4 vertikale Eck-Insert-Bosse (Ø8, Z 14..25) @(±29,±13), mit den Innenecken/Wänden
-    verschmolzen (die Ecke trägt mit). Insert-Bohrung Ø4,6×8 von OBEN (Achse Z) + Einführfase Ø5,2×0,5
-    an der Mündung (Boss-Top = Innendecke 25, in der Dach-Öffnung → von oben zugänglich). CAD ≠ Insert-Test."""
+    """S3-NEU: 3 vertikale Eck-Insert-Bosse (Ø8, Z 14..23,5) @(±29,±13), mit den Innenecken/
+    Wänden verschmolzen. Insert-Bohrung Ø4,6×8 von OBEN + Einführfase Ø5,2×0,5 an der Mündung
+    (Boss-Top 23,5 = 1,5 unter der Innendecke: Platz fürs Deckel-Pad, Referenz-Senkung 07-06).
+    Plus Ø7-Kopf-Freigang in der Falz-Schulter (versenkter Kopf ragt an der Ecke über die
+    Lippe). CAD ≠ Insert-Test."""
     body = Part() + body                                        # koerziere Solid→Compound (fusionsfähig)
     for (px, py) in RLID_SCREW:
-        # Boss-Post (Ø8, Achse Z, Z 14..25)
-        body = body + Pos(px, py, (RBOSS_Z0 + RBOSS_Z1)/2) * Cylinder(radius=RBOSS_D/2, height=RBOSS_Z1 - RBOSS_Z0)
-        # Insert-Bohrung Ø4,6 × 8 (von der Mündung 25 nach unten)
+        # Boss-Post (Ø8, Achse Z) + Eck-Gusset: erst als EIN Stück fusionieren (der Boss steht
+        # 0,5/0,75 frei von den Wänden — nur das Gusset bindet an), dann anschweißen
+        _gsx, _gsy = (1 if px > 0 else -1), (1 if py > 0 else -1)
+        _post = Pos(px, py, (RBOSS_Z0 + RBOSS_Z1)/2) * Cylinder(radius=RBOSS_D/2, height=RBOSS_Z1 - RBOSS_Z0)
+        _post = _post + Pos((px + _gsx*IN_X/2)/2, (py + _gsy*IN_Y/2)/2, (RBOSS_Z0 + RBOSS_Z1)/2) * \
+            Box(IN_X/2 - abs(px) + 4, IN_Y/2 - abs(py) + 4, RBOSS_Z1 - RBOSS_Z0)
+        body = body + _post
+        # Insert-Bohrung Ø4,6 × 8 (von der Mündung 23,5 nach unten)
         body = body - Pos(px, py, RBOSS_Z1 - RBOSS_INS_DP/2) * Cylinder(radius=RBOSS_INS_D/2, height=RBOSS_INS_DP)
         # Einführfase Ø5,2×0,5 an der Mündung (oben): eng unten → weit an der Mündung (Cone nach −Z gekippt)
         body = body - Pos(px, py, RBOSS_Z1 - LID_BOSS_CHAM_H/2) * Rot(180, 0, 0) * \
             Cone(bottom_radius=RBOSS_INS_D/2, top_radius=LID_BOSS_CHAM_D/2, height=LID_BOSS_CHAM_H)
-        # Schraub-/Driver-Durchgang Ø4 durch die Falz-Schulter-Reste über dem Boss (Z 25..28,5):
-        # die Rand-Bosse liegen an der R3-Öffnungsecke — ohne Freistellung bliebe ein Grat im Schraubweg.
+        # Schraub-/Driver-Durchgang Ø4 durch die Falz-Schulter-Reste über dem Boss:
         body = body - Pos(px, py, (RLID_Z_IN + RLID_Z_OUT)/2) * Cylinder(radius=2.0, height=WALL + 1.0)
+        # Kopf-Freigang Ø7 in der Falz-Schulter (Z 24,3..26,7 — Kopf-Boden 24,6 + 0,3 Luft):
+        body = body - Pos(px, py, 25.5) * Cylinder(radius=LID_REL_D/2, height=2.4)
     return body
 
 
@@ -568,85 +581,84 @@ def build_door():
 #   Block bleibt SEIN separates Druckteil (STEP); ich stelle nur die Schnittstelle an der −X-Front-
 #   Oberkante bereit — Koax-Kanten-Schlitz + 2× M2-Kern-Bosse („Rückwand-Prinzip", flächig verschraubt).
 #   Klemm-Differenz 2,9 bleibt in des Referenz-Prototyps Block (unverändert, Spec §5). Antenne vertikal → Koax nach −X.
-# T-PRINZIP FINAL (Tom 07-06, Fotos IMG_8398–8402: „ÜBERNIMM DIESES PRINZIP — Antenne links
-# UND rechts verankert, auf der KURZEN Seite, oberst, Gehäuse dennoch geschlossen"):
-#   des Referenz-Prototyps echtes System = T-SCHLITZ oben in der kurzen Seite: ein 2,9 breiter DURCHGANGS-
-#   Schlitz von der Oberkante (Ø3,1-Koax wird von OBEN eingelegt und in den 2,9-PRESSSITZ
-#   gedrückt — „hebt gut", des Referenz-Prototyps Standard), Rundboden r1,45 als Kabel-Sitz. Außen eine
-#   flache T-VERTIEFUNG, in die ein flaches T-STÜCK einfährt und den Schlitz verschließt;
-#   oben ein Deckflansch im Dachrand-Spotface mit 2× M2 VERTIKAL (Köpfe nach OBEN, Tom #4)
-#   in die Wand-Oberkante. Das Kabel steigt durch die offene Flansch-Kerbe nach OBEN aus —
-#   die Omni steht über dem Gehäuse, kurzseitig verankert. BEIDSEITIG identisch (Front −X +
-#   Heck +X, Y=0): Kabelseite = T-Stück MIT Kerbe, Gegenseite = BLINDES T-Stück (geschlossen).
-#   Sitz-Höhe 24,0: über Kamera-Rahmen-Top ~23,5 [STEP+Spec] und VTX-Env-Top 22,6 [Spec];
-#   Front-Zuführung zusätzlich durch die 3,75-Gasse vor der Kamera. Semi-Rigid-Weg [Fit].
+# T-PRINZIP 2.0 — REFERENZ ECHTE MECHANIK (Tom 07-06: „das Kabel soll GANZ RUNTER und VOLL
+# eingeklemmt werden, angepresst durch die beiden Schrauben" + neutrales STEP-Gutachten
+# Zugentlastung_Antenne.step + eigene Grundkörper.STEP-Vermessung; ERSETZT die falsche
+# Presssitz-Deutung — des Referenz-Prototyps Sitz hat SPIEL: Ø3,2 auf Ø3,1-Koax!):
+#   Die KLEMMKRAFT kommt von den SCHRAUBEN: der T-Steg (3,1) endet in einer KONVEXEN NASE
+#   R1,55 (= Kabelradius) und wird von 2× M2 VERTIKAL aufs Kabel gezogen. Der Schlitz
+#   führt nur, der geschlossene Rundsitz stützt von unten, die Nase presst von oben.
+#   Aufbau je kurzer Seite, von oben: MUND 18×2,5 (Querhaupt-Sitz, oben bündig) →
+#   FÜHRUNGS-SCHLITZ 3,3 → RUNDSITZ Ø3,2 horizontal DURCH die Wand (Kabel läuft durch,
+#   KEINE Kerbe/Bohrung nötig — der Steg sitzt ÜBER dem Kabel, blockiert nie den Weg).
+#   des Referenz-Prototyps Sitztiefe 16 unter der Kante geht bei uns nicht (Kamera-Rahmen-Top 23,5 /
+#   VTX-Env-Top 22,6) → Sitz Z21 = 7 unter der Kante, Mechanik identisch. Kabel von OBEN
+#   einlegen (nie Stecker fädeln), T einschieben, 2× M2×8 ziehen die Nase 0,4 in Presslage.
+#   EIN T-Typ, 2× drucken, beidseitig identisch (unbenutzte Seite: Mund+Schlitz zu; unter
+#   der Nase bleiben zwei Ø3,2-Sichel-Restöffnungen des Sitzes — ehrlich dokumentiert).
 AZE_SIDES    = ((-1, 0.0), (+1, 0.0))   # (Wand-Vorzeichen X, Mitte Y) — beide KURZE Seiten
-AZE_SLOT_W   = 2.9                      # Schlitz = Presssitz auf Ø3,1-Koax (des Referenz-Prototyps 2,9)   [Spec §5]
-AZE_SEAT_CZ  = 24.0                     # Rundsitz-Zentrum (r1,45) → Schlitz-Boden 22,55
-AZE_REC_D    = 1.4                      # T-Vertiefung außen; Rest-Wand 1,6 (lokale Ausnahme wie
-                                        #   RF-Fenster 1,5 — der Schlitz ist ohnehin durch)
-AZE_STEM_W   = 7.0                      # Stem-Vertiefung (T-Steg 6,8 + 0,2)
-AZE_STEM_Z0  = 20.6                     # Stem-Unterkante (deckt den Rundsitz ab)
-AZE_FL_W, AZE_FL_DP = 13.0, 2.5         # Deckflansch-Spotface im Dachrand (13 breit × 2,5 tief)
-AZE_SCREW_DY2 = 4.8                     # 2× M2×8 DIN 912 VERTIKAL links+rechts des Schlitzes
-AZE_PILOT_D, AZE_PILOT_DP = 1.7, 5.0    # Kern-Piloten senkrecht in der Wand-Oberkante
+AZE_SEAT_CZ  = 21.0                     # Kabel-Zentrum (max. Tiefe vor Innenraum-Grenze)
+AZE_SEAT_D   = 3.2                      # Rundsitz MIT SPIEL (Referenz-Prototyp gemessen)              [STEP]
+AZE_SLOT_W   = 3.3                      # Führungsschlitz (Steg 3,1 + 0,2 Gleitspiel)
+AZE_MOUTH_W, AZE_MOUTH_DP = 18.0, 2.5   # Mund/Querhaupt-Sitz in der Wand-Oberkante  [Referenz-Prototyp 18/2,5]
+AZE_STEM_W   = 3.1                      # T-Steg = Nasenbreite, Nase R1,55 = Kabelradius   [STEP]
+AZE_NOSE_CZ  = EX_Z/2 - 4.3             # Nasen-Zentrum bei bündigem Querhaupt → 0,4 Pressweg
+AZE_SCREW_DY2 = 5.3                     # 2× M2×8 DIN 912 VERTIKAL (Referenz-Prototyp ±5,3), Köpfe oben [STEP]
+AZE_PILOT_D, AZE_PILOT_DP = 1.7, 7.0    # Kern-Piloten ab Mund-Boden (7 tief: M2×8 greift 6,7)
 AZE_CLR      = 0.1                      # Passungsspiel je Seite
 
 
 def mount_antenna_ze(body):
-    """T-Prinzip (des Referenz-Prototyps Fotos, beidseitig kurze Seiten): je Seite (1) Durchgangs-Schlitz 2,9
-    von der Oberkante mit Rundsitz r1,45 @Z24 (Kabel-Presssitz — Kabel wird von OBEN eingelegt),
-    (2) flache T-Stem-Vertiefung außen (1,4 tief), (3) Deckflansch-Spotface im Dachrand,
-    (4) 2× vertikale M2-Kern-Piloten in der Wand-Oberkante (Köpfe nach OBEN).
-    Rückgabe body. CAD-/Boolean-Check ≠ Klemm-/Zug-Test; Presssitz-Haltekraft = Fit-Print."""
+    """T-Prinzip 2.0 (des Referenz-Prototyps Mechanik, beidseitig kurze Seiten): je Seite (1) MUND 18×2,5
+    in der Wand-Oberkante (Querhaupt-Sitz, oben bündig), (2) FÜHRUNGS-SCHLITZ 3,3 vom
+    Mund-Boden bis zum Sitz, (3) RUNDSITZ Ø3,2 horizontal durch die Wand @Z21 (SPIEL —
+    die Klemmung machen die Schrauben über die Steg-Nase!), (4) 2× vertikale M2-Kern-
+    Piloten Ø1,7×7 ab Mund-Boden. Rückgabe body. CAD ≠ Klemm-/Zug-Test [Fit-Print]."""
     top = EX_Z/2 + 1.0
     for sx, cy in AZE_SIDES:
-        xm = sx*((EX_X + IN_X)/4 + 0.3)                # Schlitz-Achse: Wand exakt + 0,6 nach außen
-        # (1) Schlitz 2,9 durch die Wand, von oben, Rundboden (Kabel-Sitz)
-        body = body - Pos(xm, cy, (AZE_SEAT_CZ + top)/2) * Box(WALL + 0.6, AZE_SLOT_W, top - AZE_SEAT_CZ)
+        xm = sx*((EX_X + IN_X)/4 + 0.3)                # Wand-Mitte + 0,6 Übermaß nach außen
+        # (1) Mund 18 breit × 2,5 tief, volle Wandtiefe
+        body = body - Pos(xm, cy, (EX_Z/2 - AZE_MOUTH_DP + top)/2) * \
+            Box(WALL + 0.6, AZE_MOUTH_W, top - (EX_Z/2 - AZE_MOUTH_DP))
+        # (2) Führungs-Schlitz 3,3 vom Mund-Boden bis zur Sitz-Oberkante
+        _z_slot0 = AZE_SEAT_CZ                          # bis Sitz-Mitte (Bogen übernimmt Rest)
+        body = body - Pos(xm, cy, (_z_slot0 + EX_Z/2 - AZE_MOUTH_DP + 0.2)/2) * \
+            Box(WALL + 0.6, AZE_SLOT_W, (EX_Z/2 - AZE_MOUTH_DP + 0.2) - _z_slot0)
+        # (3) Rundsitz Ø3,2 MIT SPIEL, horizontal durch die Wand (Kabelweg — bleibt immer frei)
         body = body - Pos(xm, cy, AZE_SEAT_CZ) * Rot(0, 90, 0) * \
-            Cylinder(radius=AZE_SLOT_W/2, height=WALL + 0.6)
-        # (2) T-Stem-Vertiefung in der Außenfläche (Tiefe 1,4, Breite 7, ab Z 20,6, oben offen)
-        body = body - Pos(sx*(EX_X/2 - AZE_REC_D/2 + 0.5), cy, (AZE_STEM_Z0 + top)/2) * \
-            Box(AZE_REC_D + 1.0, AZE_STEM_W, top - AZE_STEM_Z0)
-        # (3) Deckflansch-Spotface im Dachrand (Z 25,5..28, exakt Wand-tief)
-        body = body - Pos(sx*((EX_X + IN_X)/4 + 0.25), cy, (EX_Z/2 - AZE_FL_DP + EX_Z/2 + 1)/2) * \
-            Box(WALL + 0.5, AZE_FL_W, AZE_FL_DP + 1.0)
-        # (4) 2× M2-Kern-Piloten VERTIKAL (vom Spotface-Boden 5,0 tief in die Wand)
+            Cylinder(radius=AZE_SEAT_D/2, height=WALL + 0.6)
+        # (4) 2× M2-Kern-Piloten VERTIKAL (vom Mund-Boden 7,0 tief — M2×8 greift 6,7)
         for s in (-1, +1):
             body = body - Pos(sx*(EX_X + IN_X)/4, cy + s*AZE_SCREW_DY2,
-                              EX_Z/2 - AZE_FL_DP - AZE_PILOT_DP/2) * \
+                              EX_Z/2 - AZE_MOUTH_DP - AZE_PILOT_DP/2) * \
                 Cylinder(radius=AZE_PILOT_D/2, height=AZE_PILOT_DP)
     return body
 
 
-def build_aze_tee(notch=True):
-    """Das T-Stück (Druckteil 05, 2× — des Referenz-Prototyps Prinzip): Deckflansch 12,8×2,8×2,5 (liegt im
-    Dachrand-Spotface, oben bündig) + Steg 6,8×1,2 (fährt in die Stem-Vertiefung, deckt den
-    Kabel-Schlitz). 2× Ø2,2 vertikal + CB Ø4,4×1,0 für M2×8 DIN 912 (Köpfe nach OBEN).
-    notch=True → Kabelseite (Doktrin 07-06, Foto IMG_8382): U-Kerbe Ø3,2 HORIZONTAL im
-      Steg auf Sitzhöhe (Kabel läuft waagerecht durch die Wand weiter — steigt NIE nach oben),
-      unten offen bis zur Steg-Unterkante, damit das T von oben übers liegende Kabel fällt.
-    notch=False → BLIND (verschließt die ungenutzte Seite komplett).
-    Lokal: X=0 an der Wand-Außenfläche (+X = außen), Z=0 an der Dach-Oberkante."""
-    t = Pos(-1.5, 0, -AZE_FL_DP/2) * Box(WALL - 0.2, AZE_FL_W - 0.2, AZE_FL_DP)      # Flansch
-    t = t + Pos(-(AZE_REC_D/2 + 0.05) + 0.0, 0, (-7.3 - AZE_FL_DP)/2) * \
-        Box(AZE_REC_D - 0.2, AZE_STEM_W - 0.2, 7.3 - AZE_FL_DP)                       # Steg
-    if notch:                                          # U-Kerbe im Steg, unten offen
-        _zs = AZE_SEAT_CZ - EX_Z/2                     # Sitzhöhe lokal (−4,0)
-        # Halbrund-Entlastung Ø3,2 über die GANZE T-Tiefe (Steg + Flansch-Unterseite —
-        # Kabel-Oberkante 25,55 ragt 0,05 über den Flansch-Boden 25,5; Klemmung macht
-        # allein der 2,9er-Wand-Schlitz, das T darf das Kabel nicht berühren)
-        t = t - Pos(-1.3, 0, _zs) * Rot(0, 90, 0) * Cylinder(radius=1.6, height=4.6)
-        t = t - Pos(-0.75, 0, (_zs - 7.5)/2) * Box(2.4, 3.2, 7.5 + _zs)
-    for s in (-1, +1):                                 # 2× M2 vertikal, Köpfe oben
-        t = t - Pos(-1.5, s*AZE_SCREW_DY2, -AZE_FL_DP/2) * Cylinder(radius=1.1, height=AZE_FL_DP + 1)
-        t = t - Pos(-1.5, s*AZE_SCREW_DY2, -0.5) * Cylinder(radius=2.2, height=1.1)   # CB Ø4,4×1,0
+def build_aze_tee(notch=None):
+    """Das T-Stück (Druckteil 05, 2× — des Referenz-Prototyps Mechanik, STEP-vermessen): QUERHAUPT
+    17,7×2,8×2,5 (liegt im Mund, oben bündig) + STEG 3,1 breit mit KONVEXER NASE R1,55
+    (= Kabelradius) — die Nase legt sich aufs Kabel, die Schrauben ziehen sie 0,4 in
+    Presslage (KLEMMKRAFT = SCHRAUBEN, nicht Presssitz). 2× Ø2,4 vertikal + CB Ø4,4×1,2
+    für M2×8 DIN 912 (Köpfe oben). notch: obsolet (ein Typ für beide Seiten) — Parameter
+    bleibt für Aufrufer-Kompatibilität. Lokal: X=0 Wand-Außenfläche (+X außen), Z=0 Dach-
+    Oberkante, Teil in x −2,9..−0,1."""
+    xw = -WALL/2
+    t = Pos(xw, 0, -AZE_MOUTH_DP/2) * Box(WALL - 0.2, AZE_MOUTH_W - 0.3, AZE_MOUTH_DP)  # Querhaupt
+    _zn = AZE_NOSE_CZ - EX_Z/2                          # Nasen-Zentrum lokal (−4,3)
+    t = t + Pos(xw, 0, (-AZE_MOUTH_DP + _zn)/2) * \
+        Box(WALL - 0.2, AZE_STEM_W, -_zn - AZE_MOUTH_DP)                                # Steg gerade
+    t = t + Pos(xw, 0, _zn) * Rot(0, 90, 0) * \
+        Cylinder(radius=AZE_STEM_W/2, height=WALL - 0.2)                                # Nase R1,55
+    for s in (-1, +1):                                  # 2× M2 vertikal, Köpfe oben
+        t = t - Pos(xw, s*AZE_SCREW_DY2, -AZE_MOUTH_DP/2) * Cylinder(radius=1.2, height=AZE_MOUTH_DP + 1)
+        t = t - Pos(xw, s*AZE_SCREW_DY2, -0.6) * Cylinder(radius=2.2, height=1.3)       # CB Ø4,4×1,2
     return t
 
 
 def place_aze_tee(t, sx, cy):
-    """T-Stück in Einbaulage: Außenflächen-Ebene sx*35,5, Schlitz-Mitte cy, Oberkante Z28."""
+    """T-Stück in Einbaulage (Querhaupt bündig = Nase in 0,4-Presslage): Außenflächen-
+    Ebene sx*35,5, Schlitz-Mitte cy, Oberkante Z28."""
     return Pos(sx*EX_X/2, cy, EX_Z/2) * Rot(0, 0, 0 if sx > 0 else 180) * t
 
 
@@ -703,7 +715,7 @@ def build_xt30_latch(sy=+1):
     return latch
 
 
-# ── AUDIT-FIX (SENDER850_AUDIT.md, 2026-07-05) · FLOOR-2 RAUMHAUSHALT ──────────────────────────
+# ── AUDIT-FIX (REFERENZ.md, 2026-07-05) · FLOOR-2 RAUMHAUSHALT ──────────────────────────
 #   Neutrales Audit fand 1 DEFEKT (VTX-Platine durchdringt die +X-Deckel-Insert-Bosse, 687 mm³) +
 #   6 WICHTIG (Wago/XT30 ohne Platz, Kamera-/Riegel-Schraubzugang, +X-Snap-Wand 0,65). STRUKTURFIX:
 #   (1) Deckel-Bosse RAUS → Deckel-Halt = Boden-Einhängenasen + 2 vertikale Dach-M3 in Deckel-OHREN.
@@ -769,11 +781,20 @@ def build_roof_lid():
     lip = Pos(0, 0, zt) * extrude(
         RectangleRounded(2*RLID_HX-2*tol, 2*RLID_HY-2*tol, RLID_R), RLID_REB_D/2, both=True)
     lid = flange + lip
+    # PADS Ø10×1,5 an der Unterseite je Schraube (lokal 4,5 dick = des Referenz-Prototyps Deckeldicke),
+    # auf den Lippen-Umriss geclippt (ragen nie in den Falz):
+    _lip_prism = Pos(0, 0, RLID_Z_IN - LID_PAD_DP/2) * extrude(
+        RectangleRounded(2*RLID_HX - 2*tol, 2*RLID_HY - 2*tol, RLID_R), LID_PAD_DP/2, both=True)
+    for (px, py) in RLID_SCREW:
+        lid = lid + ((Pos(px, py, RLID_Z_IN - LID_PAD_DP/2) *
+                      Cylinder(radius=LID_PAD_D/2, height=LID_PAD_DP)) & _lip_prism)
     # Schalterloch Ø12,3 IM DECKEL (Tom/des Referenz-Prototyps Druck: Schalter sitzt oben im Deckel)
     lid = lid - Pos(SW_CX, SW_CY, (RLID_Z_IN + RLID_Z_OUT)/2) * Cylinder(radius=12.3/2, height=WALL + 2)
-    # 3× M3: Durchgang Ø3,4 + Spotface Ø6,1×0,4 von OBEN (Köpfe bewusst proud — s. LID_CB_DP-Doku)
+    # 3× M3 = REFERENZ SENKUNG (Deckel.STEP): Durchgang Ø3,4 + CB Ø6,5×3,4 von OBEN —
+    # Kopf 0,4 sub-bündig, Boden 1,1 trägt (pad-gestützt)
     for (px, py) in RLID_SCREW:
-        lid = lid - Pos(px, py, (RLID_Z_IN + RLID_Z_OUT)/2) * Cylinder(radius=LID_THRU_D/2, height=WALL + 2)
+        lid = lid - Pos(px, py, (RLID_Z_IN - LID_PAD_DP + RLID_Z_OUT)/2) * \
+            Cylinder(radius=LID_THRU_D/2, height=WALL + LID_PAD_DP + 2)
         lid = lid - Pos(px, py, RLID_Z_OUT - LID_CB_DP/2) * Cylinder(radius=LID_CB_D/2, height=LID_CB_DP)
     return lid
 
@@ -808,9 +829,11 @@ if __name__ == "__main__":
     # (S3/S4: +Yfest-Vents entfernt; Snap-Region entfällt.)
     #   Verbots-Regionen (Boxen um die zu schützenden Features):
     _camera_reg = Pos(CAM_OFF_X, -EX_Y/2 + 9, Z_CAM) * Box(2*CAM_FLK_OUT + 2, 18, 14)      # Kamera-Rückraum
-    _antze_regs = [Pos(sx*(EX_X + IN_X)/4, cy, (AZE_STEM_Z0 + EX_Z/2)/2) *
-                   Box(WALL + 3, AZE_FL_W + 2, EX_Z/2 - AZE_STEM_Z0 + 2)
+    _antze_z0 = EX_Z/2 - AZE_MOUTH_DP - AZE_PILOT_DP + 0.2                 # exakte Pilot-Unterkante
+    _antze_regs = [Pos(sx*(EX_X + IN_X)/4, cy, (_antze_z0 + EX_Z/2 + 2)/2) *
+                   Box(WALL + 3, AZE_MOUTH_W + 2, EX_Z/2 + 2 - _antze_z0)
                    for sx, cy in AZE_SIDES]                                # 2 T-ZE-Zonen (kurze Seiten)
+    #   (Heck-Vent-Top ~17,7 vs Pilot-Boden 18,5 → 0,8 real; Zone endet an der Feature-Kante)
     _doorboss_reg = Pos(EX_X/2 - 3.5, 0, DOOR_TAB_SZ) * Box(8, 8, 8)          # Tür-Laschen-Pilot (07-06)
     _xt30_reg   = Pos((XT30_SAD_X[0]+XT30_SAD_X[1])/2, 0, 1.3) * Box(14, 2*IN_Y/2, 4)        # XT30-Sättel (±Y)
     def _hit(cutters, regs):
@@ -986,47 +1009,46 @@ if __name__ == "__main__":
     print(f"[deckel-mount] 3 Eck-Bosse @{RLID_SCREW} Z{RBOSS_Z0:.0f}..{RBOSS_Z1:.0f} · "
           f"Insert Ø{RBOSS_INS_D}×{RBOSS_INS_DP} Achse Z (Mündung {RBOSS_Z1:.0f}) → 3 M3 von OBEN")
 
-    # ── MB2(a) · ANTENNEN-ZE-GATE (T-Prinzip beidseitig kurze Seiten; CAD ≠ Klemm-/Zug-Test) ──
-    _te_k, _te_b = build_aze_tee(notch=True), build_aze_tee(notch=False)
+    # ── MB2(a) · ANTENNEN-ZE-GATE (T-Prinzip 2.0: Schrauben-Klemmung; CAD ≠ Klemm-/Zug-Test) ──
+    _te = build_aze_tee()
+    assert BRepCheck_Analyzer(_te.wrapped).IsValid() and len(_te.solids()) == 1, "ZE-T-Stück ungültig"
     for _sx, _cy in AZE_SIDES:
         _xm = _sx*(EX_X + IN_X)/4                                        # Wand-Mitte ±34
         _tag = "Front(−X)" if _sx < 0 else "Heck(+X)"
-        # (1) Schlitz offen (Wand-Mitte über dem Sitz) + (2) Einlege-Spur von oben offen
-        _slot_air = ((Pos(_xm, _cy, AZE_SEAT_CZ + 1.2) * Box(0.5, 0.5, 0.5)) & b).volume < 1e-6
-        _ins_path = ((Pos(_xm, _cy, EX_Z/2 + 0.3) * Box(0.5, 0.5, 0.5)) & b).volume < 1e-6
-        # (3) Rundsitz-Material unter dem Sitz (Kabel-Auflage) — Probe in der Restwand HINTER
-        #     der Stem-Vertiefung (Wand 32,5..34,1; Probe-Mitte 33,3)
-        _seat_ok = ((Pos(_sx*(IN_X/2 + 0.8), _cy, AZE_SEAT_CZ - AZE_SLOT_W/2 - 0.7) *
-                     Box(0.5, 0.5, 0.5)) & b).volume > 0.1
-        # (4) Spotface frei + (5) 2× vertikale M2-Piloten offen
-        _spot_ok = ((Pos(_xm, _cy + 4.0, EX_Z/2 - 0.6) * Box(0.4, 0.4, 0.4)) & b).volume < 1e-6
-        _pil_ok = all(((Pos(_xm, _cy + s*AZE_SCREW_DY2, EX_Z/2 - AZE_FL_DP - 1.5) * Box(0.4, 0.4, 0.4)) & b).volume < 1e-6
-                      for s in (-1, +1))
-        # (6) T-Stück GESETZT: keine Durchdringung, oben bündig mit Dach
-        _pl = place_aze_tee(_te_b, _sx, _cy)
-        _ix = _pl & b                                   # leere Intersection → None (build123d)
+        # (1) Mund + Schlitz + Einlege-Spur von oben offen
+        _mouth_air = ((Pos(_xm, _cy + 6.0, EX_Z/2 - 1.2) * Box(0.4, 0.4, 0.4)) & b).volume < 1e-6
+        _slot_air = ((Pos(_xm, _cy, AZE_SEAT_CZ + 2.6) * Box(0.4, 0.4, 0.4)) & b).volume < 1e-6
+        _ins_path = ((Pos(_xm, _cy, EX_Z/2 + 0.3) * Box(0.4, 0.4, 0.4)) & b).volume < 1e-6
+        # (2) Sitz: unten Material (Stütz-Halbschale), Kabelweg horizontal FREI (beide Mündungen)
+        _seat_ok = ((Pos(_xm, _cy, AZE_SEAT_CZ - AZE_SEAT_D/2 - 0.5) *
+                     Box(0.4, 0.4, 0.4)) & b).volume > 0.02
+        _way_ok = all(((Pos(_sx*(EX_X/2 + o), _cy, AZE_SEAT_CZ) * Box(0.4, 0.4, 0.4)) & b).volume < 1e-6
+                      for o in (0.4, -WALL - 0.4))
+        # (3) 2× vertikale M2-Piloten offen (unter dem Mund-Boden)
+        _pil_ok = all(((Pos(_xm, _cy + s*AZE_SCREW_DY2, EX_Z/2 - AZE_MOUTH_DP - 1.5) *
+                        Box(0.4, 0.4, 0.4)) & b).volume < 1e-6 for s in (-1, +1))
+        # (4) T-Stück GESETZT (Querhaupt bündig): keine Body-Durchdringung, oben bündig
+        _pl = place_aze_tee(_te, _sx, _cy)
+        _ix = _pl & b
         _pen = sum(s2.volume for s2 in _ix.solids()) if (_ix is not None and _ix.solids()) else 0.0
         _top_flush = abs(_pl.bounding_box().max.Z - EX_Z/2) < 1e-3
-        print(f"[ant-ze:{_tag}] T-Schlitz {AZE_SLOT_W} (Presssitz Ø3,1) Sitz r{AZE_SLOT_W/2} @Z{AZE_SEAT_CZ} · "
-              f"offen={_slot_air} Einlegen={_ins_path} Sitz={_seat_ok} Spotface={_spot_ok} · "
-              f"2×M2⊥ ±{AZE_SCREW_DY2} offen={_pil_ok} · T∩Body={_pen:.3f} mm³ · oben bündig={_top_flush} "
-              f"· Haltekraft Presssitz [Fit-Print]")
-        assert _slot_air and _ins_path, f"ZE-{_tag}: Schlitz/Einlege-Spur nicht frei"
-        assert _seat_ok, f"ZE-{_tag}: Rundsitz-Material fehlt"
-        assert _spot_ok and _pil_ok, f"ZE-{_tag}: Spotface/Pilot nicht geschnitten"
+        # (5) KLEMM-GATE (Kern der Mechanik): Ø3,1-Kabel im Sitz — die Nase MUSS in Presslage
+        #     definiert interferieren (Schrauben ziehen sie 0,4 ein); CAD-Maß, Kraft = Fit-Print
+        _cab = Pos(_sx*EX_X/2, _cy, AZE_SEAT_CZ) * Rot(0, 90, 0) * Cylinder(radius=1.55, height=14)
+        _ixc = _pl & _cab
+        _cv = sum(s2.volume for s2 in _ixc.solids()) if (_ixc is not None and _ixc.solids()) else 0.0
+        print(f"[ant-ze:{_tag}] Mund {AZE_MOUTH_W}×{AZE_MOUTH_DP} · Schlitz {AZE_SLOT_W} · Sitz Ø{AZE_SEAT_D} "
+              f"SPIEL @Z{AZE_SEAT_CZ} · offen: Mund={_mouth_air} Schlitz={_slot_air} Einlegen={_ins_path} "
+              f"Kabelweg={_way_ok} · Stütze={_seat_ok} · 2×M2⊥ ±{AZE_SCREW_DY2} offen={_pil_ok} · "
+              f"T∩Body={_pen:.3f} mm³ · bündig={_top_flush} · NASE∩Kabel={_cv:.2f} mm³ (0,4-Presslage; "
+              f"Klemmkraft = Schrauben [Fit-Print])")
+        assert _mouth_air and _slot_air and _ins_path, f"ZE-{_tag}: Mund/Schlitz/Einlege-Spur nicht frei"
+        assert _seat_ok, f"ZE-{_tag}: Sitz-Stützschale fehlt"
+        assert _way_ok, f"ZE-{_tag}: horizontaler Kabelweg blockiert"
+        assert _pil_ok, f"ZE-{_tag}: M2-Piloten nicht geschnitten"
         assert _pen < 0.01, f"ZE-{_tag}: T-Stück durchdringt Body: {_pen:.2f} mm³"
         assert _top_flush, f"ZE-{_tag}: T-Stück nicht oben bündig"
-    for _v, _n in ((_te_k, "Kerbe"), (_te_b, "blind")):
-        assert BRepCheck_Analyzer(_v.wrapped).IsValid() and len(_v.solids()) == 1, f"ZE-T-Stück ({_n}) ungültig"
-    # (7) Kerben-Referenz (DIY-Schnitt): Ø3,1-Kabel liegt HORIZONTAL im Sitz und muss die
-    #     U-Kerbe des gesetzten T berührungsfrei passieren (Doktrin: Kabel steigt NIE auf)
-    _sxf, _cyf = AZE_SIDES[0]
-    _cab = Pos(_sxf*EX_X/2, _cyf, AZE_SEAT_CZ) * Rot(0, 90, 0) * Cylinder(radius=1.55, height=14)
-    _ixk = place_aze_tee(_te_k, _sxf, _cyf) & _cab
-    _kv = sum(s2.volume for s2 in _ixk.solids()) if (_ixk is not None and _ixk.solids()) else 0.0
-    assert _kv < 1e-6, f"ZE-Kabelseiten-T kollidiert mit liegendem Kabel: {_kv:.3f} mm³"
-    print(f"[ant-ze] Kerben-Referenz: U-Kerbe Ø3,2 @Z{AZE_SEAT_CZ} unten offen · "
-          f"horizontaler Kabel-Durchgang frei ✔ (∩ {_kv:.4f} mm³)")
+        assert 0.1 < _cv < 3.0, f"ZE-{_tag}: Nase klemmt nicht definiert ({_cv:.2f} mm³ ∉ 0,1..3,0)"
 
     # ── MB2(b) · XT30-ZE-GATE (2 Sättel + Riegel; CAD-Check ≠ Klemm-/Löt-Test) ──────
     assert xt30_added, "XT30-Sättel nicht angeschweißt (Volumen nicht gestiegen)"
@@ -1159,28 +1181,32 @@ if __name__ == "__main__":
     assert cover_valid, "BRepCheck: Deckel ungültig"
     assert cover_solids == 1, f"Deckel: erwartet 1 Solid, ist {cover_solids}"
     assert cover_over <= 1e-3, f"Deckel ragt über das Dach hinaus: {cover_over:.4f} > 0 (Tom: bündig!)"
-    # KOPF-AUFLAGE-GATE (Toms Fund 07-06: CB 3,4 ging durch den 3,0er-Deckel — Kopf fiel
-    # durch, Deckel wäre nie geklemmt worden). Ecklage-Realität: außen endet der Flansch in
-    # der Eckrundung (nur Sliver möglich) — die Klemmkraft trägt die INNEN-Halbschale
-    # (voller 3,0er-Querschnitt), und unter dem Flansch sitzt die Body-Falz-Schulter.
-    # Gate: Innen-Ring in X- UND Y-Richtung muss unter jedem Kopf tragen.
-    assert LID_CB_DP <= 1.0, f"Deckel-Spotface {LID_CB_DP} zu tief (Falz-Seite nur 1,5 dick)"
-    _rr = (LID_THRU_D/2 + LID_CB_D/2)/2                 # Ring-Mittenradius 2,375
+    # KOPF-AUFLAGE-GATE 2.0 — REFERENZ SENKUNG (Toms Fund #1: CB ging durch den 3,0er-Deckel;
+    # Toms Ansage #2: „übernimm das von Referenz-Prototyp" → CB Ø6,5×3,4, Kopf 0,4 sub-bündig, Boden 1,1
+    # auf Unterseiten-Pad). Gate je Schraube: (a) Boden-Ring trägt (Innen-Richtungen X+Y,
+    # pad-gestützt), (b) versenkter KOPF (Ø5,5×3,0 ab CB-Boden) kollidiert NICHT mit dem
+    # Body (Ecken-Freigang Ø7 wirkt), (c) Kopf endet 0,4 unter Dach.
+    assert abs((LID_CB_DP - 3.0) - 0.4) < 1e-6, f"CB-Tiefe {LID_CB_DP} ≠ Kopf 3,0 + 0,4 sub-bündig"
+    _rr = (LID_THRU_D/2 + LID_CB_D/2)/2                 # Ring-Mittenradius 2,475
     for _px, _py in RLID_SCREW:
         _sx, _sy = (1 if _px > 0 else -1), (1 if _py > 0 else -1)
         for _dx, _dy in ((-_sx*_rr, 0), (0, -_sy*_rr)):
-            _ring = ((Pos(_px + _dx, _py + _dy, RLID_Z_OUT - LID_CB_DP - 0.35) *
-                      Box(0.5, 0.5, 0.5)) & cov).volume
+            _ring = ((Pos(_px + _dx, _py + _dy, RLID_Z_OUT - LID_CB_DP - 0.5) *
+                      Box(0.5, 0.5, 0.6)) & cov).volume
             assert _ring > 0.1, \
-                f"Deckel-M3 @({_px},{_py}) Richtung ({_dx:+.1f},{_dy:+.1f}): keine Kopf-Auflage"
-    print(f"[deckel-kopf] {len(RLID_SCREW)}× M3-Kopf-Auflage (Innen-Halbschale X+Y): Spotface "
-          f"Ø{LID_CB_D}×{LID_CB_DP} · Kopf steht {3.0 - LID_CB_DP:.1f} über Dach · "
-          f"Ecklage: außen Sliver (Flansch-Eckrundung), Flansch liegt dort auf der Body-Schulter ✔")
+                f"Deckel-M3 @({_px},{_py}) Richtung ({_dx:+.1f},{_dy:+.1f}): kein Boden unterm Kopf"
+        _head = Pos(_px, _py, RLID_Z_OUT - LID_CB_DP + 1.5) * Cylinder(radius=2.75, height=3.0)
+        _ixh = _head & b
+        _hv = sum(s2.volume for s2 in _ixh.solids()) if (_ixh is not None and _ixh.solids()) else 0.0
+        assert _hv < 0.01, f"Deckel-M3 @({_px},{_py}): versenkter Kopf trifft Body ({_hv:.2f} mm³)"
+    print(f"[deckel-kopf] {len(RLID_SCREW)}× REFERENZ-Senkung CB Ø{LID_CB_D}×{LID_CB_DP}: Kopf 0,4 "
+          f"sub-bündig · Boden {WALL + LID_PAD_DP - LID_CB_DP:.1f} (Pad Ø{LID_PAD_D}×{LID_PAD_DP}) "
+          f"trägt · Kopf-Freigang Ø{LID_REL_D} in der Schulter kollisionsfrei ✔")
 
     lat_p = build_xt30_latch(+1)                      # XT30-Riegel +Y (eingesetzt)
     lat_m = build_xt30_latch(-1)                      # XT30-Riegel −Y (eingesetzt)
-    ze_f = place_aze_tee(build_aze_tee(notch=False), *AZE_SIDES[0])   # Tom 07-06: BEIDE blind (1 Teil, 2x)
-    ze_h = place_aze_tee(build_aze_tee(notch=False), *AZE_SIDES[1])   # Heck: blind (verschlossen)
+    ze_f = place_aze_tee(build_aze_tee(), *AZE_SIDES[0])   # T-Prinzip 2.0: EIN T-Typ, 2× (Nase klemmt)
+    ze_h = place_aze_tee(build_aze_tee(), *AZE_SIDES[1])
     b = b.solid()                    # fillet() gibt ein generisches Shape zurück → als Solid fassen,
                                      #   sonst verweigert der GLB-Export die Farbe (Warning)
     b.color = Color(0.82, 0.82, 0.85)
@@ -1198,14 +1224,11 @@ if __name__ == "__main__":
     from build123d import export_stl
     for _part, _name in ((b, "body"), (d, "battery_door"), (cov, "cover_floor2"),
                          (build_xt30_latch(+1), "xt30_latch"),
-                         (build_aze_tee(notch=False), "ze_tee")):   # Tom 07-06: 1 Teil, 2x drucken,
-                         #   BLIND (schliesst komplett); Kerbe + Seitenwahl (links/rechts) macht
-                         #   der Builder SELBST am gedruckten Teil (kein vorgekerbtes T im Set).
-                         #   DIY-Kerbe: Ø3,2 HORIZONTAL durch den Steg auf Sitzhöhe Z24 + Schlitz
-                         #   zur Steg-Unterkante — Kabel läuft waagerecht, steigt NIE nach oben.
-                         #   notch=True bleibt NUR als Geometrie-Wissen + Gate (7).
+                         (build_aze_tee(), "ze_tee")):   # T-Prinzip 2.0: EIN T-Typ, 2× drucken,
+                         #   beidseitig identisch — der Nasen-Steg klemmt das Kabel per Schrauben
+                         #   (des Referenz-Prototyps Mechanik); KEINE Kerbe/Bohrung mehr nötig, Seitenwahl frei
         _stl = f"{OUTDIR}/skylive_V3_min_{_name}.stl"
         export_stl(_part, _stl, tolerance=0.005, angular_tolerance=0.05)   # [Audit P7] feiner → offene Kanten 0
+        print(f"[stl] {_stl}  (Riegel: 2× drucken)" if _name == "xt30_latch" else f"[stl] {_stl}")
         from build123d import export_step                                  # STEP immer mit —
         export_step(_part, _stl[:-4] + ".step")                            # STL/STEP driften nie
-        print(f"[stl] {_stl}  (Riegel: 2× drucken)" if _name == "xt30_latch" else f"[stl] {_stl}")

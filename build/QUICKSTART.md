@@ -33,15 +33,14 @@ dimensional drawing with scale: [`../docs/assets/blueprint.svg`](../docs/assets/
 3× M3 into the roof posts from above · 1× M2 into the Ø2.8 bore above the battery opening
 (horizontal, from outside — the door tab hides it). Sink 0.3 mm sub-flush. [Step 1 →](ASSEMBLY_STEPS.md)
 
-## 4 · Antenna clamp (the 2.9 mm trick)
+## 4 · Antenna clamp (the screws ARE the clamp)
 
-Lay the Ø3.1 coax **from above** into the 2.9 mm slot on either short side, press to the round
-seat — the slot itself grips it (−0.2 mm). The cable runs **horizontally through the wall** and
-the omni sits right against it outside, axis through the wall. Both T-pieces print **blind**
-(fully sealing) — pick your antenna side at the printed part and open the notch in that one
-yourself: Ø3.2 hole through the stem at seat height + slit to the stem's bottom edge, so the T
-drops over the lying cable. 2× M2×8 each, heads up. The blind side stays fully sealed.
-[Step 2 →](ASSEMBLY_STEPS.md)
+Drop the Ø3.1 coax **from above, all the way down** into the round Ø3.2 seat on either short
+side — it goes in easily, the seat has clearance by design. The cable runs **horizontally
+through the wall**, the omni sits right against it outside, axis through the wall. Slide the
+T-piece down: its **R1.55 nose lands on the cable**, then **2× M2×8 (heads up) pull the nose
+0.4 mm onto it — that's the clamp**. Nothing to drill or notch; both T-pieces identical, pick
+either side. Finish with a firm pull test on the antenna. [Step 2 →](ASSEMBLY_STEPS.md)
 
 ## 5 · Electronics — solder it (recommended) or Wago it (quick)
 

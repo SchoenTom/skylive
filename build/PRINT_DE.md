@@ -7,17 +7,19 @@ gesamt**. Ehrlich: CAD-verifiziert, ERSTER Fit-Druck — Passungen (Tür, Deckel
 ZE-Presssitz) am Teil prüfen, Werte rückmelden.*
 
 > **Was sich seit der ersten Freigabe geändert hat (Body + Klappe + Teil 05):**
-> **(1) Antennen-ZE = dein T-Prinzip von den Fotos, auf BEIDEN KURZEN Seiten** (Front + Heck,
-> oberst, mittig): 2,9er-Schlitz von der Oberkante (Ø3,1-Koax von oben einlegen → Presssitz
-> „hebt gut", Rundsitz unten), flaches **T-Stück** deckt den Schlitz und wird am Kopf mit
-> **2× M2×8 Zylinderkopf VERTIKAL (Köpfe oben)** verschraubt. **Das Kabel läuft HORIZONTAL
-> durch den Rundsitz in der Wand weiter — es steigt NIE nach oben; draußen sitzt die
-> Omni-Glocke direkt an der Wand, Achse durch die Wand (Montage-Doktrin 07-06).**
-> **1 T-Stück-Typ, 2× gedruckt, BLIND (deine Vorgabe): schließt das Gehäuse komplett; die
-> Kerbe machst DU selbst rein — welche Seite (links/rechts) die Antenne bekommt, entscheidest
-> DU am gedruckten Teil.**
+> **(1) Antennen-ZE = DIE REFERENZ-MECHANIK (T-Prinzip 2.0, 07-06 abends — der Einwand
+> „das Kabel soll GANZ RUNTER und VOLL eingeklemmt werden" + STEP-Vermessung seines T-Teils
+> und Grundkörpers):** Der Sitz in der Wand hat **SPIEL** (Ø3,2 auf Ø3,1 — Referenz-Maß, mein
+> früherer „2,9-Presssitz" war eine Fehldeutung!). **Die Klemmkraft kommt von den Schrauben:**
+> das T-Stück hat einen Steg mit **konvexer Nase R1,55** (= Kabelradius), die 2× M2×8
+> VERTIKAL ziehen die Nase **0,4 mm in Presslage** aufs Kabel. Von oben: Mund 18×2,5
+> (Querhaupt bündig) → Führungsschlitz 3,3 → Rundsitz Ø3,2 durch die Wand. **KEINE Kerbe,
+> KEIN Bohren mehr nötig** — der Steg sitzt ÜBER dem Kabel, der Kabelweg durch die Wand ist
+> immer frei. 1 T-Typ, 2× gedruckt, beidseitig identisch — **Seitenwahl bleibt DEINE** am
+> Realteil. (Unbenutzte Seite: Mund+Schlitz zu; unterm Nasen-Steg bleiben zwei kleine
+> Ø3,2-Sichel-Öffnungen des Sitzes — ehrlich gesagt: Mini-Vents, kein Loch.)
 > **(2) Akku-Klappe SCHLICHT:** der alte Innen-Schraubboss hätte mit dem Akku kollidiert
-> (60+1 Swell endet bei 28,5 — Boss begann bei 26,5; dein Einwand war richtig, jetzt per
+> (60+1 Swell endet bei 28,5 — Boss begann bei 26,5; der Einwand war richtig, jetzt per
 > Gate bewiesen frei). Neu: bündige Platte + **Lasche oben mittig** (1× M2 in Wand+Shelf,
 > null Innenraum-Anspruch) + 2 Fuß-Nasen. Griffmulde entfällt — die Lasche ist der Griff.
 
@@ -53,15 +55,15 @@ vertikal (druckt supportfrei), Dach-Öffnung zeigt zur Seite.
   Nasen der Tür in der starken Richtung. Aufrecht wäre supportärmer, aber Zähne = Layer-gestapelt
   = Sollbruchstelle. **Zähne gewinnen.**
 
-### 02_deckel.stl — **flach, Außenseite nach UNTEN** ⚠ GEÄNDERT 07-06 nachmittags (Builder-Fund!)
-Perfekt planar, kein Support. Die 3 flachen Spotfaces + das Schalterloch zeigen nach oben,
-die Lippe wächst nach oben. Glatte Bett-Oberfläche = Sichtseite.
-**Der Fund:** die alte Datei hatte 3,4-tiefe Senkungen im 3,0er-Deckel — die Ø6,1-Senkung
-ging KOMPLETT durch, der M3-Kopf wäre durchgefallen, der Deckel nie geklemmt worden. Und
-tiefer senken geht prinzipiell nicht: die Eck-Schrauben liegen über dem Falz (nur 1,5 Rest).
-Jetzt: **Spotface 0,4** als Kopfsitz — die 3 Zylinderköpfe stehen bewusst **2,6 mm über dem
-Dach** (gleiche Familie wie die M2-Köpfe der T-Stücke). Falls du den Deckel schon mit der
-alten Datei gedruckt hast: **wegwerfen, neu drucken** — nur diese Datei hier gilt.
+### 02_deckel.stl — **flach, Außenseite nach UNTEN** ⚠ NEU 07-06 abends: DIE REFERENZ-SENKUNG
+Kein Support nötig (die 3 Unterseiten-Pads Ø10×1,5 drucken als flache Zylinder oben auf).
+**Die Ansage „übernimm das vom Referenz-Prototyp" umgesetzt — sein Deckel.STEP vermessen:** CB **Ø6,5 ×
+3,4**, Durchgang Ø3,4, **Kopf versenkt 0,4 unter bündig**, tragender Boden 1,1 (exakt des Referenz-Prototyps
+Werte). Sein Deckel ist 4,5 dick — unserer holt die Dicke über **lokale Pads an der
+Unterseite** (Deckel misst an den Schrauben 4,5, sonst 3,0). Dafür: Bosse 1,5 gekürzt +
+Schrauben 1 mm diagonal einwärts (±28/±12 — sonst ragt der versenkte Kopf in die Falz-Ecke;
+per Gate bewiesen). **Der Fund #1 bleibt dokumentiert:** die Ur-Datei hätte den Kopf komplett
+durchfallen lassen. Deckel aus einer älteren Datei = wegwerfen, nur diese gilt.
 
 ### 03_akkuklappe.stl — **flach, Außenseite nach UNTEN**
 Kein Support. Die Nasen liegen horizontal → Layer längs = stabil beim Einhängen/Kippen.
@@ -70,14 +72,13 @@ Die 2 Mini-Louver drucken bei dieser Lage supportfrei (45°-Eigenüberhang).
 ### 04_xt30_riegel_2x.stl — **2× drucken**, flach (größte Fläche nach unten)
 Kein Support. Klein — beide nebeneinander aufs Bett.
 
-### 05_ze_t_stueck_2x.stl — **2× drucken** (+1 Reserve), flach auf den Rücken (Steg oben)
-EIN T-Stück-Typ, BLIND (deine Vorgabe 07-06): **schließt das Gehäuse komplett** — beide Seiten
-dicht, egal ob mit oder ohne Antenne. **Die Kabel-Kerbe machst DU selbst** auf der Seite, für
-die du dich am gedruckten Teil entscheidest: Ø3,2-Loch **HORIZONTAL durch den 1,2er-Steg auf
-Sitzhöhe** (4 mm unter der Flansch-Oberkante, mittig) **+ Schlitz von dort zur Steg-UNTERKANTE**
-— so fällt das T von oben übers liegende Kabel. Das Kabel läuft waagerecht weiter, steigt nie
-auf. Der 2,9er-Schlitz im BODY ist der Presssitz (Ø3,1-Koax) — NICHT aufbohren, das Kabel wird
-von oben eingedrückt und „hebt". Falls das T-Stück nicht satt einfährt: Maß melden statt feilen.
+### 05_ze_t_stueck_2x.stl — **2× drucken** (+1 Reserve), flach auf den Rücken (Nase oben) ⚠ NEU 07-06 abends
+**die Referenz-Mechanik 1:1** (sein T-Teil STEP-vermessen): Querhaupt 17,7 × Steg 3,1 mit
+**Rundnase R1,55**. Einbau: Kabel von oben in den Schlitz ganz runter bis in den Ø3,2-Sitz
+drücken (geht LEICHT — der Sitz hat Spiel, das ist richtig so!) → T einschieben, Nase aufs
+Kabel → **2× M2×8 anziehen = DIE Klemmung** (die Schrauben ziehen die Nase 0,4 ins Kabel).
+Nichts bohren, nichts kerben. Beide Seiten identisch; Seitenwahl deine. Falls das T nicht
+leicht in Mund/Schlitz einfährt: Maß melden statt feilen.
 
 ## Nach dem Druck (Reihenfolge!)
 
@@ -91,14 +92,14 @@ von oben eingedrückt und „hebt". Falls das T-Stück nicht satt einfährt: Ma�
    taucht ein, 3× M3) · GoPro-Mate auf die Zähne (**3,0 — Toms Vorgabe 07-06**; falls stramm:
    NICHT feilen, Wert melden) · Kamera einsetzen (linke Schraube von außen durch die
    Wand-Einsenkung!) · XT30-Adern (Ø2,8) in die Sattel-Rinnen legen, Riegel schrauben ·
-   **ZE (T-Prinzip, kurze Seiten — DEINE Seitenwahl):** Koax von oben in den 2,9er-Schlitz
-   eindrücken bis es HORIZONTAL auf dem Rundsitz liegt (es läuft waagerecht durch die Wand,
-   Glocke außen direkt an der Wand) → das von dir gekerbte T von oben übers Kabel in die
-   Vertiefung einfahren → 2× M2×8 vertikal am Kopf; andere Seite: zweites T unmodifiziert
-   (blind) + 2× M2×8. Flansch muss oben bündig mit dem Dachrand abschließen.
+   **ZE (T-Prinzip 2.0, kurze Seiten — DEINE Seitenwahl):** Koax von oben durch Mund +
+   Schlitz GANZ RUNTER in den Ø3,2-Sitz legen (fällt leicht rein — Spiel ist korrekt; es
+   läuft waagerecht durch die Wand, Glocke außen direkt an der Wand) → T-Stück einschieben,
+   Nase liegt aufs Kabel → **2× M2×8 vertikal ANZIEHEN = Klemmung** (Nase presst 0,4 ein);
+   andere Seite: zweites T identisch + 2× M2×8. Querhaupt oben bündig mit dem Dachrand.
 3. Was klemmt/wackelt → kurz notieren (Teil + Stelle + gefühltes Maß) — fließt direkt ins CAD.
 
 **Teile-Übersicht:** Body ~71×39,5×56 · Deckel (dunkel im Viewer) · Klappe (blau, mit Lasche)
-· 2 Riegel (grün) · 2× dasselbe ZE-T-Stück (blind — Kerbe + Seitenwahl machst du selbst).
+· 2 Riegel (grün) · 2× dasselbe ZE-T-Stück (Nasen-Steg — Schrauben klemmen; Seitenwahl deine).
 **Schrauben-Einkauf: 3× M3×8 (Deckel) · 4× M2×8 (ZE) · 1× M2×6 (Lasche→M2-Insert) · 4× M2×8 (Riegel) · 2× M2 (Kamera) · Inserts 3× M3 + 1× M2.**
 Viel Erfolg im Labor! 🛠️
