@@ -76,8 +76,11 @@ semi-rigid coax, and the clever part lives where it belongs: on the ground.
 The mount is the oldest trick in the book, done properly: a **2.9 mm press-fit slot** in the top
 edge of the case wall grips the **Ø 3.1 mm** semi-rigid with −0.2 mm of interference — a yank on
 the antenna loads the printed wall, never the connector. A flat **T-piece** covers the slot and
-locks with two vertical M2 cap screws; the cable rises through its notch and the
-**RHCP omni stands above the case**, clear of the helmet. Both short sides carry the identical
+locks with two vertical M2 cap screws; the cable rises through its notch and the **RHCP omni
+hangs rotated 90°, its bell right at the case edge — axis across the body**. That rotation is
+the whole point: an upright omni's donut pattern has its nulls pointing up and down, which in
+head-up *and* head-down would aim a null exactly at the receiver. Turned sideways, the donut
+fires **down and up and all around** — signal toward the ground in every jump attitude. Both short sides carry the identical
 interface, so the anchor moves left or right to suit the helmet setup — the unused side closes
 with a **blind T-piece** and the case is fully sealed even with no antenna fitted.
 
