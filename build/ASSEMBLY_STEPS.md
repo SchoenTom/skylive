@@ -81,9 +81,8 @@ press-fit slot** open to the top edge, ending in a round seat, with a shallow **
 outside. **Lay the Ø 3.1 mm semi-rigid coax in from above** (never thread a connector through a
 closed hole) and press it down until it rests on the round seat — the 2.9 mm slot grips the
 jacket with **−0.2 mm interference**. Slide the flat **T-piece** into the recess so it covers the
-slot (the cable rises through the T-piece's open notch), then lock it with **2× M2×8 cap screws,
-vertical, heads up**, into the printed cores in the wall's top edge. The unused side gets the
-**blind T-piece** — the case is fully closed even with no antenna fitted. Pick either side; the
+slot (the cable rises through the T-piece's open notch), — both sides use the **same blind T-piece** (one part, printed twice; you open the small cable notch yourself on the antenna side: Ø3.2 hole + slit to the outer edge, axis 1.5 mm in from the face). Lock it with **2× M2×8 cap screws,
+vertical, heads up**, into the printed cores in the wall's top edge. The unused side keeps its T-piece unmodified — the case is fully closed even with no antenna fitted. Pick either side; the
 interfaces are identical.
 
 **Why.** −0.2 mm is a **clamp, not a crush**: the slot itself grips the cable so a yank loads the

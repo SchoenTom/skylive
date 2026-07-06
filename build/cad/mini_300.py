@@ -1157,7 +1157,7 @@ if __name__ == "__main__":
 
     lat_p = build_xt30_latch(+1)                      # XT30-Riegel +Y (eingesetzt)
     lat_m = build_xt30_latch(-1)                      # XT30-Riegel −Y (eingesetzt)
-    ze_f = place_aze_tee(build_aze_tee(notch=True),  *AZE_SIDES[0])   # Front: Kerbe (Kabelseite)
+    ze_f = place_aze_tee(build_aze_tee(notch=False), *AZE_SIDES[0])   # Tom 07-06: BEIDE blind (1 Teil, 2x)
     ze_h = place_aze_tee(build_aze_tee(notch=False), *AZE_SIDES[1])   # Heck: blind (verschlossen)
     b = b.solid()                    # fillet() gibt ein generisches Shape zurück → als Solid fassen,
                                      #   sonst verweigert der GLB-Export die Farbe (Warning)
@@ -1176,8 +1176,9 @@ if __name__ == "__main__":
     from build123d import export_stl
     for _part, _name in ((b, "body"), (d, "battery_door"), (cov, "cover_floor2"),
                          (build_xt30_latch(+1), "xt30_latch"),
-                         (build_aze_tee(notch=True), "ze_tee_kabel"),
-                         (build_aze_tee(notch=False), "ze_tee_blind")):
+                         (build_aze_tee(notch=False), "ze_tee")):   # Tom 07-06: 1 Teil, 2x drucken,
+                         #   BLIND (schliesst komplett); Kabel-Kerbe bohrt/schneidet Tom selbst
+                         #   (Position: Flansch-Mitte, Achse 1,5 von der Aussenkante, Ø3,2 + Schlitz)
         _stl = f"{OUTDIR}/skylive_mini300_{_name}.stl"
         export_stl(_part, _stl, tolerance=0.005, angular_tolerance=0.05)   # [Audit P7] feiner → offene Kanten 0
         print(f"[stl] {_stl}  (Riegel: 2× drucken)" if _name == "xt30_latch" else f"[stl] {_stl}")

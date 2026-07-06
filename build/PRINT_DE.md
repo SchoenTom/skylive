@@ -1,17 +1,18 @@
 # SkyLive Anton 2.0 — Druckanleitung (Labor-fertig)
 
-*Stand 2026-07-05 (Update: Zugentlastung → beidseitiges Schieber-System), alle STLs frisch aus
-dem verifizierten CAD (alle Gates grün). 6 Dateien, Riegel 2× drucken → **7 Teile gesamt**.
-Ehrlich: CAD-verifiziert, dies ist der ERSTE Fit-Druck — Passungen (Tür, Deckel, Inserts, GoPro,
-ZE-Schieber) am Teil prüfen, Werte ggf. rückmelden.*
+*Stand 2026-07-06 FINAL (T-Zugentlastung kurze Seiten · Klappe glatt mit Lasche/M2-Insert/
+Mini-Vents · GoPro-Zähne 3,0 · 1 langer Bay-Schlitz Kamera-Seite), alle STLs frisch aus dem
+verifizierten CAD (alle Gates grün, Export 08:23). 6 Dateien, Riegel 2× drucken → **7 Teile
+gesamt**. Ehrlich: CAD-verifiziert, ERSTER Fit-Druck — Passungen (Tür, Deckel, Inserts, GoPro,
+ZE-Presssitz) am Teil prüfen, Werte rückmelden.*
 
 > **Was sich seit der ersten Freigabe geändert hat (Body + Klappe + Teil 05):**
 > **(1) Antennen-ZE = dein T-Prinzip von den Fotos, auf BEIDEN KURZEN Seiten** (Front + Heck,
 > oberst, mittig): 2,9er-Schlitz von der Oberkante (Ø3,1-Koax von oben einlegen → Presssitz
 > „hebt gut", Rundsitz unten), flaches **T-Stück** deckt den Schlitz und wird am Kopf mit
 > **2× M2×8 Zylinderkopf VERTIKAL (Köpfe oben)** verschraubt. Kabel steigt durch die
-> T-Kerbe nach oben aus — Omni steht überm Gehäuse. **05a (Kerbe) = Antennenseite ·
-> 05b (blind) = verschließt die andere Seite komplett.** Links/rechts frei tauschbar.
+> DIY-Kerbe nach oben aus — Omni steht überm Gehäuse. **1 T-Stück-Typ, 2× gedruckt, BLIND
+> (deine Vorgabe): schließt komplett; die Kerbe machst du selbst rein.** Links/rechts frei.
 > **(2) Akku-Klappe SCHLICHT:** der alte Innen-Schraubboss hätte mit dem Akku kollidiert
 > (60+1 Swell endet bei 28,5 — Boss begann bei 26,5; dein Einwand war richtig, jetzt per
 > Gate bewiesen frei). Neu: bündige Platte + **Lasche oben mittig** (1× M2 in Wand+Shelf,
@@ -55,13 +56,15 @@ Perfekt planar, kein Support. Die 3 Schrauben-Senkungen + das Schalterloch zeige
 
 ### 03_akkuklappe.stl — **flach, Außenseite nach UNTEN**
 Kein Support. Die Nasen liegen horizontal → Layer längs = stabil beim Einhängen/Kippen.
+Die 2 Mini-Louver drucken bei dieser Lage supportfrei (45°-Eigenüberhang).
 
 ### 04_xt30_riegel_2x.stl — **2× drucken**, flach (größte Fläche nach unten)
 Kein Support. Klein — beide nebeneinander aufs Bett.
 
-### 05a_ze_t_stueck_KABEL.stl + 05b_ze_t_stueck_BLIND.stl — flach auf den Rücken (Steg oben)
-Die zwei T-Stücke (Flansch ~13×3×2,5 + Steg, Mini-Teile — beide zusammen aufs Bett, je 1
-Reserve empfohlen). Flach liegend = Kerbe + Schraubendurchgänge supportfrei.
+### 05_ze_t_stueck_2x.stl — **2× drucken** (+1 Reserve), flach auf den Rücken (Steg oben)
+EIN T-Stück-Typ, BLIND (deine Vorgabe 07-06): schließt das Gehäuse komplett. **Die Kabel-Kerbe
+machst du selbst** auf der Antennenseite: Flansch-Mitte, Achse 1,5 mm von der Außenkante —
+Ø3,2-Loch + Schlitz zur Außenkante öffnen (Bohrer/Messer), dann steigt das Koax dort aus.
 Der 2,9er-Schlitz im BODY ist der Presssitz (Ø3,1-Koax) — NICHT aufbohren, das Kabel wird
 von oben eingedrückt und „hebt". Falls das T-Stück nicht satt einfährt: Maß melden statt feilen.
 
@@ -78,12 +81,12 @@ von oben eingedrückt und „hebt". Falls das T-Stück nicht satt einfährt: Ma�
    NICHT feilen, Wert melden) · Kamera einsetzen (linke Schraube von außen durch die
    Wand-Einsenkung!) · XT30-Adern (Ø2,8) in die Sattel-Rinnen legen, Riegel schrauben ·
    **ZE (T-Prinzip, kurze Seiten):** Koax von oben in den 2,9er-Schlitz eindrücken bis es
-   auf dem Rundsitz liegt → T-Stück in die Vertiefung einfahren (deckt den Schlitz, Kabel
-   läuft durch die Kerbe nach oben) → 2× M2×8 vertikal am Kopf; andere Seite: 05b blind
-   rein + 2× M2×8. Flansch muss oben bündig mit dem Dachrand abschließen.
+   auf dem Rundsitz liegt → T-Stück (mit deiner DIY-Kerbe) in die Vertiefung einfahren →
+   2× M2×8 vertikal am Kopf; andere Seite: zweites T-Stück unmodifiziert (blind) + 2× M2×8.
+   Flansch muss oben bündig mit dem Dachrand abschließen.
 3. Was klemmt/wackelt → kurz notieren (Teil + Stelle + gefühltes Maß) — fließt direkt ins CAD.
 
 **Teile-Übersicht:** Body ~71×39,5×56 · Deckel (dunkel im Viewer) · Klappe (blau, mit Lasche)
-· 2 Riegel (grün) · 2 ZE-T-Stücke (magenta: 05a Kerbe + 05b blind).
+· 2 Riegel (grün) · 2× dasselbe ZE-T-Stück (blind — Kerbe DIY).
 **Schrauben-Einkauf: 3× M3×8 (Deckel) · 4× M2×8 (ZE) · 1× M2×6 (Lasche→M2-Insert) · 4× M2×8 (Riegel) · 2× M2 (Kamera) · Inserts 3× M3 + 1× M2.**
 Viel Erfolg im Labor! 🛠️
