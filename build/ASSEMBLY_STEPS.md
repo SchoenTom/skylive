@@ -87,7 +87,9 @@ directly against the wall, axis horizontal, pointing straight through it** — s
 down/up/all around instead of aiming a pattern null at the ground. Both sides use the **same
 blind T-piece** (one part, printed twice; on the antenna side you open the cable passage
 yourself: Ø 3.2 hole + slit, drilled **horizontally, in line with the round seat**, axis 1.5 mm
-in from the outer face). Lock it with **2× M2×8 cap screws,
+in from the outer face — **or print the optional `06_T-piece-cable`**, which has the U-notch
+built in, open toward the stem's bottom edge so it drops over the lying cable; gate-verified
+to clear the Ø 3.1 coax). Lock it with **2× M2×8 cap screws,
 vertical, heads up**, into the printed cores in the wall's top edge. The unused side keeps its T-piece unmodified — the case is fully closed even with no antenna fitted. Pick either side; the
 interfaces are identical.
 

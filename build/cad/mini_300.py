@@ -627,15 +627,18 @@ def build_aze_tee(notch=True):
     """Das T-Stück (Druckteil 05, 2× — des Referenz-Prototyps Prinzip): Deckflansch 12,8×2,8×2,5 (liegt im
     Dachrand-Spotface, oben bündig) + Steg 6,8×1,2 (fährt in die Stem-Vertiefung, deckt den
     Kabel-Schlitz). 2× Ø2,2 vertikal + CB Ø4,4×1,0 für M2×8 DIN 912 (Köpfe nach OBEN).
-    notch=True → offene Kabel-Kerbe Ø3,2 im Flansch (Kabelseite; Kabel steigt nach oben aus)
+    notch=True → Kabelseite (Doktrin 07-06, Foto IMG_8382): U-Kerbe Ø3,2 HORIZONTAL im
+      Steg auf Sitzhöhe (Kabel läuft waagerecht durch die Wand weiter — steigt NIE nach oben),
+      unten offen bis zur Steg-Unterkante, damit das T von oben übers liegende Kabel fällt.
     notch=False → BLIND (verschließt die ungenutzte Seite komplett).
     Lokal: X=0 an der Wand-Außenfläche (+X = außen), Z=0 an der Dach-Oberkante."""
     t = Pos(-1.5, 0, -AZE_FL_DP/2) * Box(WALL - 0.2, AZE_FL_W - 0.2, AZE_FL_DP)      # Flansch
     t = t + Pos(-(AZE_REC_D/2 + 0.05) + 0.0, 0, (-7.3 - AZE_FL_DP)/2) * \
         Box(AZE_REC_D - 0.2, AZE_STEM_W - 0.2, 7.3 - AZE_FL_DP)                       # Steg
-    if notch:                                          # offene Kabel-Kerbe (seitlich einlegbar)
-        t = t - Pos(-1.5, 0, -AZE_FL_DP/2) * Cylinder(radius=1.6, height=AZE_FL_DP + 1)
-        t = t - Pos(-0.65, 0, -AZE_FL_DP/2) * Box(1.8, 3.2, AZE_FL_DP + 1)
+    if notch:                                          # U-Kerbe im Steg, unten offen
+        _zs = AZE_SEAT_CZ - EX_Z/2                     # Sitzhöhe lokal (−4,0)
+        t = t - Pos(-1.3, 0, _zs) * Rot(0, 90, 0) * Cylinder(radius=1.6, height=4.6)
+        t = t - Pos(-0.75, 0, (_zs - 7.5)/2) * Box(2.4, 3.2, 7.5 + _zs)
     for s in (-1, +1):                                 # 2× M2 vertikal, Köpfe oben
         t = t - Pos(-1.5, s*AZE_SCREW_DY2, -AZE_FL_DP/2) * Cylinder(radius=1.1, height=AZE_FL_DP + 1)
         t = t - Pos(-1.5, s*AZE_SCREW_DY2, -0.5) * Cylinder(radius=2.2, height=1.1)   # CB Ø4,4×1,0
@@ -1022,6 +1025,15 @@ if __name__ == "__main__":
         assert _top_flush, f"ZE-{_tag}: T-Stück nicht oben bündig"
     for _v, _n in ((_te_k, "Kerbe"), (_te_b, "blind")):
         assert BRepCheck_Analyzer(_v.wrapped).IsValid() and len(_v.solids()) == 1, f"ZE-T-Stück ({_n}) ungültig"
+    # (7) Kabelseiten-T: Ø3,1-Kabel liegt HORIZONTAL im Sitz und muss die U-Kerbe des
+    #     gesetzten T berührungsfrei passieren (Doktrin: Kabel steigt NIE auf)
+    _sxf, _cyf = AZE_SIDES[0]
+    _cab = Pos(_sxf*EX_X/2, _cyf, AZE_SEAT_CZ) * Rot(0, 90, 0) * Cylinder(radius=1.55, height=14)
+    _ixk = place_aze_tee(_te_k, _sxf, _cyf) & _cab
+    _kv = sum(s2.volume for s2 in _ixk.solids()) if (_ixk is not None and _ixk.solids()) else 0.0
+    assert _kv < 1e-6, f"ZE-Kabelseiten-T kollidiert mit liegendem Kabel: {_kv:.3f} mm³"
+    print(f"[ant-ze] Kabelseiten-T: U-Kerbe Ø3,2 @Z{AZE_SEAT_CZ} unten offen · "
+          f"horizontaler Kabel-Durchgang frei ✔ (∩ {_kv:.4f} mm³)")
 
     # ── MB2(b) · XT30-ZE-GATE (2 Sättel + Riegel; CAD-Check ≠ Klemm-/Löt-Test) ──────
     assert xt30_added, "XT30-Sättel nicht angeschweißt (Volumen nicht gestiegen)"

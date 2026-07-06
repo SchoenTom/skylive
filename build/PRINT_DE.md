@@ -10,9 +10,11 @@ ZE-Presssitz) am Teil prüfen, Werte rückmelden.*
 > **(1) Antennen-ZE = dein T-Prinzip von den Fotos, auf BEIDEN KURZEN Seiten** (Front + Heck,
 > oberst, mittig): 2,9er-Schlitz von der Oberkante (Ø3,1-Koax von oben einlegen → Presssitz
 > „hebt gut", Rundsitz unten), flaches **T-Stück** deckt den Schlitz und wird am Kopf mit
-> **2× M2×8 Zylinderkopf VERTIKAL (Köpfe oben)** verschraubt. Kabel steigt durch die
-> DIY-Kerbe nach oben aus — Omni steht überm Gehäuse. **1 T-Stück-Typ, 2× gedruckt, BLIND
-> (deine Vorgabe): schließt komplett; die Kerbe machst du selbst rein.** Links/rechts frei.
+> **2× M2×8 Zylinderkopf VERTIKAL (Köpfe oben)** verschraubt. **Das Kabel läuft HORIZONTAL
+> durch den Rundsitz in der Wand weiter — es steigt NIE nach oben; draußen sitzt die
+> Omni-Glocke direkt an der Wand, Achse durch die Wand (Montage-Doktrin 07-06).**
+> **1 T-Stück-Typ, 2× gedruckt, BLIND (deine Vorgabe): schließt komplett; die Kerbe machst
+> du selbst rein — oder du druckst Option 06 mit fertiger Kerbe.** Links/rechts frei.
 > **(2) Akku-Klappe SCHLICHT:** der alte Innen-Schraubboss hätte mit dem Akku kollidiert
 > (60+1 Swell endet bei 28,5 — Boss begann bei 26,5; dein Einwand war richtig, jetzt per
 > Gate bewiesen frei). Neu: bündige Platte + **Lasche oben mittig** (1× M2 in Wand+Shelf,
@@ -62,11 +64,19 @@ Die 2 Mini-Louver drucken bei dieser Lage supportfrei (45°-Eigenüberhang).
 Kein Support. Klein — beide nebeneinander aufs Bett.
 
 ### 05_ze_t_stueck_2x.stl — **2× drucken** (+1 Reserve), flach auf den Rücken (Steg oben)
-EIN T-Stück-Typ, BLIND (deine Vorgabe 07-06): schließt das Gehäuse komplett. **Die Kabel-Kerbe
-machst du selbst** auf der Antennenseite: Flansch-Mitte, Achse 1,5 mm von der Außenkante —
-Ø3,2-Loch + Schlitz zur Außenkante öffnen (Bohrer/Messer), dann steigt das Koax dort aus.
-Der 2,9er-Schlitz im BODY ist der Presssitz (Ø3,1-Koax) — NICHT aufbohren, das Kabel wird
-von oben eingedrückt und „hebt". Falls das T-Stück nicht satt einfährt: Maß melden statt feilen.
+EIN T-Stück-Typ, BLIND (deine Vorgabe 07-06): schließt das Gehäuse komplett. **Falls du die
+Kabel-Kerbe selbst machst** (Antennenseite): Ø3,2-Loch **HORIZONTAL durch den 1,2er-Steg auf
+Sitzhöhe** (4 mm unter der Flansch-Oberkante, mittig) **+ Schlitz von dort zur Steg-UNTERKANTE**
+— so fällt das T von oben übers liegende Kabel. Das Kabel läuft waagerecht weiter, steigt nie auf.
+Einfacher: **Option 06 drucken.** Der 2,9er-Schlitz im BODY ist der Presssitz (Ø3,1-Koax) —
+NICHT aufbohren, das Kabel wird von oben eingedrückt und „hebt". Falls das T-Stück nicht satt
+einfährt: Maß melden statt feilen.
+
+### 06_ze_t_kabelseite_OPTIONAL.stl — **0–1× drucken**, gleiche Lage wie 05
+Identisch mit 05, aber mit **fertiger U-Kerbe** (Ø3,2 horizontal auf Sitzhöhe, unten offen —
+per Gate verifiziert: berührt das liegende Ø3,1-Koax nicht; die Klemmung macht allein der
+2,9er-Wand-Schlitz). Auf der Antennenseite statt des gebohrten 05 verwenden; die blinde
+Gegenseite bleibt Teil 05.
 
 ## Nach dem Druck (Reihenfolge!)
 
@@ -81,12 +91,13 @@ von oben eingedrückt und „hebt". Falls das T-Stück nicht satt einfährt: Ma�
    NICHT feilen, Wert melden) · Kamera einsetzen (linke Schraube von außen durch die
    Wand-Einsenkung!) · XT30-Adern (Ø2,8) in die Sattel-Rinnen legen, Riegel schrauben ·
    **ZE (T-Prinzip, kurze Seiten):** Koax von oben in den 2,9er-Schlitz eindrücken bis es
-   auf dem Rundsitz liegt → T-Stück (mit deiner DIY-Kerbe) in die Vertiefung einfahren →
-   2× M2×8 vertikal am Kopf; andere Seite: zweites T-Stück unmodifiziert (blind) + 2× M2×8.
+   HORIZONTAL auf dem Rundsitz liegt (es läuft waagerecht durch die Wand, Glocke außen direkt
+   an der Wand) → Kabelseiten-T (06 oder gebohrtes 05) von oben übers Kabel in die Vertiefung
+   einfahren → 2× M2×8 vertikal am Kopf; andere Seite: blindes 05 + 2× M2×8.
    Flansch muss oben bündig mit dem Dachrand abschließen.
 3. Was klemmt/wackelt → kurz notieren (Teil + Stelle + gefühltes Maß) — fließt direkt ins CAD.
 
 **Teile-Übersicht:** Body ~71×39,5×56 · Deckel (dunkel im Viewer) · Klappe (blau, mit Lasche)
-· 2 Riegel (grün) · 2× dasselbe ZE-T-Stück (blind — Kerbe DIY).
+· 2 Riegel (grün) · 2× dasselbe ZE-T-Stück (blind — Kerbe DIY) · optional 1× Kabelseiten-T (06).
 **Schrauben-Einkauf: 3× M3×8 (Deckel) · 4× M2×8 (ZE) · 1× M2×6 (Lasche→M2-Insert) · 4× M2×8 (Riegel) · 2× M2 (Kamera) · Inserts 3× M3 + 1× M2.**
 Viel Erfolg im Labor! 🛠️

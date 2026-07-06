@@ -21,10 +21,11 @@ zero-solder quick-build for your first assembly.*
 
 Full alternatives table (other VTX/cameras/batteries with exact dimensions): [`BOM.md`](BOM.md)
 
-## 2 · Print (4 files + 2 small parts twice)
+## 2 · Print (4 files + 2 small parts twice + 1 optional)
 
 `01_body` **lying on its back wall** (GoPro teeth horizontal = strong) · `02_lid`, `03_door`,
-`04_latch ×2`, `05_T-piece ×2` flat. PETG 0.2 mm, 4 perimeters, 40 % gyroid, cooling ≤ 50 %,
+`04_latch ×2`, `05_T-piece ×2` flat · optional `06_T-piece-cable ×1` (cable-side T with the
+U-notch already in — skip the DIY drilling). PETG 0.2 mm, 4 perimeters, 40 % gyroid, cooling ≤ 50 %,
 paint-on supports only where marked. Full sheet: [`PRINT_DE.md`](PRINT_DE.md) (German) ·
 dimensional drawing with scale: [`../docs/assets/blueprint.svg`](../docs/assets/blueprint.svg)
 
@@ -36,9 +37,11 @@ dimensional drawing with scale: [`../docs/assets/blueprint.svg`](../docs/assets/
 ## 4 · Antenna clamp (the 2.9 mm trick)
 
 Lay the Ø3.1 coax **from above** into the 2.9 mm slot on either short side, press to the round
-seat — the slot itself grips it (−0.2 mm). Open the small cable notch in ONE T-piece (Ø3.2 hole +
-slit, axis 1.5 mm from the face), slide both T-pieces in, 2× M2×8 each, heads up. The blind side
-is fully sealed. [Step 2 →](ASSEMBLY_STEPS.md)
+seat — the slot itself grips it (−0.2 mm). The cable runs **horizontally through the wall** and
+the omni sits right against it outside, axis through the wall. On the cable side use the printed
+`06_T-piece-cable` (ready-made U-notch) — or open the notch in a blind `05` yourself (Ø3.2 hole
+through the stem at seat height + slit to the stem's bottom edge). Drop the T over the lying
+cable, 2× M2×8 each, heads up. The blind side is fully sealed. [Step 2 →](ASSEMBLY_STEPS.md)
 
 ## 5 · Electronics — solder it (recommended) or Wago it (quick)
 
