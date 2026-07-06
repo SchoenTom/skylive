@@ -75,14 +75,16 @@ the boss is gone, the door now closes with a flat top tab screwed into the wall 
 
 ## The flange that grazed the antenna cable — **0.025 mm³, caught on the gate's first run**
 
-When the optional cable-side T-piece got its ready-made U-notch (Ø 3.2, horizontal, at seat
-height, open toward the stem's bottom edge), a new gate was written alongside it: lay a nominal
-Ø 3.1 coax in the round seat and assert the mounted T-piece intersects it by **zero**. The very
-first run failed — **0.025 mm³**. The notch cleared the stem fine, but the cable's top edge
-(Z 25.55) reached 0.05 mm past the flange's underside (Z 25.5), a graze no render would ever
-show. The relief now runs the full depth of the part, flange included; the doctrine stays
-clean — the 2.9 mm wall slot does all the clamping, the T-piece never touches the cable — and
-the assert runs on every rebuild of both senders.
+The shipped T-pieces are blind — you cut the cable notch yourself on whichever side you pick.
+But the notch *geometry* lives in the script as the reference for that cut (Ø 3.2, horizontal,
+at seat height, open toward the stem's bottom edge), and a gate was written alongside it: lay a
+nominal Ø 3.1 coax in the round seat and assert the mounted, notched T-piece intersects it by
+**zero**. The very first run failed — **0.025 mm³**. The notch cleared the stem fine, but the
+cable's top edge (Z 25.55) reached 0.05 mm past the flange's underside (Z 25.5), a graze no
+render would ever show. The reference relief now runs the full depth of the part, flange
+included — so when you cut your own notch, carry it through the flange's underside too. The
+doctrine stays clean — the 2.9 mm wall slot does all the clamping, the T-piece never touches
+the cable — and the assert runs on every rebuild of both senders.
 
 > Lesson: write the gate *with* the feature, not after it. This one paid for itself before
 > the geometry was an hour old.

@@ -85,11 +85,10 @@ never turns upward. Drop the flat **T-piece** into the recess so it covers the s
 the horizontal cable like a clamp nose — that's the entire trick. Outside, the **omni sits
 directly against the wall, axis horizontal, pointing straight through it** — so its donut fires
 down/up/all around instead of aiming a pattern null at the ground. Both sides use the **same
-blind T-piece** (one part, printed twice; on the antenna side you open the cable passage
-yourself: Ø 3.2 hole + slit, drilled **horizontally, in line with the round seat**, axis 1.5 mm
-in from the outer face — **or print the optional `06_T-piece-cable`**, which has the U-notch
-built in, open toward the stem's bottom edge so it drops over the lying cable; gate-verified
-to clear the Ø 3.1 coax). Lock it with **2× M2×8 cap screws,
+blind T-piece** (one part, printed twice, **fully sealing** — pick your antenna side at the
+printed part, then open the cable passage in that one yourself: Ø 3.2 hole **horizontally
+through the stem, in line with the round seat**, plus a slit to the stem's bottom edge so the
+T drops over the lying cable). Lock it with **2× M2×8 cap screws,
 vertical, heads up**, into the printed cores in the wall's top edge. The unused side keeps its T-piece unmodified — the case is fully closed even with no antenna fitted. Pick either side; the
 interfaces are identical.
 

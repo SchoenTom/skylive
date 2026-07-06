@@ -1013,14 +1013,14 @@ if __name__ == "__main__":
         assert _top_flush, f"ZE-{_tag}: T-Stück nicht oben bündig"
     for _v, _n in ((_te_k, "Kerbe"), (_te_b, "blind")):
         assert BRepCheck_Analyzer(_v.wrapped).IsValid() and len(_v.solids()) == 1, f"ZE-T-Stück ({_n}) ungültig"
-    # (7) Kabelseiten-T (Option 06): Ø3,1-Kabel liegt HORIZONTAL im Sitz und muss die
+    # (7) Kerben-Referenz (DIY-Schnitt): Ø3,1-Kabel liegt HORIZONTAL im Sitz und muss die
     #     U-Kerbe des gesetzten T berührungsfrei passieren (Doktrin: Kabel steigt NIE auf)
     _sxf, _cyf = AZE_SIDES[0]
     _cab = Pos(_sxf*EX_X/2, _cyf, AZE_SEAT_CZ) * Rot(0, 90, 0) * Cylinder(radius=1.55, height=14)
     _ixk = place_aze_tee(_te_k, _sxf, _cyf) & _cab
     _kv = sum(s2.volume for s2 in _ixk.solids()) if (_ixk is not None and _ixk.solids()) else 0.0
     assert _kv < 1e-6, f"ZE-Kabelseiten-T kollidiert mit liegendem Kabel: {_kv:.3f} mm³"
-    print(f"[ant-ze] Kabelseiten-T (Option): U-Kerbe Ø3,2 @Z{AZE_SEAT_CZ} unten offen · "
+    print(f"[ant-ze] Kerben-Referenz: U-Kerbe Ø3,2 @Z{AZE_SEAT_CZ} unten offen · "
           f"horizontaler Kabel-Durchgang frei ✔ (∩ {_kv:.4f} mm³)")
 
     # ── MB2(b) · XT30-ZE-GATE (2 Sättel + Riegel; CAD-Check ≠ Klemm-/Löt-Test) ──────
@@ -1176,12 +1176,12 @@ if __name__ == "__main__":
     from build123d import export_stl
     for _part, _name in ((b, "body"), (d, "battery_door"), (cov, "cover_floor2"),
                          (build_xt30_latch(+1), "xt30_latch"),
-                         (build_aze_tee(notch=False), "ze_tee"),    # Tom 07-06: 1 Teil, 2x drucken,
-                         #   BLIND (schliesst komplett); Kabel-Kerbe bohrt/schneidet Tom selbst
-                         #   (Ø3,2 HORIZONTAL durch den Steg auf Sitzhöhe Z24 + Schlitz zur
-                         #   Steg-Unterkante — Kabel läuft waagerecht, steigt NIE nach oben)
-                         (build_aze_tee(notch=True), "ze_tee_cable")):  # Option 06: Kabelseiten-T
-                         #   mit fertiger U-Kerbe (erspart das Bohren der 1,2er-Platte)
+                         (build_aze_tee(notch=False), "ze_tee")):   # Tom 07-06: 1 Teil, 2x drucken,
+                         #   BLIND (schliesst komplett); Kerbe + Seitenwahl (links/rechts) macht
+                         #   der Builder SELBST am gedruckten Teil (kein vorgekerbtes T im Set).
+                         #   DIY-Kerbe: Ø3,2 HORIZONTAL durch den Steg auf Sitzhöhe Z24 + Schlitz
+                         #   zur Steg-Unterkante — Kabel läuft waagerecht, steigt NIE nach oben.
+                         #   notch=True bleibt NUR als Geometrie-Wissen + Gate (7).
         _stl = f"{OUTDIR}/skylive_V3_min_{_name}.stl"
         export_stl(_part, _stl, tolerance=0.005, angular_tolerance=0.05)   # [Audit P7] feiner → offene Kanten 0
         print(f"[stl] {_stl}  (Riegel: 2× drucken)" if _name == "xt30_latch" else f"[stl] {_stl}")
