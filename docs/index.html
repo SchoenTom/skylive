@@ -109,6 +109,39 @@ section{padding-block:clamp(56px,9vw,120px)}
 .slot-fallback{position:absolute; inset:0; z-index:1; display:flex; align-items:center; justify-content:center; text-align:center; padding:24px}
 .slot-fallback span{font:600 var(--small)/1.5 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--faint)}
 
+
+/* ---------- altitude rail (scroll altimeter) ---------- */
+.alt-rail{position:fixed;right:16px;top:50%;transform:translateY(-50%);height:min(60vh,540px);width:54px;
+  z-index:60;pointer-events:none;opacity:0;transition:opacity .6s var(--ease)}
+.alt-rail.on{opacity:1}
+.alt-rail .track{position:absolute;right:26px;top:0;bottom:0;width:2px;background:linear-gradient(rgba(120,160,210,.05),rgba(34,211,238,.35),rgba(120,160,210,.05))}
+.alt-rail .tick{position:absolute;right:22px;width:10px;height:1px;background:rgba(160,190,220,.35)}
+.alt-rail .tick span{position:absolute;right:14px;top:-7px;font:600 .62rem/1 var(--mono);color:var(--faint);letter-spacing:.06em;white-space:nowrap}
+.alt-marker{position:absolute;right:13px;width:28px;transform:translateY(-50%);transition:none}
+.alt-marker svg{width:28px;height:28px;display:block;filter:drop-shadow(0 0 8px rgba(34,211,238,.5))}
+.alt-read{position:absolute;right:34px;top:50%;transform:translateY(-50%);text-align:right;white-space:nowrap}
+.alt-read b{display:block;font:800 .86rem/1 var(--mono);color:var(--ink);letter-spacing:.02em}
+.alt-read i{display:block;font:600 .56rem/1.4 var(--mono);font-style:normal;color:var(--cyan);letter-spacing:.18em}
+@media(max-width:1100px){.alt-rail{display:none}}
+/* ---------- take-apart scrubber ---------- */
+.mv-scrub{position:absolute;left:14px;right:14px;bottom:14px;z-index:3;display:none;align-items:center;gap:12px;
+  background:rgba(11,13,18,.72);border:1px solid rgba(255,255,255,.14);border-radius:12px;padding:10px 16px;backdrop-filter:blur(8px)}
+.mv-scrub.on{display:flex}
+.mv-scrub input[type=range]{flex:1;accent-color:var(--cyan);cursor:pointer;height:20px}
+.mv-scrub span{font:700 .72rem/1 var(--mono);color:var(--muted);letter-spacing:.1em;white-space:nowrap}
+/* ---------- doughnut lab ---------- */
+.dlab{position:relative;border-radius:20px;overflow:hidden;border:1px solid rgba(255,255,255,.08);
+  background:radial-gradient(ellipse 80% 60% at 50% 8%, rgba(34,211,238,.10), transparent 60%), linear-gradient(180deg,#0c1422,#0a0e16);padding:18px}
+.dlab svg{width:100%;height:auto;display:block}
+.dlab-ui{display:flex;flex-wrap:wrap;align-items:center;gap:14px;margin-top:14px}
+.dlab-ui .grp{display:flex;border-radius:11px;overflow:hidden;border:1px solid rgba(255,255,255,.14)}
+.dlab-ui button{padding:9px 16px;background:transparent;border:0;color:var(--muted);font:700 .8rem/1 var(--sans);cursor:pointer;transition:.2s}
+.dlab-ui button.on{background:var(--cyan);color:#04222a}
+.dlab-ui button:focus-visible{outline:2px solid var(--cyan);outline-offset:-2px}
+.dlab-ui input[type=range]{flex:1;min-width:140px;accent-color:var(--cyan);cursor:pointer;height:22px}
+.dlab-ui .lbl{font:600 .74rem/1 var(--mono);color:var(--faint);letter-spacing:.08em;white-space:nowrap}
+.dgain{font:800 clamp(1.2rem,2.6vw,1.9rem)/1 var(--mono);letter-spacing:-.01em}
+
 /* ---------- 3D model-viewer ---------- */
 .mv-shell{position:relative; border-radius:20px; overflow:hidden;
   background:radial-gradient(ellipse 80% 60% at 50% 8%, rgba(34,211,238,.10), transparent 60%), linear-gradient(180deg,#0c1422,#0a0e16);
@@ -276,6 +309,20 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
 <div class="bg" aria-hidden="true"></div>
 
 <!-- ========== 1. THE MOMENT (hero, full viewport) ========== -->
+<div class="alt-rail" id="altRail" aria-hidden="true">
+  <div class="track"></div>
+  <div class="tick" style="top:0%"><span>4 km</span></div>
+  <div class="tick" style="top:25%"><span>3</span></div>
+  <div class="tick" style="top:50%"><span>2</span></div>
+  <div class="tick" style="top:75%"><span>1</span></div>
+  <div class="tick" style="top:100%"><span>0</span></div>
+  <div class="alt-marker" id="altMarker" style="top:0%">
+    <div class="alt-read"><b id="altVal">4000 m</b><i id="altPhase">EXIT</i></div>
+    <svg viewBox="0 0 28 28"><g stroke="#f2f7fb" stroke-width="2.6" stroke-linecap="round" fill="none">
+      <circle cx="14" cy="7" r="3.2" fill="#f2f7fb" stroke="none"/>
+      <path d="M14 10.5 L14 18 M14 12.5 L8 9.5 M14 12.5 L20 9.5 M14 18 L9.5 24 M14 18 L18.5 24"/></g></svg>
+  </div>
+</div>
 <header class="hero" id="top">
   <!-- fallback backdrop: shows through if the hero render is not present yet -->
   <div class="sky" aria-hidden="true">
@@ -314,7 +361,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     <!-- TBD-ASSET: assets/exploded.png — top-down studio explosion (the four parts + Wagos + screws) -->
     <div class="slot">
       <div class="slot-fallback" aria-hidden="true"><span>Exploded render — assets/exploded.png</span></div>
-      <img src="assets/exploded.png" alt="The SkyLive sender exploded into its four parts — radio, camera, battery, button — plus Wago lever clamps and screws." onerror="this.style.display='none'">
+      <img src="assets/exploded.png" alt="The SkyLive sender exploded into its four parts — radio, camera, battery, button — plus Wago lever clamps and screws." onerror="this.style.display='none'" onload="this.previousElementSibling.style.display='none'">
     </div>
   </div>
 </section>
@@ -332,6 +379,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         <button id="mvAsm" class="on" aria-pressed="true">Assembled</button>
         <button id="mvExp" aria-pressed="false">Exploded</button>
         <button id="mvFly" aria-pressed="false">▶ Fly-in</button>
+        <button id="mvScrub" aria-pressed="false">⏱ Take-apart</button>
       </div>
       <!-- TBD-ASSET: models/sender850.glb + models/sender850_exploded.glb (poster fallback below) -->
       <model-viewer
@@ -355,8 +403,9 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         ar-status="not-presenting">
         <img slot="poster" id="mvposter" src="poster_assembled.png" alt="SkyLive sender — interactive 3D model (drag to rotate)" style="width:100%;height:100%;object-fit:contain;display:block">
       </model-viewer>
+      <div class="mv-scrub" id="scrubBox"><span>TAKE-APART</span><input type="range" id="scrubT" min="0" max="5" step="0.01" value="0" aria-label="Explosion timeline"><span id="scrubPct">0%</span></div>
     </div>
-    <p class="cap">drag to rotate · toggle assembled ↔ exploded</p>
+    <p class="cap">drag to rotate · toggle assembled ↔ exploded · <b style="color:var(--cyan)">take-apart</b> = scrub the explosion yourself</p>
   </div>
 </section>
 
@@ -615,6 +664,53 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   </div>
 </section>
 
+<section id="doughnut">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">The doughnut lab</div>
+      <h2>Spin her. The doughnut <span class="cy">doesn't care</span>.</h2>
+      <p>An omni antenna radiates a doughnut — and a doughnut has a hole. Point the antenna up (the default) and the hole points at the drop zone. SkyLive lays the antenna sideways: tilt it yourself, then hit <b style="color:var(--ink)">spin</b> — in freefall she turns constantly, and the signal toward the DZ must not care.</p>
+    </div>
+    <div class="dlab">
+      <svg id="dsvg" viewBox="0 0 900 470" role="img" aria-label="Interactive antenna pattern: tilt the antenna and spin the jumper — gain toward the drop zone updates live">
+        <defs><linearGradient id="dsky" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#0a1828"/><stop offset="62%" stop-color="#14304a"/><stop offset="100%" stop-color="#1f4864"/></linearGradient></defs>
+        <rect width="900" height="470" rx="14" fill="url(#dsky)"/>
+        <g fill="#ffffff" opacity=".07"><ellipse cx="180" cy="90" rx="56" ry="14"/><ellipse cx="720" cy="70" rx="48" ry="12"/></g>
+        <rect y="424" width="900" height="46" fill="#10261c" opacity=".65"/>
+        <line y1="424" x2="900" y2="424" stroke="rgba(255,255,255,.2)" stroke-width="1.5"/>
+        <text x="20" y="450" fill="#8aa0b6" font-size="12" font-family="ui-monospace,monospace" letter-spacing="2">DROP ZONE</text>
+        <g transform="translate(450,180)">
+          <path id="dpat" d="" fill="rgba(34,211,238,.12)" stroke="#22d3ee" stroke-width="2"/>
+          <line id="daxis" x1="0" y1="0" x2="0" y2="-46" stroke="#8aa0b6" stroke-width="3" stroke-linecap="round"/>
+          <g id="djumper" opacity=".9">
+            <circle cx="0" cy="-14" r="6" fill="#f2f7fb"/>
+            <path d="M0 -8 L0 12 M0 -2 L-13 4 M0 -2 L13 4 M0 12 L-9 26 M0 12 L9 26" stroke="#f2f7fb" stroke-width="4" stroke-linecap="round" fill="none"/>
+          </g>
+          <rect x="-8" y="-10" width="16" height="22" rx="4" fill="#22303e" stroke="#4a5866" stroke-width="1"/>
+        </g>
+        <line id="dray" x1="450" y1="212" x2="450" y2="424" stroke="#22d3ee" stroke-width="3" stroke-dasharray="7 7"/>
+        <text id="dnull" x="450" y="330" fill="#ef5a4f" font-size="14" font-weight="700" font-family="-apple-system,sans-serif" text-anchor="middle" opacity="0">⌀ dead zone</text>
+        <g font-family="-apple-system,sans-serif">
+          <text x="708" y="60" fill="#7186a0" font-size="12">signal toward the DZ</text>
+          <text id="dgain" class="dgain" x="708" y="94" fill="#ef5a4f" font-size="30" font-weight="800">0 %</text>
+          <text id="dspin" x="708" y="118" fill="#7186a0" font-size="12" opacity="0">…while she spins</text>
+        </g>
+      </svg>
+      <div class="dlab-ui">
+        <div class="grp" role="group" aria-label="Antenna orientation preset">
+          <button id="dUp" class="on">Antenna up (default)</button>
+          <button id="dSky">SkyLive · 90°</button>
+        </div>
+        <span class="lbl">TILT <b id="dTiltV" style="color:var(--ink)">0°</b></span>
+        <input type="range" id="dTilt" min="0" max="90" value="0" step="1" aria-label="Antenna tilt">
+        <button id="dSpin" style="border:1px solid rgba(255,255,255,.14);border-radius:11px">▶ spin</button>
+      </div>
+      <p class="cap" style="margin-top:12px">idealized dipole doughnut (sin² gain) — the geometry argument, not a range promise · tilt 90° and spin: the DZ never leaves the maximum</p>
+    </div>
+  </div>
+</section>
+
 <!-- ========== FOOTER ========== -->
 <footer>
   <div class="wrap">
@@ -772,6 +868,97 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     });
   }
   if(document.readyState!=='loading')run();else window.addEventListener('DOMContentLoaded',run);
+})();
+</script>
+<script>
+/* ---------- altitude rail ---------- */
+(function(){
+  const rail=document.getElementById('altRail'); if(!rail) return;
+  const mk=document.getElementById('altMarker'), val=document.getElementById('altVal'), ph=document.getElementById('altPhase');
+  let tick=null;
+  function upd(){tick=null;
+    const max=document.documentElement.scrollHeight-innerHeight;
+    const p=Math.max(0,Math.min(1,max>0?scrollY/max:0));
+    rail.classList.toggle('on',p>0.02&&p<0.995);
+    mk.style.top=(p*100)+'%';
+    val.textContent=Math.round(4000*(1-p)/10)*10+' m';
+    ph.textContent=p<.06?'EXIT':p<.7?'FREEFALL':p<.93?'CANOPY':'LANDED';}
+  addEventListener('scroll',()=>{if(!tick)tick=requestAnimationFrame(upd)},{passive:true});
+  upd();
+})();
+/* ---------- take-apart scrub ---------- */
+(function(){
+  const mv=document.getElementById('mv'), box=document.getElementById('scrubBox'),
+        rng=document.getElementById('scrubT'), pct=document.getElementById('scrubPct'),
+        bS=document.getElementById('mvScrub');
+  if(!mv||!bS) return;
+  const others=['mvAsm','mvExp','mvFly'].map(id=>document.getElementById(id));
+  let pin=null, target=0, cur=0;
+  function pinLoop(){
+    cur+=(target-cur)*0.18;
+    try{mv.currentTime=cur;}catch(e){}
+    pct.textContent=Math.round(cur/5*100)+'%';
+    pin=requestAnimationFrame(pinLoop);}
+  bS.addEventListener('click',()=>{
+    others.forEach(b=>{b.classList.remove('on');b.setAttribute('aria-pressed','false');});
+    bS.classList.add('on');bS.setAttribute('aria-pressed','true');
+    mv.setAttribute('src','models/sender_explode.glb');
+    mv.removeAttribute('autoplay');
+    box.classList.add('on');
+    const arm=()=>{try{mv.play();mv.pause();}catch(e){} if(!pin)pin=requestAnimationFrame(pinLoop);};
+    if(mv.loaded)arm(); else mv.addEventListener('load',arm,{once:true});
+  });
+  rng.addEventListener('input',()=>{target=+rng.value;});
+  others.forEach(b=>b&&b.addEventListener('click',()=>{box.classList.remove('on');
+    bS.classList.remove('on');bS.setAttribute('aria-pressed','false');
+    if(pin){cancelAnimationFrame(pin);pin=null;} target=cur=0;rng.value=0;}));
+})();
+/* ---------- doughnut lab ---------- */
+(function(){
+  const pat=document.getElementById('dpat'); if(!pat) return;
+  const axis=document.getElementById('daxis'), ray=document.getElementById('dray'),
+        gainT=document.getElementById('dgain'), nullT=document.getElementById('dnull'),
+        spinT=document.getElementById('dspin'), tilt=document.getElementById('dTilt'),
+        tiltV=document.getElementById('dTiltV'), bUp=document.getElementById('dUp'),
+        bSky=document.getElementById('dSky'), bSpin=document.getElementById('dSpin'),
+        jump=document.getElementById('djumper');
+  let a=0, yaw=0, spinning=false, raf=null;
+  const R=150;
+  function draw(){
+    const ar=a*Math.PI/180, yr=yaw;
+    const ax=[Math.sin(ar)*Math.cos(yr), Math.sin(ar)*Math.sin(yr), Math.cos(ar)];
+    let d='';
+    for(let i=0;i<=180;i++){
+      const th=i/180*2*Math.PI;
+      const dir=[Math.sin(th),0,-Math.cos(th)];
+      const dot=dir[0]*ax[0]+dir[2]*ax[2];
+      const g=Math.max(0,1-dot*dot);
+      const r=8+R*g;
+      const x=r*Math.sin(th), y=r*Math.cos(th);
+      d+=(i?'L':'M')+x.toFixed(1)+','+y.toFixed(1);}
+    pat.setAttribute('d',d+'Z');
+    const axLen=46;
+    axis.setAttribute('x2',(ax[0]*axLen).toFixed(1));
+    axis.setAttribute('y2',(-ax[2]*axLen).toFixed(1));
+    const g=Math.pow(Math.sin(ar),2);
+    const col=g>.7?'#22d3ee':g>.25?'#edab28':'#ef5a4f';
+    gainT.textContent=Math.round(g*100)+' %'; gainT.setAttribute('fill',col);
+    ray.setAttribute('stroke',col); ray.setAttribute('opacity',(0.15+0.85*g).toFixed(2));
+    ray.setAttribute('stroke-width',(1+3.5*g).toFixed(1));
+    nullT.setAttribute('opacity',g<0.08?'1':'0');
+    spinT.setAttribute('opacity',spinning?'1':'0');
+    if(jump)jump.setAttribute('transform','scale('+(0.85+0.15*Math.cos(yr))+',1)');
+  }
+  function setTilt(v,btn){a=v;tilt.value=v;tiltV.textContent=v+'°';
+    [bUp,bSky].forEach(b=>b.classList.remove('on')); if(btn)btn.classList.add('on'); draw();}
+  bUp.addEventListener('click',()=>setTilt(0,bUp));
+  bSky.addEventListener('click',()=>setTilt(90,bSky));
+  tilt.addEventListener('input',()=>setTilt(+tilt.value,null));
+  bSpin.addEventListener('click',()=>{spinning=!spinning;
+    bSpin.textContent=spinning?'■ stop':'▶ spin';
+    if(spinning&&!raf){const step=()=>{yaw+=0.045;draw();raf=spinning?requestAnimationFrame(step):null;};raf=requestAnimationFrame(step);}
+    if(!spinning)draw();});
+  draw();
 })();
 </script>
 </body>
