@@ -11,7 +11,7 @@ der verifizierten Kamera-Features.
 M1-Inhalt (genau das):
   1. Hohle gerundete GoPro-Style-Schale in den V3-Zielmaßen (outer RectangleRounded − inner).
   2. Akku-Klappen-Öffnung an der +X-Stirnseite, unteres Stockwerk (Bay-Höhe).
-  3. Kamera auf der -Y-Langseite: invert_camera() aus camera_reference.py 1:1 wiederverwendet,
+  3. Kamera auf der -Y-Langseite: invert_camera() aus anton_v3.py 1:1 wiederverwendet,
      re-platziert auf die -Y-Wandebene der Minimal-Schale (Wölbung nach INNEN, flush außen,
      Linsenfenster + Seitenklemme 2× M2 QUER/Achse X, 21,5 mm).
 
@@ -21,18 +21,18 @@ KEIN empirischer Test. Werte ohne Quelle → MEASURE_ME.
 import math
 from build123d import (RectangleRounded, Box, Pos, Rot, Color, Compound, Polygon,
                        Plane, Cylinder, Cone, extrude, export_gltf, fillet, Part, Axis)
-from camera_reference import (camera_final, WALL_Y, CAM_TIP2HOLE, CAM_FLK_OUT,   # M-A3: Toms finale
+from anton_v3 import (camera_final, WALL_Y, CAM_TIP2HOLE, CAM_FLK_OUT,   # M-A3: Toms finale
                       CAM_CLAMP, CAM_CB_R, CAM_CB_D)                     # Kamera-Lösung (Ösen innen)
 
-# Referenz-Wölbungs-bbox (gemessen aus references/reference_camera_bulge.step):
+# Anton-Wölbungs-bbox (gemessen aus references/Anton_camera_bulge.step):
 #   X 6..37 (Mitte 21,5) · Y 24,90..31,40 (Wandebene 24,85, ragt +Y außen) · Z 0..28 (Mitte 14)
 BULGE_XC, BULGE_ZC = 21.5, 14.0
 
-# M1 · KAMERA ZUR ECKE (CEO-Entscheidung nach des Referenz-Prototyps realem Druck, Fotos proto_8380/8382:
+# M1 · KAMERA ZUR ECKE (CEO-Entscheidung nach Antons realem Druck, Fotos proto_8380/8382:
 #   Kamera sitzt an der -X-Ecke — mittig (X=0) lässt dem VTX daneben KEINEN Platz).
 #   Kamera-Zentrum von X=0 → X=−9 (Richtung −X-Ecke). Mechanik: in graft_camera bekommt die
 #   Transform-Translation X = BULGE_XC + CAM_OFF_X; wegen Rot(0,0,180) landet die Linsen-Mitte
-#   (Referenz-Frame CAM_CX=BULGE_XC) bei my-X = (BULGE_XC+CAM_OFF_X) − CAM_CX = CAM_OFF_X = −9.
+#   (Anton-Frame CAM_CX=BULGE_XC) bei my-X = (BULGE_XC+CAM_OFF_X) − CAM_CX = CAM_OFF_X = −9.
 #   Numerisch verifiziert im Gate unten (Fenster-Scan der −Y-Wand).
 CAM_OFF_X = -16.0  # [MINI] Flanken-Aussenflaeche = Innenwand -26,75 + CAM_FLK_OUT (Prinzip 850)      # Tom 07-05 FINAL: Kamera GANZ an die Außenwand — linke Flanken-Außenfläche
                         #   (−21,75−10,75 = −32,5) = Innenwand → verschmilzt; linke Schraube läuft
@@ -48,13 +48,13 @@ BAY_L  = 53.5  # [MINI] Akku 45 + XT30-Raum; Fuehrungs-Anschlag 50,5 (850: 65)  
 BAY_H  = 17.0  # [MINI] Akku 15,3 + 0,75 Swell + 0,95 Rippe (850: 25)                 # Akku-Bay/Klappe Höhe (Z). MEASURE_ME: V3_SPEC nennt 26 (Zelle 23+3),
                               #   Auftrag rechnet Interior-Z mit 25 → hier 25 (Interior-Z=50). Klären.
 SHELF_T = 3.0                 # Stockwerk-Shelf (fest verbaut, kommt erst in M4 — M1 nur Hohlraum)
-F2_H   = 22.0                 # Elektronik-Stockwerk Höhe — Tom 2026-07-05: „Höhe wie bei Referenz-Prototyp fürs
+F2_H   = 22.0                 # Elektronik-Stockwerk Höhe — Tom 2026-07-05: „Höhe wie bei Anton fürs
                               #   OBERE Stockwerk, NICHT antasten (Kabelraum!)" → 20er-Trim zurückgenommen.
                               #   VTX-Stapel 18,0 [STEP+spec] < 22 ✓, Kamera 19,0 [Tom] + Luft < 22 ✓.
 FIL_O, FIL_I = 5.5, 3.5       # vertikale Ecken-Radien außen/innen — Tom 07-05: „vertikal zu rund" →
                               #   9/6→5,5/3,5; Balance mit neuen horizontalen Fillets FIL_H.
 FIL_H, FIL_HI = 3.0, 1.5      # horizontale Umlauf-Fillets Ober-/Unterkante außen/innen [Tom 07-05 NEU]
-# Schalter im DACH über der Links-Zone (des Referenz-Prototyps Druck-Prinzip; Tom 07-05: Tiefe knapp 18 gemessen):
+# Schalter im DACH über der Links-Zone (Antons Druck-Prinzip; Tom 07-05: Tiefe knapp 18 gemessen):
 SW_CX, SW_CY = -10.0, -1.0    # X: rechts der Kamera-Flanke (−17,75) + links der VTX-Zone (2,25);
                               #   Y: −1 hält 0,75 Luft zur Ohr-Unterkante (6,75). Envelope-Gate unten.
 SW_ENV_D, SW_ENV_DEPTH = 14.0, 18.0   # Kopf-Ø [Datenblatt] × Einbautiefe [Tom 07-05 gemessen]
@@ -106,7 +106,7 @@ LEAD_IN      = 0.5        # 0,5×45°-Lead-in an den lap-freien ±Z-Stoßkanten 
 TONGUE_LEAD  = 1.5        # 1,5×45°-Lead-Chamfer an der Zungen-Oberkante (inboard) für den Einschwenk-Bogen [CEO 2026-07-05]
 # S4 (2026-07-05): die Klick-Cantilever/Snaps an der Tür-Oberkante sind ENTFERNT (Tom: unverständlich;
 #   Haltekraft trägt allein die M2-Schraube). Tür = Falz + Nasen + M2 + Griffmulde.
-# Nasen (Weg A: unter der Akku-Ebene, in Boden-Taschen; Startwerte MEASURE_ME an des Referenz-Prototyps Realteil):
+# Nasen (Weg A: unter der Akku-Ebene, in Boden-Taschen; Startwerte MEASURE_ME an Antons Realteil):
 NASE_Y  = (-5.0, 5.0)  # [MINI]     # Y-Lage: gerader Teil der Unterkante (|Y|<8,65=15,75−R7,1), in Schienen-Lücke (Rail-Y 0,±12) [berechnet]
 NASE_W  = 5.0  # [MINI]             # Nasen-Breite (Y) → Y±3, Lücke zwischen Rail@0 (+2) und Rail@12 (10) ist 8 breit  [berechnet]
 NASE_L  = 5.0             # Finger-Länge nach −X (in die Boden-Tasche)                                       [Plan-Startwert/MEASURE_ME]
@@ -125,8 +125,14 @@ LIP_TOP  = (Z_BAY_MID - OPEN_Z/2) - 0.1  # Haken-Lippe Oberkante = −23,6 (0,1 
 # SCHLICHT-Verschluss (Tom 07-06): Innen-Boss/Pad/CB/Mulde ENTFERNT → Lasche + 1 M2 (s. build)
 DOOR_VENT_Z = (Z_BAY_MID - 2.5, Z_BAY_MID + 1.0)  # [MINI param]  # Klappen-Mini-Vents (Tom 07-06: „schmale horizontale Striche auf der
 DOOR_VENT_L = 10.0            #   Akku-Vorderseite, nur mini") — 2× 45°-Louver, 10 lang, mittig
-DOOR_TAB_W   = 10.0       # Laschen-Breite (Y)                                                    [Tom 07-06]
+DOOR_TAB_W   = 12.0       # Laschen-Breite (Y) — 07-07: 10→12 (Trennfugen-Querschnitt, wie 850)    [Tom 07-06/07]
 DOOR_TAB_T   = 2.5        # Laschen-Dicke (proud auf der +X-Wand — klassischer Batteriedeckel)
+DOOR_TAB_AP  = 4.5        # [MINI param] Anbindungs-Schürze (850: 6,0) — Mini nur 4,5, weil der obere
+                          #   Klappen-Louver schon @Z_BAY_MID+1 sitzt (7 unter z_ot); Schürzen-Ende
+                          #   z_ot−4,5 bleibt 2,5 über dem Vent-Zentrum. Klebefläche 54 mm² (alt 15).
+DOOR_TAB_FIL = 1.0        # [MINI param] Kehlnaht-Radius (850: 2,0) — Mini nur 1,0, sonst kollidiert der
+                          #   Kehlenfuß (z_ab−FIL) mit dem oberen Louver-Top (~Z_BAY_MID+1,75). Kerbfrei
+                          #   gegen Schäl-Riss an der Laschenwurzel (wie 850).
 DOOR_TAB_SZ  = Z_BAY_MID + OPEN_Z/2 + 2.0  # [MINI param] 2 ueber Oeffnungs-Top        # Schraub-Achse Z (ÜBER der Öffnung −0,5, in Wand + Shelf-Leiste 29,5..32,5)
 DOOR_THRU_R  = 1.2        # Durchgang Ø2,4 durch die Lasche                                                  [Plan 2.5]
 DOOR_PILOT_R = 0.8        # Pilot Ø1,6 selbstschneidend im Schalen-Boss (M2)                                 [Plan 2.5]
@@ -154,9 +160,9 @@ RIB_X    = (-IN_X/2 + 2.75, X_WALL_IN - 4.0)  # [MINI param]   # 2 Paare. X so g
 RIB_EMBED = 0.3             # Schweiß-Überlappung in die Wand (union)
 
 
-# ── MB1-NEU · DECKEL = DACH (+Z), Referenz-Prinzip (Tom-Kurskorrektur 2026-07-05) ───────────────
+# ── MB1-NEU · DECKEL = DACH (+Z), Anton-Prinzip (Tom-Kurskorrektur 2026-07-05) ───────────────
 #   „Die Rückseite wird KEIN Deckel — sie ist einfach Rückseite. Der Deckel sitzt OBEN drauf."
-#   Die +Y-Seite ist FESTE WAND (nur Schlitze). Der Deckel ist die DACHPLATTE (+Z), wie des Referenz-Prototyps
+#   Die +Y-Seite ist FESTE WAND (nur Schlitze). Der Deckel ist die DACHPLATTE (+Z), wie Antons
 #   Deckel.STEP. Dach-Öffnung mit umlaufendem Falz (Tür-Prinzip in Z): innerer Durchbruch (inner
 #   Dachhälfte) + äußere Senkung (outer Hälfte, +LAP breiter = Auflage-Schulter). Deckel bündig oben.
 RLID_HX   = EX_X/2 - 6.0  # [MINI param] (850: 35,5-6=29,5)                                # Öffnungs-Halb-X (Falz +LAP=31,5 < Flach-Top 32,5)  [Design]
@@ -171,7 +177,7 @@ RLID_Z_MID = (RLID_Z_IN + RLID_Z_OUT)/2        # 26,5 · Falz-Schulter-Ebene    
 # 07-06 (850er): Spec-§8-Tiefe 3,4 ging durch den 3,0er-Deckel komplett durch (Kopf fiel
 # durch, Deckel nie geklemmt); die Eck-Schrauben liegen über dem Falz (nur 1,5 Restdicke),
 # also ist JEDE echte Senkung dort unmöglich. Spotface 0,4 → voller Ring trägt; Kopf 2,6 über Dach.
-# [MINI-TODO 07-06] Referenz-Senkung (CB Ø6,5×3,4 + Pads, s. v3_min) braucht hier eine eigene
+# [MINI-TODO 07-06] Anton-Senkung (CB Ø6,5×3,4 + Pads, s. v3_min) braucht hier eine eigene
 # Ecken-Studie: der Boss-Gusset kollidiert an der Kamera-Ecke ([cam-x]-Gate fing es).
 # Bis dahin: Spotface (Kopf 2,6 proud) — funktional sicher, kein Durchfallen.
 LID_THRU_D = 3.4                               # M3-Schaft-Durchgang
@@ -182,20 +188,27 @@ LID_BOSS_CHAM_H = 0.5                           # Fase-Höhe                    
 # 4 ECK-BOSSE (Body, vertikal, mit Innenecken/Wänden verschmolzen — die Ecke trägt mit): @(±29,±13),
 #   Z 14..25, Ø8, Insert Ø4,6×8 von OBEN + Fase Ø5,2×0,5. Top (25) liegt in der Dach-Öffnung → Insert
 #   von oben zugänglich; der Deckel-M3 @(±29,±13) fällt vertikal hinein.
-RBOSS_X, RBOSS_Y = EX_X/2 - 6.5, 13.0  # [MINI param]                   # Boss-/Schrauben-Zentren (in der Öffnung X±29,5/Y±13,75)
+RBOSS_X, RBOSS_Y = EX_X/2 - 7.75, 11.5  # [MINI param] 07-08 FINAL: EIN Front-Boss, auf der +Y-Seite
+                                        #   (kamerafrei, da Y+11,5 hinter der Kamera-Tiefe −1,25 liegt) und in X
+                                        #   so weit einwärts (22,0), dass der M3-Kopf Ø6,1 VOLL auf dem Flansch
+                                        #   liegt. Bei Y+11,5 ist keine Kamera → X-Einwärts kollidiert NICHT.
 RBOSS_D  = 8.0                                  # Boss-Außen-Ø
 RBOSS_Z1 = EX_Z/2 - WALL                        # Boss-Top = Innendecke = Insert-Mündung
 RBOSS_Z0 = RBOSS_Z1 - 11.0                      # 14 · Boss-Boden (11 lang)
 RBOSS_INS_D, RBOSS_INS_DP = 4.6, 8.0            # Insert-Bohrung Ø4,6 × 8 (ACHSE Z, von oben)    [Spec §4]
-RLID_SCREW = [(-RBOSS_X, RBOSS_Y), (-RBOSS_X, -RBOSS_Y)]   # [MINI] 2 M3 VORNE; hinten Einhaenge-Nasen (kein +X-Boss-Platz: VTX-Env bis 24,45)
-#   KEIN Boss: Kamera@−21,75 belegt die Ecke (dort hält die Falz-Lippe; Asymmetrie wie des Referenz-Prototyps Druck)
+RLID_SCREW = [(-RBOSS_X, RBOSS_Y), (-11.0, RBOSS_Y)]   # [MINI] 07-08: 2 M3 auf der +Y-KANTE (kamerafrei).
+                                     #   Der frühere −Y-Boss lag IN der Kamera → entfernt. Beide jetzt +Y
+                                     #   (Y+11,5, hinter Kamera-Tiefe −1,25): einer am −X-Eck (−RBOSS_X), einer
+                                     #   Richtung Mitte (−11, Boss-Kante −7 < VTX −4,75 → frei). KEINE Diagonale
+                                     #   möglich (Gegenecke +X/−Y = VTX+Kamera). Retention: 2 Front-Bosse + 2 Heck-Nasen.
+#   KEIN Boss: Kamera@−21,75 belegt die Ecke (dort hält die Falz-Lippe; Asymmetrie wie Antons Druck)
 
 
 # ── MB3 · LÜFTUNGSSCHLITZE — NEUE §6b-Matrix (VERBINDLICH, ersetzt die alten +Y-Bänder) ────────
 #   Schlitz-Norm: 1,1 (schmal) × L (lang), 45°-Louver abwärts-auswärts (selbsttragend + Tropfenschutz).
 #   Freie Fläche je Schlitz = 1,1 × L. Kamin (Einlass unten → Auslass oben). Alle Kollisions-Verbote
 #   der Matrix werden VOR dem Schneiden numerisch geprüft (Gate). Louver-Achse = Schlitz-Längsachse.
-VENT_W       = 1.1           # Schlitz-Schmalmaß (Spalt)                        [Spec §6b]
+VENT_W       = 1.4           # Schlitz-Schmalmaß (Spalt) — 07-09 Tom: „etwas größer" (1,1→1,4, +27% offen)  [Spec §6b]
 VENT_LOUVER_DEG = 45.0       # abwärts-auswärts                                 [Spec §6/§6b]
 VENT_THROUGH = 5.0           # Cutter-Tiefe entlang 45°-Achse (>Wand/cos45=4,24; knapp, minimaler Überschuss
                              #   → kein falscher Feature-Überlapp im Kavität-Überstand)
@@ -209,7 +222,7 @@ VENT_YWALL_XC     = 0.0                          # X-Zentrum (Schlitze mittig; Z
                                                  #   KURZEN Seiten — ±Y-Wände gehören den Vents)
 VENT_YWALL_TOP_L  = 40.0                         # oben lang (X −20..+20) → boss-frei (Bosse @X±29)
 VENT_YWALL_TOP_XC = (0.0,)                       # 1 Segment (Splittung von 07-05 zurückgenommen)
-VENT_YWALL_TOP_Z  = tuple(Z_INT_BOTTOM + BAY_H + SHELF_T + d for d in (6.5, 9.5, 12.5))  # [MINI param Shelf-Top-relativ]           # 3 Reihen Stockwerk 2
+VENT_YWALL_TOP_Z  = tuple(Z_INT_BOTTOM + BAY_H + SHELF_T + d for d in (6.0, 10.0, 14.0))  # 07-09: 3 HECK-Reihen (+Y), Z-fluchtend mit den 3 Front-Reihen → Durchzug über VTX
 VENT_YWALL_BAY_L  = 24.0                         # Bay lang (X −12..+12)
 VENT_YWALL_BAY_Z  = (Z_BAY_MID - 0.5, Z_BAY_MID + 2.5)  # [MINI param]              # 2 Reihen Bay-Zone
 #  Front (−X, im BODY): 2×(1,1×16) oben (VTX-Stockwerk), Länge Y, gestapelt in Z; unter Antennen-ZE (Z21).
@@ -228,12 +241,16 @@ VENT_HECK_YC = 0.0
 #  (S3: die +Y-Wand-FEST-unten-Zone ist ENTFERNT — die +Y-Wand-Bay ist jetzt vom Volldeckel überdeckt;
 #   die Bay-Schlitze sitzen jetzt im Deckel, VENT_DECKEL_BAY_*.)
 #  KAMERA-SEITE (−Y, feste Wand) — Tom 07-05: „auch bei der Kamera", lange Seiten = LANGE Schlitze.
-VENT_CAM_L  = 26.0                              # X 3..29 ⊂ Flachzone ±30 (FIL_O 5,5), rechts der
-VENT_CAM_XC = 16.0                              #   Kamera-Flanken (enden +1,75) → kollisionsfrei
+VENT_CAM_L  = 25.5                              # Tom 07-11: symmetrisch + etwas länger (Ränder je 2,0: Vent
+                                                #   X−3,25..22,25 · Kamera-Kante −5,25 · Flach-Ecke 24,25). War 24.
+VENT_CAM_XC = 9.5                               #   +X-RUNDUNG (Flachzone endet real bei ±24,25 = EX_X/2−FIL_O,
+                                                #   nicht ±30!) → hingen beim Druck am Rand. Jetzt X−2,5..+21,5:
+                                                #   in der Flachzone, zentriert im Bereich rechts der Kamera (Flanke −5,25).
 VENT_CAM_BAY_Z = (Z_BAY_MID + 1.0,)  # [MINI param]                       # Tom 07-06: EIN langer Schlitz unterm Kameraloch,
 VENT_CAM_BAY_L = 24.0                           #   Akku-Stockwerk, wie die Rückseite (2×24) nur einzeln
                                                 #   → Luft staut nicht vorn, Querstrom durch die Bay
-VENT_CAM_Z  = (12.5, 15.5)                      # Stockwerk 2, neben dem Linsenfenster (X −15,75..−2,25)
+VENT_CAM_Z  = (5.0, 9.0, 13.0)                  # 07-09 Tom: 3 Reihen DIREKT VOR DEM VTX (Fahrtwind-Intake),
+                                                #   Z-fluchtend mit den 3 Heck-Reihen → sauberer Front→Heck-Durchzug über den VTX
 #  FRONT UNTEN (−X, Stockwerk 1/Akku) — Tom 07-05: „auf der Vorderseite auf Stockwerk [1]".
 VENT_FRONT_LO_L = 12.0
 VENT_FRONT_LO_Z = (Z_BAY_MID - 0.5, Z_BAY_MID + 2.5)  # [MINI param]                # Akku-Höhe; Bay-Schienen (Z<−23,5) + Rippen frei
@@ -278,7 +295,7 @@ def cut_vents_body(body):
     return body, n
 
 
-# ── FEST VERBAUTER STOCKWERK-SHELF (Referenz-Prinzip, mitgedruckt — kein Einlege-Tray) ──
+# ── FEST VERBAUTER STOCKWERK-SHELF (Anton-Prinzip, mitgedruckt — kein Einlege-Tray) ──
 #   V3_SPEC „Stockwerke": Shelf = Teil des Body, Z zwischen Akku-Bay (oben Z=0) und Elektronik.
 #   KEIN durchgehender Boden — 2 Luft-Aussparungen (Kamin + XT30-Durchlass), zentrale VTX-
 #   Klebefläche bleibt flach + groß (modular/verschiebbar). Maße aus V3_SPEC/Airflow, keine Schätzung.
@@ -300,7 +317,7 @@ def build_shelf(body):
 
 # ── M-A4 · GOPRO-2-ZINKEN-GABEL unten (−Z) — Vorlage skylive_sender_v2.py/spec.py ─────
 import spec                       # GOPRO_*-Konstanten = Toms Messungen (Single Source of Truth)
-FINGER_T = 3.0      # Zinken-Dicke: Tom 2026-07-06 FINAL: „mach die GoPro-Zähne 3 mm" (= des Referenz-Prototyps 3,0).
+FINGER_T = 3.0      # Zinken-Dicke: Tom 2026-07-06 FINAL: „mach die GoPro-Zähne 3 mm" (= Antons 3,0).
                     #   Separation/Gap bleibt 3,3 exakt (spec.GOPRO_GAP). (spec 2,7 = ältere Basis, nicht genutzt.)
 GOPRO_CX = 0.0                # Tom 2026-07-05 FINAL: „mach's einfach KOMPLETT mittig" (das frühere
                               #   „+20% nach hinten" war ein Missverständnis der Achse — aufgehoben).
@@ -351,9 +368,13 @@ def build_bay_guides(body):
     x_f = RIB_X[-1] + RIB_W/2                        # Rippen-Vorderkante (+X, Tür-Seite)
     run = y_wall - RIB_FACE
     for s in (-1, +1):
-        wedge = Pos(0, 0, Z_INT_BOTTOM) * extrude(
-            Polygon((x_f - run, s*RIB_FACE), (x_f, s*RIB_FACE), (x_f, s*y_wall), align=None),
-            bay_top - Z_INT_BOTTOM)
+        # 07-09 BUGFIX (Tom-Fund: Dreiecksloch im Boden, −Y-Seite): für s=−1 war die Polygon-Wicklung
+        # CW → Normale −Z → der Keil extrudierte NACH UNTEN durch die 3-mm-Bodenschale (X17,5–20,5, Y−9,5).
+        # Ecken für s<0 umdrehen → CCW → Normale +Z → Keil geht wie gewollt nach OBEN in die Bay.
+        _pts = [(x_f - run, s*RIB_FACE), (x_f, s*RIB_FACE), (x_f, s*y_wall)]
+        if s < 0:
+            _pts = _pts[::-1]
+        wedge = Pos(0, 0, Z_INT_BOTTOM) * extrude(Polygon(*_pts, align=None), bay_top - Z_INT_BOTTOM)
         body = body - wedge
     return body
 
@@ -379,10 +400,17 @@ def cut_roof_opening(body):
     z_in = (RLID_Z_IN + RLID_Z_MID)/2
     body = body - Pos(0, 0, z_in) * extrude(
         RectangleRounded(2*RLID_HX, 2*RLID_HY, RLID_R), RLID_REB_D/2 + 0.1, both=True)
-    # (b) äußere Senkung (Flansch-Sitz): outer Hälfte, +RLID_LAP je Seite (Schulter-Rebate)
+    # (b) äußere Senkung (Flansch-Sitz): outer Hälfte, +RLID_LAP je Seite — ABER an den kurzen ±X-ZE-Enden
+    #     NICHT schneiden (Tom 07-11, gespiegelt vom 850er): sonst bleibt dort Schulter+Rippe = ungewollter
+    #     „Falz zwischen ZE und Deckel". Senkung im ZE-Y-Band ausstanzen → Wand dort VOLLE Höhe, die ZE nimmt
+    #     die volle Wandstärke ein, Deckel hängt an den Eck-Bossen. Kein Füllen, keine Lücke.
     z_out = (RLID_Z_MID + RLID_Z_OUT)/2
-    body = body - Pos(0, 0, z_out) * extrude(
+    _senk = Pos(0, 0, z_out) * extrude(
         RectangleRounded(2*(RLID_HX+RLID_LAP), 2*(RLID_HY+RLID_LAP), RLID_R), RLID_REB_D/2 + 1.0, both=True)
+    for _sx, _cy in AZE_SIDES:
+        _w = (EX_X/2 + 1) - RLID_HX
+        _senk = _senk - Pos(_sx*(RLID_HX + _w/2), _cy, z_out) * Box(_w, AZE_MOUTH_W + 1.0, RLID_REB_D + 2)
+    body = body - _senk
     # [MINI] 2 Heck-Nasen-TASCHEN unter der +X-Falz-Schulter (Deckel-Einhaengen)
     for ty in (-8.0, 8.0):
         body = body - Pos(RLID_HX + 1.35, ty, RLID_Z_IN + 0.75) * Box(2.9, 6.6, 1.7)
@@ -417,7 +445,7 @@ def build_shell():
     inner = extrude(RectangleRounded(IN_X, IN_Y, FIL_I), IN_Z/2, both=True)
     inner = fillet(inner.edges().group_by(Axis.Z)[0] + inner.edges().group_by(Axis.Z)[-1], FIL_HI)
     body = outer - inner
-    # S2-NEU: das Schalter-Loch wandert vom Body-Dach in den DECKEL (Dach ist jetzt der Deckel, Referenz-Prototyp).
+    # S2-NEU: das Schalter-Loch wandert vom Body-Dach in den DECKEL (Dach ist jetzt der Deckel, Anton).
     #   → hier KEIN Dach-Schalterloch mehr (siehe build_deckel).
     # ── Akku-Klappe (+X-Stirnseite, unteres Stockwerk): BÜNDIGER Falz statt simpler Durchbruch ──
     # (a) innerer Durchbruch (Zunge-Sitz): innere Wandhälfte 32.5..34.0, Öffnung OPEN_Y x OPEN_Z
@@ -460,19 +488,19 @@ def build_shell():
 
 
 def graft_camera(shell):
-    """invert_camera() 1:1 re-platziert: verschiebe die Minimal-Schale in des Referenz-Prototyps Frame, sodass die
-    -Y-Wandebene auf des Referenz-Prototyps Wandebene (Y=WALL_Y) und die Wölbungs-Mitte (X21,5/Z14) auf die -Y-Face-
+    """invert_camera() 1:1 re-platziert: verschiebe die Minimal-Schale in Antons Frame, sodass die
+    -Y-Wandebene auf Antons Wandebene (Y=WALL_Y) und die Wölbungs-Mitte (X21,5/Z14) auf die -Y-Face-
     Mitte (X0 / Z_CAM) fällt; wende invert_camera 1:1 an; transformiere zurück.
 
-    Transform M (mein Frame → Referenz-Frame): Rot 180° um Z dreht meine Aussen-Normale -Y auf des Referenz-Prototyps +Y
-    (outward), dann Translation. So bleibt jede Referenz-interne Relation (Wölbung↔Linse↔Klemmbohrungen)
+    Transform M (mein Frame → Anton-Frame): Rot 180° um Z dreht meine Aussen-Normale -Y auf Antons +Y
+    (outward), dann Translation. So bleibt jede Anton-interne Relation (Wölbung↔Linse↔Klemmbohrungen)
     exakt erhalten (= 1:1 wiederverwendet), nur re-platziert."""
     M = Pos(BULGE_XC + CAM_OFF_X, WALL_Y - EX_Y/2, BULGE_ZC - Z_CAM) * Rot(0, 0, 180)
-    gk_ref = M * shell                     # Schale in des Referenz-Prototyps Frame
-    # M-A3: camera_final = Linse RAUS (Fenster, flush außen), des Referenz-Prototyps Ösen-Struktur NACH INNEN
-    #   (Flanken + Ø8,4-Bosse + X-Achs-Bohrung + Ø4,7×2,6-CB innen). clear_ref=False: die
+    gk_anton = M * shell                     # Schale in Antons Frame
+    # M-A3: camera_final = Linse RAUS (Fenster, flush außen), Antons Ösen-Struktur NACH INNEN
+    #   (Flanken + Ø8,4-Bosse + X-Achs-Bohrung + Ø4,7×2,6-CB innen). clear_anton=False: die
     #   Minimal-Schale hat keine interne Kamera-Altlast. Flanken-Z-Höhe 12 < F2_H 20 ✓.
-    fixed = camera_final(gk_ref, clear_ref=False)
+    fixed = camera_final(gk_anton, clear_anton=False)
     body = M.inverse() * fixed               # zurück in meinen Frame
     # Tom 07-05: „Einsenkung mit Loch in der AUSSENWAND statt Stützstruktur" — die linke Kamera-
     # Schraube geht durch die −X-Wand: Ø2,4-Bohrung von außen bis in die (wandverschmolzene) linke
@@ -522,6 +550,14 @@ def _add_door_nasen(door):
         # Haken-Kopf am Finger-Ende (ragt über Finger-Oberkante → Auszugssperre)
         door = door + Pos(FIN_XIN + HOOK/2, ny, (FIN_BOT + LIP_TOP - 0.2)/2) * \
             Box(HOOK, NASE_W, (LIP_TOP - 0.2) - FIN_BOT)
+        # WURZEL-KEIL (Kollegen-Review 07-13, wie 850er/v3_min): t=1,2-Finger steht in Druckorientierung
+        #   senkrecht (Layer quer zur Biegelast), scharfe 90°-Wurzel = Riss-Starter. 45°-Kehl-Keil 1,0×1,0
+        #   an der Finger-Oberseite-Wurzel; deterministisches Prisma; Tür∩Body-Gate verifiziert. CAD ≠ Test.
+        _xr = X_WALL_IN + TOL_SLIDE + 0.1
+        _g = 1.0
+        _wpts = [(_xr - _g, NASE_TOP), (_xr, NASE_TOP), (_xr, NASE_TOP + _g)]
+        door = door + Pos(0, ny + NASE_W/2, 0) * Rot(90, 0, 0) * \
+            extrude(Polygon(*_wpts, align=None), NASE_W)
     return door
 
 
@@ -556,8 +592,16 @@ def build_door():
     #   1× M2 Zylinderkopf durch die Lasche in den Wand+Shelf-Piloten. Kein Innen-Boss, kein Pad,
     #   keine Mulde mehr (Griff = die Lasche selbst nach dem Lösen). Akku-Zone bleibt komplett frei.
     z_ot = Z_BAY_MID + OPEN_Z/2                               # Öffnungs-Oberkante −0,5
-    door = door + Pos(DOOR_FACE_X + DOOR_TAB_T/2, 0, (z_ot - 1.5 + DOOR_TAB_SZ + 3.0)/2) * \
-        Box(DOOR_TAB_T, DOOR_TAB_W, (DOOR_TAB_SZ + 3.0) - (z_ot - 1.5))
+    door = door + Pos(DOOR_FACE_X + DOOR_TAB_T/2, 0, (z_ot - DOOR_TAB_AP + DOOR_TAB_SZ + 3.0)/2) * \
+        Box(DOOR_TAB_T, DOOR_TAB_W, (DOOR_TAB_SZ + 3.0) - (z_ot - DOOR_TAB_AP))
+    # KEHLNAHT an der Laschenwurzel (kerbfrei gegen Schäl-Riss; wie 850, s. dort). Ecke ε=0,4 in
+    #   beide Teile (koplanar → disjunkt!); Plane.XZ*Polygon zentriert → Ziel-Ecken absolut, cx/cz mitteln.
+    z_ab = z_ot - DOOR_TAB_AP
+    _P = [(DOOR_FACE_X, z_ab - DOOR_TAB_FIL), (DOOR_FACE_X + DOOR_TAB_FIL, z_ab), (DOOR_FACE_X - 0.4, z_ab + 0.4)]
+    _cx = (min(p[0] for p in _P) + max(p[0] for p in _P)) / 2
+    _cz = (min(p[1] for p in _P) + max(p[1] for p in _P)) / 2
+    door = door + Pos(_cx, 0, _cz) * extrude(
+        Plane.XZ * Polygon(*[(px - _cx, pz - _cz) for px, pz in _P]), DOOR_TAB_W/2, both=True)
     door = door - Pos(DOOR_FACE_X + DOOR_TAB_T/2, 0, DOOR_TAB_SZ) * Rot(0, 90, 0) * \
         Cylinder(radius=DOOR_THRU_R, height=DOOR_TAB_T + 1)   # Durchgang Ø2,4 (Kopf liegt proud auf)
     # MINI-VENTS in der Klappe (Tom 07-06: „schmale horizontale Striche auf der Akku-Vorderseite,
@@ -568,20 +612,20 @@ def build_door():
     return door
 
 
-# ── MB2(a) · ANTENNEN-ZUGENTLASTUNG — Anschraub-Position (des Referenz-Prototyps Block extern, Spec §5) ──────
+# ── MB2(a) · ANTENNEN-ZUGENTLASTUNG — Anschraub-Position (Antons Block extern, Spec §5) ──────
 #   ENTSCHEIDUNG NACH PLATZ (dokumentiert, Spec: „Union ODER Anschraub, entscheide nach Platz"):
-#   des Referenz-Prototyps Block 17,9×13,05×5,8 passt NICHT kollisionsfrei intern — Floor-2 ist voll (Kamera
+#   Antons Block 17,9×13,05×5,8 passt NICHT kollisionsfrei intern — Floor-2 ist voll (Kamera
 #   X−19,75..1,75 · VTX X1,75..31 · Deckel-Bosse in den Ecken), und seine Rückwand-Schrauben (Achse
 #   Y, flächig) verlangen eine ±Y-Wand; beide sind belegt (+Y=Deckel, −Y=Kamera). Der Block ist
-#   ohnehin ein EXTERNER Strain-Relief (des Referenz-Prototyps Realdruck, Foto proto_8369). Also KEIN Union: des Referenz-Prototyps
+#   ohnehin ein EXTERNER Strain-Relief (Antons Realdruck, Foto proto_8369). Also KEIN Union: Antons
 #   Block bleibt SEIN separates Druckteil (STEP); ich stelle nur die Schnittstelle an der −X-Front-
 #   Oberkante bereit — Koax-Kanten-Schlitz + 2× M2-Kern-Bosse („Rückwand-Prinzip", flächig verschraubt).
-#   Klemm-Differenz 2,9 bleibt in des Referenz-Prototyps Block (unverändert, Spec §5). Antenne vertikal → Koax nach −X.
+#   Klemm-Differenz 2,9 bleibt in Antons Block (unverändert, Spec §5). Antenne vertikal → Koax nach −X.
 # T-PRINZIP FINAL (Tom 07-06, Fotos IMG_8398–8402: „ÜBERNIMM DIESES PRINZIP — Antenne links
 # UND rechts verankert, auf der KURZEN Seite, oberst, Gehäuse dennoch geschlossen"):
-#   des Referenz-Prototyps echtes System = T-SCHLITZ oben in der kurzen Seite: ein 2,9 breiter DURCHGANGS-
+#   Antons echtes System = T-SCHLITZ oben in der kurzen Seite: ein 2,9 breiter DURCHGANGS-
 #   Schlitz von der Oberkante (Ø3,1-Koax wird von OBEN eingelegt und in den 2,9-PRESSSITZ
-#   gedrückt — „hebt gut", des Referenz-Prototyps Standard), Rundboden r1,45 als Kabel-Sitz. Außen eine
+#   gedrückt — „hebt gut", Antons Standard), Rundboden r1,45 als Kabel-Sitz. Außen eine
 #   flache T-VERTIEFUNG, in die ein flaches T-STÜCK einfährt und den Schlitz verschließt;
 #   oben ein Deckflansch im Dachrand-Spotface mit 2× M2 VERTIKAL (Köpfe nach OBEN, Tom #4)
 #   in die Wand-Oberkante. Das Kabel steigt durch die offene Flansch-Kerbe nach OBEN aus —
@@ -589,22 +633,25 @@ def build_door():
 #   Heck +X, Y=0): Kabelseite = T-Stück MIT Kerbe, Gegenseite = BLINDES T-Stück (geschlossen).
 #   Sitz-Höhe 24,0: über Kamera-Rahmen-Top ~23,5 [STEP+Spec] und VTX-Env-Top 22,6 [Spec];
 #   Front-Zuführung zusätzlich durch die 3,75-Gasse vor der Kamera. Semi-Rigid-Weg [Fit].
-# T-PRINZIP 2.0 (07-06, s. v3_min: des Referenz-Prototyps Mechanik — Sitz MIT SPIEL, Klemmkraft = Schrauben
+# T-PRINZIP 2.0 (07-06, s. v3_min: Antons Mechanik — Sitz MIT SPIEL, Klemmkraft = Schrauben
 # über die Steg-NASE R1,55; Mund → Führungsschlitz → Rundsitz; KEINE Kerbe nötig)
 AZE_SIDES    = ((-1, 0.0), (+1, 0.0))   # (Wand-Vorzeichen X, Mitte Y) — beide KURZE Seiten
 AZE_SEAT_CZ  = EX_Z/2 - 7.0  # [MINI param] Dach-relativ wie 850er (7 unter der Kante)
-AZE_SEAT_D   = 3.2                      # Rundsitz MIT SPIEL (Referenz-Prototyp gemessen)              [STEP]
+AZE_SEAT_D   = 3.2                      # Rundsitz MIT SPIEL (Anton gemessen)              [STEP]
 AZE_SLOT_W   = 3.3                      # Führungsschlitz (Steg 3,1 + 0,2 Gleitspiel)
-AZE_MOUTH_W, AZE_MOUTH_DP = 18.0, 2.5   # Mund/Querhaupt-Sitz in der Wand-Oberkante  [Referenz-Prototyp 18/2,5]
+AZE_MOUTH_W, AZE_MOUTH_DP = 18.0, 2.5   # Mund/Querhaupt-Sitz in der Wand-Oberkante  [Anton 18/2,5]
 AZE_STEM_W   = 3.1                      # T-Steg = Nasenbreite, Nase R1,55 = Kabelradius   [STEP]
 AZE_NOSE_CZ  = EX_Z/2 - 4.3             # Nasen-Zentrum bei bündigem Querhaupt → 0,4 Pressweg
-AZE_SCREW_DY2 = 5.3                     # 2× M2×8 DIN 912 VERTIKAL (Referenz-Prototyp ±5,3), Köpfe oben [STEP]
-AZE_PILOT_D, AZE_PILOT_DP = 1.7, 7.0    # Kern-Piloten ab Mund-Boden (7 tief: M2×8 greift 6,7)
+AZE_SCREW_DY2 = 5.3                     # 2× M2×8 DIN 912 VERTIKAL (Anton ±5,3), Köpfe oben [STEP]
+AZE_PILOT_D, AZE_PILOT_DP = 1.7, 7.0    # (ALT selbstschneidend — 07-09 ersetzt durch M2-Insert-Boss, wie 850er)
+AZE_SCREW_GX  = EX_X/2 - 3.0            # Schraubachse 1,5 nach innen (Platz für M2-Insert Ø2,8 + Wand)
+AZE_INS_HD, AZE_INS_HDP = 2.8, 5.0     # M2-Insert-Loch Ø2,8 × 5 (spec.INSERT_M2_HOLE)
+AZE_INS_BOSS_D = 5.8                    # Insert-Boss-Ø (Loch + 1,5/Seite Wand)
 AZE_CLR      = 0.1                      # Passungsspiel je Seite
 
 
 def mount_antenna_ze(body):
-    """T-Prinzip 2.0 (des Referenz-Prototyps Mechanik, s. v3_min): MUND 18×2,5 → FÜHRUNGS-SCHLITZ 3,3 →
+    """T-Prinzip 2.0 (Antons Mechanik, s. v3_min): MUND 18×2,5 → FÜHRUNGS-SCHLITZ 3,3 →
     RUNDSITZ Ø3,2 MIT SPIEL horizontal durch die Wand + 2× M2-Piloten Ø1,7×7.
     Klemmkraft = Schrauben über die Steg-Nase. CAD ≠ Klemm-/Zug-Test [Fit-Print]."""
     top = EX_Z/2 + 1.0
@@ -613,17 +660,34 @@ def mount_antenna_ze(body):
         # (1) Mund 18 breit × 2,5 tief, volle Wandtiefe
         body = body - Pos(xm, cy, (EX_Z/2 - AZE_MOUTH_DP + top)/2) * \
             Box(WALL + 0.6, AZE_MOUTH_W, top - (EX_Z/2 - AZE_MOUTH_DP))
+        # (1b) FLUSH-TASCHE (Tom 07-11, gespiegelt vom 850er): Aufnahme für das BÜNDIGE T-Stück
+        #      (build_aze_tee_flush, 05b) → Oberkante bündig mit dem Deckel. Parametrisch (EX-relativ);
+        #      Boden Z20,85 > Koax-Sitz @17 + Insert-Boss-Tops @21,5 (Boss danach angebaut, füllt Überlapp).
+        body = body - Pos(sx*(EX_X/2 - 2.6), cy, EX_Z/2 - 1.15) * Box(7.2, AZE_MOUTH_W + 1.2, 2.7)   # [Tom 07-11] Boden = Boss-Oberkante → Insert-Bosse bündig, keine Strebe
         # (2) Führungs-Schlitz 3,3 vom Mund-Boden bis zur Sitz-Mitte
         body = body - Pos(xm, cy, (AZE_SEAT_CZ + EX_Z/2 - AZE_MOUTH_DP + 0.2)/2) * \
             Box(WALL + 0.6, AZE_SLOT_W, (EX_Z/2 - AZE_MOUTH_DP + 0.2) - AZE_SEAT_CZ)
         # (3) Rundsitz Ø3,2 MIT SPIEL, horizontal durch die Wand (Kabelweg — bleibt immer frei)
         body = body - Pos(xm, cy, AZE_SEAT_CZ) * Rot(0, 90, 0) * \
             Cylinder(radius=AZE_SEAT_D/2, height=WALL + 0.6)
-        # (4) 2× M2-Kern-Piloten VERTIKAL (vom Mund-Boden 7,0 tief — M2×8 greift 6,7)
+        # (4) 2× M2-INSERT-BOSS VERTIKAL (07-09, wie 850er): Materialpfeiler nach innen + Ø2,8×5-
+        #     Insert-Loch ab Mund-Boden. Achse AZE_SCREW_GX (1,5 nach innen → 1,5 Wand nach außen).
+        _zmb = EX_Z/2 - AZE_MOUTH_DP                    # Mund-Boden
         for s in (-1, +1):
-            body = body - Pos(sx*(EX_X + IN_X)/4, cy + s*AZE_SCREW_DY2,
-                              EX_Z/2 - AZE_MOUTH_DP - AZE_PILOT_DP/2) * \
-                Cylinder(radius=AZE_PILOT_D/2, height=AZE_PILOT_DP)
+            _sy = cy + s*AZE_SCREW_DY2
+            body = body + Pos(sx*AZE_SCREW_GX, _sy, _zmb - (AZE_INS_HDP + 0.5)/2) * \
+                Cylinder(radius=AZE_INS_BOSS_D/2, height=AZE_INS_HDP + 0.5)             # Boss-Pfeiler Ø5,8
+            body = body - Pos(sx*AZE_SCREW_GX, _sy, _zmb - AZE_INS_HDP/2) * \
+                Cylinder(radius=AZE_INS_HD/2, height=AZE_INS_HDP)                       # Insert-Loch Ø2,8×5
+            body = body - Pos(sx*AZE_SCREW_GX, _sy, _zmb - spec.INSERT_M2_CHAMFER/2) * \
+                Cone(bottom_radius=AZE_INS_HD/2, top_radius=AZE_INS_HD/2 + 0.3, height=spec.INSERT_M2_CHAMFER)
+        # (5) KAPPEN-SCHNITTSTELLE (Omni-Windschützer, s. v3_min): 2× M2-Pilot Ø1,7×6
+        #     horizontal @(y ±15, Z=Sitz) + Innen-Stützboss Ø5 (Ohren-Abstand 30, Löcher Ø2,2)
+        for s in (-1, +1):
+            body = body + Pos(sx*(IN_X/2 - 2.0), cy + s*15.0, AZE_SEAT_CZ) * Rot(0, 90, 0) * \
+                Cylinder(radius=2.5, height=4.0)
+            body = body - Pos(sx*(EX_X/2 - 3.0), cy + s*15.0, AZE_SEAT_CZ) * Rot(0, 90, 0) * \
+                Cylinder(radius=0.85, height=6.0)
     return body
 
 
@@ -632,16 +696,48 @@ def build_aze_tee(notch=None):
     QUERHAUPT 17,7×2,8×2,5 + STEG 3,1 mit KONVEXER NASE R1,55 — Schrauben ziehen die Nase
     0,4 in Presslage. 2× Ø2,4 vertikal + CB Ø4,4×1,2 (M2×8, Köpfe oben). notch obsolet.
     Lokal: X=0 Wand-Außenfläche (+X außen), Z=0 Dach-Oberkante."""
-    xw = -WALL/2
-    t = Pos(xw, 0, -AZE_MOUTH_DP/2) * Box(WALL - 0.2, AZE_MOUTH_W - 0.3, AZE_MOUTH_DP)  # Querhaupt
+    # 07-09 DRUCKROBUST (wie 850er): der alte Entwurf (Querhaupt nur 2,8 dünn, CB Ø4,4 > 2,8)
+    # zerbrach beim Ablösen. NEU: MASSIVER geschlossener Deckelblock oben (proud über der Wand) —
+    # verbindet die Löcher, versenkt die Köpfe in Töpfen mit 2-mm-Boden. Body-Schnittstelle UNVERÄNDERT.
+    # DRUCK: Block-Deckel nach UNTEN aufs Bett (große Auflage), baut nach oben schmaler zu → KEIN Support.
+    xw = -WALL/2                                        # Querhaupt-/Steg-/Nasen-Mitte (im Mund/Schlitz)
+    xs = AZE_SCREW_GX - EX_X/2                          # −3,0 = SCHRAUBACHSE (1,5 nach innen, fluchtet Insert)
     _zn = AZE_NOSE_CZ - EX_Z/2                          # Nasen-Zentrum lokal (−4,3)
+    CAP_H, CB_DP = 3.0, 1.0                             # Block-Höhe · CB-Tiefe (Boden 2,0 robust)
+    cap_xc, CAP_W = -2.3, 6.4                           # Block X −5,5..+0,9 — deckt CB @xs−3,0 ±2,2
+    t = Pos(xw, 0, -AZE_MOUTH_DP/2) * Box(WALL - 0.2, AZE_MOUTH_W - 0.3, AZE_MOUTH_DP)  # Querhaupt (unverändert)
+    t = t + Pos(cap_xc, 0, CAP_H/2) * Box(CAP_W, AZE_MOUTH_W - 0.3, CAP_H)              # MASSIVER Deckelblock
     t = t + Pos(xw, 0, (-AZE_MOUTH_DP + _zn)/2) * \
-        Box(WALL - 0.2, AZE_STEM_W, -_zn - AZE_MOUTH_DP)                                # Steg gerade
+        Box(WALL - 0.2, AZE_STEM_W, -_zn - AZE_MOUTH_DP)                                # Steg (unverändert)
     t = t + Pos(xw, 0, _zn) * Rot(0, 90, 0) * \
-        Cylinder(radius=AZE_STEM_W/2, height=WALL - 0.2)                                # Nase R1,55
-    for s in (-1, +1):                                  # 2× M2 vertikal, Köpfe oben
-        t = t - Pos(xw, s*AZE_SCREW_DY2, -AZE_MOUTH_DP/2) * Cylinder(radius=1.2, height=AZE_MOUTH_DP + 1)
-        t = t - Pos(xw, s*AZE_SCREW_DY2, -0.6) * Cylinder(radius=2.2, height=1.3)       # CB Ø4,4×1,2
+        Cylinder(radius=AZE_STEM_W/2, height=WALL - 0.2)                                # Nase R1,55 (unverändert)
+    for s in (-1, +1):                                  # 2× M2 durch + geschlossene CB im Block, Achse xs
+        t = t - Pos(xs, s*AZE_SCREW_DY2, -0.25) * Cylinder(radius=1.2, height=CAP_H + AZE_MOUTH_DP + 2)
+        t = t - Pos(xs, s*AZE_SCREW_DY2, CAP_H - CB_DP/2) * Cylinder(radius=2.2, height=CB_DP)
+    return t
+
+
+def build_aze_tee_flush():
+    """FLUSH-Variante des T-Stücks (Druckteil 05b, 2×) — Tom 07-11, gespiegelt vom 850er: schließt BÜNDIG
+    mit dem Deckel ab (Oberkante Z=EX_Z/2, KEIN proud-Block) und hat die M2-Zylinderkopf-Versenkung SCHON
+    im Riegel. Sitzt in der Flush-Tasche (mount_antenna_ze 1b). Steg/Nase/Kabel-Presslage = proud-Riegel.
+    Lokal: X=0 Wand-Außenfläche, Z=0 Dach-Oberkante; Block bündig Z −2,5..0 (ruht auf Insert-Boss-Tops)."""
+    xw = -WALL/2
+    xs = AZE_SCREW_GX - EX_X/2                          # −3,0 = Schraubachse (= Insert)
+    _zn = AZE_NOSE_CZ - EX_Z/2                          # −4,3
+    BLK_H = AZE_MOUTH_DP                                # 2,5: Unterkante = Insert-Boss-Tops; Oberkante Z0 bündig
+    blk_xc, BLK_W = -3.0, 5.6                           # X −5,8..−0,2 (deckt Schrauben @−3,0 ±2,2)
+    t = Pos(blk_xc, 0, -BLK_H/2) * Box(BLK_W, AZE_MOUTH_W - 0.3, BLK_H)                  # bündiger Block
+    t = t + Pos(xw, 0, (-BLK_H + _zn)/2) * Box(WALL - 0.2, AZE_STEM_W, -_zn - BLK_H)     # Steg
+    t = t + Pos(xw, 0, _zn) * Rot(0, 90, 0) * Cylinder(radius=AZE_STEM_W/2, height=WALL - 0.2)  # Nase
+    # 2× M2 durch + CB Ø4,4×1,5 von OBERKANTE. Kollegen-Review 07-13/14: CB 2,0 ließ nur 0,5 Ringboden
+    # (Gate-v2-DÜNNWAND, Bruchrisiko beim Anziehen). Boden jetzt 1,0 (liegt voll auf dem Insert-Boss-Top
+    # = reine Druckbelastung); DIN-912-Kopf (h 2,0) steht 0,5 proud — bewusster Trade (Minimax). VOLL
+    # bündig UND robust: Flachkopf DIN 7984 (h 1,3 → CB 1,3, Boden 1,2), sobald Tom die Schrauben hat.
+    CB_DP_FLUSH = 1.5
+    for s in (-1, +1):
+        t = t - Pos(xs, s*AZE_SCREW_DY2, -BLK_H/2) * Cylinder(radius=1.2, height=BLK_H + 2)
+        t = t - Pos(xs, s*AZE_SCREW_DY2, -CB_DP_FLUSH/2) * Cylinder(radius=2.2, height=CB_DP_FLUSH)
     return t
 
 
@@ -656,15 +752,18 @@ def place_aze_tee(t, sx, cy):
 #   Akku. 2 getrennte horizontale Rinnen (rot+schwarz, Achse X), Licht Ø2,6 voll verschlossen (Ader
 #   2,8 → 0,2 Quetsch). Riegel = separates Mini-Teil (2× exportiert), 2× M2 in Ø1,7-Kerne. ≥10 mm
 #   offen zur Klappe (Lötkolben durch die geöffnete Tür). Riegel-Oberkante im lower-Floor-2 (Shelf-Cutout).
-XT30_SAD_X  = (X_WALL_IN - 15.0, X_WALL_IN - 4.0)  # [MINI param]         # Sattel-Länge X (≈11, im +X-Shelf-Cutout); +X-Kante 28,5 → 4 mm Puffer, Tür OFFEN=Zugang
+XT30_SAD_X  = (X_WALL_IN - 15.0, X_WALL_IN - 6.5)  # Tom 07-11: +X-Kante von −4 auf −6,5 → Luft zur +X-Wand
+                                                   #   4→6,5 mm (Kabel hochführen + fixieren). Sattel bleibt im +X-Shelf-Cutout.
 XT30_SAD_YW = 10.0                 # Sattel-Innenkante |Y| (protrudes von Wand 16,75 → 10,0)      [Design]
 XT30_SAD_Z  = (Z_INT_BOTTOM + BAY_H + 0.3, Z_INT_BOTTOM + BAY_H + 2.3)  # [MINI param Bay-Top-relativ]           # Z über Akku-Guide-Oberkante 0,25 (kein Akku-Kontakt)         [Spec §5b/kollisionsfrei]
 XT30_GROOVE_R = 1.3                # Rinnen-Halbradius → Licht Ø2,6 voll verschlossen             [Spec §5b: Licht 2,6]
 XT30_GROOVE_Y = (11.5, 15.5)       # 2 getrennte Rinnen |Y|, Steg ~1,4 (rot+schwarz)             [Spec §5b: 2 getrennt]
-XT30_PILOT_D  = 1.7                # M2-Riegel-Kern Ø1,7 (des Referenz-Prototyps Praxis, Schrumpf beißt)          [Spec §5b/§8]
+XT30_PILOT_D  = 1.7                # M2-Riegel-Kern Ø1,7 (Antons Praxis, Schrumpf beißt)          [Spec §5b/§8]
 XT30_PILOT_Y  = 13.5              # Riegel-Schraube mittig zwischen den Rinnen                   [Design]
 XT30_PILOT_DX = 4.0               # 2 Schrauben längs ±4 um die Sattelmitte                      [Design]
-XT30_LATCH_H  = 2.0              # Riegel-Höhe über der Sattel-Oberkante                          [Design]
+XT30_LATCH_H  = 3.0              # Riegel-Höhe über Sattel-Oberkante — 07-14 Kollegen-Review-Klasse: bei 2,0 blieb
+                                  #   über den Ø2,6-Rinnen nur 0,7 Restboden (Gate-v2-Fund, ganzer Riegel p50<1) →
+                                  #   3,0 = Boden 1,7. Oberkante ragt in Stockwerk 2 (XT30-Stecker-Zone, frei)  [Design]
 
 
 def build_xt30_ze(body):
@@ -703,7 +802,7 @@ def build_xt30_latch(sy=+1):
     return latch
 
 
-# ── AUDIT-FIX (REFERENZ.md, 2026-07-05) · FLOOR-2 RAUMHAUSHALT ──────────────────────────
+# ── AUDIT-FIX (ANTON20_AUDIT.md, 2026-07-05) · FLOOR-2 RAUMHAUSHALT ──────────────────────────
 #   Neutrales Audit fand 1 DEFEKT (VTX-Platine durchdringt die +X-Deckel-Insert-Bosse, 687 mm³) +
 #   6 WICHTIG (Wago/XT30 ohne Platz, Kamera-/Riegel-Schraubzugang, +X-Snap-Wand 0,65). STRUKTURFIX:
 #   (1) Deckel-Bosse RAUS → Deckel-Halt = Boden-Einhängenasen + 2 vertikale Dach-M3 in Deckel-OHREN.
@@ -729,14 +828,14 @@ def _vtx_env_solid():
     return Pos(VTX_CX, VTX_CY, VTX_CZ) * Box(*VTX_ENV)
 
 # DECKEL = DACH (Tom 07-05 FINAL: „Der Deckel sitzt OBEN drauf, wie das ein Deckel eben tut" —
-#   exakt des Referenz-Prototyps Deckel.STEP = Dachplatte 4,5). SIMPEL: Platte + Lippe + 3× M3, Schalter im Deckel.
+#   exakt Antons Deckel.STEP = Dachplatte 4,5). SIMPEL: Platte + Lippe + 3× M3, Schalter im Deckel.
 #   3 vertikale Eck-Insert-Bosse (vorne-links KEIN Boss: Kamera@−21,75 belegt die Ecke → dort hält
-#   die Falz-Lippe; dokumentierte Asymmetrie wie an des Referenz-Prototyps Druck).
+#   die Falz-Lippe; dokumentierte Asymmetrie wie an Antons Druck).
 VTX_ZONE_X = (VTX_X0, VTX_X0 + 37.0)  # [MINI param] (850: -10,5..26,5)                       # VTX-Klebezone (29,2 + Spiel); LÄNGS eingesetzt, NEBEN
                                                  #   der Kamera; STECKERFREIRAUM beidseitig: links U.FL-
                                                  #   Pigtail, rechts (180°) MIPI+Strom [Tom 07-05]
 
-# WAGO-BANK ENTFERNT (Tom 07-05: kein Overengineering — an des Referenz-Prototyps/Toms realem Druck hängen die
+# WAGO-BANK ENTFERNT (Tom 07-05: kein Overengineering — an Antons/Toms realem Druck hängen die
 #   Wagos FREI am Kabelbaum, RTV-Tropfen gegen Vibration siehe ASSEMBLY_STEPS). Links-Zone bleibt
 #   Kabel-/Elektronik-Freiraum.
 WAGO_Z0  = Z_INT_BOTTOM + BAY_H + SHELF_T          # 4,0 · Shelf-Oberkante (Referenz für XT30-Park)
@@ -758,7 +857,7 @@ def _xt30park_env_solid():
 
 
 def build_roof_lid():
-    """DECKEL = DACHPLATTE (Tom 07-05: „sitzt oben drauf, wie ein Deckel eben tut" — des Referenz-Prototyps Prinzip,
+    """DECKEL = DACHPLATTE (Tom 07-05: „sitzt oben drauf, wie ein Deckel eben tut" — Antons Prinzip,
     SIMPEL: Platte + Lippe + 3× M3 + Schalterloch). Bündig außen (Z=EX_Z/2), Flansch sitzt in der
     Dach-Senkung (Falz), Lippe taucht in die Öffnung. Separates Druckteil. CAD ≠ Passsitz-Test."""
     tol = TOL_SLIDE
@@ -777,10 +876,21 @@ def build_roof_lid():
     #   einhaengen, vorne 2x M3 (ersetzt die nicht platzierbaren +X-Bosse)
     for ty in (-8.0, 8.0):
         lid = lid + Pos(RLID_HX - 0.75, ty, RLID_Z_IN + 0.7) * Box(6.5, 6.0, 1.4)  # tief in die Lippe eingebunden
-    # 2× M3 VORNE: Durchgang Ø3,4 + Spotface Ø6,1×0,4 (s. [MINI-TODO]: Referenz-Senkung folgt)
+    # 2× M3 VORNE: Durchgang Ø3,4 + Spotface Ø6,1×0,4 (s. [MINI-TODO]: Anton-Senkung folgt)
     for (px, py) in RLID_SCREW:
         lid = lid - Pos(px, py, (RLID_Z_IN + RLID_Z_OUT)/2) * Cylinder(radius=LID_THRU_D/2, height=WALL + 2)
         lid = lid - Pos(px, py, RLID_Z_OUT - LID_CB_DP/2) * Cylinder(radius=LID_CB_D/2, height=LID_CB_DP)
+    # ZE-KAPPEN-FREIRAUM (07-09 Tom): die 3-mm-proud ZE-Kappe überkragt den Deckel-Rand an beiden
+    #   ±X-ZE-Seiten (Kappen-Innenkante |X|=EX_X/2−5,5, über den Deckel-Rand; Cap-Unterkante Z=EX_Z/2
+    #   sitzt sonst NULL-Spalt auf der Deckel-Oberkante → Fight + Blockade beim Einsetzen). Deshalb den
+    #   Deckel-FLANSCH (obere Hälfte, Z≥RLID_Z_MID) in der Kappen-Y-Breite aussparen → 1,5 mm Freiraum;
+    #   Lippe + Einhänge-Nasen (Z<RLID_Z_MID) bleiben unangetastet.
+    _zc = (RLID_Z_MID + RLID_Z_OUT + 1)/2
+    _xin = EX_X/2 - 5.5 - 0.4                       # Kappen-Innenkante − 0,4 Freiraum
+    _yw  = 2*((AZE_MOUTH_W - 0.3)/2 + 0.4)          # Kappenbreite + Freiraum
+    for _sx in (-1, +1):
+        lid = lid - Pos(_sx*(_xin + EX_X/2 + 1)/2, 0, _zc) * \
+            Box((EX_X/2 + 1) - _xin, _yw, (RLID_Z_OUT + 1) - RLID_Z_MID)
     return lid
 
 
@@ -802,7 +912,7 @@ if __name__ == "__main__":
     b = build_xt30_ze(b)               # MB2(b): 2× XT30-Klemmsattel (±Y-Oberkante, +X, angedruckt)
     #  Sattel-Material dort, wo vorher Luft war (über dem Akku) → beweist Anbau (Volumen-Delta trügt: Rinnen schneiden Shelf)
     xt30_added = _sad_probe_air and all(((Pos(_xc0, sy*13.0, (XT30_SAD_Z[0]+XT30_SAD_Z[1])/2) * Box(1, 1, 0.6)) & b).volume > 0.4 for sy in (-1, +1))
-    # Antenne: EXTERN (des Referenz-Prototyps Zugentlastung an der Gehäuse-Kante, Koax durch Schlitz — Foto proto_8369).
+    # Antenne: EXTERN (Antons Zugentlastung an der Gehäuse-Kante, Koax durch Schlitz — Foto proto_8369).
     #   KEIN interner Omni-Keepout / keine Wand-Kavität mehr (frühere ↓↑-Donut-Doktrin superseded).
     #   Die -X-Ecke gehört jetzt der Kamera (Zentrum X=-9), der VTX liegt rechts daneben (vtx_fit-Gate).
     # ── MB3 · VENTS (neue §6b-Matrix) — Kollisions-Verbote VOR dem Schneiden numerisch prüfen ──
@@ -866,7 +976,7 @@ if __name__ == "__main__":
     assert n_solids == 1, f"erwartet 1 Solid, ist {n_solids}"
     assert flush, f"Wölbung ragt nach außen: bbox.min.Y={bb.min.Y:.3f} < Wand {wall_y:.1f}"
 
-    # ── M-A3 KAMERA-GATE (Ösen innen, Linse raus; Zahlen aus camera_reference-Konstanten) ──
+    # ── M-A3 KAMERA-GATE (Ösen innen, Linse raus; Zahlen aus anton_v3-Konstanten) ──
     cam_back = wall_y + 0.5 + 18.5           # Kamera-Rückseite: Recess 0,5 + Tiefe 18,5 [spec CAM_BODY]
     print(f"[cam]   Fenster 13,5×13,5 R2,5 · Ösen-Spanne {2*CAM_FLK_OUT:.1f} · Klemmweite "
           f"{2*CAM_CLAMP:.1f} (Kamera 14+0,5/Seite) · CB innen Ø{2*CAM_CB_R:.1f}×{CAM_CB_D:.1f} "
@@ -1009,14 +1119,18 @@ if __name__ == "__main__":
                      Box(0.4, 0.4, 0.4)) & b).volume > 0.02
         _way_ok = all(((Pos(_sx*(EX_X/2 + o), _cy, AZE_SEAT_CZ) * Box(0.4, 0.4, 0.4)) & b).volume < 1e-6
                       for o in (0.4, -WALL - 0.4))
-        # (3) 2× vertikale M2-Piloten offen (unter dem Mund-Boden)
-        _pil_ok = all(((Pos(_xm, _cy + s*AZE_SCREW_DY2, EX_Z/2 - AZE_MOUTH_DP - 1.5) *
+        # (3) 2× M2-INSERT-LÖCHER offen (Ø2,8, unter dem Mund-Boden, auf der Insert-Achse) +
+        #     Ring-Material rundum (Boss trägt das Insert): Loch=Luft, r2,3 ringsum=Material
+        _pil_ok = all(((Pos(_sx*AZE_SCREW_GX, _cy + s*AZE_SCREW_DY2, EX_Z/2 - AZE_MOUTH_DP - 2.0) *
                         Box(0.4, 0.4, 0.4)) & b).volume < 1e-6 for s in (-1, +1))
-        # (4) T-Stück GESETZT (Querhaupt bündig): keine Body-Durchdringung, oben bündig
+        _ins_ring = all(((Pos(_sx*AZE_SCREW_GX + 2.3, _cy + s*AZE_SCREW_DY2, EX_Z/2 - AZE_MOUTH_DP - 2.0) *
+                        Box(0.3, 0.3, 0.3)) & b).volume > 0 for s in (-1, +1))
+        _pil_ok = _pil_ok and _ins_ring
+        # (4) T-Stück GESETZT: keine Body-Durchdringung; Deckelblock steht 3,0 proud über der Wand
         _pl = place_aze_tee(_te, _sx, _cy)
         _ix = _pl & b
         _pen = sum(s2.volume for s2 in _ix.solids()) if (_ix is not None and _ix.solids()) else 0.0
-        _top_flush = abs(_pl.bounding_box().max.Z - EX_Z/2) < 1e-3
+        _top_flush = abs(_pl.bounding_box().max.Z - (EX_Z/2 + 3.0)) < 0.15   # Block 3,0 proud (Design)
         # (5) KLEMM-GATE: Ø3,1-Kabel im Sitz — Nase MUSS definiert interferieren (0,4 Presslage)
         _cab = Pos(_sx*EX_X/2, _cy, AZE_SEAT_CZ) * Rot(0, 90, 0) * Cylinder(radius=1.55, height=14)
         _ixc = _pl & _cab
@@ -1024,15 +1138,23 @@ if __name__ == "__main__":
         print(f"[ant-ze:{_tag}] Mund {AZE_MOUTH_W}×{AZE_MOUTH_DP} · Schlitz {AZE_SLOT_W} · Sitz Ø{AZE_SEAT_D} "
               f"SPIEL @Z{AZE_SEAT_CZ} · offen: Mund={_mouth_air} Schlitz={_slot_air} Einlegen={_ins_path} "
               f"Kabelweg={_way_ok} · Stütze={_seat_ok} · 2×M2⊥ ±{AZE_SCREW_DY2} offen={_pil_ok} · "
-              f"T∩Body={_pen:.3f} mm³ · bündig={_top_flush} · NASE∩Kabel={_cv:.2f} mm³ (0,4-Presslage; "
+              f"T∩Body={_pen:.3f} mm³ · Block-3proud={_top_flush} · NASE∩Kabel={_cv:.2f} mm³ (0,4-Presslage; "
               f"Klemmkraft = Schrauben [Fit-Print])")
         assert _mouth_air and _slot_air and _ins_path, f"ZE-{_tag}: Mund/Schlitz/Einlege-Spur nicht frei"
         assert _seat_ok, f"ZE-{_tag}: Sitz-Stützschale fehlt"
         assert _way_ok, f"ZE-{_tag}: horizontaler Kabelweg blockiert"
-        assert _pil_ok, f"ZE-{_tag}: M2-Piloten nicht geschnitten"
+        assert _pil_ok, f"ZE-{_tag}: M2-Insert-Loch nicht offen / Ring-Material fehlt"
         assert _pen < 0.01, f"ZE-{_tag}: T-Stück durchdringt Body: {_pen:.2f} mm³"
-        assert _top_flush, f"ZE-{_tag}: T-Stück nicht oben bündig"
+        assert _top_flush, f"ZE-{_tag}: Deckelblock steht nicht 3,0 mm proud (Seating)"
         assert 0.1 < _cv < 3.0, f"ZE-{_tag}: Nase klemmt nicht definiert ({_cv:.2f} mm³ ∉ 0,1..3,0)"
+        # (6) Kappen-Schnittstelle: Piloten offen + Stützboss-Material
+        for _s in (-1, +1):
+            _po = ((Pos(_xm, _cy + _s*15.0, AZE_SEAT_CZ) * Box(0.4, 0.4, 0.4)) & b).volume < 1e-6
+            _bo = ((Pos(_sx*(IN_X/2 - 1.0), _cy + _s*15.0 + 1.6, AZE_SEAT_CZ) *
+                    Box(0.4, 0.4, 0.4)) & b).volume > 0.02
+            assert _po, f"ZE-{_tag}: Kappen-Pilot y{_s*15:+.0f} nicht offen"
+            assert _bo, f"ZE-{_tag}: Kappen-Stützboss y{_s*15:+.0f} fehlt"
+        print(f"[ant-ze:{_tag}] Kappen-Schnittstelle: 2× M2-Pilot Ø1,7×6 @(y±15, Z{AZE_SEAT_CZ}) mit Innen-Boss Ø5 ✔")
 
     # ── MB2(b) · XT30-ZE-GATE (2 Sättel + Riegel; CAD-Check ≠ Klemm-/Löt-Test) ──────
     assert xt30_added, "XT30-Sättel nicht angeschweißt (Volumen nicht gestiegen)"
@@ -1165,7 +1287,7 @@ if __name__ == "__main__":
     assert cover_valid, "BRepCheck: Deckel ungültig"
     assert cover_solids == 1, f"Deckel: erwartet 1 Solid, ist {cover_solids}"
     assert cover_over <= 1e-3, f"Deckel ragt über das Dach hinaus: {cover_over:.4f} > 0 (Tom: bündig!)"
-    # KOPF-AUFLAGE-GATE (Spotface-Variante; Referenz-Senkung = [MINI-TODO], s. LID-Konstanten):
+    # KOPF-AUFLAGE-GATE (Spotface-Variante; Anton-Senkung = [MINI-TODO], s. LID-Konstanten):
     # Innen-Ring in X- UND Y-Richtung muss unter jedem Kopf tragen.
     assert LID_CB_DP <= 1.0, f"Deckel-Spotface {LID_CB_DP} zu tief (Falz-Seite nur 1,5 dick)"
     _rr = (LID_THRU_D/2 + LID_CB_D/2)/2                 # Ring-Mittenradius
@@ -1181,16 +1303,31 @@ if __name__ == "__main__":
 
     lat_p = build_xt30_latch(+1)                      # XT30-Riegel +Y (eingesetzt)
     lat_m = build_xt30_latch(-1)                      # XT30-Riegel −Y (eingesetzt)
-    ze_f = place_aze_tee(build_aze_tee(), *AZE_SIDES[0])   # T-Prinzip 2.0: EIN T-Typ, 2× (Nase klemmt)
-    ze_h = place_aze_tee(build_aze_tee(), *AZE_SIDES[1])
+    ze_f = place_aze_tee(build_aze_tee(), *AZE_SIDES[0])          # proud-Variante (−X) im Modell
+    ze_h = place_aze_tee(build_aze_tee_flush(), *AZE_SIDES[1])    # 05b FLUSH-Variante (+X) — direkter Vergleich
     b = b.solid()                    # fillet() gibt ein generisches Shape zurück → als Solid fassen,
                                      #   sonst verweigert der GLB-Export die Farbe (Warning)
+    # GATE flush-Riegel (Tom 07-11): bündig (Oberkante ≤ EX_Z/2+0,05) + beide Riegel durchdringen den Body nicht
+    def _pen(part):
+        ix = part & b
+        return sum(s2.volume for s2 in ix.solids()) if (ix is not None and ix.solids()) else 0.0
+    _fz = ze_h.bounding_box().max.Z
+    _fp, _pp = _pen(ze_h), _pen(ze_f)
+    print(f"[ze-flush] Flush-Oberkante Z={_fz:.2f} (≤{EX_Z/2+0.05:.2f} = bündig) · Flush∩Body={_fp:.3f} · Proud∩Body={_pp:.3f} mm³ (Ziel <0,5)")
+    assert _fz <= EX_Z/2 + 0.05, f"Flush-Riegel nicht bündig: Oberkante Z={_fz:.2f} > {EX_Z/2+0.05:.2f}"
+    assert _fp < 0.5 and _pp < 0.5, f"Riegel durchdringt Body: flush={_fp:.2f} proud={_pp:.2f} mm³"
+    # TÜR∩BODY-GATE (07-14, wegen Nasen-Wurzel-Keil): Klappe in Schließlage darf den Body nicht
+    # durchdringen (Keil muss im Notch-/Fuß-Freiraum bleiben). CAD-Boolean ≠ Schwenk-Montage-Test.
+    _dp = _pen(d)
+    print(f"[tuer-gate] Tür∩Body = {_dp:.3f} mm³ (Ziel <0,5; Nasen-Wurzel-Keil kollisionsfrei)")
+    assert _dp < 0.5, f"Tür durchdringt Body: {_dp:.2f} mm³ — Nasen-Wurzel-Keil kollidiert?"
     b.color = Color(0.82, 0.82, 0.85)
     d.color = Color(0.30, 0.62, 0.85)                  # Tür separat eingefärbt
     cov.color = Color(0.95, 0.72, 0.25)               # Deckel separat eingefärbt (orange)
     lat_p.color = lat_m.color = Color(0.40, 0.80, 0.45)   # XT30-Riegel grün
     ze_f = ze_f.solid(); ze_h = ze_h.solid()              # fillet → Shape: als Solid fassen (Farbe!)
-    ze_f.color = ze_h.color = Color(0.85, 0.25, 0.75)     # ZE-Schieber magenta
+    ze_f.color = Color(0.85, 0.25, 0.75)     # proud-Riegel magenta
+    ze_h.color = Color(0.10, 0.85, 0.75)     # flush-Riegel türkis (unterscheidbar im Modell)
     OUTDIR = "/Users/tomschoen/Desktop/Projects/SkyDiveLive/CAD - models/skylive_out"
     out = f"{OUTDIR}/skylive_mini300.glb"
     export_gltf(Compound(label="SkyLive_Mini300", children=[b, d, cov, lat_p, lat_m, ze_f, ze_h]),
@@ -1200,10 +1337,18 @@ if __name__ == "__main__":
     from build123d import export_stl
     for _part, _name in ((b, "body"), (d, "battery_door"), (cov, "cover_floor2"),
                          (build_xt30_latch(+1), "xt30_latch"),
-                         (build_aze_tee(), "ze_tee")):   # T-Prinzip 2.0: EIN T-Typ, 2× drucken,
-                         #   beidseitig identisch — Nasen-Steg klemmt per Schrauben (des Referenz-Prototyps Mechanik)
+                         (build_aze_tee(), "ze_tee"),
+                         (build_aze_tee_flush(), "ze_tee_flush")):   # 05b FLUSH (Tom druckt beide)
+                         #   beidseitig identisch — Nasen-Steg klemmt per Schrauben (Antons Mechanik)
         _stl = f"{OUTDIR}/skylive_mini300_{_name}.stl"
         export_stl(_part, _stl, tolerance=0.005, angular_tolerance=0.05)   # [Audit P7] feiner → offene Kanten 0
         from build123d import export_step                                  # STEP immer mit —
         export_step(_part, _stl[:-4] + ".step")                            # STL/STEP driften nie
         print(f"[stl] {_stl}  (Riegel: 2× drucken)" if _name == "xt30_latch" else f"[stl] {_stl}")
+    # ── PRINTABILITY-GATE v2 (Kollegen-Review 07-13/14, wie v3_min): flächige Dünnwand-Plateaus
+    #    <0,8 = harter FAIL; Junction-Keile nur WARN. Mesh-Check ≠ Drucktest.
+    import sys
+    sys.path.insert(0, "/Users/tomschoen/Desktop/Projects/SkyDiveLive/FEEDBACK_KOLLEGE_2026-07-13/scripts")
+    from printability_gate import gate as _pgate
+    for _name in ("body", "battery_door", "cover_floor2", "xt30_latch", "ze_tee", "ze_tee_flush"):
+        _pgate(f"{OUTDIR}/skylive_mini300_{_name}.stl", raise_on_fail=True)

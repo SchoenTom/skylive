@@ -122,6 +122,60 @@ touches no body material).
 
 ---
 
+## The tab a neighbor spotted — **15 mm²**
+
+The battery door closes with a classic proud tab: a flat tongue over the wall, one M2 into a
+brass insert. Every gate was green — form closure 0.000 mm³, zero overhang past the tab, swing
+sweep clean. Then, at the lab's slicing station, someone leaned over from the next PC and said
+the joint between the door and that tab *"looks weak."* He was right, and measurably so: the
+tab bonded to the door's outer face over a strip of just **10 × 1.5 mm — 15 mm²** — and the
+tab doubles as the grip, so that little patch gets **peel-loaded** every time someone levers
+the open door by it. Peel on a small printed bond line is the classic crack starter, and no
+gate had ever *measured* the bond, because the intent "tab attaches here" was encoded as a
+boolean union, not as an area worth asserting.
+
+The fix cost nothing anywhere else: the tab grew from 10 to 12 mm wide (+20 % at the critical
+parting-line section) and its bonding apron was extended from 1.5 to 6 mm down the door face —
+**72 mm² of lap joint instead of 15 of peel line** (54 mm² on the mini, whose door louvers sit
+higher). The body, lid, latches and strain-relief tees are byte-identical to before; only the
+door reprints.
+
+> Lesson: gates only defend what you thought to measure — and a fresh pair of eyes is a gate
+> you can't write. This project is open source on purpose; critique from the next desk over
+> is part of the toolchain. (Whether the joint *holds* is still a pull test, not a boolean.)
+
+---
+
+## The review that upgraded the gate itself — and found three real bugs
+
+A colleague printed the sender, opened the STEPs in SolidWorks, and sent back two videos of
+findings. Chasing them taught the toolchain more than any single fix:
+
+- **"Infinitely thin edges everywhere the radius runs out"** — the mesh gate confirmed
+  sub-0.1 mm readings all over the body… and then section renders showed every one of them is
+  a *tangency cusp* where a fillet feathers into a plane. The printed part in hand proves the
+  slicer just merges them. The naive gate was crying wolf.
+- So the gate learned to *classify*, not just measure: a thin cluster is only a FAIL if it is
+  **a surface, not a curve** (PCA width) **and a plateau, not a ramp** (thickness IQR).
+  Calibration anchors: a synthetic 0.4 mm membrane must FAIL, an acute wedge must PASS,
+  the louver blades (0.72 mm by design, printed successfully) must WARN — not block.
+- The upgraded gate immediately caught **three real design bugs** the old one was blind to:
+  a 0.5 mm counterbore floor in the flush strain-relief tee (now 1.0 mm), an XT30 clamp bar
+  that was sub-millimetre over its cable grooves in *every* size (now 1.7 mm of floor), and
+  groove positions on the mid-size body that had never been rescaled after the case got
+  narrower — one groove was quietly eating 0.8 mm into the wall.
+- The one part that actually **broke** in the field — a GoPro fork finger — already had its
+  root fillet. The real culprit is layer orientation on a one-piece body: the fingers print
+  vertically, layers across the load. A bigger radius is measured-fit-gated; until then the
+  doctrine is a brim and no prying.
+
+> Lesson: a printability gate is a hypothesis about what "unprintable" means. A real print,
+> a real break, and a skeptical reviewer are the experiments that falsify it. Version 2 of
+> the gate now ships in `build/cad/printability_gate.py` and runs as a hard export gate in
+> all three model scripts.
+
+---
+
 ## Why this matters
 
 None of these were visible in a render. All of them would have cost a print, an evening, and a
