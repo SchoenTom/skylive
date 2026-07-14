@@ -92,8 +92,9 @@ header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-
     <button class="drop" id="drop">🪂 DROP — ride it down</button>
     <div class="budget" id="budget"></div>
     <div class="note"><b>Honest note [CALC]:</b> Friis free-space path loss at 5.8 GHz + literature
-    mid-points for body shadow (the single biggest uncertainty, −2…−12 dB by pose) + honest ground
-    gain (aimed patch ~10 dBic) against a −90 dBm HDZero threshold. This is the same model as
+    mid-points for body shadow (the single biggest uncertainty, −2…−12 dB by pose) + the ground
+    station's fixed helix beam — estimators span 10.7–13.9 dBic, measurement pending; we calculate
+    with a conservative 10 — against a −90 dBm HDZero threshold. This is the same model as
     <a href="https://github.com/SchoenTom/skylive/tree/main/build/rf" style="color:var(--cy)">build/rf</a> —
     a calculation to be jumped, not a measurement.</div>
   </div>
@@ -102,7 +103,7 @@ header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-
 // ── Das echte Link-Budget-Modell [CALC] ───────────────────────────────────────
 const F = 5800;                                        // MHz
 const SHADOW = {head: -2, back: -8, belly: -11, sit: -12};   // Literatur-Mittelwerte
-const RXG = 10, THR = -90, MISC = -4;                  // ehrliche Bodenstation, Threshold, Kabel/Fade
+const RXG = 10, THR = -90, MISC = -4;                  // konservative Helix-Keule (Schätzer 10,7–13,9 dBic), Threshold, Kabel/Fade
 let alt = 4000, pose = "head", txdbm = 30, anim = null;
 
 const $ = id => document.getElementById(id);
@@ -117,7 +118,7 @@ function render(){
     ["TX power", (txdbm===30?"+30 dBm (1 W)":"+14 dBm (25 mW)")],
     ["free-space loss @ " + (alt/1000).toFixed(2) + " km", "−" + fspl(alt).toFixed(1) + " dB"],
     ["body shadow (" + pose + ")", SHADOW[pose] + " dB"],
-    ["ground RX gain (honest)", "+" + RXG + " dB"],
+    ["ground RX gain (conservative helix)", "+" + RXG + " dB"],
     ["cables / fade", MISC + " dB"],
     ["HDZero threshold", THR + " dBm"]];
   $("budget").innerHTML = rows.map(r=>`<div class="row"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")

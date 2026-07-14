@@ -1,39 +1,39 @@
 # SkyLive — five numbers that carry the design
 
-*Five engineering "nuggets" — one number each, three sentences each. The kind of small, exact
+*Five engineering "nuggets" — one number each, a few sentences each. The kind of small, exact
 figure that a whole design quietly hangs on. Sourced where sourced, **[CALC]** where modelled,
-honest either way. Card texts for the show layer; the derivations live in [`../build/`](../build/).*
-
-`TBD-ASSET` — these five render as number cards in the Pages site (docs/index.html) and the README
-strip; visual treatment lands with the final design pass.
+honest either way. Card texts for the show layer; the derivations live in [`../build/`](../build/).
+These five render as number cards in the Pages site (docs/index.html).*
 
 ---
 
-### 2.9 mm
-**The clamp gap that grips without crushing.**
-When the antenna's strain-relief cap closes all the way, it doesn't touch the wall — it leaves
-exactly 2.9 mm around a 3.1 mm coax. That last fraction of a millimetre is the whole trick: enough
-to hold the cable against a hard pull, not enough to deform it and detune the antenna. A pull on the
-lead lands in the printed block; the connector never feels it.
+### R 1.55
+**The nose that matches the cable exactly.**
+The antenna cable drops all the way down into a round seat with clearance — insertion never fights
+the print. Then the T-piece's stem lands on it: a convex nose of radius 1.55 mm, precisely the
+cable's own radius, so it cradles instead of cutting. Two vertical M2 screws pull that nose 0.4 mm
+onto the cable — the screws are the clamp, measured 1:1 off a working reference build. A yank on
+the antenna loads the printed wall and the bolted nose, never the connector.
 
 ---
 
 ### −0.2 mm
-**The squeeze standard.**
-Every clamp in this build is under-sized by the same tiny, deliberate amount: 0.2 mm less than the
-thing it holds. It's the line between *gripping* and *crushing* — 0.2 too little and the cable
-slips, 0.2 too much and you flatten a conductor or pinch a coax. One number, reused at the antenna
-clamp and both battery-lead saddles, so every strain relief behaves the same way.
+**The squeeze standard (where squeezing is right).**
+The battery-lead saddles are under-sized by a tiny, deliberate amount: 0.2 mm less than the wire
+they hold. It's the line between gripping and crushing. The antenna clamp deliberately does NOT use
+it — coax hates being squeezed by tolerances (it detunes), so there the seat has clearance and two
+screws deliver a controlled, serviceable clamping force instead. Same goal, two honest mechanisms.
 
 ---
 
-### 0.15 dB
-**The radome that costs almost nothing.**
-The omni antenna is sealed completely inside a 1.5 mm printed wall — and at 5.8 GHz that wall costs
-about 0.15 dB, roughly 3 % of the signal ([CALC]). It's a slab about one-twentieth of a wavelength
-thick, so its two surface reflections nearly cancel and the wave passes as if the plastic weren't
-there. For that near-nothing you delete wind load, fatigue and snag risk entirely — the real risk
-left is *detuning*, which is why a VNA check is mandatory, not optional.
+### 90°
+**The turn that dodges the null.**
+The omni doesn't stand upright like on an FPV quad — its coax runs horizontally through the case
+wall and the bell sits directly against it, axis pointing straight through the wall. An upright
+omni's donut pattern has nulls straight up and down: in head-up or head-down freefall that aims a
+blind spot exactly at the receiver. Laid sideways, the donut fires down, up and all around — signal
+toward the ground in every jump attitude. And the strain relief becomes trivially simple: the cable
+never turns, so the T-clamp just drops onto it and screws shut.
 
 ---
 
@@ -47,8 +47,9 @@ watch on the screen *is* the jump happening in the sky, in the present tense.
 ---
 
 ### 4 parts
-**No flight controller. No BEC. No solder on the sender.**
-The entire transmitter is four things — a radio, a camera, a battery, and a button — joined with
-three lever clamps and not one soldering-iron joint on the power side. Every FPV builder expects a
-flight controller, a voltage regulator, a rat's nest of solder; there is none of it here. The
-restraint *is* the engineering: fewer parts, fewer failure points, re-openable in seconds.
+**No flight controller. No BEC. One printed body.**
+The entire transmitter is four things — a radio, a camera, a battery, and an antenna — inside one
+printed body. Every FPV builder expects a flight controller, a voltage regulator, a rat's nest of
+wiring; there is none of it here. The few joints that remain are soldered once, properly, for
+flight — every joint earns its place. The restraint *is* the engineering: fewer parts, fewer
+failure points.

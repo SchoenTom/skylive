@@ -4,14 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>SkyLive — The jump. Live.</title>
-<meta name="description" content="Live from 4 km above the drop zone — 14 ms behind reality. A 1-watt HDZero FPV live-stream transmitter for professional skydiving: four honest parts, zero solder on the sender.">
+<meta name="description" content="Live from 4 km above the drop zone — 14 ms behind reality. A 1-watt HDZero FPV live-stream transmitter for professional skydiving: one printed body, four off-the-shelf parts.">
 <meta name="theme-color" content="#0b0d12">
 
 <!-- Open Graph -->
 <meta property="og:type" content="website">
 <meta property="og:title" content="SkyLive — The jump. Live.">
-<meta property="og:description" content="Live from 4 km above the drop zone — 14 ms behind reality. Own radio link, four parts, zero solder joints on the sender.">
-<!-- TBD-ASSET: assets/og.png — hero render H1 (dropped by the asset pass) -->
+<meta property="og:description" content="Live from 4 km above the drop zone — 14 ms behind reality. Own radio link, one printed body, four off-the-shelf parts.">
 <meta property="og:image" content="https://schoentom.github.io/skylive/og.png">
 <meta property="og:url" content="https://schoentom.github.io/skylive/">
 <meta property="og:site_name" content="SkyLive">
@@ -316,11 +315,21 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   <div class="tick" style="top:50%"><span>2</span></div>
   <div class="tick" style="top:75%"><span>1</span></div>
   <div class="tick" style="top:100%"><span>0</span></div>
-  <div class="alt-marker" id="altMarker" style="top:0%">
-    <div class="alt-read"><b id="altVal">4000 m</b><i id="altPhase">EXIT</i></div>
-    <svg viewBox="0 0 28 28"><g stroke="#f2f7fb" stroke-width="2.6" stroke-linecap="round" fill="none">
-      <circle cx="14" cy="7" r="3.2" fill="#f2f7fb" stroke="none"/>
-      <path d="M14 10.5 L14 18 M14 12.5 L8 9.5 M14 12.5 L20 9.5 M14 18 L9.5 24 M14 18 L18.5 24"/></g></svg>
+  <div class="alt-marker" id="altMarker" style="top:100%">
+    <div class="alt-read"><b id="altVal">0 m</b><i id="altPhase">BOARDING</i></div>
+    <svg viewBox="0 0 28 28">
+      <g id="agPlane"><path d="M3 15 L20 15 L25 13.4 L25 11.8 L17 10.4 L6 11.2 Q2.6 12 3 15 Z" fill="#f2f7fb"/>
+        <rect x="8" y="8.6" width="15" height="2" rx="1" fill="#f2f7fb"/>
+        <path d="M3 11.6 L1 6.6 L7 11 Z" fill="#f2f7fb"/></g>
+      <g id="agJumper" style="display:none" stroke="#f2f7fb" stroke-width="2.6" stroke-linecap="round" fill="none">
+        <circle cx="14" cy="7" r="3.2" fill="#f2f7fb" stroke="none"/>
+        <path d="M14 10.5 L14 18 M14 12.5 L8 9.5 M14 12.5 L20 9.5 M14 18 L9.5 24 M14 18 L18.5 24"/></g>
+      <g id="agCanopy" style="display:none">
+        <path d="M4 8 A10 10 0 0 1 24 8 Z" fill="#22d3ee" opacity=".9"/>
+        <path d="M4 8 L12 14 M24 8 L16 14" stroke="#67e8f9" stroke-width="1.2"/>
+        <circle cx="14" cy="17.5" r="2.6" fill="#f2f7fb"/>
+        <path d="M14 20 L14 25 M14 21 L11 24 M14 21 L17 24" stroke="#f2f7fb" stroke-width="2.2" stroke-linecap="round" fill="none"/></g>
+    </svg>
   </div>
 </div>
 <header class="hero" id="top">
@@ -355,13 +364,13 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   <div class="wrap">
     <div class="head">
       <div class="eyebrow">The reveal</div>
-      <h2>No flight controller. No BEC. No solder on the sender. <span class="cy">Four parts.</span></h2>
-      <p>Every FPV builder expects a flight controller, a voltage regulator, a rat's nest of solder. There is none of it here — a radio, a camera, a battery, and a button, joined by three lever clamps. The restraint <em>is</em> the engineering.</p>
+      <h2>No flight controller. No BEC. One printed body. <span class="cy">Four parts.</span></h2>
+      <p>Every FPV builder expects a flight controller, a voltage regulator, a rat's nest of wiring. There is none of it here — a radio, a camera, a battery and an antenna, inside one printed body. The few connections that remain are minimal, and soldered once, properly, for flight. The restraint <em>is</em> the engineering.</p>
     </div>
-    <!-- TBD-ASSET: assets/exploded.png — top-down studio explosion (the four parts + Wagos + screws) -->
+    <!-- assets/exploded.png — top-down studio explosion (radio, camera, battery, antenna + clamp bars, T-pieces, screws) -->
     <div class="slot">
       <div class="slot-fallback" aria-hidden="true"><span>Exploded render — assets/exploded.png</span></div>
-      <img src="assets/exploded.png" alt="The SkyLive sender exploded into its four parts — radio, camera, battery, button — plus Wago lever clamps and screws." onerror="this.style.display='none'" onload="this.previousElementSibling.style.display='none'">
+      <img src="assets/exploded.png" alt="The SkyLive sender exploded into its four parts — radio, camera, battery, antenna — plus clamp bars, T-pieces and screws." onerror="this.style.display='none'" onload="this.previousElementSibling.style.display='none'">
     </div>
   </div>
 </section>
@@ -440,8 +449,8 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       </div>
       <div class="nug">
         <div class="v">4 parts</div>
-        <div class="t">No flight controller. No BEC. No solder on the sender.</div>
-        <div class="d">The entire transmitter is four things — a radio, a camera, a battery, and a button — joined with three lever clamps and not one soldering-iron joint on the power side. Every FPV builder expects a flight controller, a voltage regulator, a rat's nest of solder; there is none of it here. The restraint is the engineering: fewer parts, fewer failure points, re-openable in seconds.</div>
+        <div class="t">No flight controller. No BEC. One printed body.</div>
+        <div class="d">The entire transmitter is four things — a radio, a camera, a battery, and an antenna — inside one printed body. Every FPV builder expects a flight controller, a voltage regulator, a rat's nest of wiring; there is none of it here. The few joints that remain are soldered once, properly, for flight — every joint earns its place. The restraint is the engineering: fewer parts, fewer failure points.</div>
       </div>
     </div>
   </div>
@@ -458,8 +467,8 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     <div class="depth-grid">
       <a class="dcard" href="https://github.com/SchoenTom/skylive/blob/main/build/BUILD_GUIDE.md">
         <span class="kk">Build guide</span>
-        <h3>The solder-free plan <span class="arw">→</span></h3>
-        <p>Chronological, solder-free assembly with the three hardware-killer rules and the passive power/thermal doctrine.</p>
+        <h3>The build plan <span class="arw">→</span></h3>
+        <p>Chronological assembly with the three hardware-killer rules and the passive power/thermal doctrine — solder once, properly, for flight.</p>
       </a>
       <a class="dcard" href="https://github.com/SchoenTom/skylive/blob/main/build/ASSEMBLY_STEPS.md">
         <span class="kk">Assembly steps</span>
@@ -492,7 +501,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     <div class="morehead" id="antenna">
       <div class="eyebrow">More demos</div>
       <h3>Play the jump — a body is a shadow.</h3>
-      <p>Radio doesn't go through a person well (−10…−15 dB). Spin the jumper and watch each antenna's coverage move with the pose: the <b>down patch</b> aims a cone at the ground until the body swings it away; the <b>donut omni</b> fires down + up past the body. You screw on one per jump; the aimed, 4-way-diversity ground array holds the rest.</p>
+      <p>Radio doesn't go through a person well (−2…−12 dB by pose). Spin the jumper and watch each antenna's coverage move with the pose: the <b>down patch</b> — a legacy engineering study — aims a cone at the ground until the body swings it away; the <b>donut omni</b> fires down + up past the body. The omni is captive in the sender's wall, nothing to swap; on the ground, multiple fixed helix beams cover zenith and horizon, and the receiver fuses the branches.</p>
     </div>
 
     <div class="demo">
@@ -556,7 +565,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
               <path d="M115,104 L120,174" stroke="#22d3ee" stroke-width="2.4" fill="none" opacity=".5"/>
               <path d="M145,104 L140,174" stroke="#22d3ee" stroke-width="2.4" fill="none" opacity=".5"/>
             </g>
-            <!-- antenna nubs on the sender: down patch (bottom shell) / donut omni (side capsule) -->
+            <!-- antenna nubs on the sender: down patch (bottom shell) / donut omni (captive side-wall omni) -->
             <circle id="nubPatch" class="nub" cx="196" cy="110" r="6" fill="#2a6f88"/>
             <circle id="nubOmni"  class="nub live" cx="205" cy="99" r="5" fill="#22d3ee"/>
           </g>
@@ -580,10 +589,10 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
             <button class="pose" data-t="270">Back</button>
           </div>
           <div class="atoggle" id="atoggle">
-            <button data-a="patch">Down patch<small>engineering study · cone at the ground</small></button>
+            <button data-a="patch">Down patch<small>legacy engineering study · cone at the ground</small></button>
             <button data-a="omni" class="on">Donut omni<small>T-clamped through the side wall · fires down + up</small></button>
           </div>
-          <div class="poslegend">One antenna per jump, swapped by hand — no electronic switch on the sender.<br>The 4-way-diversity ground array (aimed patch + omnis) rides the best branch.</div>
+          <div class="poslegend">The omni is captive in the sender's wall — nothing to swap, no electronic switch.<br>On the ground: multiple fixed helix beams, zenith + horizon — the receiver rides the strongest branch.</div>
           <div class="draghint">↻ <b>Drag the jumper</b> · or pick a pose · then try the <b>down patch</b></div>
         </div>
       </div>
@@ -593,13 +602,14 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     <div class="morehead">
       <div class="eyebrow">Interactive</div>
       <h3>Spin the hardware. Read the millimetres.</h3>
-      <p>The real CAD, live in your browser — assembled, exploded, and the Mini, with dimension
+      <p>The real CAD, live in your browser — assembled, exploded, and all three sizes
+      (300: 59.5 × 39.5 × 48 · mid: 69 × 38 × 48 · 850: 71 × 40 × 56), with dimension
       tags on the geometry itself. Plus the antenna decks that argue the RF doctrine.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:10px">
       <a href="./viewer.html" style="display:block;padding:22px;border:1px solid #1d4763;border-radius:14px;background:#10293f;color:#e2f3ff;text-decoration:none">
         <div style="font-size:26px">🧊</div><b>3D Lab</b><br>
-        <span style="color:#7dd3fc;font-size:13px">850 · exploded · Mini — orbit + mm-hotspots</span></a>
+        <span style="color:#7dd3fc;font-size:13px">850 · mid · Mini 300 · exploded — orbit + mm-hotspots</span></a>
       <a href="./freefall.html" style="display:block;padding:22px;border:1px solid #1d4763;border-radius:14px;background:#10293f;color:#e2f3ff;text-decoration:none">
         <div style="font-size:26px">🪂</div><b>Freefall Simulator</b><br>
         <span style="color:#7dd3fc;font-size:13px">ride the link budget from 4 000 m to the deck — pose by pose</span></a>
@@ -608,10 +618,10 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         <span style="color:#7dd3fc;font-size:13px">drag the parts, break the rules — watch the export get refused</span></a>
       <a href="./decks/dual_antenna_EN.html" style="display:block;padding:22px;border:1px solid #1d4763;border-radius:14px;background:#10293f;color:#e2f3ff;text-decoration:none">
         <div style="font-size:26px">📡</div><b>Dual-antenna deck</b><br>
-        <span style="color:#7dd3fc;font-size:13px">the interactive RF argument (EN · <a href="./decks/dual_antenna_DE.html" style="color:#7dd3fc">DE</a>)</span></a>
+        <span style="color:#7dd3fc;font-size:13px">the interactive RF argument · archive (EN · <a href="./decks/dual_antenna_DE.html" style="color:#7dd3fc">DE</a>)</span></a>
       <a href="./decks/pitch_EN.html" style="display:block;padding:22px;border:1px solid #1d4763;border-radius:14px;background:#10293f;color:#e2f3ff;text-decoration:none">
         <div style="font-size:26px">🪂</div><b>Pitch deck</b><br>
-        <span style="color:#7dd3fc;font-size:13px">the whole story, presentable (EN · <a href="./decks/pitch_DE.html" style="color:#7dd3fc">DE</a>)</span></a>
+        <span style="color:#7dd3fc;font-size:13px">the earlier story, kept for the record · archive (EN · <a href="./decks/pitch_DE.html" style="color:#7dd3fc">DE</a>)</span></a>
       <a href="./decks/skylive_pitch_DE.html" style="display:block;padding:22px;border:2px solid #23c9ef;border-radius:14px;background:#0e2f45;color:#e2f3ff;text-decoration:none">
         <div style="font-size:26px">✨</div><b>SkyLive pitch — 2026 edition</b><br>
         <span style="color:#7dd3fc;font-size:13px">the new one-piece sender, the lying-antenna doughnut, a self-exploding 3D model (<a href="./decks/skylive_pitch_EN.html" style="color:#7dd3fc">EN</a> · <a href="./decks/skylive_pitch_DE.html" style="color:#7dd3fc">DE</a>)</span></a>
@@ -653,8 +663,8 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     </figure>
 
     <figure class="fig">
-      <img src="diversity.svg" alt="Ground-station diversity: wide omni plus aimed patch, the receiver takes the stronger one." style="max-width:680px;margin-inline:auto">
-      <figcaption>Ground-station diversity — a wide omni plus an aimed patch; the receiver takes the stronger branch.</figcaption>
+      <img src="diversity.svg" alt="Ground station: multiple fixed helix beams — one at the zenith, three fanned toward the horizon; the receiver takes the strongest branch." style="max-width:680px;margin-inline:auto">
+      <figcaption>Ground station: multiple fixed helix beams — zenith plus horizon; the receiver takes the strongest branch.</figcaption>
     </figure>
 
     <figure class="fig">
@@ -706,8 +716,24 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         <input type="range" id="dTilt" min="0" max="90" value="0" step="1" aria-label="Antenna tilt">
         <button id="dSpin" style="border:1px solid rgba(255,255,255,.14);border-radius:11px">▶ spin</button>
       </div>
-      <p class="cap" style="margin-top:12px">idealized dipole doughnut (sin² gain) — the geometry argument, not a range promise · tilt 90° and spin: the DZ never leaves the maximum</p>
+      <p class="cap" style="margin-top:12px">idealized omni doughnut (sin² gain) — the geometry argument, not a range promise · tilt 90° and spin: the DZ never leaves the maximum</p>
     </div>
+  </div>
+</section>
+
+<!-- ========== THE GROUND STATION — printed helix beams ========== -->
+<section id="helix">
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">The ground station</div>
+      <h2>It grows its own antennas.</h2>
+      <p>The ground station listens through self-printed 5.8 GHz helix antennas — axial mode, RHCP: seven turns above a cup reflector lined with copper tape. The bigger cone reflector wins +4 dB at its peak — and loses across the real elevation window. Minimax, again. Each helix rides a ball head, so elevation is set in the field, not baked into the print. Honest gain: three estimators span 10.7–13.9 dBic — the first measurement decides. Four printed parts, plus an LHCP twin for the polarization experiment.</p>
+    </div>
+    <div class="slot">
+      <div class="slot-fallback" aria-hidden="true"><span>Helix render — assets/helix_hero.png</span></div>
+      <img src="assets/helix_hero.png" alt="The self-printed 5.8 GHz axial-mode helix antenna — seven turns on a skeletonized former, cup reflector lined with copper tape, ball-head mount with 1/4-inch tripod thread." onerror="this.style.display='none'" onload="this.previousElementSibling.style.display='none'">
+    </div>
+    <p class="cap">printed in ASA — a black PLA antenna sags on a summer drop zone (Tg 55 °C)</p>
   </div>
 </section>
 
@@ -876,13 +902,25 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   const rail=document.getElementById('altRail'); if(!rail) return;
   const mk=document.getElementById('altMarker'), val=document.getElementById('altVal'), ph=document.getElementById('altPhase');
   let tick=null;
+  const gP=document.getElementById('agPlane'),gJ=document.getElementById('agJumper'),gC=document.getElementById('agCanopy');
+  function glyph(which){gP.style.display=which==='p'?'':'none';gJ.style.display=which==='j'?'':'none';gC.style.display=which==='c'?'':'none';}
+  const CLIMB=0.14, LAND=0.94;
   function upd(){tick=null;
     const max=document.documentElement.scrollHeight-innerHeight;
     const p=Math.max(0,Math.min(1,max>0?scrollY/max:0));
-    rail.classList.toggle('on',p>0.02&&p<0.995);
-    mk.style.top=(p*100)+'%';
-    val.textContent=Math.round(4000*(1-p)/10)*10+' m';
-    ph.textContent=p<.06?'EXIT':p<.7?'FREEFALL':p<.93?'CANOPY':'LANDED';}
+    rail.classList.toggle('on',p>0.015&&p<0.995);
+    let alt,phase,pos;
+    if(p<CLIMB){                     // Steigflug: Marker STEIGT mit dem Flugzeug
+      const c=p/CLIMB; alt=4000*c; pos=1-c; phase=c>.96?'EXIT':'CLIMB'; glyph('p');
+    }else{                           // Sprung: Marker FÄLLT
+      const f=Math.min(1,(p-CLIMB)/(LAND-CLIMB)); alt=4000*(1-f); pos=f;
+      if(p>=LAND){phase='LANDED'; glyph('c');}
+      else if(f>.68){phase='CANOPY'; glyph('c');}
+      else{phase='FREEFALL'; glyph('j');}
+    }
+    mk.style.top=(pos*100)+'%';
+    val.textContent=Math.round(alt/10)*10+' m';
+    ph.textContent=phase;}
   addEventListener('scroll',()=>{if(!tick)tick=requestAnimationFrame(upd)},{passive:true});
   upd();
 })();

@@ -2,13 +2,13 @@
 
 # SkyLive
 
-### A skydiver exits at 4 000 m. Before the canopy opens, the drop zone is already watching through their eyes.
+### A skydiver exits at 4 000 m. Before the canopy opens, the drop zone is already watching through her eyes.
 
 **Live from 4 km — 14 ms behind reality.**
 
 <img src="docs/assets/turntable.gif" alt="The Sender 850 spinning: battery door with tab latch, T-clamp antenna anchors on both short sides, roof lid, louvres, GoPro mount." width="58%">
 
-<img src="docs/assets/flyin.gif" alt="Every component — radio, camera, battery, switch, Wagos, XT30, antenna — flying into the open case." width="58%">
+<img src="docs/assets/flyin.gif" alt="Every component — radio, camera, battery, antenna, clamp bars, T-pieces — flying into the open case." width="58%">
 
 <sub>the actual gate-verified CAD — spin it and watch the parts fly home yourself in the [3D Lab](https://schoentom.github.io/skylive/viewer.html)</sub>
 
@@ -55,16 +55,12 @@ That's the entire transmitter: **a radio, a camera, a battery, and a button.** T
 
 The VTX side plugs in via its stock **JST-GH 6-pin harness** either way. Full step-by-step (with the three hardware-killer rules): **[`build/BUILD_GUIDE.md`](build/BUILD_GUIDE.md)**.
 
-**The shell:** an upright, two-storey GoPro-style case — battery downstairs behind its own tab-locked door, radio + camera upstairs under a screwed roof lid — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, long passive louver vents, and a GoPro mount underneath. Outer dimensions: **71 × 39.5 × 56 mm** — genuinely action-cam-sized. Both short sides carry an identical **T-clamp strain-relief interface** at the top edge — guide slot, round seat, and a screw-driven nose clamp — so the antenna can anchor left or right; the unused side is closed by the same T-piece. It builds from the parametric script in [`build/cad/`](build/cad/) and passes every geometry gate on each rebuild; this exact file set is what went to the printer.
+**The shell:** an upright, two-storey GoPro-style case — battery downstairs behind its own tab-locked door, radio + camera upstairs under a screwed roof lid — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, long passive louver vents, and a GoPro mount underneath. Outer dimensions: **71 × 40 × 56 mm** — genuinely action-cam-sized. Both short sides carry an identical **T-clamp strain-relief interface** at the top edge — guide slot, round seat, and a screw-driven nose clamp — so the antenna can anchor left or right; the unused side is closed by the same T-piece. It builds from the parametric script in [`build/cad/`](build/cad/) and passes every geometry gate on each rebuild; this exact file set is what went to the printer.
 
-**Two sizes, one architecture.** Don't take a photo's word for it — **[spin both in the 3D Lab](https://schoentom.github.io/skylive/viewer.html)**, where every dimension tag is a real millimetre from the executed CAD. The **850** (71 × 39.5 × 56 mm) is the flight unit; the
-**Mini 300** (59.5 × 39.5 × 48 mm, −28 % volume) is the same design wrapped around a 300 mAh pack —
+**Three sizes, one architecture.** Don't take a photo's word for it — **[spin them in the 3D Lab](https://schoentom.github.io/skylive/viewer.html)**, where every dimension tag is a real millimetre from the executed CAD. The **850** (71 × 40 × 56 mm) is the flight unit; the
+**mid sender** (69 × 38 × 48 mm) and the **Mini 300** (59.5 × 39.5 × 48 mm) are the same design
+wrapped around the smaller Tattu 300 3S HV pack (measured 45 × 17.5 × 15.3 mm) —
 same T-clamp antenna anchors (literally the same printed T-piece), same tab door, same camera corner.
-The width stays 39.5 on both because the radio and camera set it, not the battery.
-
-<div align="center">
-<img src="docs/assets/blueprint.svg" alt="Dimensional sheet with a true millimetre scale: front and side views of both senders, every key number measured from the executed CAD." width="100%">
-</div>
 
 ---
 
@@ -99,7 +95,7 @@ in [`build/ENGINEERING/antenna_capsule.md`](build/ENGINEERING/antenna_capsule.md
 anchored omni won on serviceability (swap an antenna in seconds, nothing to detune, one part to
 reprint).
 
-**The gain lives on the ground.** You're tumbling; the ground isn't. A bigger helmet antenna buys ~2–3 dB; *aiming* the ground antenna buys 10–14 dB. So the ground station is an **HDZero BoxPro** (4-way diversity, HDMI out to the TV) with an aimed **TrueRC X²-AIR patch** (nominal 13 dBic — honestly, expect ~10), a **Double AXII 2 LR** horizon omni and a **Matchstick** overhead omni. The receiver rides the best branch, frame by frame.
+**The gain lives on the ground.** You're tumbling; the ground isn't. A bigger helmet antenna buys ~2–3 dB; the ground antenna buys 10+ dB. But not by tracking — a mover has a zenith keyhole exactly where the jump happens. The doctrine is **several fixed beams**: one at the zenith, three around the horizon, and the receiver's 4-way diversity fuses the branches. The beams themselves are **self-printed axial-mode helix antennas** (5.8 GHz, RHCP, 7 turns, C/λ 1.00, 10.5° pitch, copper-tape cup reflector — the higher-gain cone *loses* in the minimax over real geometry despite +4 dB peak; HPBW ~37°). Gain, honestly: estimators span **10.7–13.9 dBic — measurement decides.** Each helix sits on a ball head so elevation is set in the field, the receiver's stock 2 dBi stubs come off (HDZero fuses by data integrity — one bad branch degrades the whole picture), and a Wi-Fi scan of the drop zone happens before anything transmits (5.8 GHz video channels overlap Wi-Fi). The store-bought patch-plus-omnis set remains as the interim/comparison station.
 
 ---
 
@@ -128,7 +124,7 @@ The full model — pattern math, pose-by-pose margin tables, every assumption an
 
 Everything a re-builder needs is under [`build/`](build/):
 
-- 📋 **[`BUILD_GUIDE.md`](build/BUILD_GUIDE.md)** — the solder-free assembly, the wiring map, the three hardware-killer rules, and the power/thermal operating doctrine.
+- 📋 **[`BUILD_GUIDE.md`](build/BUILD_GUIDE.md)** — both wiring paths (soldered flight build, Wago quick-build), the wiring map, the three hardware-killer rules, and the power/thermal operating doctrine.
 - 🛒 **[`BOM.md`](build/BOM.md)** — every part with real EU prices (as of 2026-07).
 - 📐 **[`MEASURE.md`](build/MEASURE.md)** — the dimensions you must caliper yourself (nothing in this project is guessed).
 - ✅ **[`VERIFICATION.md`](build/VERIFICATION.md)** — how a CAD model is turned into a *trustworthy* printable part: a seven-layer defense-in-depth, the honest limits of gates vs. physical tests, and the release checklist.
@@ -145,11 +141,11 @@ Everything a re-builder needs is under [`build/`](build/):
 
 **Print released** (2026-07). The concept, the electronics, the RF doctrine and the engineering derivations are done and published here; the case design is frozen and the first fit-print is in the lab.
 
-- ✅ Sender electronics bought and specified — four parts, solder-free.
-- ✅ RF doctrine derived and published (donut orientation, ground diversity, capsule study) — *calculated*.
+- ✅ Sender electronics bought and specified — four parts, two wiring paths (soldered flight build, Wago quick-build).
+- ✅ RF doctrine derived and published (donut orientation, multi-beam ground station, legacy capsule study) — *calculated*.
 - ✅ Thermal, structural and print-factor derivations published — *calculated*.
-- ✅ Final case CAD (**71 × 39.5 × 56 mm**) builds watertight and passes every geometry gate — roof lid on 3 corner inserts, tab-locked battery door, twin T-slot antenna anchors, 3 mm wall. **Print files released; the first fit-print is on the printer.** *Geometry-verified, not yet a physical test.*
-- ✅ **Mini-300 variant** (59.5 × 39.5 × 48 mm, Tattu 300 3S HV): full architecture port of the final build — same T-slot anchors (the T-pieces are literally the same printed part), same tab door, no power switch (the electronics storey has no room for one; power = plug the battery). [`build/cad/mini_300.py`](build/cad/mini_300.py), *geometry-verified, not yet printed.*
+- ✅ Final case CAD (**71 × 40 × 56 mm**) builds watertight and passes every geometry gate — roof lid on 3 corner inserts, tab-locked battery door, twin T-slot antenna anchors, 3 mm wall. **Print files released; the first fit-print is on the printer.** *Geometry-verified, not yet a physical test.*
+- ✅ **Mid sender** (69 × 38 × 48 mm) and **Mini 300** (59.5 × 39.5 × 48 mm, Tattu 300 3S HV): full architecture ports of the final build — same T-slot anchors (the T-pieces are literally the same printed part), same tab door; the Mini has no power switch (the electronics storey has no room for one; power = plug the battery). [`build/cad/mid_sender.py`](build/cad/mid_sender.py) · [`build/cad/mini_300.py`](build/cad/mini_300.py), *geometry-verified, not yet printed.*
 - 🔜 Then: fit-print feedback → thermal measurement (multimeter protocol is written) → antenna S11 with the coax clamped → 25 mW range test → test jump.
 
 ⭐ **Star the repo** — releases will carry the first real measurements and, eventually, the first freefall footage from the system itself. Building one, or flying camera and have opinions? Open an [issue](https://github.com/SchoenTom/skylive/issues).
@@ -162,7 +158,7 @@ Everything a re-builder needs is under [`build/`](build/):
 4000 m ─┤ ██ EXIT      link margin: head-down +9 dB · belly −0.2 dB   [CALC]
 3000 m ─┤ ██ freefall  ~200 km/h — the airstream IS the heatsink      [CALC]
 1500 m ─┤ ██ canopy    margins improve 2–3 dB per km of descent       [CALC]
- 300 m ─┤ ██ pattern   ground diversity rides the best of 4 antennas
+ 300 m ─┤ ██ pattern   fixed ground beams — the receiver fuses 4 branches
    0 m ─┴─▓▓─ beer     footage was live the whole way down            [PLAN]
 ```
 
@@ -173,8 +169,8 @@ every load-bearing number:
 
 | number | value | status |
 |---|---|---|
-| case dimensions, both senders | 71×39.5×56 · 59.5×39.5×48 | 🟢 executed CAD, gate-checked |
-| battery | 58×30×22 (850) · 45×17.5×15.3 (Mini) | 🟢 measured with calipers |
+| case dimensions, all three senders | 71×40×56 · 69×38×48 · 59.5×39.5×48 | 🟢 executed CAD, gate-checked |
+| battery | 58×30×22 (850) · 45×17.5×15.3 (mid + Mini) | 🟢 measured with calipers |
 | brass inserts | M3 Ø5×6 · M2 Ø3.2×3 | 🟢 measured |
 | XT30 wire, coax jacket | Ø2.8 · Ø3.1 | 🟢 measured |
 | GoPro teeth 3.0 / gap 3.3 | first fit-print in progress | 🟡 printing now |

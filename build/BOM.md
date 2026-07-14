@@ -9,17 +9,17 @@ you click. Items marked “—” were already owned or not in the logged order.
 | # | part | exact product | ≈ € | note |
 |---|---|---|---|---|
 | ① | VTX + camera + MIPI | **HDZero Freestyle V2 VTX Kit** (incl. Nano90 camera, MIPI cable, stock antenna) | 179.95 | cheaper than buying VTX (118.95) + camera separately |
-| ② | Battery | **Tattu R-Line 3S 850 mAh, XT30** | 14.99 | ×3 bought for bench rotation; cold-rated packs only for the real jump |
+| ② | Battery | **Tattu R-Line 3S 850 mAh, XT30** (850 flight unit) · **Tattu 3S 300 mAh HV** (mid + Mini 300; measured 45 × 17.5 × 15.3 mm) | 14.99 | ×3 bought for bench rotation; cold-rated packs only for the real jump |
 | ③ | Switch | **12 mm latching push-button, pre-wired** (2 A / 12–250 V) | ~5 | Amazon-class part; voltage/current-safe for 3S @ ~1.3 A |
-| ④ | Power joins | **3× Wago 221-412** lever clamps | ~3 | the entire power wiring — zero solder joints |
+| ④ | Power joins | solder + heat-shrink (flight build) **or 3× Wago 221-412** lever clamps (quick-build) | ~3 | the soldered build is the recommended flight configuration; the Wagos are the re-openable first-assembly path |
 
 ## 2 · Antenna path (one SMA joint inside — U.FL touched exactly once)
 
 | part | role | ≈ € | note |
 |---|---|---|---|
 | **TBS SMA pigtail, U.FL → SMA flange, 60 mm** | the fixed inner joint that protects the VTX U.FL (~30 cycles) | 5.99 | ×4 bought (spares — treat as consumable) |
-| **Lumenier AXII 2, RHCP, SMA** | **Version A — the donut omni**, fully encapsulated in the side-wall capsule | — | 73 × 17.5 mm, 7.8 g, 2.2 dBic, 5.3–6.2 GHz (manufacturer page) |
-| **TBS 5G8 patch, RHCP** | **Version B — the down patch** in the bottom shell | 11.90–14.90 | ⚠ exists in SMA and RP-SMA variants — the project's patch is **RP-SMA**; match your pigtail, SMA ≠ RP-SMA |
+| **Lumenier AXII 2, RHCP, SMA** | **the donut omni** — captive against the short case wall, axis horizontal through it, coax held by the screw-driven T-clamp | — | 73 × 17.5 mm, 7.8 g, 2.2 dBic, 5.3–6.2 GHz (manufacturer page) |
+| **TBS 5G8 patch, RHCP** | *legacy study only* — the down-patch variant survives as an engineering study, not a fitted part | 11.90–14.90 | ⚠ exists in SMA and RP-SMA variants — the study's patch is **RP-SMA**; match your pigtail, SMA ≠ RP-SMA |
 | SMA↔RP-SMA adapter kit | catch-all for any connector mix | ~6 | Amazon kit |
 
 ### Antenna test kit (bought deliberately — the shoot-out is part of the project's honesty)
@@ -37,23 +37,32 @@ you click. Items marked “—” were already owned or not in the logged order.
 |---|---|---|
 | PETG (prototypes) / **ASA (final)** filament | ~25/kg | never PLA — it softens too low; case files `TBD-CAD-M6` |
 | Silicone thermal pad, 1.5 mm, ≥ 3 W/mK | ~8 | VTX face → wall, mandatory |
-| M3 heat-set inserts (Ruthex RX-M3x5.7 class) + M3 screws | ~10 | 2× nylon M3 preferred at the antenna capsule |
+| M3 heat-set inserts (Ruthex RX-M3x5.7 class) + M3 screws | ~10 | roof-lid corner posts |
 | M2 DIN 912 cap screws: 4× M2×8 (antenna T-pieces) + 1× M2×6 (door tab) + 4× M2×8 (XT30 latches) + 2× M2 (camera) | ~4 | all cap-head (project standard) |
 | M2 brass heat-set insert, Ø3.2 × 3.0 (measured) | ~1 | door-tab thread — the most-cycled screw (every battery swap) gets brass, not self-tapped PETG; T-pieces/latches stay on Ø1.7 printed cores (low-cycle) |
-| TPU filament (capsule tip pad + root ring, orange) | ~15 | the orange tip pad doubles as the antenna witness indicator |
+| TPU filament | ~15 | only needed for the *legacy capsule study* (tip pad + root ring) — the anchored-omni build uses none |
 | Heat-shrink, RTV/hot glue, zip ties | ~5 | Wago securing + strain relief |
 | Soft foam padding, ~2 mm (EVA/PE) | ~3 | **mandatory** battery preload — the pack must never fly free in the bay (a loose 80 g pack hits ~590 N on a hard stop; the foam cuts that to ~250 N) |
 | 50 Ω SMA dummy load | ~8 | safe bench power-up without an antenna |
 
-## 4 · Ground station
+## 4 · Ground station — several fixed beams (self-printed helix antennas)
+
+The doctrine changed: no tracker, no combiner — **multiple fixed beams (zenith + horizon), the
+receiver fuses the branches.** The beams are self-printed 5.8 GHz axial-mode helices (RHCP,
+7 turns, C/λ 1.00, pitch 10.5°, cup reflector with copper tape inside, HPBW ~37°). Gain,
+honestly: **estimators span 10.7–13.9 dBic — measurement decides.** Unscrew the BoxPro's stock
+2 dBi stubs (one bad branch degrades the fused picture) and **Wi-Fi-scan the DZ before operating**.
 
 | part | role | ≈ € |
 |---|---|---|
 | **HDZero BoxPro** | 4-way diversity RX, Mini-HDMI out to the TV | ~360–420 |
-| **TrueRC X²-AIR MK II patch, RHCP, SMA** | aimed range-maker (nominal 13 dBic, budget ~10) | ~60 |
-| **Lumenier Double AXII 2 LR, RHCP, SMA** | horizon omni (~4.7 dBic) | ~30 |
-| **TrueRC Matchstick Carbon Long, RHCP, SMA** | overhead omni (~1.9 dBic) | 29.90 |
+| **Helix antenna, self-printed** (per branch): ~45 cm of 1.5 mm bare copper wire, 0.3 mm brass/copper sheet (ground plane), copper tape, SMA bulkhead, 3× M3×14, 1/4" nut, ASA prints (former + reflector + ball-head base + feed gauge) | one fixed beam; **ball-head mount** so elevation is set in the field | ~10–15 |
+| Gas discharge tube or λ/4 shorted stub at the VRX input | static from wind/rain on the wire kills the frontend otherwise | ~3 |
 | HDMI cable + public-viewing TV/monitor | the whole point | — |
+
+*Interim/comparison station (store-bought, superseded as doctrine): TrueRC X²-AIR MK II patch
+(nominal 13 dBic, budget ~10, ~€60) · Lumenier Double AXII 2 LR (~4.7 dBic, ~€30) · TrueRC
+Matchstick Carbon Long (~1.9 dBic, €29.90). Kept for the measured A/B against the helices.*
 
 ## 5 · Tools & measurement (staged — bench first)
 
@@ -62,7 +71,7 @@ you click. Items marked “—” were already owned or not in the logged order.
 | **Multimeter** | ~25 | now — polarity check is a hard gate before first power |
 | Balance charger 3S (+ XT60→XT30 adapter) | ~40 | now |
 | K-type probe thermometer or IR thermometer | 10–20 | thermal A/B test (see [`MEASURE.md`](MEASURE.md)) |
-| VNA covering 5.8 GHz (LiteVNA class — a NanoVNA-H does **not** reach the band) | ~120 | before trusting any antenna/capsule RF claim |
+| VNA covering 5.8 GHz (LiteVNA class — a NanoVNA-H does **not** reach the band) | ~120 | before trusting any antenna RF claim (sender clamp S11, helix SWR) |
 
 ## 6 · Alternatives (with dims)
 
@@ -87,8 +96,11 @@ for. Wall thickness is never traded for volume — see the wall-thickness doctri
 
 ### 6.3 · Battery alternatives — **rule: ≤ 60 × 30 × 23 mm fits the bay; a shorter pack = more XT30 room**
 
-Core: Tattu R-Line 3S 850 = 60 × 30 × 23 mm, XT30. All 3S / XT30. Long-type "pencil" packs
+Core (850 flight unit): Tattu R-Line 3S 850 = 60 × 30 × 23 mm datasheet (measured **58 × 30 × 22 —
+the measured pack governs the bay**), XT30. All 3S / XT30. Long-type "pencil" packs
 (≈ 72–74 mm) **exceed the 60 mm bay length** — do not force them.
+The **mid and Mini 300** bays are sized around the **Tattu 3S 300 mAh HV** (measured
+45 × 17.5 × 15.3) — the 850-class packs do not fit those two.
 
 | part | L×W×H | interface | fit |
 |---|---|---|---|

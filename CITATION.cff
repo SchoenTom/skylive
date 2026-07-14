@@ -1,13 +1,13 @@
 cff-version: 1.2.0
-message: "If you build on this work (link budget, thermal model, antenna capsule, CAD), please cite it."
+message: "If you build on this work (link budget, thermal model, antenna doctrine, CAD), please cite it."
 title: "SkyLive — a 1 W HDZero live-stream transmitter for skydiving"
 type: software
 authors:
   - family-names: "Schoen"
     given-names: "Tom"
     alias: "SchoenTom"
-repository-code: "https://github.com/SchoenTom/skydive-live"
-url: "https://schoentom.github.io/skydive-live/"
+repository-code: "https://github.com/SchoenTom/skylive"
+url: "https://schoentom.github.io/skylive/"
 license: CC-BY-4.0
 keywords:
   - skydiving
@@ -16,4 +16,4 @@ keywords:
   - link-budget
   - antenna-swap
   - open-hardware
-abstract: "Open engineering showcase of a helmet-mounted 1 W digital FPV live-video transmitter (four parts, solder-free, GoPro form factor) and a 4-way-diversity ground station, targeting live freefall video on the drop-zone screen. One antenna socket with two swappable options — a fully encapsulated side donut omni and a down-looking patch — with the gain and the diversity placed at the ground. Includes the full link-budget model with calculated-vs-measured separation, passive-thermal derivation and operating doctrine, print-factor register, regulatory path (SRD/PMSE, Germany), parametric CAD (build123d), and an open validation plan."
+abstract: "Open engineering showcase of a helmet-mounted 1 W digital FPV live-video transmitter (four parts, soldered flight configuration with a Wago quick-build path, GoPro form factor, three case sizes from one parametric architecture) and a multi-beam ground station, targeting live freefall video on the drop-zone screen. The sender antenna is a captive external omni lying against the short case wall, axis horizontal — the donut pattern fires down and up in every jump attitude. The ground station uses several fixed beams (zenith + horizon) of self-printed axial-mode helix antennas fused by a 4-way-diversity receiver; gain estimators span 10.7-13.9 dBic, measurement decides. Includes the full link-budget model with calculated-vs-measured separation, passive-thermal derivation and operating doctrine, print-factor register and printability gates, regulatory path (SRD/PMSE, Germany), parametric CAD (build123d), and an open validation plan."

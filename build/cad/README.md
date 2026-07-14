@@ -1,17 +1,21 @@
 # SkyLive CAD — parametric, gated, honest
 
-> **Status: the v2 case builds and passes all geometry gates** (both antenna variants:
-> WALL = side-capsule omni **63 × 71 × 85 mm**, PATCH = down-firing patch **63 × 71 × 101 mm**;
-> watertight, 3 mm wall, zero interference — independently re-verified). What's still open
-> before a *final* print: a few hand-measured values replace their datasheet fallbacks, and
-> the first print is a fit prototype (fit coupons first). Read, run, tweak.
+> **Status: the V3 family builds and passes all geometry gates** — three sizes, one
+> architecture, upright two-storey shells: **850** 71 × 40 × 56 mm (flight unit) ·
+> **mid** 69 × 38 × 48 mm · **Mini 300** 59.5 × 39.5 × 48 mm. Watertight, 3 mm wall,
+> printability gate on every export. Still open before a part is *trusted*: the physical
+> tests — a CAD boolean is not a test. Read, run, tweak.
 
 ## The files
 
 | file | role |
 |---|---|
 | **`spec.py`** | **Single source of truth for every dimension** (~185 parameters). Each value is (a) measured from an official manufacturer STEP, (b) sourced from a datasheet/vendor page (URL in the comment), or (c) listed in `MEASURE_ME` with a documented fallback. Nothing is estimated. CAD, docs and renders all import from here — no drift. |
-| **`skylive_sender_v2.py`** | Builds the upright two-storey case (body, cover, battery door, divider tray, bottom shell) in variants **A** (captive side omni), **A2** (legacy internal omni position) and **B** (down patch in the bottom shell). Runs hard gates: every part watertight, pairwise clearance ≥ 0.5 mm, only whitelisted protrusions through walls, dimension asserts against `spec.py`, divider cutout ≤ 50 %. Exports STEP/STL/GLB + hidden-line SVGs. |
+| **`v3_min.py`** | Builds the **850 flight unit**: one-piece two-storey body (battery downstairs, radio + camera upstairs — the divider shelf is printed in), tab-locked battery door on a brass-insert screw, roof lid on 3 corner inserts, 2× XT30 clamp bar, 2× strain-relief T-piece. Camera bulge inverted 1:1 from a measured reference print. Hard gates on every rebuild. |
+| **`mid_sender.py`** | The **mid sender** — the same architecture around the smaller Tattu 300 3S HV pack (measured 45 × 17.5 × 15.3). |
+| **`mini_300.py`** | The **Mini 300** — smallest port of the same architecture; no power switch (floor 2 has no room for one — power = plug the battery). |
+| **`printability_gate.py`** | Mesh-level print gate run before every STL export: knife-edge / vanishing-wall detection (FAIL), overhang clusters, enclosed voids, sliver triangles — the failure class a solid-level boolean gate cannot see. |
+| **`skylive_sender_v2.py`** | **Legacy** — the earlier V2 case (side-capsule omni and down-patch studies, 63 × 71 footprint). Kept because its derivations are referenced from [`../ENGINEERING/`](../ENGINEERING/); superseded by the V3 family above. |
 | **`render_glb.py`** | Blender headless render rig (Cycles CPU): auto-framing, studio light, PBR materials inferred from the per-part colors. |
 
 ## How to build
@@ -19,7 +23,9 @@
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install build123d==0.10.*        # tested with build123d 0.10 on Python 3.13
-python skylive_sender_v2.py all      # or: A | A2 | B
+python v3_min.py          # 850 flight unit
+python mid_sender.py      # mid sender
+python mini_300.py        # Mini 300
 # outputs → ../skylive_out/ (created next to the script's parent tree)
 ```
 

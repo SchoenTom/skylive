@@ -19,12 +19,13 @@ spec-locked, not bench-proven. A CAD boolean is not a test.*
 
 ## Before you start — the two-minute inventory
 
-The four functional parts (VTX, camera, battery, switch), **3× Wago 221-412**, the
-**U.FL→SMA flange pigtail**, one antenna (donut omni **or** down patch), the **1.5 mm thermal
-pad**, the printed shell + lid + drop-in divider tray + battery door, the small-parts bag
-(**M3 brass heat-set inserts, M2 & M3 DIN 912 cap screws**), and the tools:
-**soldering iron (for the inserts only — the wiring is solder-free)**, a multimeter, an 8 mm
-wrench for the SMA, hot glue/RTV, a caliper.
+The four functional parts (VTX, camera, battery, switch), the **U.FL→SMA flange pigtail**, the
+donut omni, the **1.5 mm thermal pad**, and the printed parts: **body** (one piece — both
+storeys and the divider shelf print as one), **roof lid**, **battery door**, **2× XT30 clamp
+bar**, **2× strain-relief T-piece**. Plus the small-parts bag (**M2 & M3 brass heat-set inserts,
+M2 & M3 DIN 912 cap screws**) and the tools: **soldering iron** (inserts, the XT30, and — on the
+recommended flight build — the power joins; the Wago quick-build path needs **3× Wago 221-412**
+instead), a multimeter, an 8 mm wrench for the SMA, hot glue/RTV, a caliper.
 
 > Order note: seat the **heat-set inserts first** (they need a hot iron and an empty shell),
 > then do all the cold work. Never run the iron near a seated battery or the VTX.
@@ -73,8 +74,8 @@ prototype shares). The battery bay keeps its own door on the end face.
 
 ## Step 2 · Clamp the antenna coax under the T-piece nose (the screws are the clamp)
 
-*(Donut-omni variant. Skip to Step 3 if you build the down-patch variant — its patch bolts into the
-bottom shell instead; see [`ENGINEERING/antenna_capsule.md` § 5](ENGINEERING/antenna_capsule.md).)*
+*(The anchored omni is the standard build. A down-firing patch and an encapsulated capsule exist
+only as legacy engineering studies — [`ENGINEERING/antenna_capsule.md`](ENGINEERING/antenna_capsule.md).)*
 
 **Do.** Both short sides carry the same interface, measured 1:1 off a working reference build:
 from the top edge, a **mouth** (18 × 2.5 — the T's crossbar seat), a **3.3 mm guide slot**, and
@@ -117,7 +118,7 @@ renders/steps/02_coax_clamp.png; final block dimensions confirm with the CAD pas
 ## Step 3 · Seat the VTX against the thermal pad
 
 **Do.** Peel one face of the **1.5 mm silicone thermal pad (≥ 3 W/mK)** and stick it to the
-**inside of the case wall** opposite the antenna capsule. Seat the VTX with its **hottest face flat
+**inside of the case wall** opposite the antenna side. Seat the VTX with its **hottest face flat
 against the pad**, no air gap, and let the printed shelf/ribs locate it. The VTX is **not** screwed
 to the wall — the pad's tack plus the shelf hold it; the wiring dresses last.
 
@@ -195,9 +196,11 @@ geometry agrees with itself.
 
 ---
 
-## Step 6 · Power wiring — three Wago 221-412, zero solder
+## Step 6 · Power wiring — Path B quick-build (three Wago 221-412)
 
-*(Verbatim-critical steps mirror [`BUILD_GUIDE.md` § 4](BUILD_GUIDE.md#4--wiring--completely-solder-free)
+*(This step is the **Wago quick-build path**. The **soldered build is the recommended flight
+configuration** — same wiring map, every `[joint]` soldered + heat-shrunk, leads cut to their
+true run length. Both paths in [`BUILD_GUIDE.md` § 4](BUILD_GUIDE.md#4--wiring--one-map-two-paths)
 — reproduced here so the sequence reads in one place.)*
 
 **Do.** Plug the stock **JST-GH 6-pin harness** into the VTX and take **red (+) and black (GND)**;
@@ -262,8 +265,8 @@ instantly** — this is the single most common way these die. The **no reverse-p
 means one swapped Wago at 12 V ends the VTX; the multimeter is a hard gate.
 
 **Watch out.**
-- **No orange witness dot in the capsule dome** → the antenna is **not** inside. Dark hole = EMPTY =
-  do not power (see [`ENGINEERING/antenna_capsule.md` § 4](ENGINEERING/antenna_capsule.md)).
+- **The omni is external and visible — look at it.** Antenna flat against the wall, SMA mated,
+  T-clamp tight. No antenna on the wall = do not power.
 - **Any heat you can't hold a finger on within ~2 min at > 25 mW in the closed case** → power down;
   that's the thermal envelope, not a surprise.
 
@@ -301,7 +304,7 @@ foam cuts that to ~250 N ([CALC], [`ENGINEERING/divider.md`](ENGINEERING/divider
 
 - Every **Wago lever flat-down**, glued; give each wire a tug.
 - **Multimeter** polarity re-checked at the VTX.
-- **Antenna captured**, orange witness dot visible, SMA snug.
+- **Antenna against the wall**, T-clamp nose tight on the coax, SMA snug.
 - **Thermal pad** compressed, no air gap.
 - **Strain reliefs** (antenna clamp + both XT30 saddles) hold against a firm cable pull — the pull
   lands in the printed block, not on a joint.
@@ -309,7 +312,7 @@ foam cuts that to ~250 N ([CALC], [`ENGINEERING/divider.md`](ENGINEERING/divider
 - **Roof lid** seated on its rebate (lip dips into the opening, flush on top), 3× M3 snug from above (not crushing the posts); the 12 mm switch pokes through its lid hole.
 
 Then — and only then — go to the empirical protocol: **[`MEASURE.md`](MEASURE.md)** (VNA S11 of the
-encapsulated antenna, the thermal A/B test, the caliper list). This assembly is
+antenna with its coax clamped, the thermal A/B test, the caliper list). This assembly is
 **bench-verified pending**: the shell prints and the parts fit on the reference prototype, but no
 step above has a *measured* badge until you run those tests on your own build.
 

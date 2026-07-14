@@ -20,7 +20,7 @@ number updates the model *and* its checks consistently — no drift between docs
 
 **2 · Automated geometry gates — every build, fail loud.**
 Each build asserts: watertight single solids, pairwise interference ≥ clearance, minimum wall,
-internal bay envelope, vent open-areas, antenna-capsule fit, switch-head clearance, connector
+internal bay envelope, vent open-areas, antenna-anchor fit, switch-head clearance, connector
 feed-throughs. **The load-bearing rule:** a gate checks against the *nominal, as-designed* feature
 positions — **never against the post-boolean body**. A gate that "passes" only because the conflict
 was carved out of the shell is banned; it would hide exactly the structural defect it should catch.
@@ -47,10 +47,10 @@ never run along the main load direction) are all fixed here.
 
 **6 · Physical coupons — the only real proof before the full print.**
 Small test prints of every critical fit — heat-set boss, switch hole, battery door, camera/GoPro
-mount, antenna capsule, divider ledge — are printed and tested with the *actual hardware*. Structural
+mount, antenna anchor, divider ledge — are printed and tested with the *actual hardware*. Structural
 claims (e.g. "the divider survives a 1.5 m drop") are validated with a coupon drop test, not left as
-a beam calculation. The antenna capsule gets a NanoVNA S11 sweep, because the real RF risk of
-encapsulation is detuning, not the (calculated, negligible) ~0.15 dB of dielectric loss.
+a beam calculation. The clamped antenna gets a VNA S11 sweep (the instrument must cover 5.8 GHz), because the real
+RF risk near a printed wall is detuning, not the (calculated, negligible) ~0.15 dB of dielectric loss.
 
 **7 · Measurement & release discipline.**
 The handful of values that can't be sourced are calipered and pinned into `spec.py` before anything

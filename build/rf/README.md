@@ -6,6 +6,12 @@
 > textbook formulas and literature ranges — no jump, no spectrum analyzer, no measured pattern.
 > It says *where to look*, it proves nothing. The verification list is at the bottom.
 
+> **Link model v1.0 note.** The RX gains below reflect the **interim store-bought ground
+> station** (aimed patch + omnis). The current ground-station doctrine is several fixed beams
+> of self-printed helix antennas (estimators span 10.7–13.9 dBic — measurement decides); a
+> helix-based link model follows **after measurement D1**, rather than silently editing these
+> numbers.
+
 **Companion tool:** [`linkbudget_donut.html`](linkbudget_donut.html) — an interactive,
 self-contained explorer (open it in any browser, no install). Play with altitude, drift,
 pose and orientation and watch the margin.
@@ -66,7 +72,7 @@ pattern is rounder — narrows the delta, doesn't flip the sign) · RX patch ass
 
 ## 6 · Verify before trusting (in order)
 
-1. **VNA S11 of the encapsulated antenna** in the printed capsule (instrument must cover 5.8 GHz).
+1. **VNA S11 of the antenna with its coax in the printed clamp** (instrument must cover 5.8 GHz).
 2. **Bench range test** (antenna on a pole, walk the RX out) — isolates FSPL+antennas from body shadow.
 3. **A real jump with a logging ground station**: RSSI vs altitude/pose vs these cells — one
    belly pass from 4 km validates or kills the −10 dB shadow assumption.

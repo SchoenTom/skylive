@@ -1,4 +1,4 @@
-# SkyLive — Build Guide (solder-free)
+# SkyLive — Build Guide (soldered flight build · Wago quick-build)
 
 > **Wiring doctrine (updated):** the **soldered build is the recommended flight configuration** —
 > every lead cut to its actual run length (shorter cables = less weight, less rattle, fewer
@@ -8,8 +8,9 @@
 
 *Condensed English edition of the project's German build document (`BAUANLEITUNG`, 2026-06-29,
 specs verified against HDZero documentation). Status: the electronics build below is bought,
-specified and wiring-verified on paper; the printed case passes its geometry gates at
-**63 × 71 × 85 mm** (side-capsule omni variant; the down-firing patch variant is 63 × 71 × 101 mm).
+specified and wiring-verified on paper; the printed case passes its geometry gates in all
+**three sizes** — **850** 71 × 40 × 56 mm (flight unit) · **mid** 69 × 38 × 48 mm ·
+**Mini 300** 59.5 × 39.5 × 48 mm.
 The STEP/STL files build from [`../cad/`](../cad/). **Nothing here carries a "measured" badge yet —
 the first print is a fit prototype, and a handful of values are still datasheet fallbacks.***
 
@@ -24,18 +25,21 @@ the first print is a fit prototype, and a handful of values are still datasheet 
 | device | purpose | core |
 |---|---|---|
 | **Sender** (helmet) | 1 W live video from freefall (up to 4 km) | HDZero **Freestyle V2** VTX + **Nano90** camera · 3S LiPo · standalone — **no flight controller, no BEC** |
-| **Ground station** (DZ) | receive + public viewing | HDZero **BoxPro** (4-antenna diversity, Mini-HDMI out) + aimed patch & omnis |
+| **Ground station** (DZ) | receive + public viewing | HDZero **BoxPro** (4-antenna diversity, Mini-HDMI out) + **several fixed beams** — self-printed helix antennas, zenith + horizon (§ 9) |
 
-## 2 · Sender parts (all plug/lever — no soldering iron)
+## 2 · Sender parts
 
 - **HDZero Freestyle V2 VTX** — 1 W, input 7–25 V (2–6S), 6–15 W draw, U.FL antenna output, **no reverse-polarity protection**
 - **HDZero Nano90 camera** + 20-pin **MIPI cable** (fragile — powered by the VTX over MIPI)
 - **Tattu R-Line 3S 850 mAh** (XT30 + JST-XH balance) — smaller 2–3S packs work too, only shorter airtime
 - **12 mm latching push-button** (2 A / 12–250 V, pre-wired) — carries the ~1.3 A directly in the + line
-- **3× Wago 221-412** lever clamps (0.14–4 mm²) — the entire power wiring
+- **3× Wago 221-412** lever clamps (0.14–4 mm²) — the entire power wiring *on the quick-build path*
+  (the flight build solders these joins instead, § 4)
 - **U.FL→SMA flange pigtail** (e.g. TBS, 60 mm) — fixed once, protects the fragile U.FL
-- **Antennas (5.8 GHz, RHCP):** the captive donut omni (Lumenier AXII 2) or the down patch
-  (TBS 5G8) — one at a time, see [`ENGINEERING/antenna_capsule.md`](ENGINEERING/antenna_capsule.md)
+- **Antenna (5.8 GHz, RHCP):** the donut omni (Lumenier AXII 2), captive against the short case
+  wall under the screw-driven T-clamp — axis horizontal, straight through the wall. *(A down-firing
+  patch and a fully encapsulated capsule exist only as legacy studies —
+  [`ENGINEERING/antenna_capsule.md`](ENGINEERING/antenna_capsule.md).)*
 - **Thermal pad** 1.5 mm, ≥ 3 W/mK, VTX face → case wall (mandatory — see doctrine, § 7)
 - **Printed case** — PETG for fit prototypes, **ASA for the final part, never PLA** (`TBD-CAD-M6`)
 
@@ -54,23 +58,32 @@ Tools/consumables: **multimeter (mandatory — polarity check)**, heat-shrink, R
   **SMA ≠ RP-SMA** (they thread together but don't connect) — check every plug pair.
   All 5.8 GHz antennas **RHCP on both ends** (mixing polarizations costs the link).
 
-## 4 · Wiring — completely solder-free
+## 4 · Wiring — one map, two paths
 
 ```
-Battery XT30 ── XT30-female pigtail (+) ──[Wago]── switch ──[Wago]── VTX red (+)
-                XT30-female pigtail (−) ──[Wago]──────────────────── VTX black (GND)
+Battery XT30 ── XT30-female pigtail (+) ──[joint]── switch ──[joint]── VTX red (+)
+                XT30-female pigtail (−) ──[joint]───────────────────── VTX black (GND)
                 VTX yellow/white/blue → heat-shrink caps (unused)
 Camera ── MIPI ──→ VTX          VTX U.FL ── U.FL→SMA flange pigtail ── antenna
 ```
 
+Each `[joint]` is either a solder joint or a Wago — the topology is identical.
+
+**Path A — soldered (the recommended flight configuration):** cut every lead to its true run
+length, solder + heat-shrink each joint. Shorter cables, less weight, nothing to rattle, no
+lever to work loose.
+
+**Path B — Wago quick-build (great first assembly):**
 1. Plug the JST-GH harness into the VTX. Take red + black (bare ends).
 2. **Three Wago 221-412:** + line = pigtail(+) ↔ switch ↔ VTX red (2 Wagos);
    − line = pigtail(−) ↔ VTX black (1 Wago). Thin strand wobbly? **Fold the end double** —
    no ferrule, no crimper needed.
-3. Connect antenna (U.FL → flange pigtail, once) and camera (MIPI). **Antenna on BEFORE power — always.**
-4. Secure the Wago levers with a dab of RTV/hot glue (vibration) + strain relief (§ 5).
+3. Secure the Wago levers with a dab of RTV/hot glue (vibration) + strain relief (§ 5).
 
-> No capacitor needed — there are no motors, the supply is clean. **Zero solder joints.**
+Either path: connect antenna (U.FL → flange pigtail, once) and camera (MIPI).
+**Antenna on BEFORE power — always.**
+
+> No capacitor needed — there are no motors, the supply is clean.
 
 ## 5 · Strain relief (consumer-safe)
 
@@ -120,20 +133,26 @@ doubles the effective heat capacity (buys 1–2 minutes in the power-up window) 
   and power via the **ground-station (BoxPro) menu**. 1 W requires the unlock — mind the licence
   situation ([`LEGAL_DE.md`](LEGAL_DE.md)). Watch the heat; lowest usable power on the ground.
 
-## 9 · Ground station
+## 9 · Ground station — several fixed beams, no tracker
 
-- **HDZero BoxPro** — 4-way diversity (2 internal patches + 2 external SMA), Mini-HDMI straight
-  to the public-viewing TV.
-- **TrueRC X²-AIR MK II patch, RHCP, SMA** — the range-maker; aim it at the working sky
-  (nominal 13 dBic — honestly budget ~10).
-- **Lumenier Double AXII 2 LR** (~4.7 dBic) — horizon omni.
-- **TrueRC Matchstick Carbon Long** (~1.9 dBic) — overhead omni.
-- Doctrine: **the gain belongs on the ground.** A stronger body antenna buys ~2–3 dB; the aimed
-  ground antenna buys 10–14 dB. The tumbling end gets a round radiator; the still, aimable end
-  gets the gain and the diversity.
+- Doctrine: **the gain belongs on the ground — as multiple fixed beams.** A stronger body
+  antenna buys ~2–3 dB; a ground beam buys 10+ dB. A tracker has a zenith keyhole exactly
+  where the jump is; fixed beams (zenith + horizon) don't, and the receiver fuses the branches.
+- **The beams are self-printed axial-mode helix antennas** — 5.8 GHz, RHCP, 7 turns, C/λ 1.00,
+  pitch 10.5°, **cup reflector with copper tape inside** (the higher-gain cone loses in the
+  minimax over the real jump geometry despite +4 dB peak), HPBW ~37°. Gain, honestly:
+  **estimators span 10.7–13.9 dBic — measurement decides.** Print ASA, never PLA (Tg).
+- **Ball-head mount** — elevation is set in the field, not baked into a printed angle.
+- **HDZero BoxPro** — 4-way diversity, Mini-HDMI straight to the public-viewing TV.
+  **Unscrew the stock 2 dBi linear stubs**: HDZero fuses branches by data integrity, it does
+  not pick the best — one bad branch degrades the whole picture.
+- **Wi-Fi scan the drop zone before operating** — the 5.8 GHz video channels overlap Wi-Fi;
+  a nearby access point raises the noise floor more than any antenna gain can buy back.
+- The store-bought set (aimed patch + two omnis) remains the labelled **interim/comparison
+  station** until the helix branches are measured.
 
 ## 10 · What you must measure yourself
 
 Nothing in this project is guessed. Before printing/final assembly, work through
-[`MEASURE.md`](MEASURE.md) — caliper dimensions, S11 of the encapsulated antenna, and the
-thermal A/B test are all listed there with instructions.
+[`MEASURE.md`](MEASURE.md) — caliper dimensions, S11 of the antenna with its coax clamped, and
+the thermal A/B test are all listed there with instructions.

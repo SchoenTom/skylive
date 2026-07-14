@@ -45,22 +45,22 @@
 <text x="430" y="104" class="sans" font-size="26" font-weight="800" fill="#f4f7fb">The link, honestly closed.</text>
 <g class="mono" font-size="14.5">
   <text x="430" y="146" fill="#aebdce">Transmit power</text><text x="872" y="146" text-anchor="end" fill="#67e8f9">+30 dBm · 1 W</text>
-  <text x="430" y="176" fill="#aebdce">Antennas (donut TX +2.2 · RX +10 honest)</text><text x="872" y="176" text-anchor="end" fill="#67e8f9">up to +12.2 dB</text>
+  <text x="430" y="176" fill="#aebdce">Antennas (donut TX +2.2 · RX +10, conservative helix)</text><text x="872" y="176" text-anchor="end" fill="#67e8f9">up to +12.2 dB</text>
   <text x="430" y="206" fill="#aebdce">Free-space loss @ 4 km</text><text x="872" y="206" text-anchor="end" fill="#ef8a7f">− 119.8 dB</text>
-  <text x="430" y="236" fill="#aebdce">Cables · body shadow (pose)</text><text x="872" y="236" text-anchor="end" fill="#ef8a7f">− 2.5 · − 1…12 dB</text>
+  <text x="430" y="236" fill="#aebdce">Cables · body shadow (pose)</text><text x="872" y="236" text-anchor="end" fill="#ef8a7f">− 2.5 · − 2…12 dB</text>
   <text x="430" y="266" fill="#aebdce">Image threshold (conservative)</text><text x="872" y="266" text-anchor="end" fill="#67e8f9">− 90 dBm</text>
   <line x1="430" y1="286" x2="872" y2="286" stroke="rgba(255,255,255,.18)"/>
 </g>
 <text x="430" y="324" class="sans" font-size="20" font-weight="800" fill="#f4f7fb">Margin <tspan fill="#22d3ee">≈ +9 dB</tspan> <tspan class="mono" font-size="13" font-weight="400" fill="#7186a0">head-down @ 4 km · calculated</tspan></text>
 <rect x="430" y="338" width="206" height="14" rx="7" fill="rgba(255,255,255,.1)"/>
 <rect id="mbar" x="430" y="338" width="150" height="14" rx="7" fill="#22d3ee"/>
-<text x="650" y="350" class="mono" font-size="13" fill="#9fc4e2">stronger as he falls</text>
+<text x="650" y="350" class="mono" font-size="13" fill="#9fc4e2">stronger as she falls</text>
 <!-- honest pose notes (donut doctrine) -->
 <g class="mono" font-size="13" fill="#7186a0">
   <text x="430" y="384">Donut fires down + up — aiming, not more power.</text>
   <text x="430" y="406">Belly <tspan fill="#edab28">rides the threshold</tspan> — descent adds <tspan fill="#9fe8b0">2–3 dB/km</tspan>.</text>
   <text x="430" y="428">Sit (feet down) <tspan fill="#edab28">≈ −2 dB</tspan> — the pose a test jump must prove.</text>
   <text x="430" y="450" fill="#5a6b82">A model, not a measurement — every assumption in build/rf/.</text>
-  <text x="430" y="470" fill="#5a6b82">Next gates: S11 in the capsule · 25 mW range test.</text>
+  <text x="430" y="470" fill="#5a6b82">Next gates: S11 of the clamped feed · 25 mW range test.</text>
 </g>
 </svg>

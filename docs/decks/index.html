@@ -3,10 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>SkyDive·Live — Pitches</title>
-<meta name="description" content="SkyDive·Live pitch decks — tap to open on any phone or computer, nothing to install.">
+<title>SkyLive — Pitches</title>
+<meta name="description" content="SkyLive pitch decks — tap to open on any phone or computer, nothing to install.">
 <meta name="theme-color" content="#0b0d12">
-<meta property="og:title" content="SkyDive·Live — Pitches">
+<meta property="og:title" content="SkyLive — Pitches">
 <meta property="og:description" content="Tap to open on any device — full animations, nothing to install.">
 <meta property="og:image" content="../og.png">
 <style>
@@ -23,16 +23,19 @@
   h1 .d{color:var(--cyan)}
   .sub{font:400 clamp(1rem,2vw,1.15rem)/1.5 var(--sans);color:var(--muted);max-width:34ch;text-align:center;margin-bottom:26px}
   .grid{display:grid;gap:14px;width:100%;max-width:560px}
+  .ghead{font:700 .68rem/1 var(--mono);letter-spacing:.24em;text-transform:uppercase;color:var(--faint);margin:14px 4px 0}
+  .ghead:first-child{margin-top:0}
+  .gnote{font:400 .8rem/1.4 var(--sans);color:var(--faint);margin:-8px 4px 0}
   .card{display:flex;align-items:center;gap:16px;text-decoration:none;color:inherit;
     background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:18px 20px;transition:.2s}
   .card:hover{border-color:var(--cyan);transform:translateY(-2px);background:rgba(34,211,238,.06)}
+  .card.new{border-color:rgba(34,211,238,.55);background:rgba(34,211,238,.05)}
+  .card.old{opacity:.78}
   .card .ic{font-size:1.6rem;flex:0 0 auto}
   .card .t{font:700 1.05rem/1.2 var(--sans)}
   .card .d{font:400 .85rem/1.35 var(--sans);color:var(--muted);margin-top:3px}
   .card .go{margin-left:auto;color:var(--cyan);font:700 1.2rem/1 var(--sans)}
   .tag{font:700 .62rem/1 var(--mono);letter-spacing:.1em;color:#04222a;background:var(--cyan);padding:4px 7px;border-radius:6px;margin-left:8px;vertical-align:middle}
-  .pdf{font:600 .8rem/1 var(--mono);color:var(--faint);margin-left:auto;text-decoration:none;border:1px solid rgba(255,255,255,.12);padding:7px 10px;border-radius:9px}
-  .pdf:hover{color:var(--cyan);border-color:var(--cyan)}
   .row{display:flex;align-items:center;gap:10px}
   .note{font:500 .85rem/1.5 var(--sans);color:var(--faint);max-width:42ch;text-align:center;margin-top:24px}
   .back{margin-top:14px;color:var(--cyan);text-decoration:none;font:600 .9rem/1 var(--sans)}
@@ -40,34 +43,52 @@
 </style>
 </head>
 <body>
-  <div class="eyebrow">SkyDive·Live</div>
+  <div class="eyebrow">SkyLive</div>
   <h1>The pitches<span class="d">.</span></h1>
   <p class="sub">Tap to open — works on any phone, tablet or computer. Full animations, nothing to install.</p>
 
   <div class="grid">
+    <div class="ghead">2026 edition</div>
     <div class="row">
-      <a class="card" href="dual_antenna_EN.html">
+      <a class="card new" href="skylive_pitch_EN.html">
+        <span class="ic">✨</span>
+        <span><span class="t">SkyLive pitch<span class="tag">EN</span></span><span class="d">The one-piece sender, the lying-antenna doughnut, a self-exploding 3D model</span></span>
+        <span class="go">→</span>
+      </a>
+    </div>
+    <div class="row">
+      <a class="card new" href="skylive_pitch_DE.html">
+        <span class="ic">✨</span>
+        <span><span class="t">SkyLive-Pitch<span class="tag">DE</span></span><span class="d">Der Ein-Teil-Sender, der liegende Antennen-Donut, ein selbst-explodierendes 3D-Modell</span></span>
+        <span class="go">→</span>
+      </a>
+    </div>
+
+    <div class="ghead">Archive (historical concepts)</div>
+    <p class="gnote">Superseded — kept for the record.</p>
+    <div class="row">
+      <a class="card old" href="dual_antenna_EN.html">
         <span class="ic">🛰️</span>
         <span><span class="t">Never lose the picture<span class="tag">EN</span></span><span class="d">The dual-antenna story — play the jump yourself</span></span>
         <span class="go">→</span>
       </a>
     </div>
     <div class="row">
-      <a class="card" href="dual_antenna_DE.html">
+      <a class="card old" href="dual_antenna_DE.html">
         <span class="ic">🛰️</span>
         <span><span class="t">Verlier nie das Bild<span class="tag">DE</span></span><span class="d">Die Doppelantennen-Demo — spiel den Sprung selbst</span></span>
         <span class="go">→</span>
       </a>
     </div>
     <div class="row">
-      <a class="card" href="pitch_EN.html">
+      <a class="card old" href="pitch_EN.html">
         <span class="ic">🪂</span>
         <span><span class="t">The full system<span class="tag">EN</span></span><span class="d">From freefall to the drop-zone TV — sender + ground station</span></span>
         <span class="go">→</span>
       </a>
     </div>
     <div class="row">
-      <a class="card" href="pitch_DE.html">
+      <a class="card old" href="pitch_DE.html">
         <span class="ic">🪂</span>
         <span><span class="t">Das ganze System<span class="tag">DE</span></span><span class="d">Vom Freifall bis zum DZ-Fernseher — Sender + Bodenstation</span></span>
         <span class="go">→</span>
@@ -75,7 +96,7 @@
     </div>
   </div>
 
-  <p class="note">No internet where you're showing it? Each deck is a <b>single self-contained HTML file</b> — grab it from the <a href="https://github.com/SchoenTom/skydive-live/releases/tag/v1.0" style="color:inherit">v1.0 release</a> (or use your browser's "Save page as…"), double-click it anywhere, and it runs offline with all animations and 3D.</p>
-  <a class="back" href="../">← SkyDive·Live home</a>
+  <p class="note">No internet where you're showing it? Each deck is a <b>single self-contained HTML file</b> — grab it from the <a href="https://github.com/SchoenTom/skylive" style="color:inherit">repository</a> (or use your browser's "Save page as…"), double-click it anywhere, and it runs offline with all animations and 3D.</p>
+  <a class="back" href="../">← SkyLive home</a>
 </body>
 </html>

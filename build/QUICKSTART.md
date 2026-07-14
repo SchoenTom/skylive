@@ -26,7 +26,7 @@ Full alternatives table (other VTX/cameras/batteries with exact dimensions): [`B
 `01_body` **lying on its back wall** (GoPro teeth horizontal = strong) · `02_lid`, `03_door`,
 `04_latch ×2`, `05_T-piece ×2` flat. PETG 0.2 mm, 4 perimeters, 40 % gyroid, cooling ≤ 50 %,
 paint-on supports only where marked. Full sheet: [`PRINT_DE.md`](PRINT_DE.md) (German) ·
-dimensional drawing with scale: [`../docs/assets/blueprint.svg`](../docs/assets/blueprint.svg)
+dimensions: all three sizes are listed in the root README (measured from the executed CAD)
 
 ## 3 · Inserts first (empty shell, iron at 250–270 °C)
 

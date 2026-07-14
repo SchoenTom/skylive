@@ -8,7 +8,7 @@ Radio transmit power is regulated. The plan of record for this project is **lice
 
 ## Safety
 
-This device is designed to be worn on a skydiver's helmet next to life-critical equipment. The documentation includes the safety concept (snag-free shell, captive antenna capsule and battery door, strain relief, thermal operating doctrine, SAR assessment and AAD manufacturer sign-off as hard gates before any jump) — **none of it is validated yet**. Do not jump any build of this hardware before the documented ground gates pass, a written AAD manufacturer statement exists, and the drop zone / safety officer has approved it.
+This device is designed to be worn on a skydiver's helmet next to life-critical equipment. The documentation includes the safety concept (snag-free shell, screw-clamped captive antenna, tab-locked battery door, strain relief, thermal operating doctrine, SAR assessment and AAD manufacturer sign-off as hard gates before any jump) — **none of it is validated yet**. Do not jump any build of this hardware before the documented ground gates pass, a written AAD manufacturer statement exists, and the drop zone / safety officer has approved it.
 
 ## Status
 

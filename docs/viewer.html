@@ -23,6 +23,7 @@
 <div class="tabs" id="tabs">
   <button data-m="850" class="on">Sender 850 · assembled</button>
   <button data-m="850x">Sender 850 · exploded</button>
+  <button data-m="mid">Mid · 69 × 38 × 48</button>
   <button data-m="mini">Mini 300</button>
   <button data-m="cmp">⚖ vs GoPro Hero 13</button>
   <button data-m="fly">▶ Fly-in · loaded</button>
@@ -34,7 +35,7 @@
 // Szene ist Y-up + Meter (glTF): CAD (x,y,z)mm -> Welt (x, z, -y)*0.001
 const HS = {
   "850": [
-    ["0 0.0285 0",           "71 × 39.5 × <small>overall</small> 56"],
+    ["0 0.0285 0",           "71 × 40 × <small>overall</small> 56"],
     ["-0.0356 0.021 0",      "T-clamp · R1.55 nose, screws pull 0.4 onto the coax"],
     ["0.0356 -0.012 0",      "door 31.5 × 24 · tab + M2 in brass"],
     ["-0.02175 0.014 0.01985","camera corner · lens flush"],
@@ -47,12 +48,18 @@ const HS = {
     ["-0.042 0.03 0",        "same nose-clamp T-piece, printed twice"]
   ],
   "fly": [
-    ["0 0.045 0", "watch the parts fly home — radio, camera, battery, switch, Wagos, antenna <small>(components stylised to their measured envelopes)</small>"]
+    ["0 0.045 0", "watch the parts fly home — radio, camera, battery, antenna, clamp bars <small>(components stylised to their measured envelopes)</small>"]
   ],
   "cmp": [
-    ["-0.062 0.031 0", "SkyLive 850 · 71 × 39.5 × 56"],
+    ["-0.062 0.031 0", "SkyLive 850 · 71 × 40 × 56"],
     ["0 0.024 0",      "GoPro Hero 13 Black · 71.8 × 50.8 × 33.6 <small>(manufacturer envelope, drawn for scale)</small>"],
     ["0.062 0.021 0",  "Mini 300 · 59.5 × 39.5 × 48"]
+  ],
+  "mid": [
+    ["0 0.0245 0",           "69 × 38 × <small>overall</small> 48 · the middle size"],
+    ["-0.0345 0.02 0",       "same T-slot · same T-piece part"],
+    ["0.0345 -0.01 0",       "same door principle · Tattu 3S 300 HV"],
+    ["0 -0.03 0",            "same GoPro mount"]
   ],
   "mini": [
     ["0 0.0245 0",           "59.5 × 39.5 × 48 · −28 % volume"],
@@ -60,7 +67,7 @@ const HS = {
     ["0.0298 -0.01 0",       "door 19 × 16 · same latch principle"],
     ["0 -0.03 0",            "same GoPro mount, centred"]
   ]};
-const SRC = {"850":"./models/sender850.glb","850x":"./models/sender850_exploded.glb","mini":"./models/mini300.glb","cmp":"./models/compare.glb","fly":"./models/flyin850.glb"};
+const SRC = {"850":"./models/sender850.glb","850x":"./models/sender850_exploded.glb","mid":"./models/sender_mid.glb","mini":"./models/mini300.glb","cmp":"./models/compare.glb","fly":"./models/flyin850.glb"};
 const mv = document.getElementById("mv");
 function setModel(k){
   mv.querySelectorAll("[slot]").forEach(e=>e.remove());

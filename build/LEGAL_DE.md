@@ -56,7 +56,7 @@ Class E is an option after written clarification, not a foundation.
 
 - **SAR — 1 W next to a head:** the sender sits on the helmet, centimetres from the skull.
   Reference: ICNIRP/EU limit 2 W/kg (local, 10 g average). At 25 mW uncritical [ASSESSMENT];
-  at 1 W the antenna-to-head distance is the decisive quantity. The side/bottom antenna
+  at 1 W the antenna-to-head distance is the decisive quantity. The side-wall antenna
   placement (radiating away from the head) helps but **replaces no assessment** — a SAR
   evaluation is a hard gate before real 1 W operation or giving the device to anyone else.
   No measurement exists — not overclaimed.

@@ -33,14 +33,14 @@ unsourceable dimension as `MEASURE_ME` with a documented fallback — measure, r
 
 ## C · Empirical — after printing / with instruments (in order)
 
-1. **VNA S11 of the encapsulated omni** in its printed capsule — mandatory before believing any
+1. **VNA S11 of the omni with its coax in the printed clamp** — mandatory before believing any
    RF number (markers 5.65 / 5.8 / 5.95 GHz, target SWR ≤ 2 in band).
    ⚠ The instrument must actually cover 5.8 GHz — a NanoVNA-H does not.
-2. **On-helmet patch detuning** (VNA S11 with the patch mounted on the real helmet).
+2. **On-helmet detuning** (VNA S11 with the antenna mounted on the real helmet; the patch version of this test belongs to the legacy study).
 3. **Thermal A/B test**: 200 mW on the ground, vents open vs taped shut; log U×I with a
    multimeter per power step (always with an antenna attached!). This is the experiment that
    calibrates the whole thermal model.
-4. **1.5 m drop test** of the printed divider tray with an 80 g battery dummy — the beam
+4. **1.5 m drop test** of the printed-in divider shelf (coupon) with an 80 g battery dummy — the beam
    calculation is not a test.
 5. **Fit coupons BEFORE the full-case print** (insert boss, switch hole, door fit, GoPro
    fingers) — plan in [`ENGINEERING/print.md`](ENGINEERING/print.md).

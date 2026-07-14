@@ -43,6 +43,9 @@ publishes the **whole chain — helmet sender to open Linux ground station** —
 under CC-BY-4.0 so anyone can rebuild it. Deliberate full disclosure (the
 patentable ideas were released rather than locked up).
 
+*(2026-07-14 note: the ground-station concept has since evolved into a multi-beam
+station with self-printed helix antennas.)*
+
 ## Submitted application answers (verbatim, as of 2026-07-08)
 
 **Q1 — reach & impact / gap in the ecosystem:**
