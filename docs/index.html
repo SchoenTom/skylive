@@ -393,7 +393,6 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         <button id="mvFly" aria-pressed="false">▶ Fly-in</button>
         <button id="mvScrub" aria-pressed="false">⏱ Take-apart</button>
       </div>
-      <!-- TBD-ASSET: models/sender850.glb + models/sender850_exploded.glb (poster fallback below) -->
       <model-viewer
         id="mv"
         src="models/sender850.glb"
@@ -765,11 +764,11 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   const bAsm=document.getElementById('mvAsm'), bExp=document.getElementById('mvExp'),
         bFly=document.getElementById('mvFly');
   if(!mv) return;
-  const SRC={asm:'models/sender850.glb', exp:'models/sender850_exploded.glb', fly:'models/flyin850.glb'};
+  const SRC={asm:'models/sender850.glb', exp:'models/sender850_exploded_v4.glb', fly:'models/flyin850_v4.glb'};
   function set(mode){
     mv.setAttribute('src', SRC[mode]);
     if(mode==='fly'){ mv.setAttribute('autoplay',''); } else { mv.removeAttribute('autoplay'); }
-    const po = mode==='exp' ? 'poster_exploded_v3.png' : 'poster_assembled_v3.png';
+    const po = mode==='exp' ? 'poster_exploded_v4.png' : 'poster_assembled_v3.png';
     mv.setAttribute('poster', po);
     const fb=document.getElementById('mvposter'); if(fb) fb.src=po;
     if(mv.style.backgroundImage) mv.style.backgroundImage='url("'+po+'")';
@@ -963,7 +962,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   bS.addEventListener('click',()=>{
     others.forEach(b=>{b.classList.remove('on');b.setAttribute('aria-pressed','false');});
     bS.classList.add('on');bS.setAttribute('aria-pressed','true');
-    mv.setAttribute('src','models/sender_explode.glb');
+    mv.setAttribute('src','models/sender_explode_v4.glb');
     mv.removeAttribute('autoplay');
     box.classList.add('on');
     const arm=()=>{try{mv.play();mv.pause();}catch(e){} if(!pin)pin=requestAnimationFrame(pinLoop);};
