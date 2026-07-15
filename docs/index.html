@@ -772,6 +772,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     const po = mode==='exp' ? 'poster_exploded_v3.png' : 'poster_assembled_v3.png';
     mv.setAttribute('poster', po);
     const fb=document.getElementById('mvposter'); if(fb) fb.src=po;
+    if(mv.style.backgroundImage) mv.style.backgroundImage='url("'+po+'")';
     [[bAsm,'asm'],[bExp,'exp'],[bFly,'fly']].forEach(([b,m])=>{
       b.classList.toggle('on',mode===m); b.setAttribute('aria-pressed',String(mode===m));});
   }
@@ -835,6 +836,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     [...poses.children].forEach(b=>b.classList.toggle('on',+b.dataset.t===pn[2]));  // nearest pose, not rounded theta
   }
   function tick(){
+    if(!ticking) return;                     // Sektion außer Sicht — Loop schläft
     theta=lerpAngle(theta,target,0.16);
     if(!dragging){idle++; if(idle>150){target=(target+0.6)%360;}}  // gentle auto-orbit when idle
     render(); requestAnimationFrame(tick);
@@ -851,12 +853,19 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   // antenna toggle (manual swap — one antenna at a time, like the real SMA socket)
   atoggle.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;ant=b.dataset.a;
     [...atoggle.children].forEach(x=>x.classList.toggle('on',x===b));idle=0;render();});
-  render(); requestAnimationFrame(tick);
+  render();
+  let ticking=false;
+  function startTick(){if(!ticking){ticking=true;requestAnimationFrame(tick);}}
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(es=>es.forEach(e2=>{if(e2.isIntersecting)startTick();else ticking=false;}),
+      {rootMargin:'120px'}).observe(stage);
+  }else startTick();
 })();
 </script>
 <script>/* SkyLive model-viewer render-kick fix v2 */
 (function(){
   function kickOne(mv){
+    if(window.__noGL) return;                      // ohne WebGL gibt es nichts zu kicken
     try{
       var w=mv.clientWidth; if(w<2)return;          // nur wenn sichtbar/Größe da
       var prev=mv.style.width;
@@ -885,7 +894,8 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
 (function(){
   function webglOK(){try{var c=document.createElement('canvas');return !!(window.WebGLRenderingContext&&(c.getContext('webgl2')||c.getContext('webgl')||c.getContext('experimental-webgl')));}catch(e){return false;}}
   function run(){
-    if(webglOK())return;            // 3D funktioniert -> nichts tun
+    window.__noGL = !webglOK();
+    if(!window.__noGL)return;       // 3D funktioniert -> nichts tun
     document.querySelectorAll('model-viewer').forEach(function(mv){
       var p=mv.getAttribute('poster');
       if(p){ mv.style.backgroundImage='url("'+p+'")'; mv.style.backgroundSize='contain';
@@ -932,6 +942,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     val.textContent=Math.round(alt/10)*10+' m';
     ph.textContent=phase;}
   addEventListener('scroll',()=>{if(!tick)tick=requestAnimationFrame(upd)},{passive:true});
+  addEventListener('resize',()=>{if(!tick)tick=requestAnimationFrame(upd)},{passive:true});
   upd();
 })();
 /* ---------- take-apart scrub ---------- */
@@ -970,7 +981,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         msg=document.getElementById('dmsg'), tilt=document.getElementById('dTilt'),
         tiltV=document.getElementById('dTiltV'), bUp=document.getElementById('dUp'),
         bSky=document.getElementById('dSky'), bSpin=document.getElementById('dSpin'),
-        jump=document.getElementById('djumper'),
+        jump=document.getElementById('djumper'), hit=document.getElementById('dhit'),
         parts=[...document.getElementById('dpk').children];
   let a=0, yaw=0, spinning=false, dash=0, g=0;
   const R=150, RAY0=212, RAY1=424;
@@ -992,7 +1003,6 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     ray.setAttribute('stroke',col); ray.setAttribute('opacity',(0.15+0.85*g).toFixed(2));
     ray.setAttribute('stroke-width',(1+3.5*g).toFixed(1));
     nullT.setAttribute('opacity',g<0.08?'1':'0');
-    const hit=document.getElementById('dhit');
     hit.setAttribute('rx',(6+52*g).toFixed(1)); hit.setAttribute('ry',(2+9*g).toFixed(1));
     hit.setAttribute('fill',col); hit.setAttribute('opacity',(0.10+0.35*g).toFixed(2));
     if(a<8)      msg.textContent=spinning?'she spins — the hole stays down':'hit spin — nothing will change';
@@ -1001,6 +1011,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     if(jump)jump.setAttribute('transform','scale('+(0.85+0.15*Math.cos(yaw))+',1)');
   }
   function loop(now){
+    if(!running) return;                     // Sektion außer Sicht — Loop schläft
     if(spinning) yaw+=0.045;
     dash-=0.6+5.5*g; ray.setAttribute('stroke-dashoffset',dash.toFixed(1));
     parts.forEach((p2,i2)=>{
@@ -1011,17 +1022,23 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     requestAnimationFrame(loop);
   }
   function setTilt(v,btn){a=Math.max(0,Math.min(90,Math.round(v)));tilt.value=a;tiltV.textContent=a+'°';
-    [bUp,bSky].forEach(b=>b.classList.remove('on')); if(btn)btn.classList.add('on');}
+    [bUp,bSky].forEach(b=>b.classList.remove('on')); if(btn)btn.classList.add('on');draw();}
   bUp.addEventListener('click',()=>setTilt(0,bUp));
   bSky.addEventListener('click',()=>setTilt(90,bSky));
   tilt.addEventListener('input',()=>setTilt(+tilt.value,null));
   bSpin.addEventListener('click',()=>{spinning=!spinning;bSpin.textContent=spinning?'■ stop':'▶ spin';});
   let drag=null;
-  svg.addEventListener('pointerdown',e=>{drag={y:e.clientY,a:a};svg.setPointerCapture(e.pointerId);});
+  svg.addEventListener('pointerdown',e=>{drag={y:e.clientY,a:a};try{svg.setPointerCapture(e.pointerId);}catch(_){}});
   svg.addEventListener('pointermove',e=>{if(!drag)return;setTilt(drag.a+(drag.y-e.clientY)*0.45,null);});
   svg.addEventListener('pointerup',()=>{drag=null;});
   svg.addEventListener('pointercancel',()=>{drag=null;});
-  requestAnimationFrame(loop);
+  draw();                                    // sofort zeichnen — nicht auf den ersten Frame warten
+  let running=false;
+  function start(){if(!running){running=true;requestAnimationFrame(loop);}}
+  if('IntersectionObserver' in window){
+    new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)start();else running=false;}),
+      {rootMargin:'120px'}).observe(svg);
+  }else start();
 })();
 </script>
 </body>

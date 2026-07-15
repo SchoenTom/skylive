@@ -126,10 +126,14 @@ function runGates(){
 }
 
 function draw(){
-  const W = PAD*2 + IN_X*S, H = PAD*2 + IN_Y*S;
+  const W = PAD*2 + IN_X*S, H = PAD + IN_Y*S + 215;   // unten Platz für die Ablage
   svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
   let s = "";
   const wp = WALL * S;
+  s += `<rect x="${X(-13)}" y="${Y(17.3)}" width="260" height="165" rx="14" fill="none"
+        stroke="#38617f" stroke-dasharray="7 6" opacity=".55"/>
+        <text x="${X(-13)+12}" y="${Y(17.3)+152}" fill="#5b7f9c" font-size="12"
+        font-family="ui-monospace">spares tray</text>`;
   s += `<rect x="${PAD-wp}" y="${PAD-wp}" width="${IN_X*S+2*wp}" height="${IN_Y*S+2*wp}" rx="26"
         fill="none" stroke="#38617f" stroke-width="${wp}" opacity=".85"/>`;
   s += `<rect x="${PAD}" y="${PAD}" width="${IN_X*S}" height="${IN_Y*S}" rx="12" fill="#0b2135" stroke="#274d68"/>`;
@@ -153,13 +157,13 @@ svg.addEventListener("pointerdown", ev => {
   const t = ev.target.closest(".drag"); if (!t) return;
   const k = t.dataset.k, pt = pos(ev);
   grab = {k, dx: pt.x - D[k].x, dy: pt.y - D[k].y};
-  svg.setPointerCapture(ev.pointerId);
+  try{svg.setPointerCapture(ev.pointerId);}catch(_){}
 });
 svg.addEventListener("pointermove", ev => {
   if (!grab) return;
-  const pt = pos(ev);
-  D[grab.k].x = Math.round((pt.x - grab.dx) * 4) / 4;
-  D[grab.k].y = Math.round((pt.y - grab.dy) * 4) / 4;
+  const pt = pos(ev), e = D[grab.k], M = 6.5;   // Canvas-Rand — nichts kann entkommen
+  e.x = Math.max(-IN_X/2 - M, Math.min(IN_X/2 + M - e.w, Math.round((pt.x - grab.dx) * 4) / 4));
+  e.y = Math.max(-IN_Y/2 - M, Math.min(IN_Y/2 + 21.5 - e.h, Math.round((pt.y - grab.dy) * 4) / 4));
   draw();
 });
 svg.addEventListener("pointerup", () => grab = null);

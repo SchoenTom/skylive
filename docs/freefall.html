@@ -214,7 +214,7 @@ function render(){
   const rows = [
     ["TX power", (txdbm===30?"+30 dBm (1 W)":"+14 dBm (25 mW)")],
     ["TX omni toward DZ (doughnut max)", "+" + TXG + " dB"],
-    ["free-space @ " + (slant/1000).toFixed(2) + " km slant", "−" + fspl(slant).toFixed(1) + " dB"],
+    ["free-space @ " + (Math.max(slant,50)/1000).toFixed(2) + " km slant", "−" + fspl(slant).toFixed(1) + " dB"],
     ["body shadow (" + pose + ")", SHADOW[pose] + " dB"],
     ["best branch · " + BEAMS[w].n, (g[w]>=0?"+":"") + g[w].toFixed(1) + " dB"],
     ["cables + fade (4 beams share it)", CABFADE + " dB"],
@@ -273,7 +273,7 @@ $("thr").addEventListener("click", e => { const b = e.target.closest("button"); 
     alt = Math.max(0, Math.min(4000, Math.round((210 - y)/0.045/25)*25));
     $("alt").value = alt; $("off").value = off; render();
   };
-  map.addEventListener("pointerdown", ev => { drag = true; map.classList.add("grab"); map.setPointerCapture(ev.pointerId); set(ev); });
+  map.addEventListener("pointerdown", ev => { drag = true; map.classList.add("grab"); set(ev); try{map.setPointerCapture(ev.pointerId);}catch(_){} });
   map.addEventListener("pointermove", ev => { if (drag) set(ev); });
   map.addEventListener("pointerup", () => { drag = false; map.classList.remove("grab"); });
 }
