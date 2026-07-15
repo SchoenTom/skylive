@@ -901,6 +901,8 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       if(p){ mv.style.backgroundImage='url("'+p+'")'; mv.style.backgroundSize='contain';
              mv.style.backgroundPosition='center'; mv.style.backgroundRepeat='no-repeat'; }
       mv.setAttribute('reveal','manual'); mv.style.setProperty('--progress-bar-height','0px');
+      ['mvFly','mvScrub'].forEach(function(id){var b=document.getElementById(id);
+        if(b){b.style.opacity='.35';b.style.pointerEvents='none';b.title='needs WebGL — animation not available';}});
       if(!mv.querySelector('.mv-noweb')){
         var h=document.createElement('div'); h.className='mv-noweb';
         h.textContent='Static view · rotatable 3D in Safari, or in Chrome under Settings → System → enable graphics acceleration';

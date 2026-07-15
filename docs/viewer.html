@@ -70,12 +70,14 @@ const HS = {
   ]};
 const SRC = {"850":"./models/sender850.glb","850x":"./models/sender850_exploded.glb","mid":"./models/sender_mid.glb","mini":"./models/mini300.glb","cmp":"./models/compare.glb","fly":"./models/flyin850.glb"};
 const mv = document.getElementById("mv");
+const POSTER = {"850":"poster_assembled_v3.png","850x":"poster_exploded_v3.png","mid":"poster_mid_v1.png",
+                "mini":"poster_mini_v1.png","cmp":"poster_cmp_v1.png","fly":"poster_assembled_v3.png"};
 function setModel(k){
   window.__mvModel = k;
   document.querySelectorAll("[data-m]").forEach(b=>b.classList.toggle("on", b.dataset.m===k));
   mv.querySelectorAll("[slot]").forEach(e=>e.remove());
   mv.src = SRC[k];
-  if(window.__noGL){ mv.style.backgroundImage = 'url("' + (k==="850x" ? "poster_exploded_v3.png" : "poster_assembled_v3.png") + '")'; }
+  if(window.__noGL){ mv.style.backgroundImage = 'url("' + POSTER[k] + '")'; }
   if (k === "fly"){ mv.setAttribute("autoplay",""); mv.setAttribute("animation-crossfade-duration","0"); }
   else { mv.removeAttribute("autoplay"); }
   HS[k].forEach((h,i)=>{
@@ -98,7 +100,8 @@ document.getElementById("tabs").addEventListener("click",e=>{
   window.__noGL=!ok();
   function run(){ if(!window.__noGL)return;
     document.querySelectorAll('model-viewer').forEach(function(mv){
-      mv.style.backgroundImage='url("'+(window.__mvModel==="850x"?"poster_exploded_v3.png":"poster_assembled_v3.png")+'")'; mv.style.backgroundSize='contain';
+      var P = (typeof POSTER!=="undefined" && POSTER[window.__mvModel]) || "poster_assembled_v3.png";
+      mv.style.backgroundImage='url("'+P+'")'; mv.style.backgroundSize='contain';
       mv.style.backgroundPosition='center'; mv.style.backgroundRepeat='no-repeat';
       mv.setAttribute('reveal','manual'); mv.style.setProperty('--progress-bar-height','0px');
       if(!mv.querySelector('.mv-noweb')){var h=document.createElement('div');h.className='mv-noweb';

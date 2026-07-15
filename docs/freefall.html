@@ -77,11 +77,36 @@ header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-
           <rect x="285" y="342" width="70" height="16" rx="3" fill="#e8e4d8"/>
           <circle cx="320" cy="350" r="4" fill="#f87171"/></g>
         <g id="jumper2" opacity="0.9" transform="translate(430,190) scale(0.5)">
-          <circle cx="0" cy="-26" r="10" fill="#111"/><rect x="-16" y="-16" width="32" height="34" rx="10" fill="#16324a"/>
-          <line x1="-16" y1="-6" x2="-42" y2="-20" stroke="#111" stroke-width="8" stroke-linecap="round"/>
-          <line x1="16"  y1="-6" x2="42"  y2="-20" stroke="#111" stroke-width="8" stroke-linecap="round"/>
-          <line x1="-9" y1="18" x2="-30" y2="44" stroke="#111" stroke-width="9" stroke-linecap="round"/>
-          <line x1="9"  y1="18" x2="30" y2="44" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+          <g id="pBelly">
+            <circle cx="0" cy="-26" r="10" fill="#111"/><rect x="-16" y="-16" width="32" height="34" rx="10" fill="#16324a"/>
+            <line x1="-16" y1="-6" x2="-42" y2="-20" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+            <line x1="16"  y1="-6" x2="42"  y2="-20" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+            <line x1="-9" y1="18" x2="-30" y2="44" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+            <line x1="9"  y1="18" x2="30" y2="44" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+          </g>
+          <g id="pHead" style="display:none">
+            <circle cx="0" cy="-38" r="10" fill="#111"/><rect x="-9" y="-28" width="18" height="34" rx="8" fill="#16324a"/>
+            <line x1="-9" y1="-20" x2="-30" y2="-2" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+            <line x1="9"  y1="-20" x2="30" y2="-2" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+            <line x1="-5" y1="6" x2="-7" y2="44" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+            <line x1="5"  y1="6" x2="7"  y2="44" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+          </g>
+          <g id="pBack" style="display:none">
+            <circle cx="-32" cy="2" r="10" fill="#111"/><rect x="-24" y="-6" width="42" height="16" rx="8" fill="#16324a"/>
+            <line x1="-14" y1="-4" x2="-20" y2="-30" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+            <line x1="0"  y1="-4" x2="6"  y2="-30" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+            <line x1="18" y1="0" x2="34" y2="-22" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+            <line x1="18" y1="6" x2="40" y2="-8" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+          </g>
+          <g id="pSit" style="display:none">
+            <circle cx="0" cy="-32" r="10" fill="#111"/><rect x="-9" y="-22" width="18" height="28" rx="8" fill="#16324a"/>
+            <line x1="-9" y1="-14" x2="-32" y2="-2" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+            <line x1="9"  y1="-14" x2="32" y2="-2" stroke="#111" stroke-width="8" stroke-linecap="round"/>
+            <line x1="-4" y1="4" x2="20" y2="10" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+            <line x1="20" y1="10" x2="22" y2="38" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+            <line x1="4" y1="4" x2="26" y2="14" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+            <line x1="26" y1="14" x2="28" y2="40" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+          </g>
         </g>
       </svg>
       <div class="hud"><span class="rec">● LIVE</span><span class="alt" id="altHud">ALT 4000 m</span>
@@ -98,7 +123,7 @@ header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-
     <label>offset from DZ <input id="off" type="range" min="0" max="2500" step="25" value="600">
       <output id="offv">600 m</output></label>
     <div class="poses" id="poses">
-      <button data-p="head" class="on">Head-down</button>
+      <button data-p="head" class="on">Head-up</button>
       <button data-p="back">Back</button>
       <button data-p="belly">Belly</button>
       <button data-p="sit">Sit</button>
@@ -118,7 +143,8 @@ header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-
     + the BoxPro's <b>four fused helix branches</b>, each with its own geometry: conservative
     10.7 dBic peak (estimators span 10.7–13.9), 37° beamwidth, parabolic roll-off, and nothing better
     than a −5 dBi sidelobe floor off-axis. The transmit side gets +1.6 dBic because the lying omni's
-    doughnut maximum points at the DZ — that is the whole point of turning it 90°. Threshold:
+    doughnut maximum points at the DZ — that is the whole point of turning it 90°. Pose shadows are referenced to the
+    sender on the helmet's chin mount (literature mid-points — not yet our measurement). Threshold:
     −105 dBm is receiver spec class (bench measurement D1 decides), −90 dBm is the worst-case floor.
     This extends <a href="https://github.com/SchoenTom/skylive/tree/main/build/rf" style="color:var(--cy)">build/rf</a>
     from one beam to the real four — a calculation to be jumped, not a measurement.</div>
@@ -254,6 +280,8 @@ function render(){
   $("ground").setAttribute("transform", `translate(0 ${400*(1-gs)}) scale(1 ${gs})`);
   $("clouds").setAttribute("transform", `translate(0 ${ -t*230 })`);
   $("jumper2").setAttribute("transform", `translate(430 ${185 + t*30}) scale(${0.5 + 0.22*t})`);
+  const PG = {head:"pHead", back:"pBack", belly:"pBelly", sit:"pSit"};
+  for (const k in PG) $(PG[k]).style.display = (k===pose ? "" : "none");
 }
 $("alt").addEventListener("input", e => { alt = +e.target.value; render(); });
 $("off").addEventListener("input", e => { off = +e.target.value; render(); });
