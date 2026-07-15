@@ -34,18 +34,33 @@ header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-
 .poses button{background:#0d2337;border:1px solid var(--line);color:var(--ink);padding:8px 13px;border-radius:9px;cursor:pointer;font-size:13px}
 .poses button.on{background:#123c5c;border-color:var(--cy);color:var(--cy)}
 .pow{display:flex;gap:8px;margin:8px 0}
-.pow button{flex:1;background:#0d2337;border:1px solid var(--line);color:var(--ink);padding:8px;border-radius:9px;cursor:pointer;font-size:13px}
+.pow button{flex:1;background:#0d2337;border:1px solid var(--line);color:var(--ink);padding:8px;border-radius:9px;cursor:pointer;font-size:12.5px}
 .pow button.on{border-color:var(--warn);color:var(--warn)}
+.pow.thr button.on{border-color:var(--ok);color:var(--ok)}
 .budget{font:12.5px ui-monospace,Menlo,monospace;margin-top:8px}
-.budget .row{display:flex;justify-content:space-between;padding:3px 0;border-bottom:1px dashed #16324a}
+.budget .row{display:flex;justify-content:space-between;gap:10px;padding:3px 0;border-bottom:1px dashed #16324a}
 .mbar{height:16px;border-radius:8px;background:#0d2337;border:1px solid var(--line);margin-top:10px;overflow:hidden;position:relative}
 .mbar i{display:block;height:100%;transition:width .15s}
 .mbar span{position:absolute;inset:0;text-align:center;font:11px/16px ui-monospace,monospace;color:#fff}
 .drop{width:100%;margin-top:12px;background:#123c5c;border:1px solid var(--cy);color:var(--cy);padding:11px;border-radius:9px;cursor:pointer;font-weight:800;font-size:15px}
 .note{font-size:12px;color:var(--mut);margin-top:10px;line-height:1.55}
+.mapwrap{position:relative}
+#map{width:100%;display:block;border-radius:10px;background:linear-gradient(#0a2c5e,#173f66 78%,#1d5c37 78.5%);cursor:grab;touch-action:none}
+#map.grab{cursor:grabbing}
+#hand{position:absolute;top:8px;left:50%;transform:translateX(-50%);background:#123c5cee;border:1px solid var(--cy);
+  color:var(--cy);font:12px ui-monospace,monospace;padding:4px 12px;border-radius:20px;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap}
+#hand.show{opacity:1}
+.branches{margin-top:10px;font:12px ui-monospace,Menlo,monospace}
+.br{display:flex;align-items:center;gap:8px;padding:3px 0}
+.br span{width:172px;color:var(--mut);white-space:nowrap}
+.br .bar{flex:1;height:9px;background:#0d2337;border-radius:5px;overflow:hidden}
+.br .bar i{display:block;height:100%;background:#2b5b7d;transition:width .12s}
+.br b{width:74px;text-align:right;color:var(--ink)}
+.br em{font-style:normal;color:var(--ok);font-weight:800;width:52px}
+.br.win span{color:var(--cy)} .br.win .bar i{background:var(--cy);box-shadow:0 0 8px var(--cy)}
 </style></head>
 <body>
-<header><b>Freefall Simulator</b><span class="s">ride the link budget from door to deck — every dB is the real model</span>
+<header><b>Freefall Simulator</b><span class="s">four helix beams, one fused link — every dB is the real model</span>
 <a href="./index.html">← back</a></header>
 <div class="wrap">
   <div class="card">
@@ -66,7 +81,7 @@ header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-
           <line x1="-16" y1="-6" x2="-42" y2="-20" stroke="#111" stroke-width="8" stroke-linecap="round"/>
           <line x1="16"  y1="-6" x2="42"  y2="-20" stroke="#111" stroke-width="8" stroke-linecap="round"/>
           <line x1="-9" y1="18" x2="-30" y2="44" stroke="#111" stroke-width="9" stroke-linecap="round"/>
-          <line x1="9"  y1="18" x2="30"  y2="44" stroke="#111" stroke-width="9" stroke-linecap="round"/>
+          <line x1="9"  y1="18" x2="30" y2="44" stroke="#111" stroke-width="9" stroke-linecap="round"/>
         </g>
       </svg>
       <div class="hud"><span class="rec">● LIVE</span><span class="alt" id="altHud">ALT 4000 m</span>
@@ -80,6 +95,8 @@ header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-
     <h3>You are the jumper</h3>
     <label>altitude <input id="alt" type="range" min="0" max="4000" step="25" value="4000">
       <output id="altv">4000 m</output></label>
+    <label>offset from DZ <input id="off" type="range" min="0" max="2500" step="25" value="600">
+      <output id="offv">600 m</output></label>
     <div class="poses" id="poses">
       <button data-p="head" class="on">Head-down</button>
       <button data-p="back">Back</button>
@@ -90,62 +107,176 @@ header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-
       <button data-w="30" class="on">1 W (event · PMSE)</button>
       <button data-w="14">25 mW (test · SRD)</button>
     </div>
+    <div class="pow thr" id="thr">
+      <button data-t="-105" class="on">−105 dBm rx (spec class · bench D1)</button>
+      <button data-t="-90">−90 dBm rx (worst-case floor)</button>
+    </div>
     <button class="drop" id="drop">🪂 DROP — ride it down</button>
     <div class="budget" id="budget"></div>
-    <div class="note"><b>Honest note [CALC]:</b> Friis free-space path loss at 5.8 GHz + literature
-    mid-points for body shadow (the single biggest uncertainty, −2…−12 dB by pose) + the ground
-    station's fixed helix beam — estimators span 10.7–13.9 dBic, measurement pending; we calculate
-    with a conservative 10 — against a −90 dBm HDZero threshold. This is the same model as
-    <a href="https://github.com/SchoenTom/skylive/tree/main/build/rf" style="color:var(--cy)">build/rf</a> —
-    a calculation to be jumped, not a measurement.</div>
+    <div class="note"><b>Honest note [CALC]:</b> Friis free-space loss at 5.8 GHz over the true slant
+    range + literature mid-points for body shadow (−2…−12 dB by pose, the single biggest uncertainty)
+    + the BoxPro's <b>four fused helix branches</b>, each with its own geometry: conservative
+    10.7 dBic peak (estimators span 10.7–13.9), 37° beamwidth, parabolic roll-off, and nothing better
+    than a −5 dBi sidelobe floor off-axis. The transmit side gets +1.6 dBic because the lying omni's
+    doughnut maximum points at the DZ — that is the whole point of turning it 90°. Threshold:
+    −105 dBm is receiver spec class (bench measurement D1 decides), −90 dBm is the worst-case floor.
+    This extends <a href="https://github.com/SchoenTom/skylive/tree/main/build/rf" style="color:var(--cy)">build/rf</a>
+    from one beam to the real four — a calculation to be jumped, not a measurement.</div>
+  </div>
+
+  <div class="card">
+    <h3>BoxPro · four helix branches, one fused link</h3>
+    <div class="mapwrap">
+      <svg id="map" viewBox="0 0 560 240">
+        <!-- Keulen im (verzerrten) Kartenmaßstab: Kanten sind echte Elevationslinien -->
+        <path id="wZ" d="M70 210 L330 20 L70 20 Z" fill="#7dd3fc" opacity="0.10"/>
+        <path id="wA" d="M70 210 L530 141 L530 20 L376 20 Z" fill="#7dd3fc" opacity="0.10"/>
+        <path d="M70 210 L16 152 L42 118 Z" fill="#7dd3fc" opacity="0.07" stroke="#7dd3fc44" stroke-dasharray="4 4"/>
+        <text x="80" y="52" fill="#5b7f9c" font-size="11" font-family="ui-monospace,monospace">Z · zenith beam</text>
+        <text x="420" y="60" fill="#5b7f9c" font-size="11" font-family="ui-monospace,monospace">A · fan beam ~50°</text>
+        <text x="6" y="106" fill="#3d6484" font-size="10" font-family="ui-monospace,monospace">B·C fan →</text>
+        <text x="6" y="118" fill="#3d6484" font-size="10" font-family="ui-monospace,monospace">other skies</text>
+        <line x1="70" y1="210" x2="560" y2="210" stroke="#2b7a45" stroke-width="3"/>
+        <text x="470" y="228" fill="#5b7f9c" font-size="10" font-family="ui-monospace,monospace">2.5 km →</text>
+        <text x="8" y="18" fill="#5b7f9c" font-size="10" font-family="ui-monospace,monospace">4000 m</text>
+        <line id="ray" x1="70" y1="204" x2="180" y2="30" stroke="#4ade80" stroke-width="2.2" stroke-dasharray="7 5"/>
+        <g transform="translate(70,210)">
+          <rect x="-3" y="-14" width="6" height="14" fill="#c8d6e2"/>
+          <circle cx="0" cy="-17" r="4.5" fill="none" stroke="#f0a35e" stroke-width="2"/>
+          <circle cx="-8" cy="-12" r="3.5" fill="none" stroke="#f0a35e" stroke-width="1.6"/>
+          <circle cx="8" cy="-12" r="3.5" fill="none" stroke="#f0a35e" stroke-width="1.6"/>
+          <text x="12" y="-2" fill="#5b7f9c" font-size="10" font-family="ui-monospace,monospace">BoxPro · 4× helix</text>
+        </g>
+        <circle id="jdot" cx="180" cy="30" r="7" fill="#7dd3fc" stroke="#e2f3ff" stroke-width="2"/>
+      </svg>
+      <div id="hand"></div>
+    </div>
+    <div class="branches" id="branches"></div>
+    <div class="note" style="margin-top:8px">Drag her through the sky — or fly the sliders. The receiver
+    always rides the strongest branch; the handover you see is the design doing its job. The fan sits
+    at ~50° on ball heads (the CRN plateau is 45–55° — no guessed number frozen in plastic). In this
+    side view she flies down beam A’s azimuth; three 37° helices do not close the azimuth ring —
+    that is exactly what the seven-branch station is for.</div>
   </div>
 </div>
 <script>
-// ── Das echte Link-Budget-Modell [CALC] ───────────────────────────────────────
-const F = 5800;                                        // MHz
-const SHADOW = {head: -2, back: -8, belly: -11, sit: -12};   // Literatur-Mittelwerte
-const RXG = 10, THR = -90, MISC = -4;                  // konservative Helix-Keule (Schätzer 10,7–13,9 dBic), Threshold, Kabel/Fade
-let alt = 4000, pose = "head", txdbm = 30, anim = null;
+// ── Das echte Link-Budget-Modell [CALC] — vier BoxPro-Helix-Zweige, Fusion ────
+const F = 5800;                                             // MHz
+const SHADOW = {head: -2, back: -8, belly: -11, sit: -12};  // Literatur-Mittelwerte
+const TXG = 1.6;                                            // liegende Omni: Donut-Maximum zur DZ
+const CABFADE = -3;                                         // Kabel −1 + Fade-Reserve −2 (4 Keulen teilen das Risiko)
+const PEAK = 10.7, HPBW = 37, FLOOR = -5;                   // Helix konservativ; off-axis nur Sidelobe-Boden
+const BEAMS = [
+  {n: "Z · zenith 90°",        el: 90, az: 0},
+  {n: "A · fan ~50° her az.", el: 50, az: 0},
+  {n: "B · fan ~50° (+120°)",  el: 50, az: 120},
+  {n: "C · fan ~50° (−120°)",  el: 50, az: -120}];
+let alt = 4000, off = 600, pose = "head", txdbm = 30, thr = -105, anim = null, lastWin = -1, handT = null;
+// Deep-Links: ?alt=1200&off=600&pose=belly&tx=14&thr=-90
+{
+  const q = new URLSearchParams(location.search);
+  if (q.has("alt"))  alt  = Math.max(0, Math.min(4000, +q.get("alt")  || 0));
+  if (q.has("off"))  off  = Math.max(0, Math.min(2500, +q.get("off")  || 0));
+  if (q.has("pose") && q.get("pose") in {head:1,back:1,belly:1,sit:1}) pose = q.get("pose");
+  if (q.get("tx") === "14")   txdbm = 14;
+  if (q.get("thr") === "-90") thr = -90;
+  addEventListener("DOMContentLoaded", () => {
+    document.getElementById("alt").value = alt; document.getElementById("off").value = off;
+    document.querySelectorAll(".poses button").forEach(b=>b.classList.toggle("on", b.dataset.p===pose));
+    document.querySelectorAll("#pow button").forEach(b=>b.classList.toggle("on", +b.dataset.w===txdbm));
+    document.querySelectorAll("#thr button").forEach(b=>b.classList.toggle("on", +b.dataset.t===thr));
+  });
+}
 
 const $ = id => document.getElementById(id);
+const R = Math.PI/180;
 function fspl(m){ const km = Math.max(m, 50)/1000; return 20*Math.log10(km) + 20*Math.log10(F) + 32.44; }
-function margin(){ return txdbm + RXG + MISC - fspl(alt) + SHADOW[pose] - THR; }
+function gains(){
+  const jel = Math.atan2(alt, Math.max(off, 1))/R;
+  return BEAMS.map(b => {
+    const c = Math.sin(b.el*R)*Math.sin(jel*R) + Math.cos(b.el*R)*Math.cos(jel*R)*Math.cos(b.az*R);
+    const th = Math.acos(Math.max(-1, Math.min(1, c)))/R;
+    return Math.max(FLOOR, PEAK - 12*Math.pow(th/HPBW, 2));
+  });
+}
+function state(){
+  const g = gains(); let w = 0;
+  for (let i = 1; i < g.length; i++) if (g[i] > g[w]) w = i;
+  const slant = Math.hypot(alt, off);
+  const m = txdbm + TXG + g[w] + CABFADE + SHADOW[pose] - fspl(slant) - thr;
+  return {g, w, slant, m};
+}
 
 function render(){
-  const m = margin(), sc = $("screen");
-  $("altv").textContent = alt + " m";
+  const {g, w, slant, m} = state(), sc = $("screen");
+  $("altv").textContent = alt + " m"; $("offv").textContent = off + " m";
   $("altHud").textContent = "ALT " + alt + " m";
   const rows = [
     ["TX power", (txdbm===30?"+30 dBm (1 W)":"+14 dBm (25 mW)")],
-    ["free-space loss @ " + (alt/1000).toFixed(2) + " km", "−" + fspl(alt).toFixed(1) + " dB"],
+    ["TX omni toward DZ (doughnut max)", "+" + TXG + " dB"],
+    ["free-space @ " + (slant/1000).toFixed(2) + " km slant", "−" + fspl(slant).toFixed(1) + " dB"],
     ["body shadow (" + pose + ")", SHADOW[pose] + " dB"],
-    ["ground RX gain (conservative helix)", "+" + RXG + " dB"],
-    ["cables / fade", MISC + " dB"],
-    ["HDZero threshold", THR + " dBm"]];
+    ["best branch · " + BEAMS[w].n, (g[w]>=0?"+":"") + g[w].toFixed(1) + " dB"],
+    ["cables + fade (4 beams share it)", CABFADE + " dB"],
+    ["RX threshold", thr + " dBm"]];
   $("budget").innerHTML = rows.map(r=>`<div class="row"><span>${r[0]}</span><b>${r[1]}</b></div>`).join("")
     + `<div class="row" style="border-bottom:none"><span><b>LINK MARGIN</b></span><b style="color:${m>3?"var(--ok)":m>0?"var(--warn)":"var(--bad)"}">${m>=0?"+":""}${m.toFixed(1)} dB</b></div>`;
-  const pct = Math.max(0, Math.min(100, (m+10)*4));
+  const pct = Math.max(0, Math.min(100, (m+8)*2.8));
   $("mfill").style.width = pct + "%";
   $("mfill").style.background = m>3 ? "var(--ok)" : m>0 ? "var(--warn)" : "var(--bad)";
-  $("mtext").textContent = m>3 ? "solid picture" : m>0 ? "riding the threshold" : "link lost";
+  $("mtext").textContent = m>3 ? `solid picture · +${m.toFixed(0)} dB in hand` : m>0 ? "riding the threshold" : "link lost";
   sc.classList.toggle("dead", m <= 0);
   sc.classList.toggle("glitch", m > 0 && m <= 3);
   $("why").textContent = "margin " + m.toFixed(1) + " dB — " +
-    (pose==="belly"||pose==="sit" ? "your body is between the antennas" : "out of budget");
+    (pose==="belly"||pose==="sit" ? "her body sits between the antennas" : "out of budget");
+  // Karte: Punkt, Strahl, Gewinner-Keule
+  const mx = 70 + off*0.184, my = 210 - alt*0.045;
+  $("jdot").setAttribute("cx", mx); $("jdot").setAttribute("cy", my);
+  const ray = $("ray");
+  ray.setAttribute("x2", mx); ray.setAttribute("y2", my);
+  ray.setAttribute("stroke", m>3 ? "var(--ok)" : m>0 ? "var(--warn)" : "var(--bad)");
+  $("wZ").setAttribute("opacity", w===0 ? "0.26" : "0.10");
+  $("wA").setAttribute("opacity", w===1 ? "0.26" : "0.10");
+  // Zweig-Balken
+  $("branches").innerHTML = g.map((v,i)=>`<div class="br${i===w?" win":""}"><span>${BEAMS[i].n}</span>
+    <div class="bar"><i style="width:${Math.max(2,(v-FLOOR)/(PEAK-FLOOR)*100)}%"></i></div>
+    <b>${v>=0?"+":""}${v.toFixed(1)} dBic</b><em>${i===w?"FUSED":""}</em></div>`).join("");
+  if (lastWin >= 0 && w !== lastWin){
+    $("hand").textContent = "beam handover · " + BEAMS[lastWin].n.split(" ")[0] + " → " + BEAMS[w].n.split(" ")[0] + " — fusion keeps her live";
+    $("hand").classList.add("show");
+    clearTimeout(handT); handT = setTimeout(()=>$("hand").classList.remove("show"), 2200);
+  }
+  lastWin = w;
+  // TV-Szene
   const t = 1 - alt/4000;                       // 0 = Exit oben, 1 = Boden
   $("skyTop").setAttribute("stop-color", t<0.5 ? "#0a2c5e" : "#2a5c8e");
-  // Boden bleibt an der Unterkante verankert und WÄCHST beim Fallen (statt zu wandern):
-  const gs = 0.12 + 0.88*t;                     // Skala um y=400 (Bildunterkante)
+  const gs = 0.12 + 0.88*t;                     // Boden an der Unterkante verankert, wächst beim Fallen
   $("ground").setAttribute("transform", `translate(0 ${400*(1-gs)}) scale(1 ${gs})`);
-  // Wolken ziehen nach OBEN vorbei = Fall-Gefühl; Springerin kommt dem Boden näher (wächst leicht)
   $("clouds").setAttribute("transform", `translate(0 ${ -t*230 })`);
   $("jumper2").setAttribute("transform", `translate(430 ${185 + t*30}) scale(${0.5 + 0.22*t})`);
 }
 $("alt").addEventListener("input", e => { alt = +e.target.value; render(); });
+$("off").addEventListener("input", e => { off = +e.target.value; render(); });
 $("poses").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return;
   pose = b.dataset.p; document.querySelectorAll(".poses button").forEach(x=>x.classList.toggle("on",x===b)); render(); });
 $("pow").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return;
-  txdbm = +b.dataset.w; document.querySelectorAll(".pow button").forEach(x=>x.classList.toggle("on",x===b)); render(); });
+  txdbm = +b.dataset.w; document.querySelectorAll("#pow button").forEach(x=>x.classList.toggle("on",x===b)); render(); });
+$("thr").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return;
+  thr = +b.dataset.t; document.querySelectorAll("#thr button").forEach(x=>x.classList.toggle("on",x===b)); render(); });
+// Drag auf der Karte = Höhe + Versatz gleichzeitig
+{
+  const map = $("map"); let drag = false;
+  const set = ev => {
+    const r = map.getBoundingClientRect();
+    const x = (ev.clientX - r.left)/r.width*560, y = (ev.clientY - r.top)/r.height*240;
+    off = Math.max(0, Math.min(2500, Math.round((x - 70)/0.184/25)*25));
+    alt = Math.max(0, Math.min(4000, Math.round((210 - y)/0.045/25)*25));
+    $("alt").value = alt; $("off").value = off; render();
+  };
+  map.addEventListener("pointerdown", ev => { drag = true; map.classList.add("grab"); map.setPointerCapture(ev.pointerId); set(ev); });
+  map.addEventListener("pointermove", ev => { if (drag) set(ev); });
+  map.addEventListener("pointerup", () => { drag = false; map.classList.remove("grab"); });
+}
 $("drop").addEventListener("click", () => {
   if (anim) { clearInterval(anim); anim = null; }
   alt = 4000; $("alt").value = 4000;
