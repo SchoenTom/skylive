@@ -324,6 +324,9 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       <g id="agJumper" style="display:none" stroke="#f2f7fb" stroke-width="2.6" stroke-linecap="round" fill="none">
         <circle cx="14" cy="7" r="3.2" fill="#f2f7fb" stroke="none"/>
         <path d="M14 10.5 L14 18 M14 12.5 L8 9.5 M14 12.5 L20 9.5 M14 18 L9.5 24 M14 18 L18.5 24"/></g>
+      <g id="agLand" style="display:none" stroke="#33d07a" stroke-width="2.6" stroke-linecap="round" fill="none">
+        <circle cx="14" cy="7" r="3.2" fill="#33d07a" stroke="none"/>
+        <path d="M14 10.5 L14 19 M14 13 L9 16.5 M14 13 L19 16.5 M14 19 L10.5 25 M14 19 L17.5 25"/></g>
       <g id="agCanopy" style="display:none">
         <path d="M4 8 A10 10 0 0 1 24 8 Z" fill="#22d3ee" opacity=".9"/>
         <path d="M4 8 L12 14 M24 8 L16 14" stroke="#67e8f9" stroke-width="1.2"/>
@@ -699,6 +702,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
           </g>
           <rect x="-8" y="-10" width="16" height="22" rx="4" fill="#22303e" stroke="#4a5866" stroke-width="1"/>
         </g>
+        <ellipse id="dhit" cx="450" cy="424" rx="0" ry="0" fill="#22d3ee" opacity="0"/>
         <line id="dray" x1="450" y1="212" x2="450" y2="424" stroke="#22d3ee" stroke-width="3" stroke-dasharray="7 9"/>
         <g id="dpk">
           <circle r="3.2" fill="#67e8f9"/><circle r="3.2" fill="#67e8f9"/><circle r="3.2" fill="#67e8f9"/>
@@ -907,8 +911,9 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   const rail=document.getElementById('altRail'); if(!rail) return;
   const mk=document.getElementById('altMarker'), val=document.getElementById('altVal'), ph=document.getElementById('altPhase');
   let tick=null;
-  const gP=document.getElementById('agPlane'),gJ=document.getElementById('agJumper'),gC=document.getElementById('agCanopy');
-  function glyph(which){gP.style.display=which==='p'?'':'none';gJ.style.display=which==='j'?'':'none';gC.style.display=which==='c'?'':'none';}
+  const gP=document.getElementById('agPlane'),gJ=document.getElementById('agJumper'),gC=document.getElementById('agCanopy'),gL=document.getElementById('agLand'),phEl=document.getElementById('altPhase');
+  function glyph(which){gP.style.display=which==='p'?'':'none';gJ.style.display=which==='j'?'':'none';gC.style.display=which==='c'?'':'none';gL.style.display=which==='l'?'':'none';
+    phEl.style.color=which==='l'?'#33d07a':'';}
   const CLIMB=0.14, LAND=0.94;
   function upd(){tick=null;
     const max=document.documentElement.scrollHeight-innerHeight;
@@ -919,7 +924,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       const c=p/CLIMB; alt=4000*c; pos=1-c; phase=c>.96?'EXIT':'CLIMB'; glyph('p');
     }else{                           // Sprung: Marker FÄLLT
       const f=Math.min(1,(p-CLIMB)/(LAND-CLIMB)); alt=4000*(1-f); pos=f;
-      if(p>=LAND){phase='LANDED'; glyph('c');}
+      if(p>=LAND){phase='LANDED'; glyph('l');}
       else if(f>.68){phase='CANOPY'; glyph('c');}
       else{phase='FREEFALL'; glyph('j');}
     }
@@ -987,6 +992,9 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     ray.setAttribute('stroke',col); ray.setAttribute('opacity',(0.15+0.85*g).toFixed(2));
     ray.setAttribute('stroke-width',(1+3.5*g).toFixed(1));
     nullT.setAttribute('opacity',g<0.08?'1':'0');
+    const hit=document.getElementById('dhit');
+    hit.setAttribute('rx',(6+52*g).toFixed(1)); hit.setAttribute('ry',(2+9*g).toFixed(1));
+    hit.setAttribute('fill',col); hit.setAttribute('opacity',(0.10+0.35*g).toFixed(2));
     if(a<8)      msg.textContent=spinning?'she spins — the hole stays down':'hit spin — nothing will change';
     else if(a>82)msg.textContent=spinning?'…while she spins — still the maximum':'now hit spin';
     else         msg.textContent='drag up/down on the sky to tilt';
