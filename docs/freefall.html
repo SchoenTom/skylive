@@ -55,8 +55,9 @@ header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-
         <defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
           <stop id="skyTop" offset="0" stop-color="#0a2c5e"/><stop id="skyBot" offset="1" stop-color="#7db3e8"/></linearGradient></defs>
         <rect width="640" height="400" fill="url(#sky)"/>
-        <ellipse cx="140" cy="120" rx="90" ry="22" fill="#ffffff22"/>
-        <ellipse cx="470" cy="70"  rx="120" ry="26" fill="#ffffff1c"/>
+        <g id="clouds"><ellipse cx="140" cy="200" rx="90" ry="22" fill="#ffffff22"/>
+        <ellipse cx="470" cy="150" rx="120" ry="26" fill="#ffffff1c"/>
+        <ellipse cx="300" cy="290" rx="70" ry="17" fill="#ffffff15"/></g>
         <g id="ground"><rect x="0" y="330" width="640" height="70" fill="#3c7a3f"/>
           <rect x="285" y="342" width="70" height="16" rx="3" fill="#e8e4d8"/>
           <circle cx="320" cy="350" r="4" fill="#f87171"/></g>
@@ -131,9 +132,14 @@ function render(){
   sc.classList.toggle("glitch", m > 0 && m <= 3);
   $("why").textContent = "margin " + m.toFixed(1) + " dB — " +
     (pose==="belly"||pose==="sit" ? "your body is between the antennas" : "out of budget");
-  const t = 1 - alt/4000;
+  const t = 1 - alt/4000;                       // 0 = Exit oben, 1 = Boden
   $("skyTop").setAttribute("stop-color", t<0.5 ? "#0a2c5e" : "#2a5c8e");
-  $("ground").setAttribute("transform", `translate(0 ${ (1-t)*140 }) scale(1 ${0.4+0.6*t})`);
+  // Boden bleibt an der Unterkante verankert und WÄCHST beim Fallen (statt zu wandern):
+  const gs = 0.12 + 0.88*t;                     // Skala um y=400 (Bildunterkante)
+  $("ground").setAttribute("transform", `translate(0 ${400*(1-gs)}) scale(1 ${gs})`);
+  // Wolken ziehen nach OBEN vorbei = Fall-Gefühl; Springerin kommt dem Boden näher (wächst leicht)
+  $("clouds").setAttribute("transform", `translate(0 ${ -t*230 })`);
+  $("jumper2").setAttribute("transform", `translate(430 ${185 + t*30}) scale(${0.5 + 0.22*t})`);
 }
 $("alt").addEventListener("input", e => { alt = +e.target.value; render(); });
 $("poses").addEventListener("click", e => { const b = e.target.closest("button"); if(!b) return;

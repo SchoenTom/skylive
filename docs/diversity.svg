@@ -61,5 +61,6 @@
 <g id="winner"><rect x="316" y="336" width="48" height="3" rx="1.5" fill="#22d3ee"/></g>
 <text x="340" y="332" class="mono" font-size="10" fill="#67e8f9" text-anchor="middle">strongest branch wins</text>
 
-<text x="40" y="354" class="sans" font-size="14.5" fill="#aebdce">One beam at the <tspan fill="#67e8f9">zenith</tspan>, three fanned to the <tspan fill="#22d3ee">horizon</tspan> — no tracker, no combiner. <tspan fill="#f4f7fb" font-weight="700">The receiver rides the strongest branch.</tspan></text>
+<text x="40" y="338" class="sans" font-size="12.5" fill="#aebdce">One beam at the <tspan fill="#67e8f9">zenith</tspan>, three fanned to the <tspan fill="#22d3ee">horizon</tspan> — no tracker, no combiner. <tspan fill="#f4f7fb" font-weight="700">The receiver rides the strongest branch.</tspan></text>
+<text x="40" y="354" class="sans" font-size="12.5" fill="#7186a0">4 branches on the receiver today (stock stubs off) — scales to 7 on the self-built station. Measurement first: one prototype decides.</text>
 </svg>

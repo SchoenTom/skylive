@@ -28,7 +28,7 @@
   <button data-m="cmp">⚖ vs GoPro Hero 13</button>
   <button data-m="fly">▶ Fly-in · loaded</button>
 </div>
-<model-viewer id="mv" src="./models/sender850.glb" camera-controls auto-rotate auto-rotate-delay="4000"
+<model-viewer poster="poster_assembled_v3.png" id="mv" src="./models/sender850.glb" camera-controls auto-rotate auto-rotate-delay="4000"
   shadow-intensity="1" exposure="1.05" environment-image="neutral" camera-orbit="-30deg 74deg 128%">
 </model-viewer>
 <script>
@@ -72,6 +72,7 @@ const mv = document.getElementById("mv");
 function setModel(k){
   mv.querySelectorAll("[slot]").forEach(e=>e.remove());
   mv.src = SRC[k];
+  if(window.__noGL){ mv.style.backgroundImage = 'url("' + (k==="850x" ? "poster_exploded_v3.png" : "poster_assembled_v3.png") + '")'; }
   if (k === "fly"){ mv.setAttribute("autoplay",""); mv.setAttribute("animation-crossfade-duration","0"); }
   else { mv.removeAttribute("autoplay"); }
   HS[k].forEach((h,i)=>{
@@ -86,5 +87,23 @@ document.getElementById("tabs").addEventListener("click",e=>{
   document.querySelectorAll(".tabs button").forEach(x=>x.classList.toggle("on",x===b));
   setModel(b.dataset.m);
 });
+</script>
+<script>/* WebGL fallback (wie index) */
+(function(){
+  function ok(){try{var c=document.createElement('canvas');return !!(window.WebGLRenderingContext&&(c.getContext('webgl2')||c.getContext('webgl')||c.getContext('experimental-webgl')));}catch(e){return false;}}
+  window.__noGL=!ok();
+  function run(){ if(!window.__noGL)return;
+    document.querySelectorAll('model-viewer').forEach(function(mv){
+      mv.style.backgroundImage='url("poster_assembled_v3.png")'; mv.style.backgroundSize='contain';
+      mv.style.backgroundPosition='center'; mv.style.backgroundRepeat='no-repeat';
+      mv.setAttribute('reveal','manual'); mv.style.setProperty('--progress-bar-height','0px');
+      if(!mv.querySelector('.mv-noweb')){var h=document.createElement('div');h.className='mv-noweb';
+        h.textContent='Static view (WebGL off) · enable graphics acceleration in Chrome Settings → System, or open in Safari — posters shown instead';
+        h.style.cssText='position:absolute;left:8px;right:8px;bottom:10px;z-index:5;text-align:center;font:12px/1.5 -apple-system,system-ui,sans-serif;color:#9fd3ee;opacity:.8;pointer-events:none;text-shadow:0 1px 4px rgba(0,0,0,.7)';
+        if(getComputedStyle(mv).position==='static')mv.style.position='relative';
+        mv.appendChild(h);}
+    });}
+  if(document.readyState!=='loading')run();else addEventListener('DOMContentLoaded',run);
+})();
 </script>
 </body></html>

@@ -6,9 +6,9 @@
 
 **Live from 4 km — 14 ms behind reality.**
 
-<img src="docs/assets/turntable.gif" alt="The Sender 850 spinning: battery door with tab latch, T-clamp antenna anchors on both short sides, roof lid, louvres, GoPro mount." width="58%">
+<img src="docs/assets/turntable_v3.gif" alt="The Sender 850 spinning: battery door with tab latch, T-clamp antenna anchors on both short sides, roof lid, louvres, GoPro mount." width="58%">
 
-<img src="docs/assets/flyin.gif" alt="Every component — radio, camera, battery, antenna, clamp bars, T-pieces — flying into the open case." width="58%">
+<img src="docs/assets/flyin_v3.gif" alt="Every component — radio, camera, battery, antenna, clamp bars, T-pieces — flying into the open case." width="58%">
 
 <sub>the actual gate-verified CAD — spin it and watch the parts fly home yourself in the [3D Lab](https://schoentom.github.io/skylive/viewer.html)</sub>
 
