@@ -69,7 +69,11 @@ durchfallen lassen. Deckel aus einer älteren Datei = wegwerfen, nur diese gilt.
 Kein Support. Die Nasen liegen horizontal → Layer längs = stabil beim Einhängen/Kippen.
 Die 2 Mini-Louver drucken bei dieser Lage supportfrei (45°-Eigenüberhang).
 
-### 04_xt30_riegel_2x.stl — **2× drucken**, flach (größte Fläche nach unten)
+### 04_xt30_riegel_2x.stl — **2× drucken**, flach auf die HUTDECKE (Fuß + Rinnen nach oben)
+**v2 (07-22, Hutprofil):** Gesamthöhe 5,0 (v1 3,0 war vom Brim kaum zu unterscheiden), der breite Hut
+umschließt beide M2-Bohrungen voll (v1 hatte halboffene Kerben an den Enden). Supportfrei in dieser Lage.
+**Achtung:** seit dem Rinnen-Fix 07-14 ist der Riegel **modellspezifisch** — Zwischengröße hat eigene
+Rinnengeometrie (`skylive_mid_xt30_latch.stl`), 850er + Mini teilen `skylive_V3_min_xt30_latch.stl`.
 Kein Support. Klein — beide nebeneinander aufs Bett.
 
 ### 05_ze_t_stueck_2x.stl — **2× drucken** (+1 Reserve), flach auf den Rücken (Nase oben) ⚠ NEU 07-06 abends

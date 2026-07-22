@@ -761,9 +761,12 @@ XT30_GROOVE_Y = (11.5, 15.5)       # 2 getrennte Rinnen |Y|, Steg ~1,4 (rot+schw
 XT30_PILOT_D  = 1.7                # M2-Riegel-Kern Ø1,7 (Antons Praxis, Schrumpf beißt)          [Spec §5b/§8]
 XT30_PILOT_Y  = 13.5              # Riegel-Schraube mittig zwischen den Rinnen                   [Design]
 XT30_PILOT_DX = 4.0               # 2 Schrauben längs ±4 um die Sattelmitte                      [Design]
-XT30_LATCH_H  = 3.0              # Riegel-Höhe über Sattel-Oberkante — 07-14 Kollegen-Review-Klasse: bei 2,0 blieb
-                                  #   über den Ø2,6-Rinnen nur 0,7 Restboden (Gate-v2-Fund, ganzer Riegel p50<1) →
-                                  #   3,0 = Boden 1,7. Oberkante ragt in Stockwerk 2 (XT30-Stecker-Zone, frei)  [Design]
+XT30_LATCH_H  = 5.0              # v2 07-22 (Tom): war 3,0 — beim Druck kaum vom Brim unterscheidbar. 5,0 =
+                                  #   Restboden über Rinne 3,7, M2×8 greift besser (8−5=3 in den Kern). Oberkante
+                                  #   ragt in Stockwerk 2 (XT30-Stecker-Zone, frei)                     [Design]
+XT30_HAT_LIFT = 1.7              # v2: Hut-Unterkante = Sattel-OK + 1,7 → schwebt über Shelf-OK (+0,7) und
+                                  #   Kabelkrone Ader Ø2,8 (+0,3) — der längere Hut kollidiert mit nichts
+XT30_HAT_WALL = 1.0              # v2: Wand um die Ø2,2-Bohrungen im Hut (Lochzentren ±4 sind Body-fix)
 
 
 def build_xt30_ze(body):
@@ -786,19 +789,26 @@ def build_xt30_ze(body):
 
 
 def build_xt30_latch(sy=+1):
-    """MB2(b): XT30-Riegel (separates Mini-Teil) für den ±Y-Sattel: Bar mit 2 Gegen-Rinnen (Ø2,6
-    zusammen) + 2× M2-Durchgang Ø2,2. sy = Seite (+1/−1). Rückgabe eigenständiges Solid."""
+    """MB2(b) v2 (07-22): Riegel als HUTPROFIL. Fuß wie v1 (Gleitspiel im Sattel, 2 Gegen-Rinnen);
+    darüber ab Sattel-OK+1,7 ein längerer Hut (12,2), der beide Ø2,2-Bohrungen mit 1,0 Wand VOLL
+    umschließt — v1-Befund (Tom 07-22): Lochzentren ±4 lagen AUF den Endflächen der 7,9-Bar →
+    halboffene Kerben. Hut schwebt über Shelf-OK und Kabelkrone; Gesamthöhe 5,0. Druck flach auf
+    die Hutdecke (supportfrei). Gehäuse/Sattel UNVERÄNDERT. sy = Seite (+1/−1)."""
     xc = (XT30_SAD_X[0] + XT30_SAD_X[1])/2
-    xl = XT30_SAD_X[1] - XT30_SAD_X[0] - 2*TOL_SLIDE
+    xl_foot = XT30_SAD_X[1] - XT30_SAD_X[0] - 2*TOL_SLIDE
+    xl_hat = 2*(XT30_PILOT_DX + 1.1 + XT30_HAT_WALL)
     zt = XT30_SAD_Z[1]
+    hat_z0 = zt + XT30_HAT_LIFT
     yw = sy * IN_Y/2
     y_in = sy * XT30_SAD_YW
-    latch = Pos(xc, (yw + y_in)/2, zt + XT30_LATCH_H/2) * Box(xl, abs(yw - y_in) - 2*TOL_SLIDE, XT30_LATCH_H)
+    yc, yl = (yw + y_in)/2, abs(yw - y_in) - 2*TOL_SLIDE
+    latch = Pos(xc, yc, (zt + hat_z0)/2) * Box(xl_foot, yl, XT30_HAT_LIFT) + \
+        Pos(xc, yc, (hat_z0 + zt + XT30_LATCH_H)/2) * Box(xl_hat, yl, XT30_LATCH_H - XT30_HAT_LIFT)
     for gy in XT30_GROOVE_Y:
-        latch = latch - Pos(xc, sy*gy, zt) * Rot(0, 90, 0) * Cylinder(radius=XT30_GROOVE_R, height=xl + 2)
+        latch = latch - Pos(xc, sy*gy, zt) * Rot(0, 90, 0) * Cylinder(radius=XT30_GROOVE_R, height=xl_hat + 2)
     for dx in (-XT30_PILOT_DX, +XT30_PILOT_DX):
         latch = latch - Pos(xc + dx, sy*XT30_PILOT_Y, zt + XT30_LATCH_H/2) * \
-            Cylinder(radius=1.1, height=XT30_LATCH_H + 2)   # M2-Durchgang Ø2,2
+            Cylinder(radius=1.1, height=XT30_LATCH_H + 4)   # M2-Durchgang Ø2,2
     return latch
 
 
