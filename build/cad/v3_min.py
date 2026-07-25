@@ -1396,6 +1396,9 @@ if __name__ == "__main__":
     export_gltf(Compound(label="SkyLive_V3_min", children=[b, d, cov, lat_p, lat_m, ze_f, ze_h]),
                 out, binary=True)
     print(f"[glb] {out}  (Body + Akku-Klappe + Deckel + 2 XT30-Riegel + 2 ZE-Schieber)")
+    # [07-25 EIN-MATERIAL-DOKTRIN] Toms ~7 Laborabbrüche: Farb-Metadaten (STEP COLOUR) kamen
+    #   im Slicer als Multi-Material an. Farben leben NUR in der GLB — STEP/STL ab hier farbfrei.
+    b.color = d.color = cov.color = None
     # ── STL je Druckteil (Body, Tür, Deckel, XT30-Riegel ×2, ZE-Schieber Nut+blind) ──
     from build123d import export_stl
     for _part, _name in ((b, "body"), (d, "battery_door"), (cov, "cover_floor2"),

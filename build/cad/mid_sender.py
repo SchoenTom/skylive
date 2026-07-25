@@ -17,7 +17,8 @@ import math
 from build123d import (RectangleRounded, Box, Pos, Rot, Color, Compound, Polygon,
                        Plane, Cylinder, Cone, extrude, export_gltf, fillet, Part, Axis)
 from anton_v3 import (camera_final, WALL_Y, CAM_TIP2HOLE, CAM_FLK_OUT,   # M-A3: Toms finale
-                      CAM_CLAMP, CAM_CB_R, CAM_CB_D)                     # Kamera-Lösung (Ösen innen)
+                      CAM_CLAMP, CAM_CB_R, CAM_CB_D,                     # Kamera-Lösung (Ösen innen)
+                      CAM_FLK_T)                                         # [F1 07-25] Fuß = Flanken-Ebene
 
 # Anton-Wölbungs-bbox (gemessen aus references/Anton_camera_bulge.step):
 #   X 6..37 (Mitte 21,5) · Y 24,90..31,40 (Wandebene 24,85, ragt +Y außen) · Z 0..28 (Mitte 14)
@@ -29,7 +30,10 @@ BULGE_XC, BULGE_ZC = 21.5, 14.0
 #   Transform-Translation X = BULGE_XC + CAM_OFF_X; wegen Rot(0,0,180) landet die Linsen-Mitte
 #   (Anton-Frame CAM_CX=BULGE_XC) bei my-X = (BULGE_XC+CAM_OFF_X) − CAM_CX = CAM_OFF_X = −9.
 #   Numerisch verifiziert im Gate unten (Fenster-Scan der −Y-Wand).
-CAM_OFF_X = -20.75      # [MID 07-11] Kamera-Flanke an die neue Wand (−IN_X/2=−31,5 + CAM_FLK_OUT 10,75) bei EX=69. War −21,75 (bei EX=71). Tom 07-05: Kamera GANZ an die Außenwand — linke Flanken-Außenfläche
+CAM_OFF_X = -21.75      # [MID 07-25] zurück auf EX=71 (= −IN_X/2 −32,5 + CAM_FLK_OUT 10,75): der 07-11-Squeeze
+                        #   (−20,75 bei EX=69) fraß die Schalterzone auf 11,8 < Ø12,5 — Tom-Befund 07-25.
+                        #   Muss IMMER = −IN_X/2 + CAM_FLK_OUT bleiben (Flanke bündig Innenwand)!
+                        #   Tom 07-05: Kamera GANZ an die Außenwand — linke Flanken-Außenfläche
                         #   (−21,75−10,75 = −32,5) = Innenwand → verschmilzt; linke Schraube läuft
                         #   durch die −X-AUSSENWAND (Einsenkung+Loch von außen, s. graft_camera).
 
@@ -39,8 +43,10 @@ IN_Y   = 32.0                 # [MID min] Tom 07-11: „32 geht" → außen 38 (
                               #   aufgeblähte Akkus lassen") → außen 39,5. Maßkette: Akku 30 + 1,75/Seite;
                               #   VTX liegend 30 (Y) [STEP] + Kabelweg; Kamera-Ösen-Spanne 21,5 läuft
                               #   längs X (nicht Y) und ist davon unberührt (21,5 < 33,5 ohnehin ✓).
-BAY_L  = 63.0                 # [MID 07-11] EX_X auf 69 gezwungen (Tom „das muss reichen"): IN_X=63, außen 69.
-                              #   Kamera 21,5 + VTX 29,2 + ~12 hinter VTX (Schalter, Tom bohrt selbst) = 63. War 65 (EX 71).
+BAY_L  = 65.0                 # [MID 07-25] ZURÜCK auf außen 71 („aufatmen lassen", Tom): der 07-11-Squeeze auf 69
+                              #   ließ hinter dem VTX nur 11,8 mm — der Ø12,5-Schalterkörper passte NICHT mehr
+                              #   (Gate war nur INFO, darum nie Alarm). Jetzt: Kamera 21,5 + Spalt 0,5 + VTX 29,2
+                              #   + 13,8 Schalterzone (Ø12,5 + 1,3 Luft) = 65 innen, 71 außen.
 BAY_H  = 17.0                 # [MID] 300er-Pack-Höhe (wie Mini) — Zwischengröße = 850-Länge (Schalter) + 300er-Höhe. War 850: 25.
                               #   Auftrag rechnet Interior-Z mit 25 → hier 25 (Interior-Z=50). Klären.
 SHELF_T = 3.0                 # Stockwerk-Shelf (fest verbaut, kommt erst in M4 — M1 nur Hohlraum)
@@ -51,7 +57,12 @@ FIL_O, FIL_I = 5.5, 3.5       # vertikale Ecken-Radien außen/innen — Tom 07-0
                               #   9/6→5,5/3,5; Balance mit neuen horizontalen Fillets FIL_H.
 FIL_H, FIL_HI = 3.0, 1.5      # horizontale Umlauf-Fillets Ober-/Unterkante außen/innen [Tom 07-05 NEU]
 # Schalter im DACH über der Links-Zone (Antons Druck-Prinzip; Tom 07-05: Tiefe knapp 18 gemessen):
-SW_CX, SW_CY = 25.6, 0.0      # [MID 07-11] Schalter HINTER dem VTX (endet 18,7): Ø12,5-Körper in die
+SW_CX, SW_CY = 25.1, 0.0      # [MID 07-25] 0,5 nach −X gerückt (war 25,6): die ZE-INSERT-BOSSE der
+                              #   Heck-Seite (±32,5|±5,3, Ø5,8, Z16..21,5) kollidierten 0,45 mit dem
+                              #   Ø12,5-Körper. Bei 25,1: VTX-Spalt 0,15 · ZE-Boss auf Kante (−0,05
+                              #   rechnerisch = Kiss; TOM_PENDING #7: Körper-Ø oben + Mutter-Ø messen,
+                              #   Fallback = 0,6-Abflachung der 2 Heck-Bosse). Voll-Gate misst gegen Body.
+                              # [MID 07-11] Schalter HINTER dem VTX (endet 18,7): Ø12,5-Körper in die
                               #   Lücke zur +X-Klappen-Wand (32,5). Ø14-Kopf sitzt im Deckel (überspannt Breite).
 SW_ENV_D, SW_ENV_DEPTH = 14.0, 18.0   # Kopf-Ø [Datenblatt] × Einbautiefe [Tom 07-05 gemessen]
 SW_BODY_D = 12.5              # Körper-Ø hinter der Platte (der in F2 taucht) — der muss VTX/Klappe frei sein
@@ -108,7 +119,9 @@ NASE_Y  = (-5.0, 5.0)     # Y-Lage: gerader Teil der Unterkante (|Y|<8,65=15,75�
 NASE_W  = 5.0              # Nasen-Breite (Y) → Y±3, Lücke zwischen Rail@0 (+2) und Rail@12 (10) ist 8 breit  [berechnet]
 NASE_L  = 5.0             # Finger-Länge nach −X (in die Boden-Tasche)                                       [Plan-Startwert/MEASURE_ME]
 NASE_T  = 1.2             # Finger-Dicke (Z)                                                                 [Plan/MEASURE_ME]
-HOOK    = 1.0             # Haken-Übergriff: Lippe übergreift den Nasen-Kopf 1,0 (Lift-Sperre)               [Plan]
+HOOK    = 1.0             # [TOT seit F3 07-25 — Haken/Finger/Kammern entfernt; Konstanten bleiben nur,
+                          #   weil NOTCH_BOT über FIN_BOT/NASE_T abgeleitet ist. NICHT für neue Geometrie
+                          #   verwenden!] Haken-Übergriff (historisch)                                       [Plan]
 NASE_TOP = Z_INT_BOTTOM - 0.1            # Nasen-Oberkante 0,1 unter Innenboden → sicher unter Akku (RAIL_TOP −23,5)
 FIN_BOT  = NASE_TOP - NASE_T             # Finger-Unterkante = −25,3
 FIN_XIN  = X_WALL_IN - NASE_L - HOOK     # Finger −X-Spitze = 26,5 (NASE_L Finger + HOOK-Kopf)
@@ -199,8 +212,14 @@ RBOSS_Z1 = EX_Z/2 - WALL - 1.5                  # 23,5 · Boss-Top = Insert-Mün
                                                 #   Platz fürs Deckel-Pad — Anton-Senkung 07-06)
 RBOSS_Z0 = RBOSS_Z1 - 11.0                      # 14 · Boss-Boden (11 lang)
 RBOSS_INS_D, RBOSS_INS_DP = 4.6, 8.0            # Insert-Bohrung Ø4,6 × 8 (ACHSE Z, von oben)    [Spec §4]
-RLID_SCREW = [(-RBOSS_X, RBOSS_Y), (RBOSS_X, RBOSS_Y), (RBOSS_X, -RBOSS_Y)]   # 3 M3 — vorne-links
-#   KEIN Boss: Kamera@−21,75 belegt die Ecke (dort hält die Falz-Lippe; Asymmetrie wie Antons Druck)
+RBOSS_Y2 = 10.6                                 # [F5b] der Rest-Diagonal-Boss rückt von 9,5 auf 11,2:
+                                                #   seine Ø8-Flanke kniff sonst weiter (Kante −5,5 < −6,25
+                                                #   Schalterkreis). Bei 10,6: Kante −6,6 (0,35 Luft zum Schalterkreis), M3-Senkkopf bleibt in der Lippe (11,2 streifte 0,14 mm³).
+RLID_SCREW = [(-RBOSS_X, RBOSS_Y), (RBOSS_X, -RBOSS_Y2)]   # [F5 07-25 Tom] NUR 2 M3, DIAGONAL:
+#   der Boss (+25|+9,5) ist RAUS — seine Ø8-Flanke kniff (mit dem −Y-Zwilling) die Schalterzone
+#   auf Ø11 zusammen (Tom-Fund: Ø12,5-Körper kollidierte 0,75). Diagonale + umlaufender Falz
+#   halten den Deckel; das freie +X/+Y-Eck gehört dem Schalter. Vorne-links (Kamera-Ecke) war
+#   schon immer boss-frei (dort hält die Falz-Lippe; Asymmetrie wie Antons Druck).
 
 
 # ── MB3 · LÜFTUNGSSCHLITZE — NEUE §6b-Matrix (VERBINDLICH, ersetzt die alten +Y-Bänder) ────────
@@ -310,6 +329,42 @@ def build_shelf(body):
     for sx in (-1, +1):
         shelf = shelf - Pos(sx*SHELF_CUT_DX, 0, SHELF_MID_Z) * Box(SHELF_CUT_L, SHELF_CUT_W, SHELF_T + 2)
     return body + shelf
+
+
+# ── [MID 07-25 F1] KAMERA-FUSS — Druck-Doktrin „Teil der Senderschicht" (Ingenieur-Feedback) ──
+#   Toms Drucklage (Rücken unten, Kameraloch oben): die INNERE Klemm-Flanke hing nur an der
+#   Kamerawand → Insel auf Stützen, Schichtnaht riss beim Absupporten. Fix: Minimal-Fuß EXAKT in
+#   der Flanken-Ebene von Shelf-OK bis Flanken-UK → jede Flanken-Schicht ist über den Fuß mit der
+#   Shelf-Säule VERSCHWEISST: ein Schichtnaht-Riss kann die Flanke nicht mehr isolieren.
+#   EHRLICH (Review 07-25): das freie Stirnende (y=−3,5, ~2×17) bleibt in Drucklage eine 90°-Down-
+#   Fläche — der Slicer setzt dort weiter Support (Paint-on ok); dessen Abriss reißt aber nichts
+#   mehr aus, weil die Flanke jetzt kantenverankert ist statt Insel.
+#   Die ÄUSSERE Flanke braucht nichts (wandverschmolzen — brach deshalb auch nie).
+CAMF_X1 = CAM_OFF_X + CAM_FLK_OUT   # innere Flanke, Außenfläche (+X, VTX-Seite: 0,5-Spalt!)
+CAMF_X0 = CAMF_X1 - CAM_FLK_T       # innere Flanke, Innenfläche
+CAMF_Y0 = -EX_Y/2 + WALL            # Fuß-Wurzel = Kamerawand-Innenfläche
+CAMF_Y1 = -3.5                      # Flanken-Tiefe [am Modell gemessen, f1_fuss_proto 07-25]
+CAMF_OVL = 0.3                      # Verschmelz-Überlapp in Shelf-OK und Flanken-UK
+CAMF_KEHLE = 1.2                    # Hohlkehlen-Fase 45° am Fuß→Shelf-Stoß — NUR −X und +Y;
+                                    #   +X (VTX-Seite) bleibt PLAN, dort sind nur 0,5 mm Luft
+
+
+def _camera_foot_solid():
+    zs = SHELF_MID_Z + SHELF_T/2                     # Shelf-Oberkante
+    z0, z1 = zs - CAMF_OVL, (Z_CAM - 6.0) + CAMF_OVL  # Flanken-UK = Z_CAM − 6 (Anton Flanken-Z-Höhe 12)
+    foot = Pos((CAMF_X0 + CAMF_X1)/2, (CAMF_Y0 + CAMF_Y1)/2, (z0 + z1)/2) * \
+        Box(CAMF_X1 - CAMF_X0, CAMF_Y1 - CAMF_Y0, z1 - z0)
+    foot = foot + Pos(CAMF_X0, (CAMF_Y0 + CAMF_Y1)/2, zs) * Rot(0, 45, 0) * \
+        Box(CAMF_KEHLE, CAMF_Y1 - CAMF_Y0, CAMF_KEHLE)        # Kehle −X-Fußkante (längs Y)
+    foot = foot + Pos((CAMF_X0 + CAMF_X1)/2, CAMF_Y1, zs) * Rot(45, 0, 0) * \
+        Box(CAMF_X1 - CAMF_X0, CAMF_KEHLE, CAMF_KEHLE)        # Kehle +Y-Fußkante (raumseitig)
+    return foot
+
+
+def build_camera_foot(body):
+    """[F1 07-25] Minimal-Fuß (≈2×12,5×5 + Kehlen ≈0,15 cm³) unter der inneren Kamera-Flanke.
+    CAD-/Gate-Check ≠ Bruch-/Drucktest."""
+    return body + _camera_foot_solid()
 
 
 # ── M-A4 · GOPRO-2-ZINKEN-GABEL unten (−Z) — Vorlage skylive_sender_v2.py/spec.py ─────
@@ -516,51 +571,28 @@ def graft_camera(shell):
 
 
 def build_bay_catches(body):
-    """Boden-Taschen für die Tür-Nasen (Weg A): je Nase ein Finger-Kanal in der Bodenwand
-    (unter Akku-Ebene) + tiefere Kopf-Kammer. Auszugssperre: der 1,0-Haken-Kopf (hoch bis LIP_TOP−0,2)
-    hakt beim +X-Zug an der Kanal-Decke (NASE_TOP+TOL). Lift sperrt die Schraube. [Plan 2.3]"""
-    for ny in NASE_Y:
-        yw = NASE_W + 2 * TOL_SLIDE
-        # Finger-Kanal (Decke knapp unter Innenboden-Niveau → Kopf kann NICHT durchrutschen)
-        x0, x1 = FIN_XIN + HOOK - TOL_SLIDE, X_WALL_IN + 0.2
-        body = body - Pos((x0 + x1)/2, ny, (FIN_BOT - TOL_SLIDE + NASE_TOP + TOL_SLIDE)/2) * \
-            Box(x1 - x0, yw, (NASE_TOP - FIN_BOT) + 2 * TOL_SLIDE)
-        # Kopf-Kammer (öffnet höher, bis LIP_TOP: Kopf taucht ein und hakt an der Stufe).
-        #   Boden CATCH_SWING_CLR tiefer, damit der Kopf beim −ang-Einschwenken frei abtaucht (Fix c).
-        x0, x1 = POCKET_X0 - TOL_SLIDE, FIN_XIN + HOOK + TOL_SLIDE
-        kammer_bot = FIN_BOT - TOL_SLIDE - CATCH_SWING_CLR
-        body = body - Pos((x0 + x1)/2, ny, (kammer_bot + LIP_TOP)/2) * \
-            Box(x1 - x0, yw, LIP_TOP - kammer_bot)
+    """[F3 07-25] Finger-Kanäle + Kopf-Kammern ENTFERNT (Ingenieur-Feedback + Tom: „gerade
+    Zähne ohne 90°-Winkel funktionieren problemlos"): die blinden Unterboden-Tunnel waren
+    Support-Fallen, die 1,0-Haken brachen beim Absupporten. Auszug (+X) sperrt jetzt die
+    Außenhaut der blinden Breach-Notch (in der Toms gerader Zahn = der Tür-Fuß steckt),
+    Abheben sperren die Schrauben oben. Bodenwand bleibt VOLL. CAD ≠ Montage-Test."""
     return body
 
 
 def _add_door_nasen(door):
-    """2 Schwenk-Nasen an der Tür-Unterkante (Y±6): Fuß taucht durch die Wand-Notch unter die
-    Akku-Ebene, Finger (t=1,2) läuft nach −X in den Boden-Kanal, Haken-Kopf (H=1,0) hakt in der
-    Kopf-Kammer gegen Herausziehen. Montage: Nasen einschieben → kippen → oben klick+schrauben."""
+    """[F3 07-25] 2 GERADE Zähne an der Tür-Unterkante (Y±5): der Fuß füllt die blinde
+    Breach-Notch (äußere 1,5er-Haut bleibt zu, Tom 07-06) — und das WAR schon Toms „gerader
+    Zahn nach unten". Der −X-Finger (t=1,2, quer zur Schicht) und sein 90°-Haken-Kopf sind
+    ersatzlos raus: sie brachen beim Absupporten (Ingenieur-Feedback), und ihren Job machen
+    Notch-Außenhaut (Auszug) + obere Schrauben (Lift). In der Tür-Drucklage (flach auf der
+    Außenfläche) liegt der Zahn voll in der Schichtebene. Montage unverändert:
+    Zähne einsetzen → kippen → oben klick+schrauben."""
     z_open_bot = Z_BAY_MID - OPEN_Z/2
     for ny in NASE_Y:
-        # Fuß: füllt die BLINDE Breach-Notch (nur innere Wandhälfte bis Schulter −0,1 — die
-        # äußere 1,5er-Haut bleibt zu, Tom 07-06), überlappt 2 mm in die Zunge (→ 1 Solid)
         door = door + Pos((X_WALL_IN + TOL_SLIDE + X_SHOULDER - 0.1)/2, ny,
                           (NOTCH_BOT + TOL_SLIDE + z_open_bot + 2.0)/2) * \
             Box((X_SHOULDER - 0.1) - (X_WALL_IN + TOL_SLIDE), NASE_W,
                 (z_open_bot + 2.0) - (NOTCH_BOT + TOL_SLIDE))
-        # Finger nach −X (unter Akku-Ebene)
-        door = door + Pos((FIN_XIN + HOOK + X_WALL_IN + TOL_SLIDE + 0.1)/2, ny,
-                          (FIN_BOT + NASE_TOP)/2) * \
-            Box((X_WALL_IN + TOL_SLIDE + 0.1) - (FIN_XIN + HOOK), NASE_W, NASE_T)
-        # Haken-Kopf am Finger-Ende (ragt über Finger-Oberkante → Auszugssperre)
-        door = door + Pos(FIN_XIN + HOOK/2, ny, (FIN_BOT + LIP_TOP - 0.2)/2) * \
-            Box(HOOK, NASE_W, (LIP_TOP - 0.2) - FIN_BOT)
-        # WURZEL-KEIL (Kollegen-Review 07-13, wie 850er/v3_min): t=1,2-Finger steht in Druckorientierung
-        #   senkrecht (Layer quer zur Biegelast), scharfe 90°-Wurzel = Riss-Starter. 45°-Kehl-Keil 1,0×1,0
-        #   an der Finger-Oberseite-Wurzel; deterministisches Prisma; Tür∩Body-Gate verifiziert. CAD ≠ Test.
-        _xr = X_WALL_IN + TOL_SLIDE + 0.1
-        _g = 1.0
-        _wpts = [(_xr - _g, NASE_TOP), (_xr, NASE_TOP), (_xr, NASE_TOP + _g)]
-        door = door + Pos(0, ny + NASE_W/2, 0) * Rot(90, 0, 0) * \
-            extrude(Polygon(*_wpts, align=None), NASE_W)
     return door
 
 
@@ -698,15 +730,19 @@ def mount_antenna_ze(body):
             # Einführfase Ø3,2 am Mund-Boden (oben) für sauberen Insert-Start
             body = body - Pos(sx*AZE_SCREW_GX, _sy, _zmb - spec.INSERT_M2_CHAMFER/2) * \
                 Cone(bottom_radius=AZE_INS_HD/2, top_radius=AZE_INS_HD/2 + 0.3, height=spec.INSERT_M2_CHAMFER)
-        # (5) KAPPEN-SCHNITTSTELLE (Toms Omni-Windschützer 07-06 — gegen Wirbel-Flattern +
-        #     Snag, statische Windlast der Glocke ist nur ~1 N @300 km/h): 2× M2-Piloten
-        #     Ø1,7×6 HORIZONTAL (Achse X) auf Glockenachsen-Höhe Z=Sitz, y ±15 (Kappen-Ohren-
-        #     Abstand 30,0 / Löcher Ø2,2). Innen Ø5-Stützboss (Wand 3,0 allein = zu wenig Biss).
-        for s in (-1, +1):
-            body = body + Pos(sx*(IN_X/2 - 2.0), cy + s*15.0, AZE_SEAT_CZ) * Rot(0, 90, 0) * \
-                Cylinder(radius=2.5, height=4.0)
-            body = body - Pos(sx*(EX_X/2 - 3.0), cy + s*15.0, AZE_SEAT_CZ) * Rot(0, 90, 0) * \
-                Cylinder(radius=0.85, height=6.0)
+            if sx > 0:
+                # [F5b 07-25] HECK-Bosse: 0,7-ABFLACHUNG zur Raumseite — die Ø5,8-Bosse (y±5,3,
+                #   Z16..21,5) kollidierten 0,45 mit dem Ø12,5-Schalterkörper @x25,1. Flat auf
+                #   x≥30,3 (Insert-Raumwand lokal 0,8, wandseitig massiv — Haltekraft kommt aus
+                #   der Wand). Nur Heck (+X); Front-Bosse unangetastet. TOM_PENDING #7: reale
+                #   Schalter-/Muttermaße können das später entspannen.
+                body = body - Pos(sx*29.35, _sy, _zmb - 2.75) * \
+                    Box(1.9, AZE_INS_BOSS_D + 0.4, AZE_INS_HDP + 1.5)
+        # (5) [F4 07-25 ENTFERNT] KAPPEN-SEITENHALTERUNG (Omni-Windschützer-Ohren, 07-06):
+        #     2× Ø5-Stützboss innen + 2× Ø1,7-Pilot horizontal je Seite sind ersatzlos raus
+        #     (Ingenieur-Feedback + Tom: „Seitenhalterung sparen, abgerundetes Design wie
+        #     Kameraseite"). Die Wand-Oberkante behält die umlaufenden FIL_H-Rundungen;
+        #     Mund/Schlitz/Rundsitz/Insert-Bosse (Antennen-ZE) bleiben UNVERÄNDERT.
     return body
 
 
@@ -796,46 +832,54 @@ XT30_LATCH_H  = 5.0              # v2 07-22 (Tom): war 3,0 — beim Druck kaum v
                                   #   ragt in Stockwerk 2 (XT30-Stecker-Zone, frei)                     [Design]
 XT30_HAT_LIFT = 1.7              # v2: Hut-Unterkante = Sattel-OK + 1,7 → schwebt über Shelf-OK (+0,7) und
                                   #   Kabelkrone Ader Ø2,8 (+0,3) — der längere Hut kollidiert mit nichts
-XT30_HAT_WALL = 1.0              # v2: Wand um die Ø2,2-Bohrungen im Hut (Lochzentren ±4 sind Body-fix)
+XT30_HAT_WALL = 1.0              # v3: X-Wand-Anteil um die Ø2,2-Bohrungen im Riegel-Balken (Lochzentren
+                                 #   ±4 sind Body-fix). [XT30_SAD_YW/XT30_HAT_LIFT sind seit F2 07-25 TOT.]
 
 
 def build_xt30_ze(body):
-    """MB2(b): 2 angedruckte Klemmsättel (±Y) mit je 2 X-Rinnen + 2 M2-Kernen. Rückgabe body.
-    CAD-/Boolean-Check ≠ Klemm-/Zug-/Löt-Test."""
+    """MB2(b) v3 [F2 07-25, Ingenieur-Feedback]: EINE durchgehende KLEMMBRÜCKE Wand-zu-Wand
+    statt zweier freier Finger-Sättel („Ausflucht zu Mitte UND Rand → super fragil beim
+    Absupporten"). Volle Y-Spannweite (an beide ±Y-Wände angeschweißt), X/Z-Envelope wie v1
+    (bewährte Akku-/Klappen-Freigängigkeit). 4 Rinnen (2 je Seite, Licht 2,6 = 0,2 Quetsch
+    auf Ader 2,8); die M2-Kerne sitzen jetzt in einer VOLLMATERIAL-BRÜCKE (v1: Träger war ein
+    freier 6,6er-Finger). EHRLICH (Review 07-25): im Rinnen-Tiefenband (oberste 1,3) schneidet
+    der Ø1,7-Kern wie in v1 beidseitig 0,15 in die Rinnenflanken — unterhalb davon ist er voll
+    ummantelt; die M2 kreuzt zwischen den Adern und drückt ~0,4 in beide Isolierungen (Teil der
+    Klemmung, kein Defekt). Rinnenboden zur Bay: 0,7 (Bogen, Gate-geprüft). In Toms Drucklage
+    (Rücken unten) wächst die Brücke als Säule aus der Rücken-Wand hoch — supportfrei statt
+    Support-Falle. Kamin: der +X-Shelf-Cutout verliert ~70 % Querschnitt (Rest: X 26..29,5 voll
+    offen = 98 mm² + 0,7-Schlitz über der Brücke bis zur Shelf-OK); −X-Cutout (336 mm²) und alle
+    Wand-Vents unverändert. CAD-/Boolean-Check ≠ Klemm-/Zug-/Löt-Test."""
     xc = (XT30_SAD_X[0] + XT30_SAD_X[1])/2
     xl = XT30_SAD_X[1] - XT30_SAD_X[0]
     zc = (XT30_SAD_Z[0] + XT30_SAD_Z[1])/2
-    zt = XT30_SAD_Z[1]                                  # Sattel-Oberkante = Rinnen-Trennebene
+    zt = XT30_SAD_Z[1]                                  # Brücken-Oberkante = Rinnen-Trennebene
+    body = body + Pos(xc, 0, zc) * Box(xl, IN_Y, XT30_SAD_Z[1] - XT30_SAD_Z[0])
     for sy in (-1, +1):
-        yw = sy * IN_Y/2                                # Wand-Innenfläche ±16,75
-        y_in = sy * XT30_SAD_YW
-        body = body + Pos(xc, (yw + y_in)/2, zc) * Box(xl, abs(yw - y_in), XT30_SAD_Z[1] - XT30_SAD_Z[0])
-        for gy in XT30_GROOVE_Y:                        # 2 Rinnen (Halbzylinder, Achse X) in die Oberkante
+        for gy in XT30_GROOVE_Y:                        # je Seite 2 Rinnen (Halbzylinder, Achse X)
             body = body - Pos(xc, sy*gy, zt) * Rot(0, 90, 0) * Cylinder(radius=XT30_GROOVE_R, height=xl + 2)
-        for dx in (-XT30_PILOT_DX, +XT30_PILOT_DX):     # 2 M2-Kerne (Achse Z) im Steg
+        for dx in (-XT30_PILOT_DX, +XT30_PILOT_DX):     # je Seite 2 M2-Kerne (Achse Z), voll ummantelt
             body = body - Pos(xc + dx, sy*XT30_PILOT_Y, zt) * \
                 Cylinder(radius=XT30_PILOT_D/2, height=(XT30_SAD_Z[1] - XT30_SAD_Z[0]) + 1)
     return body
 
 
 def build_xt30_latch(sy=+1):
-    """MB2(b) v2 (07-22): Riegel als HUTPROFIL. Fuß wie v1 (Gleitspiel im Sattel, 2 Gegen-Rinnen);
-    darüber ab Sattel-OK+1,7 ein längerer Hut (12,2), der beide Ø2,2-Bohrungen mit 1,0 Wand VOLL
-    umschließt — v1-Befund (Tom 07-22): Lochzentren ±4 lagen AUF den Endflächen der 7,9-Bar →
-    halboffene Kerben. Hut schwebt über Shelf-OK und Kabelkrone; Gesamthöhe 5,0. Druck flach auf
-    die Hutdecke (supportfrei). Gehäuse/Sattel UNVERÄNDERT. sy = Seite (+1/−1)."""
+    """[F2 07-25] Riegel v3: flacher VOLLMATERIAL-Balken (Hutprofil obsolet — die Brücke ist eben).
+    13,0(X) × 7,0(Y) × 5,0(Z): Ø2,2-Bohrungen umschlossen mit X-Wand 1,4 / Y-Wand 1,9 (Review
+    07-25: oberhalb der Rinnen; im Gegen-Rinnen-Band unten (~1,3) kreuzen die Bohrungen beide
+    Rinnen — konstruktiv unvermeidbar bei Schraube-zwischen-den-Adern, Klemmfläche unbeschädigt).
+    Höhe 5,0 (Brim-unterscheidbar); M2×8: Eingriff 2,0 in den Brücken-Kern, Spitze ragt ~1 unter
+    die Brücke (y±12,7 = außerhalb der Akku-Breite 18,25 — kollisionsfrei). Druck flach auf der
+    Decke, supportfrei; x-symmetrisch → EIN Teil passt beide Seiten (180° gedreht) → 2× drucken.
+    sy = Seite (+1/−1) nur fürs Einsetzen im GLB."""
     xc = (XT30_SAD_X[0] + XT30_SAD_X[1])/2
-    xl_foot = XT30_SAD_X[1] - XT30_SAD_X[0] - 2*TOL_SLIDE
-    xl_hat = 2*(XT30_PILOT_DX + 1.1 + XT30_HAT_WALL)
+    xl = 2*(XT30_PILOT_DX + 1.1 + XT30_HAT_WALL) + 0.8
     zt = XT30_SAD_Z[1]
-    hat_z0 = zt + XT30_HAT_LIFT
-    yw = sy * IN_Y/2
-    y_in = sy * XT30_SAD_YW
-    yc, yl = (yw + y_in)/2, abs(yw - y_in) - 2*TOL_SLIDE
-    latch = Pos(xc, yc, (zt + hat_z0)/2) * Box(xl_foot, yl, XT30_HAT_LIFT) + \
-        Pos(xc, yc, (hat_z0 + zt + XT30_LATCH_H)/2) * Box(xl_hat, yl, XT30_LATCH_H - XT30_HAT_LIFT)
+    y0, y1 = XT30_GROOVE_Y[0] - 2.0, IN_Y/2 - TOL_SLIDE   # 8,7..15,8 — fasst beide Rinnen mittig
+    latch = Pos(xc, sy*(y0 + y1)/2, zt + XT30_LATCH_H/2) * Box(xl, y1 - y0, XT30_LATCH_H)
     for gy in XT30_GROOVE_Y:
-        latch = latch - Pos(xc, sy*gy, zt) * Rot(0, 90, 0) * Cylinder(radius=XT30_GROOVE_R, height=xl_hat + 2)
+        latch = latch - Pos(xc, sy*gy, zt) * Rot(0, 90, 0) * Cylinder(radius=XT30_GROOVE_R, height=xl + 2)
     for dx in (-XT30_PILOT_DX, +XT30_PILOT_DX):
         latch = latch - Pos(xc + dx, sy*XT30_PILOT_Y, zt + XT30_LATCH_H/2) * \
             Cylinder(radius=1.1, height=XT30_LATCH_H + 4)   # M2-Durchgang Ø2,2
@@ -944,6 +988,10 @@ if __name__ == "__main__":
     vol_pre_shelf = b.volume
     b = build_shelf(b)                 # fest verbauter Stockwerk-Shelf (Kamin-Aussparungen + VTX-Pad)
     shelf_added = b.volume > vol_pre_shelf
+    vol_pre_foot = b.volume
+    b = build_camera_foot(b)           # [F1 07-25] Minimal-Fuß innere Kamera-Flanke → Shelf
+    foot_added = b.volume > vol_pre_foot
+    assert foot_added, "Kamera-Fuß hat KEIN Material zugefügt — No-Op-Fix (mesh_diff-Vorfall 07-25)!"
     vol_pre_bosses = b.volume
     b = build_corner_bosses(b)         # 3 vertikale Eck-Insert-Bosse für den DACH-Deckel (Tom 07-05)
     blocks_added = b.volume > vol_pre_bosses
@@ -974,7 +1022,8 @@ if __name__ == "__main__":
                    for sx, cy in AZE_SIDES]                                # 2 T-ZE-Zonen (kurze Seiten)
     #   (Heck-Vent-Top ~17,7 vs Pilot-Boden 18,5 → 0,8 real; Zone endet an der Feature-Kante)
     _doorboss_reg = Pos(EX_X/2 - 3.5, 0, DOOR_TAB_SZ) * Box(8, 8, 8)          # Tür-Laschen-Pilot (07-06)
-    _xt30_reg   = Pos((XT30_SAD_X[0]+XT30_SAD_X[1])/2, 0, 1.3) * Box(14, 2*IN_Y/2, 4)        # XT30-Sättel (±Y)
+    _xt30_reg   = Pos((XT30_SAD_X[0]+XT30_SAD_X[1])/2, 0, (XT30_SAD_Z[0]+XT30_SAD_Z[1])/2) * \
+        Box(14, 2*IN_Y/2, 4)        # [Review-Fix 07-25] XT30-Brücke — alter z=1,3 war leeres Band
     def _hit(cutters, regs):
         regs = regs if isinstance(regs, list) else [regs]
         return sum(sum(s.volume for s in (c & r).solids()) for c in cutters for r in regs
@@ -1077,7 +1126,8 @@ if __name__ == "__main__":
     _blk_solids   = [Pos(px, py, (RBOSS_Z0+RBOSS_Z1)/2) * Cylinder(radius=RBOSS_D/2, height=RBOSS_Z1-RBOSS_Z0)
                      for (px, py) in RLID_SCREW]                  # 3 Eck-Bosse (Dach-Deckel)
     _vtx = _vtx_env_solid()
-    _feat_named = [("Kamera", _camera_solid), ("XT30-ZE", _xt30_solid)]
+    _feat_named = [("Kamera", _camera_solid), ("XT30-ZE", _xt30_solid),
+                   ("Kamera-Fuß", _camera_foot_solid())]   # [F1 07-25] Fuß hart gegen VTX gaten
     _vtx_hits = {nm: _iv(_vtx & s) for nm, s in _feat_named}
     _vtx_wallgraze = _iv(_vtx & _shell_ref)                     # nur R6-Eck-Fillet (Toleranz, MEASURE_ME)
     print(f"[vtx_fit] VTX-Env 29,2×30×18,6 @X{VTX_CX:.1f} ∩ Feature: " +
@@ -1087,23 +1137,40 @@ if __name__ == "__main__":
         assert v < 0.5, f"VTX-Envelope kollidiert mit {k}: {v:.2f} mm³ (DEFEKT-Klasse)"
     # ── BOSS↔VTX-Gate (Dach-Deckel-Bosse): Boolean gegen die nominale VTX-Envelope ──
     _blk_vtx = max(_iv(_vtx & s) for s in _blk_solids)
-    print(f"[boss]  3 Eck-Bosse Ø{RBOSS_D} @{RLID_SCREW} Z{RBOSS_Z0:.0f}..{RBOSS_Z1:.0f} · Insert "
+    print(f"[boss]  {len(RLID_SCREW)} Eck-Bosse (diagonal, F5) Ø{RBOSS_D} @{RLID_SCREW} Z{RBOSS_Z0:.0f}..{RBOSS_Z1:.0f} · Insert "
           f"Ø{RBOSS_INS_D}×{RBOSS_INS_DP} Achse Z · ∩ VTX-Env = {_blk_vtx:.2f} mm³ (Gate <0,5)")
     assert _blk_vtx < 0.5, f"Eck-Boss kollidiert mit VTX-Envelope: {_blk_vtx:.2f} mm³"
     # ── [MID 07-11] SCHALTER-GATE: Schalter HINTER dem VTX. Der Ø14-Kopf sitzt im Deckel (überspannt die
     #   Breite, kein F2-Konflikt); nur der Ø12,5-KÖRPER taucht 18 mm in F2 → muss VTX/Kamera/+X-Wand frei sein.
-    _sw_zin = EX_Z/2 - WALL
+    _sw_zin = RLID_Z_IN - 1.5     # [07-25] Deckel-UNTERSEITE (4,5-Platte, außen bündig) — der Körper
+                                  #   hängt am Deckel, nicht an der Innendecke; alt EX_Z/2−WALL war 1,5
+                                  #   zu konservativ und schlug im Falz-/Decken-Band an
     _sw_env = Pos(SW_CX, SW_CY, _sw_zin - SW_ENV_DEPTH/2) * Cylinder(radius=SW_BODY_D/2, height=SW_ENV_DEPTH)
     _sw_vtx = _iv(_sw_env & _vtx); _sw_cam = _iv(_sw_env & _camera_solid)
     _sw_park = _iv(_sw_env & _xt30park_env_solid())
     _sw_xmax = SW_CX + SW_BODY_D/2
-    # [MID 07-11] Schalter ENTKOPPELT (Tom bohrt sein Loch selbst) → INFO statt Assert: meldet die freie
-    #   Zone HINTER dem VTX (VTX-Ende → +X-Wand), damit Tom weiß, wo er bohren kann.
+    # [MID 07-25] SCHALTER-GATE jetzt HART (Tom-Befund: als INFO hat es den 69er-Platzverlust
+    #   nie gemeldet — 11,8 < 12,5 blieb still). Tom bohrt weiter selbst, aber die ZONE muss passen:
+    #   Ø12,5-Körper + 0,3 Luft je Seite zwischen VTX-Ende und +X-Innenwand.
     _vtx_end = VTX_X0 + VTX_ENV[0]
     _free_behind = IN_X/2 - _vtx_end
-    print(f"[switch-info] Deckel BLANKO (kein Loch). Freie Zone hinter VTX: X {_vtx_end:.1f}..{IN_X/2:.1f} "
-          f"= {_free_behind:.1f} mm (Schalter-Körper Ø{SW_BODY_D}; Ø14-Kopf im Deckel überspannt Breite). "
+    print(f"[switch] Deckel BLANKO (kein Loch). Freie Zone hinter VTX: X {_vtx_end:.1f}..{IN_X/2:.1f} "
+          f"= {_free_behind:.1f} mm (Gate ≥ {SW_BODY_D + 0.6}: Körper Ø{SW_BODY_D} + 0,3/Seite; "
+          f"Ø14-Kopf im Deckel überspannt Breite). "
           f"Info @({SW_CX},{SW_CY}): ∩VTX={_sw_vtx:.2f} ∩Kamera={_sw_cam:.2f} ∩Park={_sw_park:.2f} mm³ — Tom bohrt selbst.")
+    assert _free_behind >= SW_BODY_D + 0.6, \
+        f"Schalterzone zu klein: {_free_behind:.1f} < {SW_BODY_D + 0.6} mm hinter dem VTX"
+    # [07-25 Tom-Fund] VOLL-GATE: Envelope gegen den KOMPLETTEN Body — die alte Dreier-Liste
+    #   (VTX/Kamera/Park) übersah Deckel-Eck-Bosse und ZE-Insert-Bosse. Schwelle 0,5 mm³ toleriert
+    #   den dokumentierten ZE-Boss-Kiss @SW_CX 25,1 (TOM_PENDING #7), nicht mehr.
+    _sw_body = _iv(_sw_env & b)
+    print(f"[switch] Voll-Gate: Env Ø{SW_BODY_D}×{SW_ENV_DEPTH} @({SW_CX},{SW_CY}) ∩ BODY "
+          f"= {_sw_body:.3f} mm³ (Gate <0,5; enthält ZE-Boss-Kiss, s. TOM_PENDING #7)")
+    assert _sw_body < 0.5, \
+        f"Schalter-Envelope kollidiert mit Body: {_sw_body:.2f} mm³ — Bosse/Wand prüfen!"
+    assert SW_CX - SW_BODY_D/2 >= _vtx_end + 0.1 and SW_CX + SW_BODY_D/2 <= IN_X/2 - 0.25, \
+        f"SW_CX={SW_CX} nominal nicht frei: Körper {SW_CX - SW_BODY_D/2:.2f}..{SW_CX + SW_BODY_D/2:.2f} " \
+        f"vs Zone {_vtx_end + 0.25:.2f}..{IN_X/2 - 0.25:.2f}"
     _park_hit = max(_iv(_xt30park_env_solid() & s) for _, s in _feat_named)
     print(f"[park] XT30-Park-Env 13×11×6 @X{XT30P_CX:.0f} Y{XT30P_CY:.0f} (unter den Ohren, Z<14) ∩ Feature "
           f"= {_park_hit:.2f} mm³ (Gate <0,5) · Kabelweg vom linken Shelf-Cutout (X−23,5) hoch [Punkt 3]")
@@ -1207,15 +1274,18 @@ if __name__ == "__main__":
         assert _pen < 0.01, f"ZE-{_tag}: T-Stück durchdringt Body: {_pen:.2f} mm³"
         assert _top_flush, f"ZE-{_tag}: Deckelblock steht nicht 3,0 mm proud (Seating)"
         assert 0.1 < _cv < 3.0, f"ZE-{_tag}: Nase klemmt nicht definiert ({_cv:.2f} mm³ ∉ 0,1..3,0)"
-        # (6) Kappen-Schnittstelle: Piloten offen (Wand-Mitte) + Stützboss-Material dahinter
+        # (6) [F4 07-25] Kappen-Schnittstellen-Gate INVERTIERT: Seitenhalterung ist entfernt —
+        #     jetzt wird geprüft, dass Wand wieder VOLL ist (kein Pilot-Loch) und KEIN Boss mehr
+        #     in den Innenraum ragt (Ingenieur-Feedback: „Seitenhalterung sparen").
         for _s in (-1, +1):
-            _po = ((Pos(_xm, _cy + _s*15.0, AZE_SEAT_CZ) * Box(0.4, 0.4, 0.4)) & b).volume < 1e-6
-            _bo = ((Pos(_sx*(IN_X/2 - 1.0), _cy + _s*15.0 + 1.6, AZE_SEAT_CZ) *
-                    Box(0.4, 0.4, 0.4)) & b).volume > 0.02
-            assert _po, f"ZE-{_tag}: Kappen-Pilot y{_s*15:+.0f} nicht offen"
-            assert _bo, f"ZE-{_tag}: Kappen-Stützboss y{_s*15:+.0f} fehlt"
-        print(f"[ant-ze:{_tag}] Kappen-Schnittstelle: 2× M2-Pilot Ø1,7×6 @(y±15, Z{AZE_SEAT_CZ}) "
-              f"mit Innen-Boss Ø5 ✔ (Windschützer-Ohren: Abstand 30, Löcher Ø2,2)")
+            _po = ((Pos(_xm, _cy + _s*15.0, AZE_SEAT_CZ) * Box(0.4, 0.4, 0.4)) & b).volume > 0.02
+            # KEINE Boss-Probe: die Ex-Boss-Zone liegt komplett im Schatten von R3,5-Ecken-
+            # Fillet bzw. Deckel-Eck-Boss-Anbindung (Bisektion 07-25: mount_antenna_ze fügt
+            # dort 0 mm³ zu; Material stammt aus build_corner_bosses). Boss-Absenz wird
+            # EXTERN bewiesen: mesh_diff F123→FINAL + Render. Das alte Gate probte bei
+            # y16,6 = IN der Y-Wand → trivial-grün.
+            assert _po, f"ZE-{_tag}: Wand bei y{_s*15:+.0f} nicht voll (Kappen-Pilot-Rest?)"
+        print(f"[ant-ze:{_tag}] [F4] Kappen-Seitenhalterung entfernt ✔ (Wand voll, kein Innen-Boss)")
 
     # ── MB2(b) · XT30-ZE-GATE (2 Sättel + Riegel; CAD-Check ≠ Klemm-/Löt-Test) ──────
     assert xt30_added, "XT30-Sättel nicht angeschweißt (Volumen nicht gestiegen)"
@@ -1232,7 +1302,7 @@ if __name__ == "__main__":
     _sad_only = build_xt30_ze(build_shell()) - build_shell()   # nur die Sattel-Volumina
     _c_batt = sum(s.volume for s in (_sad_only & _batt).solids()) if (_sad_only & _batt).solids() else 0.0
     _iron_gap = X_WALL_IN - XT30_SAD_X[1]              # offener Weg +X-Sattelkante → Türinnenwand
-    print(f"[xt30]  2 Sättel ±Y @X{XT30_SAD_X} Z{XT30_SAD_Z} · 2 Rinnen |Y|{XT30_GROOVE_Y} Licht Ø{2*XT30_GROOVE_R:.1f} "
+    print(f"[xt30]  KLEMMBRÜCKE Wand-zu-Wand (F2 v3) @X{XT30_SAD_X} Z{XT30_SAD_Z} · je Seite 2 Rinnen |Y|{XT30_GROOVE_Y} Licht Ø{2*XT30_GROOVE_R:.1f} "
           f"(frei-vol {_lit_free:.2f}, r1,55 trifft {_lit_hit:.2f}) · Riegel 2× M2 · Akku-Koll {_c_batt:.2f} mm³ · "
           f"Puffer→Tür {_iron_gap:.1f} (Tür OFFEN = Lötzugang)")
     assert _lit_free < 0.02, f"Rinnen-Licht <2,6: Ø2,6-Kanal nicht frei ({_lit_free:.2f} mm³ Material)"
@@ -1394,8 +1464,8 @@ if __name__ == "__main__":
     # TÜR∩BODY-GATE (07-14, wegen Nasen-Wurzel-Keil): Klappe in Schließlage darf den Body nicht
     # durchdringen (Keil muss im Notch-/Fuß-Freiraum bleiben). CAD-Boolean ≠ Schwenk-Montage-Test.
     _dp = _pen(d)
-    print(f"[tuer-gate] Tür∩Body = {_dp:.3f} mm³ (Ziel <0,5; Nasen-Wurzel-Keil kollisionsfrei)")
-    assert _dp < 0.5, f"Tür durchdringt Body: {_dp:.2f} mm³ — Nasen-Wurzel-Keil kollidiert?"
+    print(f"[tuer-gate] Tür∩Body = {_dp:.3f} mm³ (Ziel <0,5; gerade F3-Zähne in der Notch)")
+    assert _dp < 0.5, f"Tür durchdringt Body: {_dp:.2f} mm³ — F3-Zahn/Notch prüfen!"
     b.color = Color(0.82, 0.82, 0.85)
     d.color = Color(0.30, 0.62, 0.85)                  # Tür separat eingefärbt
     cov.color = Color(0.95, 0.72, 0.25)               # Deckel separat eingefärbt (orange)
@@ -1408,6 +1478,9 @@ if __name__ == "__main__":
     export_gltf(Compound(label="SkyLive_Mid", children=[b, d, cov, lat_p, lat_m, ze_f, ze_h]),
                 out, binary=True)
     print(f"[glb] {out}  (Body + Akku-Klappe + Deckel + 2 XT30-Riegel + 2 ZE-Schieber)")
+    # [07-25 EIN-MATERIAL-DOKTRIN] Tom: ~7 Laborabbrüche, weil Farb-Metadaten im Slicer als
+    #   Multi-Material ankamen. Farben leben NUR in der GLB (Web-Ansicht) — STEP/STL ab hier farbfrei.
+    b.color = d.color = cov.color = None
     # ── STL je Druckteil (Body, Tür, Deckel, XT30-Riegel ×2, ZE-Schieber Nut+blind) ──
     from build123d import export_stl
     for _part, _name in ((b, "body"), (d, "battery_door"), (cov, "cover_floor2"),
