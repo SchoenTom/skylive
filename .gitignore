@@ -2,3 +2,6 @@
 CURATION_NOTES.md
 .venv/
 __pycache__/
+# local CAD work snapshots (fix-cycle stages, not release artifacts)
+build/cad/baseline_*/
+build/cad/stage_*/

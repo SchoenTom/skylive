@@ -605,7 +605,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
       <div class="eyebrow">Interactive</div>
       <h3>Spin the hardware. Read the millimetres.</h3>
       <p>The real CAD, live in your browser — assembled, exploded, and all three sizes
-      (300: 59.5 × 39.5 × 48 · mid: 69 × 38 × 48 · 850: 71 × 40 × 56), with dimension
+      (300: 59.5 × 39.5 × 48 · mid: 71 × 38 × 48 · 850: 71 × 40 × 56), with dimension
       tags on the geometry itself. Plus the antenna decks that argue the RF doctrine.</p>
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-bottom:10px">
@@ -675,6 +675,221 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     </figure>
   </div>
 </section>
+
+<!-- ========== ENGINEER FEEDBACK ROUND 2 — the red pen ========== -->
+<section id="redpen">
+  <style>
+    .rp-lab{border:1px solid rgba(255,255,255,.09);border-radius:20px;overflow:hidden;
+      background:linear-gradient(180deg,#0c1422,#0a0e16);padding:clamp(14px,2.5vw,26px)}
+    .rp-ui{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+    .rp-ui .grp{display:flex;gap:8px}
+    .rp-ui button{background:#10293f;border:1px solid #1d4763;color:var(--ink);
+      padding:9px 14px;border-radius:10px;cursor:pointer;font:600 .85rem/1 var(--sans)}
+    .rp-ui button.on{background:#123c5c;border-color:var(--cyan);color:var(--cyan)}
+    .rp-ui button:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+    #rpPull{border-color:rgba(239,90,79,.5)}
+    #rpPull.armed{background:rgba(239,90,79,.15);border-color:var(--red);color:#ffb4ab}
+    .rp-verdict{font:700 .9rem/1.3 var(--mono);margin-left:auto;letter-spacing:.02em}
+    .rp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:14px;margin-top:34px}
+    .rp-card{position:relative;border:1px solid rgba(255,255,255,.09);border-radius:14px;
+      background:rgba(16,32,47,.55);padding:18px 18px 14px;overflow:hidden;transition:.25s var(--ease)}
+    .rp-card:hover{border-color:rgba(34,211,238,.45);transform:translateY(-2px)}
+    .rp-card .tag{font:700 .68rem/1 var(--mono);letter-spacing:.16em;color:var(--cyan);text-transform:uppercase}
+    .rp-card h3{font:700 1.02rem/1.25 var(--sans);margin:8px 0 6px;color:var(--ink)}
+    .rp-card p{font:400 .88rem/1.5 var(--sans);color:var(--muted);margin:0}
+    .rp-card .proof{display:block;margin-top:10px;padding-top:9px;border-top:1px dashed rgba(255,255,255,.12);
+      font:600 .72rem/1.5 var(--mono);color:var(--faint)}
+    .rp-card .proof b{color:var(--cyan);font-weight:700}
+  </style>
+  <div class="wrap">
+    <div class="head">
+      <div class="eyebrow">Engineer feedback · round 2</div>
+      <h2>A mechanical engineer took the red pen. <span class="cy">The parts got tougher.</span></h2>
+      <p>The printed prototypes came back from a professional review with one recurring verdict:
+      everything that broke, broke while removing support — always at a <b style="color:var(--ink)">layer seam</b>.
+      The lesson is topology, not thickness: a feature must grow out of the printed body
+      <i>inside the layer plane</i>, like the GoPro teeth do — not sit glued onto a seam.
+      Try it yourself:</p>
+    </div>
+
+    <div class="rp-lab">
+      <svg id="rpSvg" viewBox="0 0 900 420" role="img" aria-label="Layer lab: print a tooth two ways, then pull on it — the 90-degree hook snaps at the layer seam, the 45-degree rooted fan holds">
+        <defs>
+          <linearGradient id="rpBg" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#0a1828"/><stop offset="100%" stop-color="#122a40"/>
+          </linearGradient>
+        </defs>
+        <rect width="900" height="420" rx="14" fill="url(#rpBg)"/>
+        <text x="24" y="38" fill="#8aa0b6" font-size="13" font-family="ui-monospace,monospace" letter-spacing="2">CROSS-SECTION · DOOR PLATE + TOOTH</text>
+        <text id="rpMode" x="24" y="62" fill="#22d3ee" font-size="15" font-weight="700" font-family="-apple-system,sans-serif">Round 1 — tooth hangs off a 90° step</text>
+        <!-- print head -->
+        <g id="rpHead" opacity="0">
+          <rect x="-28" y="-26" width="56" height="18" rx="4" fill="#22303e" stroke="#4a5866"/>
+          <path d="M-8 -8 L8 -8 L2 4 L-2 4 Z" fill="#67e8f9"/>
+        </g>
+        <!-- layers get injected here -->
+        <g id="rpLayers"></g>
+        <!-- crack flash -->
+        <g id="rpCrack" opacity="0">
+          <path id="rpCrackPath" d="" stroke="#ef5a4f" stroke-width="3" fill="none" stroke-dasharray="6 4"/>
+          <text id="rpCrackTxt" x="0" y="0" fill="#ef5a4f" font-size="14" font-weight="800" font-family="-apple-system,sans-serif">CRACK — layer seam</text>
+        </g>
+        <!-- pull hook + force arrow -->
+        <g id="rpForce" opacity="0">
+          <path id="rpForceArrow" d="" stroke="#edab28" stroke-width="4" fill="none" marker-end="url(#rpAh)"/>
+          <text id="rpForceTxt" x="0" y="0" fill="#edab28" font-size="13" font-weight="700" font-family="-apple-system,sans-serif">support removal ≈ a pull test</text>
+        </g>
+        <defs><marker id="rpAh" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+          <path d="M0 0 L8 3.5 L0 7 Z" fill="#edab28"/></marker></defs>
+        <text x="24" y="398" fill="#5b7f9c" font-size="12" font-family="-apple-system,sans-serif">Layers are drawn as printed — bottom to top. The seam between two layers is the weakest direction of every FDM part.</text>
+      </svg>
+      <div class="rp-ui">
+        <div class="grp" role="group" aria-label="Choose the tooth design">
+          <button id="rpHook" class="on">Round 1 · 90° hook</button>
+          <button id="rpFan">Round 2 · rooted 45° fan</button>
+        </div>
+        <button id="rpPrint">⟳ print it</button>
+        <button id="rpPull">✊ pull the tooth</button>
+        <span class="rp-verdict" id="rpVerdict"></span>
+      </div>
+      <p class="cap" style="margin-top:12px">a geometry argument, drawn to the layer — not a strength simulation · the same principle moved the camera flange onto the shelf and put 45° fans under the door teeth</p>
+    </div>
+
+    <div class="rp-grid">
+      <div class="rp-card"><span class="tag">F0 · breathe</span>
+        <h3>Mid grows back to 71 mm</h3>
+        <p>A 2 mm "optimisation" had silently eaten the power-switch bay: 11.8 mm left for a Ø12.5 body. Reverted — and the switch check is now a hard gate, probed against the <i>whole</i> body.</p>
+        <span class="proof">gate: <b>13.8 mm</b> clear behind the VTX · envelope ∩ body = <b>0.026 mm³</b></span></div>
+      <div class="rp-card"><span class="tag">F1 · root it</span>
+        <h3>Camera flange stands on the shelf</h3>
+        <p>The clamp flange used to hang off a wall seam and tore off with the support. Now a foot welds it to the mid-storey shelf — with 45° fillets, in the layer plane.</p>
+        <span class="proof">point-cloud diff: change <b>only</b> in the target zone · 6/6 printability</span></div>
+      <div class="rp-card"><span class="tag">F2 · bridge it</span>
+        <h3>XT30 strain relief, rebuilt</h3>
+        <p>Free-standing fingers with "holes that were barely there" became one wall-to-wall clamp bridge — both cables in grooves, a solid latch bar screwed over them. One latch part fits both sides.</p>
+        <span class="proof">screw cores now fully jacketed · latch v3: <b>2×</b> printed flat</span></div>
+      <div class="rp-card"><span class="tag">F3 · straighten</span>
+        <h3>Door teeth, straight and rooted</h3>
+        <p>The 90° hooks and blind floor channels are gone. Straight teeth sit in blind notches — and since the flap has a rounded corner right at the tooth root, 45° fans tie each tooth into the full plate.</p>
+        <span class="proof">door ∩ body = <b>0.000 mm³</b> · swing-in gates unchanged</span></div>
+      <div class="rp-card"><span class="tag">F4 + F5 · subtract</span>
+        <h3>Fewer features, freer corners</h3>
+        <p>The omni-cap side holders left without replacement — the rounded camera-side look wins. The roof lid dropped to two diagonal M3 screws; the freed corner belongs to the switch.</p>
+        <span class="proof">removal proven by diff — the old "gate" had probed <i>inside</i> the wall</span></div>
+      <div class="rp-card"><span class="tag">One material</span>
+        <h3>Seven aborted prints, one root cause</h3>
+        <p>Colour metadata in the STEP exports kept flipping lab printers into multi-material mode. All three models now export colour-free — slice the STLs, nothing else.</p>
+        <span class="proof">16× COLOUR stripped · rule: print from <b>Druck/*.stl</b> only</span></div>
+    </div>
+  </div>
+</section>
+<script>
+(function(){
+  const svg=document.getElementById('rpSvg'); if(!svg) return;
+  const layersG=document.getElementById('rpLayers'), head=document.getElementById('rpHead');
+  const crack=document.getElementById('rpCrack'), crackP=document.getElementById('rpCrackPath'), crackT=document.getElementById('rpCrackTxt');
+  const force=document.getElementById('rpForce'), fArr=document.getElementById('rpForceArrow'), fTxt=document.getElementById('rpForceTxt');
+  const modeT=document.getElementById('rpMode'), verdict=document.getElementById('rpVerdict');
+  const btnHook=document.getElementById('rpHook'), btnFan=document.getElementById('rpFan');
+  const btnPrint=document.getElementById('rpPrint'), btnPull=document.getElementById('rpPull');
+  let mode='hook', timer=null, printed=false, pulling=false;
+
+  // Geometry: plate = vertical slab x 300..390, y 110..350 (drawn as printed: layers horizontal).
+  // Tooth sticks out +x at y 210..260 reaching x 390..520.
+  const LH=10, Y0=350, N=24, PX0=300, PX1=390, TY0=210, TY1=260, TX1=520;
+  function rowsFor(m){
+    const rows=[];
+    for(let i=0;i<N;i++){
+      const yTop=Y0-(i+1)*LH, yBot=Y0-i*LH, yMid=(yTop+yBot)/2;
+      let x0=PX0, x1=PX1;
+      if(yMid>TY0-1&&yMid<TY1+1){ x1=TX1; }                 // the tooth band itself
+      else if(m==='fan'){
+        // fan roots: rows near the band taper out of the plate on both sides
+        const d=Math.min(Math.abs(yMid-TY0),Math.abs(yMid-TY1));
+        const ext=Math.max(0,(60-d))*1.7;
+        if(ext>4) x1=PX1+ext;
+      }
+      rows.push({x0,x1,yTop});
+    }
+    return rows;
+  }
+  function draw(m,upTo){
+    layersG.innerHTML='';
+    const rows=rowsFor(m);
+    rows.forEach((r,i)=>{
+      if(i>=upTo) return;
+      const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');
+      rect.setAttribute('x',r.x0); rect.setAttribute('y',r.yTop);
+      rect.setAttribute('width',r.x1-r.x0); rect.setAttribute('height',LH-1.4);
+      rect.setAttribute('rx',2);
+      const isTooth=r.x1>PX1+1;
+      rect.setAttribute('fill', isTooth?'rgba(34,211,238,.34)':'rgba(159,196,226,.30)');
+      rect.setAttribute('stroke', isTooth?'#22d3ee':'#9fc4e2'); rect.setAttribute('stroke-width','1');
+      layersG.appendChild(rect);
+    });
+    return rows;
+  }
+  function reset(){ clearInterval(timer); timer=null; crack.setAttribute('opacity','0');
+    force.setAttribute('opacity','0'); verdict.textContent=''; verdict.style.color='';
+    btnPull.classList.remove('armed'); pulling=false; }
+  const instant = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function printIt(){
+    reset(); printed=false;
+    modeT.textContent = mode==='hook' ? 'Round 1 — tooth hangs off a 90° step'
+                                      : 'Round 2 — 45° fans root the tooth into the plate';
+    if(instant){ draw(mode,N); printed=true;
+      verdict.textContent='printed — now pull'; verdict.style.color='#8aa0b6'; return; }
+    let i=0; head.setAttribute('opacity','1');
+    timer=setInterval(()=>{
+      i++; const rows=draw(mode,i);
+      const r=rows[Math.min(i,N)-1];
+      if(r){ head.setAttribute('transform',`translate(${r.x1},${r.yTop})`); }
+      if(i>=N){ clearInterval(timer); timer=null; head.setAttribute('opacity','0'); printed=true;
+        verdict.textContent='printed — now pull'; verdict.style.color='#8aa0b6'; }
+    },70);
+  }
+  function pull(){
+    if(!printed||pulling) return; pulling=true; btnPull.classList.add('armed');
+    // levering force at the tooth tip — support removal is a lever, not a gentle pull
+    fArr.setAttribute('d',`M${TX1-20} ${TY0-60} L${TX1-20} ${TY1+8}`);
+    fTxt.setAttribute('x',TX1-150); fTxt.setAttribute('y',TY0-74);
+    fTxt.textContent='support removal ≈ levering the tooth';
+    force.setAttribute('opacity','1');
+    setTimeout(()=>{
+      if(mode==='hook'){
+        // crack starts at the sharp 90° root corner and runs along the layer seam
+        crackP.setAttribute('d',`M${PX1} ${TY0} L${PX1-70} ${TY0}`);
+        crackT.setAttribute('x',PX1-190); crackT.setAttribute('y',TY0-12);
+        crack.setAttribute('opacity','1');
+        // tooth band levers off around its root
+        [...layersG.children].forEach(rect=>{
+          const y=+rect.getAttribute('y'), w=+rect.getAttribute('width');
+          if(w>PX1-PX0+1 && y>TY0-LH && y<TY1){
+            rect.style.transformOrigin=`${PX1}px ${TY1}px`;
+            rect.style.transition='transform .8s cubic-bezier(.3,0,.8,.4), opacity .8s';
+            rect.style.transform='translate(24px,54px) rotate(16deg)'; rect.style.opacity='0.15';
+          }
+        });
+        verdict.textContent='SNAP — sharp root = a notch on a seam';
+        verdict.style.color='#ef5a4f';
+      }else{
+        crack.setAttribute('opacity','0');
+        verdict.textContent='HOLDS — the fans feed the lever force into the plate';
+        verdict.style.color='#3ddc97';
+      }
+      btnPull.classList.remove('armed'); pulling=false;
+    },900);
+  }
+  btnHook.addEventListener('click',()=>{mode='hook';btnHook.classList.add('on');btnFan.classList.remove('on');printIt();});
+  btnFan.addEventListener('click',()=>{mode='fan';btnFan.classList.add('on');btnHook.classList.remove('on');printIt();});
+  btnPrint.addEventListener('click',printIt);
+  btnPull.addEventListener('click',pull);
+  // auto-print on first scroll into view — with a fallback so the lab is never left empty
+  const io=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting){if(!printed&&!timer)printIt();io.disconnect();}})},{threshold:.35});
+  io.observe(svg);
+  setTimeout(()=>{ if(!printed&&!timer) printIt(); },4000);
+})();
+</script>
 
 <section id="doughnut">
   <div class="wrap">

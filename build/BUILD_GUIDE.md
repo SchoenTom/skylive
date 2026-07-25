@@ -9,7 +9,7 @@
 *Condensed English edition of the project's German build document (`BAUANLEITUNG`, 2026-06-29,
 specs verified against HDZero documentation). Status: the electronics build below is bought,
 specified and wiring-verified on paper; the printed case passes its geometry gates in all
-**three sizes** — **850** 71 × 40 × 56 mm (flight unit) · **mid** 69 × 38 × 48 mm ·
+**three sizes** — **850** 71 × 40 × 56 mm (flight unit) · **mid** 71 × 38 × 48 mm ·
 **Mini 300** 59.5 × 39.5 × 48 mm.
 The STEP/STL files build from [`../cad/`](../cad/). **Nothing here carries a "measured" badge yet —
 the first print is a fit prototype, and a handful of values are still datasheet fallbacks.***

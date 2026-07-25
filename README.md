@@ -56,7 +56,7 @@ The VTX side plugs in via its stock **JST-GH 6-pin harness** either way. Full st
 **The shell:** an upright, two-storey GoPro-style case — battery downstairs behind its own tab-locked door, radio + camera upstairs under a screwed roof lid — printed in **PETG/ASA (never PLA)** with a sacrosanct **3 mm wall**, long passive louver vents, and a GoPro mount underneath. Outer dimensions: **71 × 40 × 56 mm** — genuinely action-cam-sized. Both short sides carry an identical **T-clamp strain-relief interface** at the top edge — guide slot, round seat, and a screw-driven nose clamp — so the antenna can anchor left or right; the unused side is closed by the same T-piece. It builds from the parametric script in [`build/cad/`](build/cad/) and passes every geometry gate on each rebuild; this exact file set is what went to the printer.
 
 **Three sizes, one architecture.** Don't take a photo's word for it — **[spin them in the 3D Lab](https://schoentom.github.io/skylive/viewer.html)**, where every dimension tag is a real millimetre from the executed CAD. The **850** (71 × 40 × 56 mm) is the flight unit; the
-**mid sender** (69 × 38 × 48 mm) and the **Mini 300** (59.5 × 39.5 × 48 mm) are the same design
+**mid sender** (71 × 38 × 48 mm) and the **Mini 300** (59.5 × 39.5 × 48 mm) are the same design
 wrapped around the smaller Tattu 300 3S HV pack (measured 45 × 17.5 × 15.3 mm) —
 same T-clamp antenna anchors (literally the same printed T-piece), same tab door, same camera corner.
 
@@ -143,7 +143,8 @@ Everything a re-builder needs is under [`build/`](build/):
 - ✅ RF doctrine derived and published (donut orientation, multi-beam ground station, legacy capsule study) — *calculated*.
 - ✅ Thermal, structural and print-factor derivations published — *calculated*.
 - ✅ Final case CAD (**71 × 40 × 56 mm**) builds watertight and passes every geometry gate — roof lid on 3 corner inserts, tab-locked battery door, twin T-slot antenna anchors, 3 mm wall. **Print files released — and the first fit-prints are back: the GoPro interface locks into a real mount, the parts fit.** *Fit-verified by print (2026-07-15); strength and RF stay open below — a fit is a geometry result, not a pull test.*
-- ✅ **Mid sender** (69 × 38 × 48 mm) and **Mini 300** (59.5 × 39.5 × 48 mm, Tattu 300 3S HV): full architecture ports of the final build — same T-slot anchors (the T-pieces are literally the same printed part), same tab door; the Mini has no power switch (the electronics storey has no room for one; power = plug the battery). [`build/cad/mid_sender.py`](build/cad/mid_sender.py) · [`build/cad/mini_300.py`](build/cad/mini_300.py), *geometry-verified, not yet printed.*
+- ✅ **Mid sender** (71 × 38 × 48 mm) and **Mini 300** (59.5 × 39.5 × 48 mm, Tattu 300 3S HV): full architecture ports of the final build — same T-slot anchors (the T-pieces are literally the same printed part), same tab door; the Mini has no power switch (the electronics storey has no room for one; power = plug the battery). [`build/cad/mid_sender.py`](build/cad/mid_sender.py) · [`build/cad/mini_300.py`](build/cad/mini_300.py), *geometry-verified, not yet printed.*
+- ✅ **Engineer feedback round 2 (2026-07-25), mid sender:** printed prototypes went through a professional mechanical review — everything that broke, broke at a layer seam while removing support. Fixes, each proven by a point-cloud diff against its target zone ([`build/cad/mesh_diff.py`](build/cad/mesh_diff.py)): mid back to **71 mm** (a 2 mm squeeze had eaten the power-switch bay — the switch check is a hard, whole-body gate now), camera flange rooted on the mid-storey shelf, XT30 strain relief rebuilt as a wall-to-wall clamp bridge with a solid latch bar, door teeth straight with 45° fan roots into the plate, omni side-holders removed, roof lid down to 2 diagonal M3. **One-material doctrine:** colour metadata in the STEP exports had been flipping lab printers into multi-material mode (seven aborted prints) — all exports are colour-free now; slice the STLs only. *Geometry-verified (mesh diffs, hard gates, 6/6 printability); the round-2 fit-print is still open.* Sub-mm audit: [`build/cad/SUBMM_INVENTUR_2026-07-25.md`](build/cad/SUBMM_INVENTUR_2026-07-25.md).
 - 🔜 Then: thermal measurement (multimeter protocol is written) → antenna S11 with the coax clamped → clamp pull test → 25 mW range test → test jump.
 
 ### Modelled → gated → printed — the provenance trail
@@ -194,7 +195,7 @@ every load-bearing number:
 
 | number | value | status |
 |---|---|---|
-| case dimensions, all three senders | 71×40×56 · 69×38×48 · 59.5×39.5×48 | 🟢 executed CAD, gate-checked |
+| case dimensions, all three senders | 71×40×56 · 71×38×48 · 59.5×39.5×48 | 🟢 executed CAD, gate-checked |
 | battery | 58×30×22 (850) · 45×17.5×15.3 (mid + Mini) | 🟢 measured with calipers |
 | brass inserts | M3 Ø5×6 · M2 Ø3.2×3 | 🟢 measured |
 | XT30 wire, coax jacket | Ø2.8 · Ø3.1 | 🟢 measured |

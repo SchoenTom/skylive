@@ -2,7 +2,7 @@
 
 > **Status: the V3 family builds and passes all geometry gates** — three sizes, one
 > architecture, upright two-storey shells: **850** 71 × 40 × 56 mm (flight unit) ·
-> **mid** 69 × 38 × 48 mm · **Mini 300** 59.5 × 39.5 × 48 mm. Watertight, 3 mm wall,
+> **mid** 71 × 38 × 48 mm · **Mini 300** 59.5 × 39.5 × 48 mm. Watertight, 3 mm wall,
 > printability gate on every export. Still open before a part is *trusted*: the physical
 > tests — a CAD boolean is not a test. Read, run, tweak.
 
