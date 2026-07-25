@@ -588,11 +588,24 @@ def _add_door_nasen(door):
     Außenfläche) liegt der Zahn voll in der Schichtebene. Montage unverändert:
     Zähne einsetzen → kippen → oben klick+schrauben."""
     z_open_bot = Z_BAY_MID - OPEN_Z/2
+    _fx0, _fx1 = X_WALL_IN + TOL_SLIDE, X_SHOULDER - 0.1
+    _zr = z_open_bot + 0.3               # Platten-Unterkante (Plug-Inset 0,3)
     for ny in NASE_Y:
-        door = door + Pos((X_WALL_IN + TOL_SLIDE + X_SHOULDER - 0.1)/2, ny,
-                          (NOTCH_BOT + TOL_SLIDE + z_open_bot + 2.0)/2) * \
-            Box((X_SHOULDER - 0.1) - (X_WALL_IN + TOL_SLIDE), NASE_W,
-                (z_open_bot + 2.0) - (NOTCH_BOT + TOL_SLIDE))
+        # [F3b 07-25 Tom] Wurzel-Anbindung „an die GANZE Klappe": Fuß-Überlapp 2→6 tief in den
+        #   Plattenbauch (wurzelt oberhalb jeder Kanten-Rundung) …
+        door = door + Pos((_fx0 + _fx1)/2, ny,
+                          (NOTCH_BOT + TOL_SLIDE + z_open_bot + 6.0)/2) * \
+            Box(_fx1 - _fx0, NASE_W,
+                (z_open_bot + 6.0) - (NOTCH_BOT + TOL_SLIDE))
+        # … + 45°-FÄCHER an beiden Zahnflanken OBERHALB der Plattenunterkante: fächert die
+        #   Wurzel von 5 auf ~8,6 breit in die Platte (füllt die Rundungs-Kerbe am Übergang).
+        #   Unterhalb _zr wird NICHTS zugefügt (dort sitzt die Body-Lippe mit 0,3 Spiel).
+        for s in (-1, +1):
+            _w = Pos((_fx0 + _fx1)/2, ny + s*NASE_W/2, _zr) * Rot(45, 0, 0) * \
+                Box(_fx1 - _fx0, 2.6, 2.6)
+            _w = _w & Pos((_fx0 + _fx1)/2, ny + s*NASE_W/2, _zr + 1.9) * \
+                Box(_fx1 - _fx0 + 1, 6.0, 3.8)          # nur die obere Hälfte behalten
+            door = door + _w
     return door
 
 
