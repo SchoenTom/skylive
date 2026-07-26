@@ -597,15 +597,16 @@ def _add_door_nasen(door):
                           (NOTCH_BOT + TOL_SLIDE + z_open_bot + 6.0)/2) * \
             Box(_fx1 - _fx0, NASE_W,
                 (z_open_bot + 6.0) - (NOTCH_BOT + TOL_SLIDE))
-        # … + 45°-FÄCHER an beiden Zahnflanken OBERHALB der Plattenunterkante: fächert die
-        #   Wurzel von 5 auf ~8,6 breit in die Platte (füllt die Rundungs-Kerbe am Übergang).
-        #   Unterhalb _zr wird NICHTS zugefügt (dort sitzt die Body-Lippe mit 0,3 Spiel).
-        for s in (-1, +1):
-            _w = Pos((_fx0 + _fx1)/2, ny + s*NASE_W/2, _zr) * Rot(45, 0, 0) * \
-                Box(_fx1 - _fx0, 2.6, 2.6)
-            _w = _w & Pos((_fx0 + _fx1)/2, ny + s*NASE_W/2, _zr + 1.9) * \
-                Box(_fx1 - _fx0 + 1, 6.0, 3.8)          # nur die obere Hälfte behalten
-            door = door + _w
+        # … + [F3c 07-26 Tom] VOLLER WURZEL-KRAGEN statt der zwei 45°-Fächer: die Zunge rundet
+        #   mit R7,1 (gerade Unterkante nur |y|<2,1) — der Zahn (y 2,5–7,5) wurzelte also in der
+        #   zurückweichenden Rundung, zwischen Fächer-Flanke und Bogen blieb die sichtbare
+        #   „Ablöse"-Rille. Jetzt: EIN Block über die volle Ex-Fächer-Breite (±2,6 über den
+        #   Zahn), von der Plattenunterkante _zr bis 6 in den Plattenbauch → Zahn+Rundung
+        #   monolithisch, keine einspringende Kerbe mehr. Liegt in der Tür-Drucklage voll in
+        #   der Schichtebene. Unterhalb _zr weiterhin NICHTS (Body-Lippe, 0,3 Spiel);
+        #   Bogen-Freigang beweisen die harten Gates (Tür∩Body=0, Schwenk 2°/4°).
+        door = door + Pos((_fx0 + _fx1)/2, ny, (_zr + z_open_bot + 6.0)/2) * \
+            Box(_fx1 - _fx0, NASE_W + 2*1.3, (z_open_bot + 6.0) - _zr)   # ±1,3 = Ex-Fächer-Spitze
     return door
 
 
