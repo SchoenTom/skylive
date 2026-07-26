@@ -414,7 +414,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         ar-status="not-presenting">
         <img slot="poster" id="mvposter" src="poster_assembled_v3.png" alt="SkyLive sender — interactive 3D model (drag to rotate)" style="width:100%;height:100%;object-fit:contain;display:block">
       </model-viewer>
-      <div class="mv-scrub" id="scrubBox"><span>TAKE-APART</span><input type="range" id="scrubT" min="0" max="5" step="0.01" value="0" aria-label="Explosion timeline"><span id="scrubPct">0%</span></div>
+      <div class="mv-scrub" id="scrubBox"><span>TAKE-APART</span><input type="range" id="scrubT" min="0" max="2.9" step="0.01" value="0" aria-label="Explosion timeline"><span id="scrubPct">0%</span></div>
     </div>
     <p class="cap">drag to rotate · toggle assembled ↔ exploded · <b style="color:var(--cyan)">take-apart</b> = scrub the explosion yourself</p>
   </div>
@@ -1168,11 +1168,15 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         bS=document.getElementById('mvScrub');
   if(!mv||!bS) return;
   const others=['mvAsm','mvExp','mvFly'].map(id=>document.getElementById(id));
+  // Die Explode-Animation ist ein Rundtrip (0s zusammen -> ~2.9s auseinander -> 5s zusammen);
+  // der Scrub fährt nur die Hinweg-Hälfte. GLB seit 07-26 zu EINER Animation gemerged —
+  // model-viewer spielt sonst nur den ersten von 15 Part-Kanälen (Tür), der Rest stand still.
+  const T_APART=2.9;
   let pin=null, target=0, cur=0;
   function pinLoop(){
     cur+=(target-cur)*0.18;
     try{mv.currentTime=cur;}catch(e){}
-    pct.textContent=Math.round(cur/5*100)+'%';
+    pct.textContent=Math.round(cur/T_APART*100)+'%';
     pin=requestAnimationFrame(pinLoop);}
   bS.addEventListener('click',()=>{
     others.forEach(b=>{b.classList.remove('on');b.setAttribute('aria-pressed','false');});
