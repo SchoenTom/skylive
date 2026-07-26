@@ -179,7 +179,12 @@ RIB_EMBED = 0.3             # Schweiß-Überlappung in die Wand (union)
 RLID_HX   = 29.5                                # Öffnungs-Halb-X (Falz +LAP=31,5 < Flach-Top 32,5)  [Design]
 RLID_HY   = 13.75                               # Öffnungs-Halb-Y (Falz +LAP=15,75 < Flach-Top 16,75) [Design]
 RLID_R    = 3.0                                 # Öffnungs-Eckradius                                 [Design]
-RLID_LAP  = 2.0                                 # Falz-Überlapp je Seite (Auflage-Schulter)          [Tür-Präzedenz]
+RLID_LAP  = 2.0                                 # Falz-Überlapp je Seite in X (Auflage-Schulter)     [Tür-Präzedenz]
+RLID_LAP_Y = 1.25                               # [A 07-26] Y-Überlapp reduziert: MID ist schmaler als der
+                                                #   850er — die R5,5-Dachrundung beginnt bei y16,0, vom
+                                                #   1-mm-Lippen-Soll blieben 0,25 (gemessen). 1,25 Lap ⇒
+                                                #   Lippe 1,0 (Regel erfüllt), Auflage 1,25 (Deckel hängt
+                                                #   ohnehin an den 2 M3-Bossen). X unverändert 2,0.
 RLID_REB_D = 1.5                                # Falz-Tiefe = halbe Wand                            [Tür-Präzedenz]
 RLID_Z_OUT = EX_Z/2                             # 28 · Dach-Außenfläche (Deckel bündig)              [Geometrie]
 RLID_Z_IN  = EX_Z/2 - WALL                      # 25 · Innendecke                                    [Geometrie]
@@ -459,7 +464,7 @@ def cut_roof_opening(body):
     #     Füllen (=Steg), keine Lücke. Lange Seiten + Bosse unverändert.
     z_out = (RLID_Z_MID + RLID_Z_OUT)/2
     _senk = Pos(0, 0, z_out) * extrude(
-        RectangleRounded(2*(RLID_HX+RLID_LAP), 2*(RLID_HY+RLID_LAP), RLID_R), RLID_REB_D/2 + 1.0, both=True)
+        RectangleRounded(2*(RLID_HX+RLID_LAP), 2*(RLID_HY+RLID_LAP_Y), RLID_R), RLID_REB_D/2 + 1.0, both=True)
     for _sx, _cy in AZE_SIDES:                          # beide kurzen Enden aus dem Senkungs-Cutter ausstanzen
         _w = (EX_X/2 + 1) - RLID_HX                     # Maske von Öffnungskante 29,5 bis über die Außenwand
         _senk = _senk - Pos(_sx*(RLID_HX + _w/2), _cy, z_out) * Box(_w, AZE_MOUTH_W + 1.0, RLID_REB_D + 2)
@@ -962,7 +967,7 @@ def build_roof_lid():
     zf = (RLID_Z_MID + RLID_Z_OUT)/2               # Flansch-Mitte (outer Dachhälfte, außen bündig)
     zt = (RLID_Z_IN + RLID_Z_MID)/2                # Lippen-Mitte (inner Hälfte)
     flange = Pos(0, 0, zf) * extrude(
-        RectangleRounded(2*(RLID_HX+RLID_LAP)-2*tol, 2*(RLID_HY+RLID_LAP)-2*tol, RLID_R), RLID_REB_D/2, both=True)
+        RectangleRounded(2*(RLID_HX+RLID_LAP)-2*tol, 2*(RLID_HY+RLID_LAP_Y)-2*tol, RLID_R), RLID_REB_D/2, both=True)
     lip = Pos(0, 0, zt) * extrude(
         RectangleRounded(2*RLID_HX-2*tol, 2*RLID_HY-2*tol, RLID_R), RLID_REB_D/2, both=True)
     lid = flange + lip
