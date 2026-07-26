@@ -597,16 +597,16 @@ def _add_door_nasen(door):
                           (NOTCH_BOT + TOL_SLIDE + z_open_bot + 6.0)/2) * \
             Box(_fx1 - _fx0, NASE_W,
                 (z_open_bot + 6.0) - (NOTCH_BOT + TOL_SLIDE))
-        # … + [F3c 07-26 Tom] VOLLER WURZEL-KRAGEN statt der zwei 45°-Fächer: die Zunge rundet
-        #   mit R7,1 (gerade Unterkante nur |y|<2,1) — der Zahn (y 2,5–7,5) wurzelte also in der
-        #   zurückweichenden Rundung, zwischen Fächer-Flanke und Bogen blieb die sichtbare
-        #   „Ablöse"-Rille. Jetzt: EIN Block über die volle Ex-Fächer-Breite (±2,6 über den
-        #   Zahn), von der Plattenunterkante _zr bis 6 in den Plattenbauch → Zahn+Rundung
-        #   monolithisch, keine einspringende Kerbe mehr. Liegt in der Tür-Drucklage voll in
-        #   der Schichtebene. Unterhalb _zr weiterhin NICHTS (Body-Lippe, 0,3 Spiel);
-        #   Bogen-Freigang beweisen die harten Gates (Tür∩Body=0, Schwenk 2°/4°).
-        door = door + Pos((_fx0 + _fx1)/2, ny, (_zr + z_open_bot + 6.0)/2) * \
-            Box(_fx1 - _fx0, NASE_W + 2*1.3, (z_open_bot + 6.0) - _zr)   # ±1,3 = Ex-Fächer-Spitze
+    # [F3c 07-26 Tom, 2. Iteration] EIN durchgehender WURZELBALKEN über die VOLLE Zungen-
+    #   breite (±9,2) statt Fächern/Einzelkragen: die R7,1-Zungenrundung wich an den Zahn-
+    #   wurzeln zurück und ließ sichtbare „Abstände" (Tom-Markierung 07-26). Der Balken füllt
+    #   das komplette Band Plattenunterkante.._zr+6 → die Klappen-Seitenkante läuft gerade bis
+    #   zur Unterkante durch, die Rundung endet AUF Material — kein Keil, kein Spalt.
+    #   Unterhalb _zr weiterhin NICHTS (Body-Lippe, 0,3 Spiel); Freigang beweisen die harten
+    #   Gates (Tür∩Body, Schwenk 2°/4°) — der versehentliche ±10,1-Testlauf war bereits grün.
+    tY_bar = OPEN_Y - 2*TOL_SLIDE                     # 18,4 = volle Zungenbreite
+    door = door + Pos((_fx0 + _fx1)/2, 0, (_zr + z_open_bot + 6.0)/2) * \
+        Box(_fx1 - _fx0, tY_bar, (z_open_bot + 6.0) - _zr)
     return door
 
 
