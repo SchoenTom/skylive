@@ -1516,3 +1516,24 @@ if __name__ == "__main__":
     from printability_gate import gate as _pgate
     for _name in ("body", "battery_door", "cover_floor2", "xt30_latch", "ze_tee", "ze_tee_flush"):
         _pgate(f"{OUTDIR}/skylive_mid_{_name}.stl", raise_on_fail=True)
+
+    # ── VENT-DURCHGANGS-GATE (Tom 07-26: „ist der Lüftungsschlitz zu 100 % bedeckt?!") ──
+    #   Louver verdecken die Sicht BY DESIGN — Renders können Durchgängigkeit nicht zeigen.
+    #   Deshalb hart geprüft: durch jeden Klappen-Louver müssen an allen y-Positionen freie
+    #   45°-Bahnen (einwärts-abwärts, Kanalrichtung sgn −1) existieren, sonst Export-FAIL.
+    #   (Anlass: der F3c-Wurzelbalken stand im Verdacht, den unteren Vent zu plombieren —
+    #   war er nicht, aber ES GAB KEIN GATE, das das beweisen konnte.)
+    import trimesh as _tm
+    import numpy as _np
+    _md = _tm.load(f"{OUTDIR}/skylive_mid_battery_door.stl")
+    _vxs = _np.arange(35.7, 32.4, -0.08)
+    for _zc in DOOR_VENT_Z:
+        _openy = 0
+        for _vy in _np.arange(-4.5, 4.51, 0.5):
+            for _ze in _np.arange(_zc - 3.0, _zc + 3.01, 0.1):
+                _pts = _np.column_stack([_vxs, _np.full_like(_vxs, _vy), _ze - (35.5 - _vxs)])
+                if not _md.contains(_pts).any():
+                    _openy += 1
+                    break
+        assert _openy == 19, f"VENT-GATE FAIL: Klappen-Louver z={_zc} nur {_openy}/19 Bahnen frei!"
+        print(f"[vent-gate] Klappen-Louver z={_zc}: 19/19 45°-Bahnen frei ✅")
