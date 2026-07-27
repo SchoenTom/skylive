@@ -30,7 +30,7 @@ BULGE_XC, BULGE_ZC = 21.5, 14.0
 #   Transform-Translation X = BULGE_XC + CAM_OFF_X; wegen Rot(0,0,180) landet die Linsen-Mitte
 #   (Anton-Frame CAM_CX=BULGE_XC) bei my-X = (BULGE_XC+CAM_OFF_X) − CAM_CX = CAM_OFF_X = −9.
 #   Numerisch verifiziert im Gate unten (Fenster-Scan der −Y-Wand).
-CAM_OFF_X = -21.75      # [MID 07-25] zurück auf EX=71 (= −IN_X/2 −32,5 + CAM_FLK_OUT 10,75): der 07-11-Squeeze
+CAM_OFF_X = -22.25      # [MID 07-25] zurück auf EX=71 (= −IN_X/2 −32,5 + CAM_FLK_OUT 10,75): der 07-11-Squeeze
                         #   (−20,75 bei EX=69) fraß die Schalterzone auf 11,8 < Ø12,5 — Tom-Befund 07-25.
                         #   Muss IMMER = −IN_X/2 + CAM_FLK_OUT bleiben (Flanke bündig Innenwand)!
                         #   Tom 07-05: Kamera GANZ an die Außenwand — linke Flanken-Außenfläche
@@ -39,15 +39,15 @@ CAM_OFF_X = -21.75      # [MID 07-25] zurück auf EX=71 (= −IN_X/2 −32,5 + C
 
 # ── V3-ZIELMASSE (aus V3_SPEC.md / Auftrag, KEINE Schätzungen) ───────────────
 WALL   = 3.0                  # sakrosankt
-IN_Y   = 32.0                 # [MID min] Tom 07-11: „32 geht" → außen 38 (Board 30 + 1/Seite). (war 33,5. Tom 07-05: „33–34 ok; 32 ginge, aber Puffer für
+IN_Y   = 33.0                 # [MID min] Tom 07-11: „32 geht" → außen 38 (Board 30 + 1/Seite). (war 33,5. Tom 07-05: „33–34 ok; 32 ginge, aber Puffer für
                               #   aufgeblähte Akkus lassen") → außen 39,5. Maßkette: Akku 30 + 1,75/Seite;
                               #   VTX liegend 30 (Y) [STEP] + Kabelweg; Kamera-Ösen-Spanne 21,5 läuft
                               #   längs X (nicht Y) und ist davon unberührt (21,5 < 33,5 ohnehin ✓).
-BAY_L  = 65.0                 # [MID 07-25] ZURÜCK auf außen 71 („aufatmen lassen", Tom): der 07-11-Squeeze auf 69
+BAY_L  = 66.0 # [FIT-PRINT 07-27 Tom: +1 je Achse, Akku klemmte]                 # [MID 07-25] ZURÜCK auf außen 71 („aufatmen lassen", Tom): der 07-11-Squeeze auf 69
                               #   ließ hinter dem VTX nur 11,8 mm — der Ø12,5-Schalterkörper passte NICHT mehr
                               #   (Gate war nur INFO, darum nie Alarm). Jetzt: Kamera 21,5 + Spalt 0,5 + VTX 29,2
                               #   + 13,8 Schalterzone (Ø12,5 + 1,3 Luft) = 65 innen, 71 außen.
-BAY_H  = 17.0                 # [MID] 300er-Pack-Höhe (wie Mini) — Zwischengröße = 850-Länge (Schalter) + 300er-Höhe. War 850: 25.
+BAY_H  = 18.0                 # [MID] 300er-Pack-Höhe (wie Mini) — Zwischengröße = 850-Länge (Schalter) + 300er-Höhe. War 850: 25.
                               #   Auftrag rechnet Interior-Z mit 25 → hier 25 (Interior-Z=50). Klären.
 SHELF_T = 3.0                 # Stockwerk-Shelf (fest verbaut, kommt erst in M4 — M1 nur Hohlraum)
 F2_H   = 22.0                 # Elektronik-Stockwerk Höhe — Tom 2026-07-05: „Höhe wie bei Anton fürs
@@ -85,9 +85,9 @@ REBATE_D   = 1.5          # Flansch-Tiefe = halbe Wand (aussen)               [v
 REBATE_LAP = 1.9          # Schulter-Lap je Seite                            [v2-Präzedenz]
 TOL_SLIDE  = 0.3          # Gleitspiel Tür<->Falz je Seite                   [spec.py TOL_SLIDE]
 DOOR_R     = FIL_O        # Tür-/Senk-Eckenradius echot Schale R9            [v2-Präzedenz]
-OPEN_Y = 19.0              # Durchbruch-Breite (Y): Akku 30 + 1,5 Handling; > Führung 30,75, < IN_Y 33,5
+OPEN_Y = 19.5              # Durchbruch-Breite (Y): Akku 30 + 1,5 Handling; > Führung 30,75, < IN_Y 33,5
                           #   (M-A2: 34 wäre breiter als der 33,5-Innenraum gewesen)  [abgeleitet/MEASURE_ME]
-OPEN_Z = 16.0              # Durchbruch-Höhe (Z):   Akku 23 + Swell; < Bay 25     [abgeleitet/MEASURE_ME]
+OPEN_Z = 16.5              # Durchbruch-Höhe (Z):   Akku 23 + Swell; < Bay 25     [abgeleitet/MEASURE_ME]
 DOOR_FACE_X = EX_X/2      # Tür-Aussenfläche-Sollebene (bündig) = 35.5
 X_WALL_IN   = IN_X/2      # innere Wandfläche +X = 32.5
 X_SHOULDER  = X_WALL_IN + REBATE_D   # Schulter-Ebene = 34.0 (Zunge innen / Flansch aussen)
@@ -153,8 +153,8 @@ DOOR_PILOT_R = 0.8        # Pilot Ø1,6 selbstschneidend im Schalen-Boss (M2)   
 #   Ziel-Lichtmaße am Akku 60×30×23 [Tattu 850, genstattu/spec.py]: Y 30,5–31,0 / Z 23,5–24,0.
 #   Minimal-Anlage (Tom: „weniger ist mehr"): 3 Boden-Schienen + 2 Decken-Leisten + 2 Rippen-Paare.
 #   Alles hinter der Tür-Öffnung (x ≤ 30,5 < X_WALL_IN) → Durchgang bleibt frei.
-GUIDE_CLEAR_Y = 18.25   # lichte Führungsbreite [Spec §3 Fenster 30,5–31; Akku 30 + 0,75 Swell/Druck-Luft]
-GUIDE_CLEAR_Z = 16.05   # lichte Führungshöhe   [Spec §3 Fenster 23,5–24; Akku 23 + 0,75]
+GUIDE_CLEAR_Y = 18.75   # lichte Führungsbreite [Spec §3 Fenster 30,5–31; Akku 30 + 0,75 Swell/Druck-Luft]
+GUIDE_CLEAR_Z = 16.55   # lichte Führungshöhe   [Spec §3 Fenster 23,5–24; Akku 23 + 0,75]
 RAIL_TOP = Z_BAY_MID - OPEN_Z/2       # Schienen-Oberkante = Breach-Unterkante → Akku gleitet EBEN ein
 RAIL_H   = RAIL_TOP - Z_INT_BOTTOM    # = (BAY_H-OPEN_Z)/2, parametrisch (0,5)
 RAIL_W, RAIL_Y = 4.0, (0.0, -12.0, +12.0)   # 3 Schienen unter dem 30er-Akku [Design-Wahl, druckstabil]
@@ -1235,8 +1235,8 @@ if __name__ == "__main__":
     print(f"[bay]   Führung licht Y={GUIDE_CLEAR_Y:.2f} (Soll 30,5–31,0)  Z={clear_z:.2f} "
           f"(Soll 23,5–24,0)  Schienen-Top={RAIL_TOP:.1f}=Breach-Unterkante  "
           f"Rippen x={RIB_X} (Vent-Spalten-frei), 45°-Einführschräge vorn")
-    assert 18.0 <= GUIDE_CLEAR_Y <= 18.5, f"lichte Y-Führung {GUIDE_CLEAR_Y} außerhalb 18,0–18,5 [MID 300er-Akku]"
-    assert 15.8 <= clear_z <= 16.3, f"lichte Z-Führung {clear_z} außerhalb 15,8–16,3 [MID 300er-Akku]"
+    assert 18.5 <= GUIDE_CLEAR_Y <= 19.0, f"lichte Y-Führung {GUIDE_CLEAR_Y} außerhalb 18,5–19,0 [FIT-PRINT 07-27: Akku klemmte bei 18,25 → +0,5]"
+    assert 16.3 <= clear_z <= 16.8, f"lichte Z-Führung {clear_z} außerhalb 16,3–16,8 [FIT-PRINT 07-27: +0,5 wie Y]"
     assert guides_added, "Bay-Führung nicht angeschweißt (Volumen nicht gestiegen)"
     assert max(RIB_X) + RIB_W/2 + 2.0 <= X_WALL_IN, "Rippe ragt in die Tür-Öffnung"
     assert RAIL_X1 < X_WALL_IN - 4.0, "Schiene ragt in die Tür-/XT30-Zone"
