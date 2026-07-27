@@ -50,7 +50,11 @@ BAY_L  = 66.0 # [FIT-PRINT 07-27 Tom: +1 je Achse, Akku klemmte]                
 BAY_H  = 18.0                 # [MID] 300er-Pack-Höhe (wie Mini) — Zwischengröße = 850-Länge (Schalter) + 300er-Höhe. War 850: 25.
                               #   Auftrag rechnet Interior-Z mit 25 → hier 25 (Interior-Z=50). Klären.
 SHELF_T = 3.0                 # Stockwerk-Shelf (fest verbaut, kommt erst in M4 — M1 nur Hohlraum)
-F2_H   = 22.0                 # Elektronik-Stockwerk Höhe — Tom 2026-07-05: „Höhe wie bei Anton fürs
+F2_H   = 30.0                 # [FIT-PRINT 2, Tom 07-27] Stockwerk-2-Höhe (Shelf-OK -> Innendecke) MUSS 30:
+                              #   der reale Freestyle V2 (30 breit) passt nicht durch den 27,5er-Durchbruch
+                              #   und konnte im 22er-Stockwerk nicht flachgedreht werden (BFS: kein Pfad).
+                              #   Mit 30: hochkant durch den Schlitz (Projektion ~14) -> drinnen flachlegen.
+                              #   War 22 (Anton-Prinzip); Sender wird dafür 8 hoeher.
                               #   OBERE Stockwerk, NICHT antasten (Kabelraum!)" → 20er-Trim zurückgenommen.
                               #   VTX-Stapel 18,0 [STEP+spec] < 22 ✓, Kamera 19,0 [Tom] + Luft < 22 ✓.
 FIL_O, FIL_I = 5.5, 3.5       # vertikale Ecken-Radien außen/innen — Tom 07-05: „vertikal zu rund" →
@@ -144,7 +148,8 @@ DOOR_TAB_AP  = 6.0        # Anbindungs-Schürze: Überlappung auf der Klappen-Au
 DOOR_TAB_FIL = 2.0        # Kehlnaht-Radius an der unteren Laschenwurzel (07-07): der scharfe 90°-
                           #   Übergang Klappe→Lasche ist in PETG ein Schäl-Rissstarter (Lasche = auch
                           #   der Griff). 45°-Kehle verteilt die Spannung; Kehlenfuß −8,5 > Vents −11,5.
-DOOR_TAB_SZ  = 1.5        # Schraub-Achse Z (ÜBER der Öffnung −0,5, in Wand + Shelf-Leiste 29,5..32,5)
+DOOR_TAB_SZ  = Z_INT_BOTTOM + BAY_H + SHELF_T + 2.0   # [07-27 parametrisiert] Schraub-Achse 2,0 über Shelf-OK
+                          #   (in Wand + Shelf-Leiste; war Literal 1.5 im alten Z-Frame — F2_H-30-Kaskade)
 DOOR_THRU_R  = 1.2        # Durchgang Ø2,4 durch die Lasche                                                  [Plan 2.5]
 DOOR_PILOT_R = 0.8        # Pilot Ø1,6 selbstschneidend im Schalen-Boss (M2)                                 [Plan 2.5]
 # (Daumen-Mulde GRIP_* entfernt — Tom 07-06 „schlichter": die Lasche ist der Griff)
@@ -1473,12 +1478,12 @@ if __name__ == "__main__":
     _fp, _pp = _pen(ze_h), _pen(ze_f)
     _ixh = ze_h & b
     _sols = _ixh.solids() if _ixh is not None else []
-    print(f"[ze-flush] Flush-Oberkante Z={_fz:.2f} (≤28,05 = bündig) · Flush∩Body={_fp:.3f} · Proud∩Body={_pp:.3f} mm³ (Ziel <0,5)")
+    print(f"[ze-flush] Flush-Oberkante Z={_fz:.2f} (≤{EX_Z/2 + 0.05:.2f} = bündig) · Flush∩Body={_fp:.3f} · Proud∩Body={_pp:.3f} mm³ (Ziel <0,5)")
     for _s in _sols:
         _bb = _s.bounding_box()
         print(f"[ze-flush][WARN] Durchdringungs-Zone {_s.volume:.2f} mm³ @ X[{_bb.min.X:.1f},{_bb.max.X:.1f}] "
               f"Y[{_bb.min.Y:.1f},{_bb.max.Y:.1f}] Z[{_bb.min.Z:.1f},{_bb.max.Z:.1f}]")
-    assert _fz <= 28.05, f"Flush-Riegel nicht bündig: Oberkante Z={_fz:.2f} > 28,05"
+    assert _fz <= EX_Z/2 + 0.05, f"Flush-Riegel nicht bündig: Oberkante Z={_fz:.2f} > {EX_Z/2 + 0.05:.2f}"  # [07-27 parametrisiert]
     assert _fp < 0.5 and _pp < 0.5, f"Riegel durchdringt Body: flush={_fp:.2f} proud={_pp:.2f} mm³"
     # TÜR∩BODY-GATE (07-14, wegen Nasen-Wurzel-Keil): Klappe in Schließlage darf den Body nicht
     # durchdringen (Keil muss im Notch-/Fuß-Freiraum bleiben). CAD-Boolean ≠ Schwenk-Montage-Test.
