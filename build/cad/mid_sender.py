@@ -180,11 +180,11 @@ RLID_HX   = 29.5                                # Öffnungs-Halb-X (Falz +LAP=31
 RLID_HY   = 13.75                               # Öffnungs-Halb-Y (Falz +LAP=15,75 < Flach-Top 16,75) [Design]
 RLID_R    = 3.0                                 # Öffnungs-Eckradius                                 [Design]
 RLID_LAP  = 2.0                                 # Falz-Überlapp je Seite in X (Auflage-Schulter)     [Tür-Präzedenz]
-RLID_LAP_Y = 1.25                               # [A 07-26] Y-Überlapp reduziert: MID ist schmaler als der
-                                                #   850er — die R5,5-Dachrundung beginnt bei y16,0, vom
-                                                #   1-mm-Lippen-Soll blieben 0,25 (gemessen). 1,25 Lap ⇒
-                                                #   Lippe 1,0 (Regel erfüllt), Auflage 1,25 (Deckel hängt
-                                                #   ohnehin an den 2 M3-Bossen). X unverändert 2,0.
+RLID_LAP_Y = 2.0                                # [07-27 Tom: „Auflage etwas dünn"] zurück auf volle 2,0 wie X —
+                                                #   das +1-Y-Wachstum (EX 39) macht es möglich: Lippe gemessen
+                                                #   1,95 bei Lap 1,25 ⇒ bei Lap 2,0 bleiben 1,2 (> 1-mm-Regel).
+                                                #   Historie: 07-26 auf 1,25 reduziert, weil bei EX 38 nur
+                                                #   0,68 Lippe blieben — mit EX 39 ist der Konflikt weg.
 RLID_REB_D = 1.5                                # Falz-Tiefe = halbe Wand                            [Tür-Präzedenz]
 RLID_Z_OUT = EX_Z/2                             # 28 · Dach-Außenfläche (Deckel bündig)              [Geometrie]
 RLID_Z_IN  = EX_Z/2 - WALL                      # 25 · Innendecke                                    [Geometrie]
