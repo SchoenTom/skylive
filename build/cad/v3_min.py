@@ -1054,7 +1054,7 @@ if __name__ == "__main__":
 
     # ── M-A3 KAMERA-GATE (Ösen innen, Linse raus; Zahlen aus anton_v3-Konstanten) ──
     cam_back = wall_y + 0.5 + 18.5           # Kamera-Rückseite: Recess 0,5 + Tiefe 18,5 [spec CAM_BODY]
-    print(f"[cam]   Fenster RUND Ø13,0 (Trommel 12,9 + 0,05/Seite, eng gewollt) · Ösen-Spanne {2*CAM_FLK_OUT:.1f} · Klemmweite "
+    print(f"[cam]   Fenster RUND Ø13,1 (Trommel 12,9 + 0,1/Seite) · Ösen-Spanne {2*CAM_FLK_OUT:.1f} · Klemmweite "
           f"{2*CAM_CLAMP:.1f} (Kamera 14+0,5/Seite) · CB innen Ø{2*CAM_CB_R:.1f}×{CAM_CB_D:.1f} "
           f"(M2-DIN912-Kopf Ø3,8/h2,0 versenkt) · Loch-Achse X auf Linsen-Mitte, "
           f"{CAM_TIP2HOLE:.1f} hinter Spitze [NANO90-STEP]")
@@ -1074,7 +1074,7 @@ if __name__ == "__main__":
     _win_xc = (min(_zero_x) + max(_zero_x)) / 2 if _zero_x else float("nan")
     _win_w  = (max(_zero_x) - min(_zero_x)) if _zero_x else 0.0
     print(f"[cam-x] Fenster-Zentrum GEMESSEN X={_win_xc:+.2f} (Soll CAM_OFF_X={CAM_OFF_X:+.1f}), "
-          f"Fenster-Öffnung X≈{_win_w:.1f} (Soll: Kreissehne der Ø13,0 an der Probe-Höhe)")
+          f"Fenster-Öffnung X≈{_win_w:.1f} (Soll: Kreissehne der Ø13,1 an der Probe-Höhe)")
     assert abs(_win_xc - CAM_OFF_X) < 0.6, \
         f"Kamera-Fenster-X {_win_xc:.2f} != Soll {CAM_OFF_X} → Mapping-Richtung falsch!"
 
