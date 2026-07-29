@@ -302,9 +302,11 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
   *{animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important}
   .feed:before,.feed:after{animation:none !important}
 }
+
+html.no-webgl model-viewer{display:none!important}.webgl-fb{display:none;flex-direction:column;align-items:center;gap:10px;text-align:center}html.no-webgl .webgl-fb{display:flex}.webgl-fb img{max-width:min(760px,92%);max-height:50vh;object-fit:contain;border-radius:12px}.webgl-fb p{font-size:.85rem;opacity:.75;max-width:60ch}
 </style>
 </head>
-<body>
+<body><script>(function(){try{var c=document.createElement("canvas");if(c.getContext("webgl2")||c.getContext("webgl")||c.getContext("experimental-webgl"))return}catch(e){}document.documentElement.classList.add("no-webgl")})();</script>
 <div class="bg" aria-hidden="true"></div>
 
 <!-- ========== 1. THE MOMENT (hero, full viewport) ========== -->
@@ -352,7 +354,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
     auto-rotate auto-rotate-delay="0" rotation-per-second="18deg" disable-zoom disable-pan
     interaction-prompt="none" environment-image="neutral" exposure="1.15" tone-mapping="neutral"
     shadow-intensity="1.2" camera-orbit="-25deg 78deg auto" loading="eager"
-    style="height:46vh;min-height:300px;pointer-events:none;background:transparent"></model-viewer>
+    style="height:46vh;min-height:300px;pointer-events:none;background:transparent"></model-viewer><div class="webgl-fb"><img src="poster_exploded_v4.png" alt="SkyLive – static exploded view"><p>3D-Ansicht benötigt WebGL (Grafikbeschleunigung). Statische Ansicht — auf der Projektseite dreht sich das echte CAD-Modell.</p></div>
   <div class="wrap">
     <span class="live-pill"><i></i>● Live · SkyLive</span>
     <h1 class="hero-claim">Live from 4 km above the drop zone — <span class="cy">14 ms behind reality.</span></h1>
@@ -413,7 +415,7 @@ section + section{border-top:1px solid rgba(255,255,255,.055)}
         interaction-prompt="auto"
         ar-status="not-presenting">
         <img slot="poster" id="mvposter" src="poster_assembled_v3.png" alt="SkyLive sender — interactive 3D model (drag to rotate)" style="width:100%;height:100%;object-fit:contain;display:block">
-      </model-viewer>
+      </model-viewer><div class="webgl-fb"><img src="poster_exploded_v4.png" alt="SkyLive – static exploded view"><p>3D-Ansicht benötigt WebGL (Grafikbeschleunigung). Statische Ansicht — auf der Projektseite dreht sich das echte CAD-Modell.</p></div>
       <div class="mv-scrub" id="scrubBox"><span>TAKE-APART</span><input type="range" id="scrubT" min="0" max="2.9" step="0.01" value="0" aria-label="Explosion timeline"><span id="scrubPct">0%</span></div>
     </div>
     <p class="cap">drag to rotate · toggle assembled ↔ exploded · <b style="color:var(--cyan)">take-apart</b> = scrub the explosion yourself</p>

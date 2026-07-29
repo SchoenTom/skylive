@@ -16,8 +16,10 @@
   .dim{background:#0d2a42ee;border:1px solid var(--cy);color:var(--cy);border-radius:7px;
        padding:3px 8px;font:12px ui-monospace,Menlo,monospace;white-space:nowrap;pointer-events:none}
   .dim small{color:var(--ink)}
+
+html.no-webgl model-viewer{display:none!important}.webgl-fb{display:none;flex-direction:column;align-items:center;gap:10px;text-align:center}html.no-webgl .webgl-fb{display:flex}.webgl-fb img{max-width:min(760px,92%);max-height:50vh;object-fit:contain;border-radius:12px}.webgl-fb p{font-size:.85rem;opacity:.75;max-width:60ch}
 </style></head>
-<body>
+<body><script>(function(){try{var c=document.createElement("canvas");if(c.getContext("webgl2")||c.getContext("webgl")||c.getContext("experimental-webgl"))return}catch(e){}document.documentElement.classList.add("no-webgl")})();</script>
 <header><b>3D Lab</b><span class="hint">🖱 drag = orbit · scroll = zoom · the tags are real millimetres from the executed CAD</span>
 <a href="./index.html">← back to the jump</a></header>
 <div class="tabs" id="tabs">
@@ -30,7 +32,7 @@
 </div>
 <model-viewer poster="poster_assembled_v3.png" id="mv" src="./models/sender850.glb" camera-controls auto-rotate auto-rotate-delay="4000"
   shadow-intensity="1" exposure="1.05" environment-image="neutral" camera-orbit="-30deg 74deg 128%">
-</model-viewer>
+</model-viewer><div class="webgl-fb"><img src="poster_exploded_v4.png" alt="SkyLive – static exploded view"><p>3D-Ansicht benötigt WebGL (Grafikbeschleunigung). Statische Ansicht — auf der Projektseite dreht sich das echte CAD-Modell.</p></div>
 <script>
 // Szene ist Y-up + Meter (glTF): CAD (x,y,z)mm -> Welt (x, z, -y)*0.001
 const HS = {
