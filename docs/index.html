@@ -1171,29 +1171,36 @@ html.no-webgl model-viewer{display:none!important}.webgl-fb{display:none;flex-di
         bS=document.getElementById('mvScrub');
   if(!mv||!bS) return;
   const others=['mvAsm','mvExp','mvFly'].map(id=>document.getElementById(id));
-  // Die Explode-Animation ist ein Rundtrip (0s zusammen -> ~2.9s auseinander -> 5s zusammen);
-  // der Scrub fährt nur die Hinweg-Hälfte. GLB seit 07-26 zu EINER Animation gemerged —
-  // model-viewer spielt sonst nur den ersten von 15 Part-Kanälen (Tür), der Rest stand still.
-  const T_APART=2.9;
-  let pin=null, target=0, cur=0;
+  // Die Explode-Animation ist ein Rundtrip über 5s, ABER nicht linear: tote Zone bis ~1s,
+  // Explosion 1..2.3s, Plateau, Rückbau ab ~3.5s. Der Slider mappt deshalb NICHT auf Zeit,
+  // sondern über eine aus den GLB-Keyframes berechnete Lookup-Tabelle auf den ZERLEGUNGS-
+  // GRAD (0% = montiert, 100% = maximal zerlegt bei t=2.3s). GLB seit 07-26 zu EINER
+  // Animation gemerged — model-viewer spielt sonst nur den ersten von 15 Part-Kanälen.
+  const F2T=[0.000,1.030,1.120,1.190,1.260,1.310,1.370,1.420,1.470,1.520,1.570,1.620,1.670,1.720,1.770,1.820,1.880,1.940,2.010,2.100,2.300];
+  const fract2time=f=>{const x=Math.min(1,Math.max(0,f))*20, i=Math.floor(x), r=x-i;
+    return i>=20?F2T[20]:F2T[i]+(F2T[i+1]-F2T[i])*r;};
+  let pin=null, target=0, cur=0, savedOrbit=null;
   function pinLoop(){
-    cur+=(target-cur)*0.18;
-    try{mv.currentTime=cur;}catch(e){}
-    pct.textContent=Math.round(cur/T_APART*100)+'%';
+    cur+=(target-cur)*0.3;
+    try{mv.currentTime=fract2time(cur);}catch(e){}
     pin=requestAnimationFrame(pinLoop);}
   bS.addEventListener('click',()=>{
     others.forEach(b=>{b.classList.remove('on');b.setAttribute('aria-pressed','false');});
     bS.classList.add('on');bS.setAttribute('aria-pressed','true');
     mv.setAttribute('src','models/sender_explode_v4.glb');
     mv.removeAttribute('autoplay');
+    if(savedOrbit===null){savedOrbit=mv.getAttribute('camera-orbit');}
+    mv.setAttribute('camera-orbit','auto auto 150%');   // Zoom raus: zerlegte Teile bleiben im Bild
     box.classList.add('on');
     const arm=()=>{try{mv.play();mv.pause();}catch(e){} if(!pin)pin=requestAnimationFrame(pinLoop);};
     if(mv.loaded)arm(); else mv.addEventListener('load',arm,{once:true});
   });
-  rng.addEventListener('input',()=>{target=+rng.value;});
+  rng.addEventListener('input',()=>{target=+rng.value/2.9;
+    pct.textContent=Math.round(target*100)+'%';});        // Anzeige = Nutzer-Eingabe, kein Drift
   others.forEach(b=>b&&b.addEventListener('click',()=>{box.classList.remove('on');
     bS.classList.remove('on');bS.setAttribute('aria-pressed','false');
-    if(pin){cancelAnimationFrame(pin);pin=null;} target=cur=0;rng.value=0;}));
+    if(pin){cancelAnimationFrame(pin);pin=null;} target=cur=0;rng.value=0;pct.textContent='0%';
+    if(savedOrbit!==null){savedOrbit?mv.setAttribute('camera-orbit',savedOrbit):mv.removeAttribute('camera-orbit');savedOrbit=null;}}));
 })();
 /* ---------- doughnut lab ---------- */
 (function(){
