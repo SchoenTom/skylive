@@ -193,7 +193,7 @@ model-viewer{width:100%; height:70vh; min-height:380px; background-color:transpa
 /* ===================== SIGNATURE INTERACTIVE: Antenna demo (harvested) ===================== */
 .demo{display:grid; grid-template-columns:1.1fr .9fr; gap:clamp(18px,3vw,44px); align-items:center; margin-top:8px}
 @media(max-width:940px){.demo{grid-template-columns:1fr; gap:14px}}
-.stage{position:relative; width:100%; aspect-ratio:1/1; max-height:min(58vh,540px); margin:0 auto;
+.stage{position:relative; width:100%; aspect-ratio:1/1; max-height:min(58vh,540px); margin:0 auto; user-select:none; -webkit-user-select:none; touch-action:none;
   border-radius:22px; overflow:hidden; background:
   radial-gradient(ellipse 80% 50% at 50% 6%,rgba(159,196,226,.16),transparent 60%),
   linear-gradient(180deg,#0b2233 0%,#0a1a1f 55%,#0a1512 100%);
@@ -1189,9 +1189,18 @@ html.no-webgl model-viewer{display:none!important}.webgl-fb{display:none;flex-di
   const fract2time=f=>{const x=Math.min(1,Math.max(0,f))*20, i=Math.floor(x), r=x-i;
     return i>=20?F2T[20]:F2T[i]+(F2T[i+1]-F2T[i])*r;};
   let pin=null, target=0, cur=0, savedOrbit=null;
-  function pinLoop(){
-    cur+=(target-cur)*0.3;
+  const STAGES=[[0.02,'lid + tees lift'],[0.28,'door swings, latches out'],[0.55,'camera + radio eject'],[0.8,'battery out — all 15 parts']];
+  let lastOrbit='', lastTs=0;
+  function pinLoop(ts){
+    const dt=lastTs?Math.min(0.2,(ts-lastTs)/1000):0.016; lastTs=ts;
+    cur+=(target-cur)*Math.min(1,dt*14);          // zeitbasiert: konvergiert auch bei gedrosseltem rAF
+    if(Math.abs(target-cur)<0.004) cur=target;
     try{mv.currentTime=fract2time(cur);}catch(e){}
+    const orb='auto auto '+(128+cur*62).toFixed(0)+'%';   // Teile bleiben im Bild
+    if(orb!==lastOrbit){lastOrbit=orb;mv.setAttribute('camera-orbit',orb);}
+    let lbl='TAKE-APART';
+    for(const [t,n] of STAGES) if(cur>=t) lbl=n;
+    const sp=box.querySelector('span'); if(sp&&sp.textContent!==lbl) sp.textContent=lbl;
     pin=requestAnimationFrame(pinLoop);}
   const arm=()=>{try{mv.play();mv.pause();}catch(e){} if(!pin)pin=requestAnimationFrame(pinLoop);};
   // Re-arm nach JEDEM Modellwechsel: beim Klick auf Take-apart ist mv.loaded oft noch das
@@ -1204,7 +1213,6 @@ html.no-webgl model-viewer{display:none!important}.webgl-fb{display:none;flex-di
     mv.setAttribute('src','models/sender_explode_v5.glb');
     mv.removeAttribute('autoplay');
     if(savedOrbit===null){savedOrbit=mv.getAttribute('camera-orbit');}
-    mv.setAttribute('camera-orbit','auto auto 150%');   // Zoom raus: zerlegte Teile bleiben im Bild
     box.classList.add('on');
     if(mv.loaded)arm(); else mv.addEventListener('load',arm,{once:true});
   });
@@ -1213,6 +1221,7 @@ html.no-webgl model-viewer{display:none!important}.webgl-fb{display:none;flex-di
   others.forEach(b=>b&&b.addEventListener('click',()=>{box.classList.remove('on');
     bS.classList.remove('on');bS.setAttribute('aria-pressed','false');
     if(pin){cancelAnimationFrame(pin);pin=null;} target=cur=0;rng.value=0;pct.textContent='0%';
+    const sp=box.querySelector('span'); if(sp) sp.textContent='TAKE-APART';
     if(savedOrbit!==null){savedOrbit?mv.setAttribute('camera-orbit',savedOrbit):mv.removeAttribute('camera-orbit');savedOrbit=null;}}));
 })();
 /* ---------- doughnut lab ---------- */

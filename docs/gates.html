@@ -56,6 +56,10 @@ svg{width:100%;height:auto;display:block;border-radius:10px;background:#0d2337;t
       <h3>Gate console</h3>
       <div class="gates" id="gates"></div>
       <div class="verdict ok" id="verdict">…</div>
+      <a id="stl" href="https://github.com/SchoenTom/skylive/tree/main/build/stl"
+         style="display:none;margin-top:8px;text-align:center;padding:9px;border-radius:9px;
+         background:#0e3b26;border:1px solid #1d5c3f;color:var(--ok);text-decoration:none;
+         font-weight:700;font-size:13px">⬇ the export is real — these STLs live in build/stl</a>
       <button class="reset" id="reset">↺ reset to the shipped design</button>
       <div class="note"><b>Honest note:</b> this is the 2-D floor-plan slice of the real gate suite
       (overlaps shown as mm², the build checks mm³ against nominal envelopes). The point isn't the
@@ -121,7 +125,9 @@ function runGates(){
   const v = document.getElementById("verdict");
   v.className = "verdict " + (all ? "ok" : "bad");
   v.textContent = all ? "GATES GREEN — STL EXPORT PERMITTED"
-                      : "EXPORT VERWEIGERT — fix the red gates";
+                      : "EXPORT REFUSED — fix the red gates";
+  // Belohnung: bei Grün wird der Export real — die STLs existieren wirklich
+  document.getElementById("stl").style.display = all ? "block" : "none";
   return all;
 }
 
@@ -135,7 +141,7 @@ function draw(){
         <text x="${X(-13)+12}" y="${Y(17.3)+152}" fill="#5b7f9c" font-size="12"
         font-family="ui-monospace">spares tray</text>`;
   s += `<rect x="${PAD-wp}" y="${PAD-wp}" width="${IN_X*S+2*wp}" height="${IN_Y*S+2*wp}" rx="26"
-        fill="none" stroke="#38617f" stroke-width="${wp}" opacity=".85"/>`;
+        fill="none" stroke="${WALL >= 2.999 ? "#38617f" : "#b45050"}" stroke-width="${wp}" opacity=".85"/>`;
   s += `<rect x="${PAD}" y="${PAD}" width="${IN_X*S}" height="${IN_Y*S}" rx="12" fill="#0b2135" stroke="#274d68"/>`;
   s += `<rect x="${X(CAM.x)}" y="${Y(CAM.y)}" width="${CAM.w*S}" height="${CAM.h*S}" rx="8"
         fill="#233d52" stroke="#4a6a84"/><text x="${X(CAM.x)+8}" y="${Y(CAM.y)+20}" fill="#8aa7bd"
@@ -148,8 +154,49 @@ function draw(){
       <text x="${X(e.x)+e.w*S/2}" y="${Y(e.y)+e.h*S/2+4}" fill="${e.c}" font-size="13"
         text-anchor="middle" font-family="ui-monospace">${e.label}</text></g>`;
   }
+  // Der Kern-Moment sichtbar: jede Schnittfläche glüht rot, mm² kleben direkt daran
+  s = `<defs><pattern id="hatch" width="7" height="7" patternTransform="rotate(45)"
+        patternUnits="userSpaceOnUse"><rect width="7" height="7" fill="#f8717118"/>
+        <line x1="0" y1="0" x2="0" y2="7" stroke="#f87171" stroke-width="2.2"/></pattern></defs>` + s;
+  const parts = {cam: CAM, vtx: D.vtx, park: D.park};
+  if (D.sw.y < IN_Y/2) parts.sw = D.sw;
+  const keys = Object.keys(parts);
+  for (let i = 0; i < keys.length; i++) for (let j = i+1; j < keys.length; j++){
+    const a = parts[keys[i]], b = parts[keys[j]];
+    const w = Math.min(a.x+a.w, b.x+b.w) - Math.max(a.x, b.x);
+    const h = Math.min(a.y+a.h, b.y+b.h) - Math.max(a.y, b.y);
+    if (w > 0 && h > 0){
+      const ox = Math.max(a.x, b.x), oy = Math.max(a.y, b.y);
+      s += `<rect x="${X(ox)}" y="${Y(oy)}" width="${w*S}" height="${h*S}" fill="url(#hatch)"
+            stroke="#f87171" stroke-width="2"><animate attributeName="opacity" values="1;.55;1"
+            dur="1s" repeatCount="indefinite"/></rect>
+            <text x="${X(ox)+w*S/2}" y="${Y(oy)+h*S/2+5}" fill="#f87171" font-size="14"
+            font-weight="700" text-anchor="middle" font-family="ui-monospace"
+            paint-order="stroke" stroke="#0b1f33" stroke-width="4">${(w*h).toFixed(1)} mm²</text>`;
+    }
+  }
   svg.innerHTML = s;
   runGates();
+}
+
+// Replays gleiten hin statt zu teleportieren — 4 s Mikro-Story statt Snap
+let anim = null;
+function animateTo(targets, dur){
+  if (anim) cancelAnimationFrame(anim);
+  const from = {};
+  for (const k in targets) from[k] = {x: D[k].x, y: D[k].y};
+  const t0 = performance.now();
+  const ease = t => t < .5 ? 2*t*t : 1 - Math.pow(-2*t+2, 2)/2;
+  function step(now){
+    const f = Math.min(1, (now - t0) / dur), e = ease(f);
+    for (const k in targets){
+      D[k].x = from[k].x + (targets[k].x - from[k].x) * e;
+      D[k].y = from[k].y + (targets[k].y - from[k].y) * e;
+    }
+    draw();
+    anim = f < 1 ? requestAnimationFrame(step) : null;
+  }
+  anim = requestAnimationFrame(step);
 }
 
 let grab = null;
@@ -180,19 +227,20 @@ document.getElementById("wall").addEventListener("input", e => {
   draw();
 });
 document.getElementById("reset").addEventListener("click", () => {
-  D = JSON.parse(JSON.stringify(D0)); WALL = 3.0;
-  document.getElementById("wall").value = 3;
-  document.getElementById("wallv").textContent = "3.0 mm";
+  D = JSON.parse(JSON.stringify(D0)); setWall(3.0);
   draw();
 });
+function setWall(v){
+  WALL = v;
+  document.getElementById("wall").value = v;
+  document.getElementById("wallv").textContent = v.toFixed(1) + " mm";
+}
 document.querySelector(".story").addEventListener("click", e => {
   const b = e.target.closest("button"); if (!b) return;
-  D = JSON.parse(JSON.stringify(D0)); WALL = 3.0; document.getElementById("wall").value = 3;
-  if (b.dataset.s === "boss"){ D.sw.x = 12; D.sw.y = -6; }         // Boss/Schalter tief im VTX
-  if (b.dataset.s === "vent"){ D.park.x = -32.5; D.park.y = -14; } // ins Kamera-Feld geschoben
-  if (b.dataset.s === "wall"){ WALL = 2.8; document.getElementById("wall").value = 2.8;
-    document.getElementById("wallv").textContent = "2.8 mm"; }
-  draw();
+  D = JSON.parse(JSON.stringify(D0)); setWall(3.0); draw();
+  if (b.dataset.s === "boss") animateTo({sw: {x: 12, y: -6}}, 700);          // Boss/Schalter tief im VTX
+  if (b.dataset.s === "vent") animateTo({park: {x: -32.5, y: -14}}, 700);    // ins Kamera-Feld geschoben
+  if (b.dataset.s === "wall") setWall(2.8), draw();
 });
 draw();
 </script>
