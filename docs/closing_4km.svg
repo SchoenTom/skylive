@@ -45,7 +45,7 @@
 <text x="430" y="104" class="sans" font-size="26" font-weight="800" fill="#f4f7fb">The link, honestly closed.</text>
 <g class="mono" font-size="14.5">
   <text x="430" y="146" fill="#aebdce">Transmit power</text><text x="872" y="146" text-anchor="end" fill="#67e8f9">+30 dBm · 1 W</text>
-  <text x="430" y="176" fill="#aebdce">Antennas (donut TX +2.2 · RX +10, conservative helix)</text><text x="872" y="176" text-anchor="end" fill="#67e8f9">up to +12.2 dB</text>
+  <text x="430" y="176" fill="#aebdce" font-size="13">Antennas (donut TX +2.2 · helix RX +10)</text><text x="872" y="176" text-anchor="end" fill="#67e8f9">up to +12.2 dB</text>
   <text x="430" y="206" fill="#aebdce">Free-space loss @ 4 km</text><text x="872" y="206" text-anchor="end" fill="#ef8a7f">− 119.8 dB</text>
   <text x="430" y="236" fill="#aebdce">Cables · body shadow (pose)</text><text x="872" y="236" text-anchor="end" fill="#ef8a7f">− 2.5 · − 2…12 dB</text>
   <text x="430" y="266" fill="#aebdce">Image threshold (conservative)</text><text x="872" y="266" text-anchor="end" fill="#67e8f9">− 90 dBm</text>
