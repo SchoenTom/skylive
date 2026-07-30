@@ -113,6 +113,9 @@ section{padding-block:clamp(56px,9vw,120px)}
 .alt-rail{position:fixed;right:16px;top:50%;transform:translateY(-50%);height:min(60vh,540px);width:54px;
   z-index:60;pointer-events:none;opacity:0;transition:opacity .6s var(--ease)}
 .alt-rail.on{opacity:1}
+.alt-rail{cursor:pointer;pointer-events:auto}
+.alt-rail.pulse .alt-marker svg{animation:railpulse .7s cubic-bezier(.16,1,.3,1)}
+@keyframes railpulse{0%{transform:scale(1)}35%{transform:scale(1.55)}100%{transform:scale(1)}}
 .alt-rail .track{position:absolute;right:26px;top:0;bottom:0;width:2px;background:linear-gradient(rgba(120,160,210,.05),rgba(34,211,238,.35),rgba(120,160,210,.05))}
 .alt-rail .tick{position:absolute;right:22px;width:10px;height:1px;background:rgba(160,190,220,.35)}
 .alt-rail .tick span{position:absolute;right:14px;top:-7px;font:600 .62rem/1 var(--mono);color:var(--faint);letter-spacing:.06em;white-space:nowrap}
@@ -1153,6 +1156,15 @@ html.no-webgl model-viewer{display:none!important}.webgl-fb{display:none;flex-di
   function glyph(which){gP.style.display=which==='p'?'':'none';gJ.style.display=which==='j'?'':'none';gC.style.display=which==='c'?'':'none';gL.style.display=which==='l'?'':'none';
     phEl.style.color=which==='l'?'#33d07a':'';}
   const CLIMB=0.14, LAND=0.94;
+  let lastPhase=null;
+  // Die Rail ist auch Navigation: Klick auf eine Hoehe springt zur Stelle im Sprung
+  rail.title='click an altitude — ride the jump';
+  rail.addEventListener('click',e=>{
+    const r=rail.getBoundingClientRect();
+    const f=Math.max(0,Math.min(1,(e.clientY-r.top)/r.height));
+    const max=document.documentElement.scrollHeight-innerHeight;
+    window.scrollTo({top:(CLIMB+f*(LAND-CLIMB))*max,behavior:'smooth'});
+  });
   function upd(){tick=null;
     const max=document.documentElement.scrollHeight-innerHeight;
     const p=Math.max(0,Math.min(1,max>0?scrollY/max:0));
@@ -1167,6 +1179,8 @@ html.no-webgl model-viewer{display:none!important}.webgl-fb{display:none;flex-di
       else{phase='FREEFALL'; glyph('j');}
     }
     mk.style.top=(pos*100)+'%';
+    if(phase!==lastPhase){lastPhase=phase;
+      rail.classList.remove('pulse'); void rail.offsetWidth; rail.classList.add('pulse');}
     val.textContent=Math.round(alt/10)*10+' m';
     ph.textContent=phase;}
   addEventListener('scroll',()=>{if(!tick)tick=requestAnimationFrame(upd)},{passive:true});
