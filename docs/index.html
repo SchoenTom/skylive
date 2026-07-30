@@ -982,7 +982,7 @@ html.no-webgl model-viewer{display:none!important}.webgl-fb{display:none;flex-di
   const bAsm=document.getElementById('mvAsm'), bExp=document.getElementById('mvExp'),
         bFly=document.getElementById('mvFly');
   if(!mv) return;
-  const SRC={asm:'models/sender850.glb', exp:'models/sender850_exploded_v4.glb', fly:'models/flyin850_v4.glb'};
+  const SRC={asm:'models/sender850.glb', exp:'models/sender850_exploded_v5.glb', fly:'models/flyin850_v5.glb'};
   function set(mode){
     mv.setAttribute('src', SRC[mode]);
     if(mode==='fly'){ mv.setAttribute('autoplay',''); } else { mv.removeAttribute('autoplay'); }
@@ -1184,15 +1184,19 @@ html.no-webgl model-viewer{display:none!important}.webgl-fb{display:none;flex-di
     cur+=(target-cur)*0.3;
     try{mv.currentTime=fract2time(cur);}catch(e){}
     pin=requestAnimationFrame(pinLoop);}
+  const arm=()=>{try{mv.play();mv.pause();}catch(e){} if(!pin)pin=requestAnimationFrame(pinLoop);};
+  // Re-arm nach JEDEM Modellwechsel: beim Klick auf Take-apart ist mv.loaded oft noch das
+  // ALTE Modell → play()/pause() armiert das falsche; ohne Arm ignoriert model-viewer
+  // currentTime-Writes teilweise und der Slider erreicht die Apex nie.
+  mv.addEventListener('load',()=>{if(box.classList.contains('on'))arm();});
   bS.addEventListener('click',()=>{
     others.forEach(b=>{b.classList.remove('on');b.setAttribute('aria-pressed','false');});
     bS.classList.add('on');bS.setAttribute('aria-pressed','true');
-    mv.setAttribute('src','models/sender_explode_v4.glb');
+    mv.setAttribute('src','models/sender_explode_v5.glb');
     mv.removeAttribute('autoplay');
     if(savedOrbit===null){savedOrbit=mv.getAttribute('camera-orbit');}
     mv.setAttribute('camera-orbit','auto auto 150%');   // Zoom raus: zerlegte Teile bleiben im Bild
     box.classList.add('on');
-    const arm=()=>{try{mv.play();mv.pause();}catch(e){} if(!pin)pin=requestAnimationFrame(pinLoop);};
     if(mv.loaded)arm(); else mv.addEventListener('load',arm,{once:true});
   });
   rng.addEventListener('input',()=>{target=+rng.value/2.9;

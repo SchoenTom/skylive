@@ -1,7 +1,10 @@
 .DS_Store
-CURATION_NOTES.md
 .venv/
+CURATION_NOTES.md
 __pycache__/
 # local CAD work snapshots (fix-cycle stages, not release artifacts)
 build/cad/baseline_*/
 build/cad/stage_*/
+# vendor STEP references + local CAD build output (not release artifacts)
+references/
+skylive_out/
