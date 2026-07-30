@@ -13,7 +13,7 @@ header a{color:var(--cy);text-decoration:none;float:right;font-size:13px;margin-
 @media(max-width:860px){.wrap{grid-template-columns:1fr}}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px}
 .card h3{margin:0 0 6px;font-size:14px;color:var(--cy);text-transform:uppercase;letter-spacing:.06em}
-svg{width:100%;height:auto;display:block;border-radius:10px;background:#0d2337;touch-action:none}
+svg{width:100%;height:auto;display:block;border-radius:10px;background:#0d2337;touch-action:none;user-select:none;-webkit-user-select:none}
 .legend{font-size:12px;color:var(--mut);margin-top:8px}
 .gates{font:12.5px ui-monospace,Menlo,monospace;display:flex;flex-direction:column;gap:6px;margin-top:8px}
 .g{padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:#0d2337}
@@ -33,6 +33,21 @@ svg{width:100%;height:auto;display:block;border-radius:10px;background:#0d2337;t
 .reset{margin-top:10px;width:100%;background:#123c5c;border:1px solid var(--cy);color:var(--cy);
   padding:9px;border-radius:9px;cursor:pointer;font-weight:700}
 .note{font-size:12px;color:var(--mut);margin-top:10px;line-height:1.55}
+.mission{margin:0 0 10px;padding:10px 12px;border:1px solid #2a5a7d;border-radius:10px;background:#0d2a42}
+.mrow{display:flex;gap:10px;align-items:baseline}
+.mlvl{font:11px ui-monospace,monospace;color:var(--warn);letter-spacing:.08em}
+.mission b{font-size:14px}
+.mtext{font-size:12.5px;color:#9fc0d8;margin-top:3px;line-height:1.5}
+.winov{position:absolute;inset:0;display:none;flex-direction:column;align-items:center;justify-content:center;
+  gap:14px;background:rgba(7,20,32,.88);border-radius:10px;backdrop-filter:blur(3px);text-align:center;padding:22px}
+.winov.show{display:flex;animation:pop .35s cubic-bezier(.16,1,.3,1)}
+@keyframes pop{0%{opacity:0;transform:scale(.96)}100%{opacity:1;transform:scale(1)}}
+.stamp{font-weight:900;font-size:26px;color:var(--ok);border:3px solid var(--ok);border-radius:12px;
+  padding:8px 22px;transform:rotate(-4deg);letter-spacing:.04em}
+.debrief{font-size:13px;color:#cfe4f2;max-width:52ch;line-height:1.6}
+.debrief b{color:var(--warn)}
+.nextbtn{background:#123c5c;border:1px solid var(--cy);color:var(--cy);padding:9px 22px;
+  border-radius:9px;cursor:pointer;font-weight:700;font-size:14px}
 </style></head>
 <body>
 <header><b>Gate Simulator</b><span class="s">this CAD refuses to lie — try to make it</span>
@@ -40,8 +55,19 @@ svg{width:100%;height:auto;display:block;border-radius:10px;background:#0d2337;t
 
 <div class="wrap">
   <div class="card">
-    <h3>Floor 2 · top view — drag the parts</h3>
+    <h3 id="floorhead">Floor 2 · top view — drag the parts</h3>
+    <div class="mission" id="mission">
+      <div class="mrow"><span class="mlvl" id="mlvl">LEVEL 1 / 4</span><b id="mtitle"></b></div>
+      <div class="mtext" id="mtext"></div>
+    </div>
+    <div class="stage-wrap" style="position:relative">
     <svg id="scene" viewBox="0 0 780 480"></svg>
+    <div class="winov" id="winov">
+      <div class="stamp">GATES GREEN ✓</div>
+      <div class="debrief" id="debrief"></div>
+      <button class="nextbtn" id="nextbtn">next level →</button>
+    </div>
+    </div>
     <div class="legend">Real interior of the 850 (65 × 34 mm inside, 1 mm = 10 px). The camera is
     welded to its corner — everything else is yours to ruin. Every number below is the same
     arithmetic the real build gates run before an STL is allowed to exist.</div>
@@ -60,7 +86,7 @@ svg{width:100%;height:auto;display:block;border-radius:10px;background:#0d2337;t
          style="display:none;margin-top:8px;text-align:center;padding:9px;border-radius:9px;
          background:#0e3b26;border:1px solid #1d5c3f;color:var(--ok);text-decoration:none;
          font-weight:700;font-size:13px">⬇ the export is real — these STLs live in build/stl</a>
-      <button class="reset" id="reset">↺ reset to the shipped design</button>
+      <button class="reset" id="reset">↺ reset</button>
       <div class="note"><b>Honest note:</b> this is the 2-D floor-plan slice of the real gate suite
       (overlaps shown as mm², the build checks mm³ against nominal envelopes). The point isn't the
       pixels — it's that <i>an assertion, not an eyeball,</i> decides whether a part may exist.</div>
@@ -102,7 +128,7 @@ function inside(a){
   return a.x >= -IN_X/2 && a.y >= -IN_Y/2 && a.x+a.w <= IN_X/2 && a.y+a.h <= IN_Y/2;
 }
 
-function runGates(){
+let runGates = function(){
   const g = [];
   const oc = overlap(D.vtx, CAM);
   g.push(["[vtx_fit]  VTX ∩ camera = " + oc.toFixed(1) + " mm²  (gate: 0)", oc === 0]);
@@ -167,10 +193,10 @@ function draw(){
     const h = Math.min(a.y+a.h, b.y+b.h) - Math.max(a.y, b.y);
     if (w > 0 && h > 0){
       const ox = Math.max(a.x, b.x), oy = Math.max(a.y, b.y);
-      s += `<rect x="${X(ox)}" y="${Y(oy)}" width="${w*S}" height="${h*S}" fill="url(#hatch)"
+      s += `<rect pointer-events="none" x="${X(ox)}" y="${Y(oy)}" width="${w*S}" height="${h*S}" fill="url(#hatch)"
             stroke="#f87171" stroke-width="2"><animate attributeName="opacity" values="1;.55;1"
             dur="1s" repeatCount="indefinite"/></rect>
-            <text x="${X(ox)+w*S/2}" y="${Y(oy)+h*S/2+5}" fill="#f87171" font-size="14"
+            <text pointer-events="none" x="${X(ox)+w*S/2}" y="${Y(oy)+h*S/2+5}" fill="#f87171" font-size="14"
             font-weight="700" text-anchor="middle" font-family="ui-monospace"
             paint-order="stroke" stroke="#0b1f33" stroke-width="4">${(w*h).toFixed(1)} mm²</text>`;
     }
@@ -227,6 +253,7 @@ document.getElementById("wall").addEventListener("input", e => {
   draw();
 });
 document.getElementById("reset").addEventListener("click", () => {
+  if (mode === "mission"){ loadLevel(LVL); return; }   // Mission: Level neu, nicht Lösung verschenken
   D = JSON.parse(JSON.stringify(D0)); setWall(3.0);
   draw();
 });
@@ -242,6 +269,66 @@ document.querySelector(".story").addEventListener("click", e => {
   if (b.dataset.s === "vent") animateTo({park: {x: -32.5, y: -14}}, 700);    // ins Kamera-Feld geschoben
   if (b.dataset.s === "wall") setWall(2.8), draw();
 });
-draw();
+// ── Mission-Kampagne: der Start ist kaputt, GRÜN ist das Ziel ─────────────────
+// Jedes Level ist eine echte Save-Story aus build/WHAT_THE_GATES_CAUGHT.md —
+// dieselben Zahlen, dieselbe Arithmetik. Nichts erfunden.
+const LEVELS = [
+  {title:"First green",
+   text:"Someone parked the VTX inside the camera. Drag it until every gate reads green — the assertion decides, not your eye.",
+   setup(){ D.vtx.x = -20; D.vtx.y = -14; },
+   win: all => all,
+   debrief:"That red number was never an opinion. <b>An assertion, not an eyeball,</b> decides whether a part may exist — that is the whole doctrine of this build."},
+  {title:"The 24.65 mm³ vent",
+   text:"Real save: when the camera moved outboard, the XT30 park collided with its back. Find it a legal home.",
+   setup(){ D.park.x = -32.5; D.park.y = -14; },
+   win: all => all,
+   debrief:"In the real build this was a vent cut <b>24.65 mm³</b> into the camera's back — invisible in every render. The gate saw it; the vents were deleted, not nudged."},
+  {title:"The impossible switch",
+   text:"Fit the Ø14 switch somewhere legal on this floor. Take your time.",
+   setup(){ D.sw.x = 8; D.sw.y = -2; },
+   win: (all) => all && D.sw.y >= IN_Y/2,
+   debrief:"There is no legal spot — camera and VTX leave less than Ø14 anywhere. The winning move was the tray: <b>\u201Cnot fitted\u201D is an engineering answer,</b> and the real lid ships blank."},
+  {title:"The sacrosanct wall",
+   text:"Every layout gate is green — and the export is still refused. Free it.",
+   setup(){ setWall(2.8); },
+   win: all => all,
+   debrief:"You could not buy space from the wall. <b>3.0 mm is law</b> — one veto gate outranks every clever layout. That hierarchy is what kept seven prints from failing the same way."}
+];
+let LVL = 0, mode = "mission";
+const $ = id => document.getElementById(id);
+function loadLevel(i){
+  mode = "mission"; LVL = i;
+  D = JSON.parse(JSON.stringify(D0)); setWall(3.0);
+  LEVELS[i].setup();
+  $("mlvl").textContent = "LEVEL " + (i+1) + " / " + LEVELS.length;
+  $("mtitle").textContent = LEVELS[i].title;
+  $("mtext").textContent = LEVELS[i].text;
+  $("mission").style.display = "block";
+  $("winov").classList.remove("show");
+  draw();
+}
+function enterSandbox(){
+  mode = "sandbox";
+  $("mission").style.display = "none";
+  $("winov").classList.remove("show");
+  $("floorhead").textContent = "Sandbox · drag the parts — try to break it";
+  D = JSON.parse(JSON.stringify(D0)); setWall(3.0); draw();
+}
+$("nextbtn").addEventListener("click", () => {
+  if (LVL + 1 < LEVELS.length) loadLevel(LVL + 1);
+  else enterSandbox();
+});
+// Win-Erkennung hängt an runGates: Missionsziel erreicht → Stempel + Debrief
+const _runGates = runGates;
+runGates = function(){
+  const all = _runGates();
+  if (mode === "mission" && !anim && LEVELS[LVL].win(all) && !$("winov").classList.contains("show")){
+    $("debrief").innerHTML = LEVELS[LVL].debrief;
+    $("nextbtn").textContent = (LVL + 1 < LEVELS.length) ? "next level →" : "free play — try to break it →";
+    setTimeout(() => $("winov").classList.add("show"), 350);
+  }
+  return all;
+};
+loadLevel(0);
 </script>
 </body></html>
