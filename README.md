@@ -6,7 +6,7 @@
 
 **Live from 4 km — 14 ms behind reality.**
 
-<img src="docs/assets/turntable_v4.gif" alt="The Sender 850 turning slowly: battery door with tab latch, T-clamp antenna anchors on both short sides, roof lid, louvres, GoPro mount." width="49%"> <img src="docs/assets/flyin_v4.gif" alt="Every component — radio, camera, battery, antenna, clamp bars, T-pieces — flying into the open case." width="49%">
+<img src="docs/assets/turntable_v5.gif" alt="The Sender 850 turning slowly: battery door with tab latch, T-clamp antenna anchors on both short sides, roof lid, louvres, GoPro mount." width="49%"> <img src="docs/assets/flyin_v5.gif" alt="Every component — radio, camera, battery, antenna, clamp bars, T-pieces — flying into the open case." width="49%">
 
 <sub>the actual gate-verified CAD — spin it and watch the parts fly home yourself in the [3D Lab](https://schoentom.github.io/skylive/viewer.html)</sub>
 
@@ -196,7 +196,7 @@ every load-bearing number:
 
 | number | value | status |
 |---|---|---|
-| case dimensions, all three senders | 71×40×56 · 71×38×48 · 59.5×39.5×48 | 🟢 executed CAD, gate-checked |
+| case dimensions, all three senders | 71×40×56 · 72×39×57 · 59.5×39.5×48 | 🟢 executed CAD, gate-checked |
 | battery | 58×30×22 (850) · 45×17.5×15.3 nominal — the real wrapped pack binds at 18.25 light width, guides opened to 18.75/16.55 (mid + Mini | 🟢 measured with calipers |
 | brass inserts | M3 Ø5×6 · M2 Ø3.2×3 | 🟢 measured |
 | XT30 wire, coax jacket | Ø2.8 · Ø3.1 | 🟢 measured |
